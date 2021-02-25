@@ -1,0 +1,13 @@
+version: '3'
+services:
+  database:
+    image: 'mongo'
+    container_name: 'mongo_db'
+    environment:
+    - MONGO_INITDB_DATABASE=prueba
+    - MONGO_INITDB_ROOT_USERNAME=moises
+    - MONGO_INITDB_ROOT_PASSWORD=contra
+    volumes:
+    - ./mongo-volume:/data/db
+    ports:
+    - '27017-27019:27017-27019'
