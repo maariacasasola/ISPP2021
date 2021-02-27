@@ -5,8 +5,8 @@ services:
     container_name: 'mongo_db'
     environment:
     - MONGO_INITDB_DATABASE=prueba
-    - MONGO_INITDB_ROOT_USERNAME=moises
-    - MONGO_INITDB_ROOT_PASSWORD=contra
+    - MONGO_INITDB_ROOT_USERNAME=usuario
+    - MONGO_INITDB_ROOT_PASSWORD=secreto
     volumes:
     - ./mongo-volume:/data/db
     ports:
