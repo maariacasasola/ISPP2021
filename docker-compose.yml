@@ -8,6 +8,6 @@ services:
     - MONGO_INITDB_ROOT_USERNAME=usuario
     - MONGO_INITDB_ROOT_PASSWORD=secreto
     volumes:
-    - ./mongo-volume:/data/db
+    - ./bbdd/mongo-volume:/data/db
     ports:
     - '27017-27019:27017-27019'
