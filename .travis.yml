@@ -1,5 +1,7 @@
 services:
   - mongodb
+before_script:
+  - mongo gotacar --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
 jobs:
   include:
     - language: node_js
