@@ -3,4 +3,5 @@ language: java
 jdk: oraclejdk8
 script: 
   - cd backend 
+  - mvn install
   - mvn test
