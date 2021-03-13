@@ -1,4 +1,5 @@
-
+services:
+  - mongodb
 jobs:
   include:
     - language: node_js
