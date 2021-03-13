@@ -1,6 +1,16 @@
-dist: trusty
-language: java
-jdk: oraclejdk11
-script: 
-  - cd backend 
-  - mvn test
+
+jobs:
+  include:
+    - language: node_js
+      node_js: 14
+      script:
+      - cd frontend
+      - npm ci
+      - ng test
+
+    - dist: trusty
+      language: java
+      jdk: oraclejdk11
+      script: 
+        - cd backend 
+        - mvn test
