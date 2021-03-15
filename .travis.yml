@@ -12,7 +12,6 @@ jobs:
       language: java
       jdk: oraclejdk11
       before_install:
-        - DECRYPT COMMAND
         - tar -xzf credentials.tar.gz
       before_script:
         - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
