@@ -8,6 +8,15 @@ jobs:
     - cd frontend
     - npm ci
     - ng test
+    - ng build --prod
+    deploy:
+      skip_cleanup: true
+      provider: firebase
+      token:
+        secure: $FIREBASE_TOKEN
+      on:
+        all_branches: true
+before_install:
   - dist: trusty
     language: java
     jdk: oraclejdk11
