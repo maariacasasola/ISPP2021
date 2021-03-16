@@ -11,4 +11,9 @@ public class HelloController {
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Holaaaa", null);
 	}
+
+	@RequestMapping("/adios")
+	public String adios(@RequestParam(value = "name", defaultValue = "World") String name) {
+		return String.format("Adios", null);
+	}
 }
