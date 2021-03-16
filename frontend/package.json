@@ -30,7 +30,7 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/architect": "^0.1102.4",
-    "@angular/animations": "^11.2.0",
+    "@angular/animations": "^11.2.5",
     "@angular/cdk": "^11.2.4",
     "@angular/common": "^11.2.0",
     "@angular/compiler": "^11.2.0",
@@ -40,7 +40,9 @@
     "@angular/platform-browser": "^11.2.0",
     "@angular/platform-browser-dynamic": "^11.2.0",
     "@angular/router": "^11.2.0",
+    "@babel/core": "^7.13.10",
     "@nrwl/angular": "11.5.1",
+    "postcss": "^8.2.8",
     "request": "^2.88.2",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
@@ -75,6 +77,6 @@
     "prettier": "2.2.1",
     "ts-jest": "26.4.0",
     "ts-node": "~9.1.1",
-    "typescript": "~4.0.3"
+    "typescript": "^4.1.5"
   }
 }
