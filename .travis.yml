@@ -12,8 +12,7 @@ jobs:
       deploy:
         skip_cleanup: true
         provider: firebase
-        token:
-          secure: $FB_DEPLOY
+        token: $FB_DEPLOY
         on:
           all_branches: true
     - dist: trusty
