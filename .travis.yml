@@ -8,6 +8,7 @@ jobs:
         - cd frontend
         - npm ci
         - ng test
+      after_success:
         - ng build --prod
       deploy:
         skip_cleanup: true
