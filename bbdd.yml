@@ -1,0 +1,50 @@
+USUARIO
+----------------------------
+{
+        _id: ObjectId(),
+        name: string,
+        uid: string,
+        surnames: string,
+        email: string,
+        dni: string,
+        profile_photo: string,
+        birthdate: string,
+        roles: [string] : ['admin', 'client', 'driver']
+}
+
+MEETING_POINT
+----------------------------
+{
+        lat: float,
+        lng: float,
+        name: string,
+        address: string
+}
+
+TRIP
+----------------------------
+{
+        starting_point: {
+                lat: float,
+                lng: float,
+                address: string,
+                name: string
+        },
+        ending_point: {
+                lat: float,
+                lng: float,
+                address: string,
+                name: string
+        },
+        price: integer (EN CENTIMOS),
+        start_date: date,
+        end_date: date,
+        comments: string,
+        places: integer,
+        canceled: boolean,
+        cancelation_date: date,
+        driver: User,
+}
+
+DRIVER_DATA
+----------------------------
