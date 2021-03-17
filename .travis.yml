@@ -11,13 +11,14 @@ jobs:
       after_success:
         - ng build --prod
       deploy:
-        skip_cleanup: true
         - provider: firebase
+          skip_cleanup: true
           token: $FB_DEPLOY
           on:
             branch: master
         - provider: firebase
           token: $FB_DEPLOY
+          skip_cleanup: true
           on:
             branch: develop
     - dist: trusty
