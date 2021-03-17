@@ -5,8 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import jdk.vm.ci.meta.Local;
-
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 
