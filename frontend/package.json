@@ -40,6 +40,7 @@
     "@angular/platform-browser": "^11.2.0",
     "@angular/platform-browser-dynamic": "^11.2.0",
     "@angular/router": "^11.2.0",
+    "@angular/service-worker": "^11.2.0",
     "@babel/core": "^7.13.10",
     "@nrwl/angular": "^11.5.1",
     "postcss": "^8.2.8",
