@@ -12,10 +12,14 @@ jobs:
         - ng build --prod
       deploy:
         skip_cleanup: true
-        provider: firebase
-        token: $FB_DEPLOY
-        on:
-          branch: master
+        - provider: firebase
+          token: $FB_DEPLOY
+          on:
+            branch: master
+        - provider: firebase
+          token: $FB_DEPLOY
+          on:
+            branch: develop
     - dist: trusty
       language: java
       jdk: oraclejdk11
@@ -26,18 +30,11 @@ jobs:
         - mvn test
         - mv ../client-secret.json ./client-secret.json
       deploy:
-        - provider: gae
-          keyfile: client-secret.json
-          project: gotacar
-          on:
-            branch: master
-        - provider: gae
-          keyfile: clien-secret.json
-          project: gotacar-prepro
-          on:
-            brach: develop
-
-        
+        provider: gae
+        keyfile: client-secret.json
+        project: gotacar
+        on:
+          branch: master
 before_install:
   - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
     -in client-secret.json.enc -out client-secret.json -d
