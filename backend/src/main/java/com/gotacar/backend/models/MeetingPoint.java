@@ -12,7 +12,6 @@ public class MeetingPoint {
   public String address;
 
   public MeetingPoint() {
-      
   }
 
   public MeetingPoint(Double lng, Double lat){
