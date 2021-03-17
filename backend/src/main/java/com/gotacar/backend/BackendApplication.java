@@ -8,11 +8,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 
+import com.gotacar.backend.models.MeetingPoint;
+import com.gotacar.backend.models.MeetingPointRepository;
+
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private MeetingPointRepository meetingPointRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -22,30 +28,17 @@ public class BackendApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		userRepository.deleteAll();
+		meetingPointRepository.deleteAll();
 
 		// save a couple of customers
 		userRepository.save(new User("Alice", "Smith"));
 		userRepository.save(new User("Bob", "Smith"));
 
-		// fetch all customers
-		System.out.println("Customers found with findAll():");
-		System.out.println("-------------------------------");
-		for (User customer : userRepository.findAll()) {
-			System.out.println(customer);
-		}
-		System.out.println();
-
-		// fetch an individual customer
-		System.out.println("Customer found with findByFirstName('Alice'):");
-		System.out.println("--------------------------------");
-		System.out.println(userRepository.findByFirstName("Alice"));
-
-		System.out.println("Customers found with findByLastName('Smith'):");
-		System.out.println("--------------------------------");
-		for (User customer : userRepository.findByLastName("Smith")) {
-			System.out.println(customer);
-		}
-
+		//save meeting points
+		meetingPointRepository.save(new MeetingPoint(37.37722160408209, -5.9871317313950705, "41013, Plaza de España, Sevilla", "Plaza de España"));
+		meetingPointRepository.save(new MeetingPoint(37.42663376216525, -5.978099088991483, "41015, Torneo, Sevilla", "Torneo"));
+		meetingPointRepository.save(new MeetingPoint(37.38904108989198, -5.999657242969646, "Calle Reyes Católicos, 5, 41001 Sevilla", "Petit Palace Puerta de Triana"));
+		meetingPointRepository.save(new MeetingPoint(37.37625144174958, -5.976345387146261, "Av. de Diego Martínez Barrio, 4, 41013 Sevilla", "Viapol Center"));
 	}
 
 }
