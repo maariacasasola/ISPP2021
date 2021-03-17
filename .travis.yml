@@ -14,11 +14,13 @@ jobs:
         - provider: firebase
           skip_cleanup: true
           token: $FB_DEPLOY
+          project: gotacar
           on:
             branch: master
         - provider: firebase
           token: $FB_DEPLOY
           skip_cleanup: true
+          project: gotacar-prepro
           on:
             branch: develop
     - dist: trusty
