@@ -9,7 +9,8 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { AppRoutingModule } from './app-routing.module';
-
+// Google Maps
+import {GoogleMapsModule} from '@angular/google-maps';
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -17,6 +18,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { environment } from '../environments/environment';
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    MeetingPointMapComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +37,7 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
+    GoogleMapsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [AuthenticatedGuard],
