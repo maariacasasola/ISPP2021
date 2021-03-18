@@ -3,6 +3,8 @@ package com.gotacar.backend.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.data.annotation.Id;
 
 import lombok.Getter;
@@ -15,7 +17,7 @@ import lombok.Setter;
 public class User {
   @Id
   public String id;
-
+  @NotBlank
   public String firstName;
 
   public String lastName;
