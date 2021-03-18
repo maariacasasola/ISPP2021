@@ -28,15 +28,15 @@ public class User {
 
   public LocalDate birthdate;
 
-  public List<String> roles; 
+  public List<String> roles;
 
   public String token;
-
 
   public User() {
   }
 
-  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles) {
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.uid = uid;
@@ -45,8 +45,6 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
-
-
   }
 
   @Override
