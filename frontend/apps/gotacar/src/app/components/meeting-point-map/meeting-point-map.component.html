@@ -1,8 +1,9 @@
 <google-map
   height="500px"
-  width="100%"
+  width="75%"
   [zoom]="zoom"
   [center]="center"
+  [options]="options"
   (mapClick)="addMarker($event)"
   (mapClick)="click($event)"
 >
@@ -17,6 +18,27 @@
 
   <map-info-window>{{ infoContent }}</map-info-window>
 </google-map>
-
+<div>
+  <form [formGroup]="new_meeting_point" >
+    <label>
+      Nombre:
+      <input type="text" formControlName="name">
+    </label>
+    <label>
+      Direccion:
+      <input type="text" formControlName="address">
+    </label>
+    <label>
+      Latitud:
+      <input type="text" formControlName="lat">
+    </label>
+    <label>
+      Longitud:
+      <input type="text" formControlName="lng">
+    </label>
+  </form>
+  <button type="submit" (click)="onSubmit()" [disabled]="!new_meeting_point.valid">Enviar</button>
+  
+</div>
 
 

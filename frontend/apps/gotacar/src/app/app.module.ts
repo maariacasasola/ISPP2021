@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
@@ -38,6 +38,7 @@ import { MeetingPointMapComponent } from './components/meeting-point-map/meeting
     MatSidenavModule,
     MatIconModule,
     GoogleMapsModule,
+    ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [AuthenticatedGuard],
