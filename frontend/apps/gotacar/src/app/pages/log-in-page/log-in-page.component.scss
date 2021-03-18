@@ -1,0 +1,32 @@
+.page-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #409dc4;
+}
+
+.login-card {
+    min-width: 20vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-card mat-form-field {
+    width: 100%;
+}
+
+.login-button {
+    color: white;
+    background-color: #409dc4;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.loading-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20%;
+}

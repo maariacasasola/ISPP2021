@@ -1,0 +1,22 @@
+<section class="page-content">
+    <mat-card class="login-card">
+        <h3>Inicio de sesión</h3>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="text" #userName required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" #userPassword required />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="login-button" (click)="authService.SignIn(userName.value, userPassword.value)">
+            Iniciar sesión
+        </button>
+
+        <button mat-flat-button color="primary" class="login-button" (click)="authService.GoogleAuth()">
+            Iniciar sesión con Google
+        </button>
+    </mat-card>
+</section>
