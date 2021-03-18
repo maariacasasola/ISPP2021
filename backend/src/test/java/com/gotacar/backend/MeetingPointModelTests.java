@@ -40,4 +40,20 @@ public class MeetingPointModelTests {
         ConstraintViolation<MeetingPoint> violation = constraintViolations.iterator().next();
         assertThat(violation.getMessage()).isEqualTo("no debe ser nulo");
     }
+    
+    @Test
+    public void setNullLatitud() {
+        MeetingPoint mp1 = new MeetingPoint(0.1283971, null, "Name", "Direction");
+        Set<ConstraintViolation<MeetingPoint>> constraintViolations = validator.validate(mp1);
+
+        ConstraintViolation<MeetingPoint> violation = constraintViolations.iterator().next();
+        assertThat(violation.getMessage()).isEqualTo("no debe ser nulo");
+    }
+
+    @Test
+    public void setNullLatitudAndLongitud() {
+        MeetingPoint mp1 = new MeetingPoint(null, null, "Name", "Direction");
+        Set<ConstraintViolation<MeetingPoint>> constraintViolations = validator.validate(mp1);
+        assertThat(constraintViolations.size()).isEqualTo(2);
+    }
 }
