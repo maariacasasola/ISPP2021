@@ -17,9 +17,9 @@ import lombok.Setter;
 public class User {
   @Id
   public String id;
-  @NotBlank
+  @NotBlank  
   public String firstName;
-
+  @NotBlank
   public String lastName;
 
   public String uid;
