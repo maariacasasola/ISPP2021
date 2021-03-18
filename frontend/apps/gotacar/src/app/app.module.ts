@@ -19,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { MeetingPointMapComponent } from './components/meeting-point-map/meeting
     MainFooterComponent,
     ClientProfilePageComponent,
     MeetingPointMapComponent,
+    AdminPageComponent,
+    AdminMeetingPointsPageComponent,
   ],
   imports: [
     BrowserModule,
