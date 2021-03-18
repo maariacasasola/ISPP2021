@@ -17,6 +17,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -26,6 +33,8 @@ import { environment } from '../environments/environment';
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    AuthMenuComponent,
+    NoAuthMenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +43,8 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [AuthenticatedGuard],
