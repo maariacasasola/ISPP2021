@@ -13,14 +13,24 @@ import { MainHeaderComponent } from './components/main-header/main-header.compon
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
-
+import { CreateTripDriverComponent } from './components/create-trip-driver/create-trip-driver.component';
 import { environment } from '../environments/environment';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    CreateTripDriverComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +54,15 @@ import { MatIconModule } from '@angular/material/icon';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    
   ],
   providers: [AuthenticatedGuard],
   bootstrap: [AppComponent],

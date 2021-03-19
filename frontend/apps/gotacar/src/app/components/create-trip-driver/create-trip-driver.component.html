@@ -1,0 +1,32 @@
+<div class="example-container">
+  <h2>Crea tu propio viaje</h2>
+
+  <div class="form-container">
+    <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Origen</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="origen"
+          placeholder="Los Bermejales"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Destino</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="origen"
+          placeholder="Nervión"
+          required
+        />
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" color="primary">Buscar</button>
+      <!--<button mat-raised-button type="submit" [disabled]="!searchForm.valid" color="primary">Buscar</button>-->
+    </form>
+  </div>
+</div>
