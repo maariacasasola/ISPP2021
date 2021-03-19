@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +46,12 @@ public class TripModelTests {
         Location location1 = new Location("Bami", "Calle Teba 1", 2.333, -2.111);
         Location location2 = new Location("Lipa", "Calle Teba 1", 2.333, -2.111);
 
-        Trip trip1 = new Trip(location1, location2, 500, new Date(2), new Date(2), "Cometario", 3, user);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, 1);
+        Date date = cal.getTime();
+
+        Trip trip1 = new Trip(location1, location2, 500, date, date, "Cometario", 3, user);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip1);
 

@@ -12,34 +12,28 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
 
-
 import lombok.Getter;
 import lombok.Setter;
-
-
 
 @Getter
 @Setter
 public class User {
   @Id
   public String id;
-  
+
   @NotBlank
-  @NotNull
   public String firstName;
-  
+
   @NotBlank
-  @NotNull
   public String lastName;
 
   @NotBlank
-  @NotNull
   public String uid;
-  
+
   @Email(message = "Invalid email")
   public String email;
-  
-  @Pattern(regexp = "[0-9]{8,8}[A-Z]", message="Invalid dni number")
+
+  @Pattern(regexp = "[0-9]{8,8}[A-Z]", message = "Invalid dni number")
   public String dni;
 
   @URL(message = "Photo must be an url")
@@ -47,15 +41,14 @@ public class User {
 
   @Past(message = "Invalid birthdate")
   public LocalDate birthdate;
-  
-  
-  public List<String> roles; 
 
+  public List<String> roles;
 
   public User() {
   }
 
-  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles) {
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.uid = uid;
