@@ -1,6 +1,7 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
@@ -13,6 +14,7 @@ import com.gotacar.backend.models.Trip;
 import com.gotacar.backend.models.TripRepository;
 import com.gotacar.backend.utils.SearchTrip;
 
+import org.bson.codecs.DateCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,16 +41,22 @@ public class TripController {
                     startingPointJson.get("lat").asDouble());
             Location ep = new Location("", "", endingPointJson.get("lng").asDouble(),
                     endingPointJson.get("lat").asDouble());
-            LocalDateTime d = LocalDateTime.parse(dateJson.get("date").asText());
-            Integer p = placesJson.get("places").asInt();
 
+            Integer year = Integer.parseInt(dateJson.asText().substring(0,4));
+            Integer month = Integer.parseInt(dateJson.asText().substring(5,7));
+            Integer day = Integer.parseInt(dateJson.asText().substring(8,10));
+            Integer hour = Integer.parseInt(dateJson.asText().substring(11,13));
+            Integer mnt = Integer.parseInt(dateJson.asText().substring(14,16));
+            Integer secs = Integer.parseInt(dateJson.asText().substring(17,19));
+
+            LocalDateTime d = LocalDateTime.of(year, month, day, hour, mnt, secs);
+            Integer p = placesJson.asInt();
             SearchTrip s = new SearchTrip(sp, ep, d, p);
 
             return s;
 
         } catch (Exception e) {
             e.getMessage();
-            System.out.println("CAGADA");
             return null;
         }
     }
@@ -57,12 +65,12 @@ public class TripController {
         List<Trip> all = tripRepository.findAll();
 
         Circle startingPointArea = new Circle(search.getStartingPoint().getLat(), search.getStartingPoint().getLng(),
-                0.009);
+                0.012);
         List<Trip> tripsInStartingPointArea = tripRepository.findByStartingPointWithin(startingPointArea);
 
-        Circle endingPointArea = new Circle(search.getEndingPoint().getLat(), search.getEndingPoint().getLng(), 0.009);
+        Circle endingPointArea = new Circle(search.getEndingPoint().getLat(), search.getEndingPoint().getLng(), 0.012);
         List<Trip> tripsInEndingPointArea = tripRepository.findByStartingPointWithin(endingPointArea);
-
+        
         return all.stream().filter(x -> tripsInStartingPointArea.contains(x) && tripsInEndingPointArea.contains(x)
                 && x.getPlaces() >= search.getPlaces()).collect(Collectors.toList());
     }

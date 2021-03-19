@@ -39,4 +39,9 @@ public class SearchTrip {
         this.places = p;
     }
 
+    @Override
+    public String toString() {
+        return String.format("SearchTrip[Start=%s, End=%s, Date=%s, Places=%s]", this.startingPoint.name, this.endingPoint.name, this.date.toString(), String.valueOf(this.places));
+    }
+
 }
