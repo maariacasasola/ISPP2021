@@ -9,13 +9,18 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { AppRoutingModule } from './app-routing.module';
+
 // Google Maps
 import {GoogleMapsModule} from '@angular/google-maps';
 // ANGULAR MATERIAL
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
@@ -37,10 +42,14 @@ import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meetin
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatInputModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatButtonModule,
     MatSidenavModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatCardModule,
     GoogleMapsModule,
     ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

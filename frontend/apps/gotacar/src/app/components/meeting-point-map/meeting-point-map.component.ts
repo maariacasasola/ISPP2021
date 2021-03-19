@@ -13,7 +13,8 @@ export class MeetingPointMapComponent implements OnInit {
   
   zoom = 12
   center = {lat: 37.3754865, lng: -6.0250992};
-  
+  isShow = true;
+  isShowFilter = true;
   options: google.maps.MapOptions = {
    
     disableDefaultUI: true,
@@ -23,7 +24,9 @@ export class MeetingPointMapComponent implements OnInit {
   markers = [{position:{lat:37.3754,lng:-6.025},title:'prueba',info:'Info de punto prueba'}]
   infoContent = ''
 
-  
+  filter_meeting_point = new FormGroup({
+    filter: new FormControl("",Validators.required)
+  })
   new_meeting_point = new FormGroup({
     name: new FormControl("",Validators.required),
     address: new FormControl("",Validators.required),
@@ -35,11 +38,22 @@ export class MeetingPointMapComponent implements OnInit {
   }
 
   
+ 
+  toggleDisplayCreation() {
+    this.isShow = !this.isShow;
+    this.isShowFilter = true;
+  }
+  toggleDisplayFilter() {
+    this.isShowFilter = !this.isShowFilter;
+    this.isShow = true;
+  }
 
   click(event: google.maps.MouseEvent) {
     console.log(event)
   }
-
+  filterMarker(){
+    
+  }
   
 
   
