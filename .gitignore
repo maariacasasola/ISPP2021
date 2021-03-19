@@ -2,3 +2,4 @@ bbdd/
 *.wt
 node_modules
 mongo-volume
+/.metadata/
