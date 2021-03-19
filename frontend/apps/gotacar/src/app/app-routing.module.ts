@@ -38,7 +38,7 @@ const routes: Routes = [
     canActivate: [AuthenticatedGuard],
     children: [
       {
-        path: 'meetingPoints',
+        path: 'map',
         component: AdminMeetingPointsPageComponent,
       },
     ],
