@@ -1,6 +1,6 @@
 package com.gotacar.backend.models;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
@@ -30,13 +30,13 @@ public class Trip {
 
     @Future
     @NotNull
-    public Date startDate;
+    public LocalDateTime startDate;
 
     @Future
     @NotNull
-    public Date endingDate;
+    public LocalDateTime endingDate;
 
-    public Date cancelationDate;
+    public LocalDateTime cancelationDate;
 
     public String comments;
 
@@ -48,7 +48,7 @@ public class Trip {
 
     public User driver;
 
-    public Trip(Location startingPoint, Location endingPoint, Integer price, Date startDate, Date endingDate,
+    public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
             String comments, Integer places, User driver) {
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;

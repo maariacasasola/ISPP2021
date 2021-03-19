@@ -13,13 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-
-import java.util.Date;
 
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
@@ -51,6 +50,10 @@ public class BackendApplication implements CommandLineRunner {
 	private void loadSampleDate() {
 
 		userRepository.deleteAll();
+		meetingPointRepository.deleteAll();
+		tripRepository.deleteAll();
+
+		// USERS
 		List<String> lista1 = new ArrayList<String>();
 		lista1.add("ROLE_ADMIN");
 		List<String> lista2 = new ArrayList<String>();
@@ -71,17 +74,29 @@ public class BackendApplication implements CommandLineRunner {
 		userRepository.save(user2);
 		userRepository.save(user3);
 
-		// save trips
+		// TRIPS
 		Location location1 = new Location("Bami", "Calle Teba 1", 2.333, -2.111);
-		Location location2 = new Location("Lipa", "Calle Teba 1", 2.333, -2.111);
+		Location location2 = new Location("Lipa", "Calle Lipa 1", 2.230984, -2.12938);
+		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.42663376216525, -5.978099088991483);
+		Location location4 = new Location("Torneo", "41015, Torneo, Sevilla", 37.42663376216525, -5.978099088991483);
 
-		Trip trip1 = new Trip(location1, location2, 220, new Date(), new Date(), "Cometario", 3, user1);
-		Trip trip2 = new Trip(location2, location1, 220, new Date(), new Date(), "Cometario", 3, user1);
+
+		LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
+		LocalDateTime fecha5 = LocalDateTime.of(2021, 06, 04, 13, 36, 24);
+		LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
+		LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+
+		Trip trip1 = new Trip(location1, location2, 220, fecha6, fecha7, "Cometario", 3, user1);
+		Trip trip2 = new Trip(location2, location1, 220, fecha6, fecha7, "Cometario", 3, user1);
+		Trip trip3 = new Trip(location3, location4, 40, fecha4, fecha5, "Cometario", 2, user1);
+		Trip trip4 = new Trip(location3, location4, 50, fecha4, fecha5, "Cometario", 3, user1);
 
 		tripRepository.save(trip1);
 		tripRepository.save(trip2);
+		tripRepository.save(trip3);
+		tripRepository.save(trip4);
 
-		// save meeting points
+		// MEETING POINTS
 		meetingPointRepository.save(new MeetingPoint(37.37722160408209, -5.9871317313950705,
 				"41013, Plaza de España, Sevilla", "Plaza de España"));
 		meetingPointRepository
@@ -97,6 +112,7 @@ public class BackendApplication implements CommandLineRunner {
 		System.out.println(users + " usuarios creados");
 		System.out.println(meetingPoints + " puntos de encuentro creados");
 		System.out.println(trips + " viajes creados");
+
 	}
 
 	@EnableWebSecurity
