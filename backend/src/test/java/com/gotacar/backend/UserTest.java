@@ -23,14 +23,14 @@ public class UserTest {
     private User usuario1;
 
 
-    @BeforeEach
-    void setup(){
+    // @BeforeEach
+    // void setup(){
         
-        usuario1 = new User(); 
-        usuario1.setId("2");
-        usuario1.setFirstName("asdasd");
-        usuario1.setLastName("pene");
-    }
+    //     usuario1 = new User(); 
+    //     usuario1.setId("2");
+    //     usuario1.setFirstName("asdasd");
+    //     usuario1.setLastName("pene");
+    // }
 
     @Test
     public void testSaveUser() throws Exception{
