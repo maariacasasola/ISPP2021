@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -11,8 +12,7 @@ import { ClientProfilePageComponent } from './pages/authenticated-page/client-pr
 import { AppRoutingModule } from './app-routing.module';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { GeocoderServiceService } from './services/geocoder-service.service';
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,8 +57,9 @@ import {MatCardModule} from '@angular/material/card';
     MatButtonModule,
     MatCardModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [AuthenticatedGuard],
+  providers: [AuthenticatedGuard,GeocoderServiceService, HttpClientModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

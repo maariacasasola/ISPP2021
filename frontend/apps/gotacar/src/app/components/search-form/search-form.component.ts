@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { GeocoderServiceService } from '../../services/geocoder-service.service';
 
 @Component({
   selector: 'frontend-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss']
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent {
 
   searchForm = this.fb.group({
     origen: ['', Validators.required],
@@ -15,12 +16,51 @@ export class SearchFormComponent implements OnInit {
     //numPasajeros: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) { }
+  origenLocation: Location;
+  destinoLocation: Location;
 
-  ngOnInit(): void { }
+  constructor(private fb: FormBuilder, private geocodeService: GeocoderServiceService) { }
 
-  onSubmit() {
-    console.warn(this.searchForm.value)
+
+  async onSubmit() {
+    if (this.searchForm.invalid) {
+      this.searchForm.markAllAsTouched();
+      return;
+    }
+    console.warn(this.searchForm.value);
+    const coordinatesOrigin = await this.get_origin();
+    const coordinatesTarget = await this.get_target();
+  
+    console.log(coordinatesOrigin);
+    console.log(coordinatesTarget);
+    
+  }
+
+  async get_origin() {
+    try {
+      const { results } = await this.geocodeService.get_location_from_address(this.searchForm.value.origen);
+      const coordinates = {
+        lat: results[0]?.geometry?.location?.lat,
+        lng: results[0]?.geometry?.location?.lng,
+      }
+      return coordinates;
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async get_target() {
+    try {
+      const { results } = await this.geocodeService.get_location_from_address(this.searchForm.value.destino);
+      const coordinates = {
+        lat: results[0]?.geometry?.location?.lat,
+        lng: results[0]?.geometry?.location?.lng,
+      }
+      return coordinates;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }
