@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -49,18 +51,21 @@ public class BackendApplication implements CommandLineRunner {
 
 		// save users
 		List<String> lista1 = new ArrayList<String>();
-		lista1.add("admin");	
+		lista1.add("admin");
 		List<String> lista2 = new ArrayList<String>();
 		lista2.add("client");
 		List<String> lista3 = new ArrayList<String>();
 		lista3.add("client");
 		lista3.add("driver");
-		LocalDate fecha1 =  LocalDate.of(1999, 10, 10);	
-		LocalDate fecha2 =  LocalDate.of(2000, 11, 20);	
-		LocalDate fecha3 =  LocalDate.of(2001, 12, 30);	
-		User user1 = new User("Manuel","Fernandez","1","manan@gmail.com","312312312","http://dasdasdas.com",fecha1,lista1);
-		User user2 = new User("Paloma","Perez","2","palomino69@gmail.com","421312","http://dewfewfewf.com",fecha2,lista2);
-		User user3 = new User("Elba","Calao","3","congitodechocolate@gmail.com","890703","http://huiogr.com",fecha3,lista3);
+		LocalDate fecha1 = LocalDate.of(1999, 10, 10);
+		LocalDate fecha2 = LocalDate.of(2000, 11, 20);
+		LocalDate fecha3 = LocalDate.of(2001, 12, 30);
+		User user1 = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com",
+				fecha1, lista1);
+		User user2 = new User("Paloma", "Perez", "2", "palomino69@gmail.com", "421312", "http://dewfewfewf.com", fecha2,
+				lista2);
+		User user3 = new User("Elba", "Calao", "3", "congitodechocolate@gmail.com", "890703", "http://huiogr.com",
+				fecha3, lista3);
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
@@ -85,8 +90,6 @@ public class BackendApplication implements CommandLineRunner {
 		meetingPointRepository.save(new MeetingPoint(37.37625144174958, -5.976345387146261,
 				"Av. de Diego Martínez Barrio, 4, 41013 Sevilla", "Viapol Center"));
 
-
-
 		Long users = userRepository.count();
 		Long meetingPoints = meetingPointRepository.count();
 		Long trips = tripRepository.count();
@@ -94,6 +97,5 @@ public class BackendApplication implements CommandLineRunner {
 		System.out.println(meetingPoints + " puntos de encuentro creados");
 		System.out.println(trips + " viajes creados");
 	}
-	
 
 }

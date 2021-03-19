@@ -2,6 +2,10 @@ package com.gotacar.backend.models;
 
 import java.util.Date;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
 
@@ -20,16 +24,24 @@ public class Trip {
     @BsonProperty("ending_pont")
     public Location endingPoint;
 
+    @Max(400)
+    @NotNull
     public Integer price;
 
+    @Future
+    @NotNull
     public Date startDate;
 
+    @Future
+    @NotNull
     public Date endingDate;
 
     public Date cancelationDate;
 
     public String comments;
 
+    @NotNull
+    @Max(4)
     public Integer places;
 
     public Boolean canceled;
