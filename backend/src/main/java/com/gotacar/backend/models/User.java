@@ -43,8 +43,6 @@ public class User {
 
   public List<String> roles;
 
-  public String token;
-
   public User() {
   }
 
