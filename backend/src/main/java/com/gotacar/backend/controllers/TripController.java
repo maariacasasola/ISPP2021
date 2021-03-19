@@ -65,14 +65,15 @@ public class TripController {
         List<Trip> all = tripRepository.findAll();
 
         Circle startingPointArea = new Circle(search.getStartingPoint().getLat(), search.getStartingPoint().getLng(),
-                0.012);
+                0.99);
         List<Trip> tripsInStartingPointArea = tripRepository.findByStartingPointWithin(startingPointArea);
 
-        Circle endingPointArea = new Circle(search.getEndingPoint().getLat(), search.getEndingPoint().getLng(), 0.012);
+        Circle endingPointArea = new Circle(search.getEndingPoint().getLat(), search.getEndingPoint().getLng(), 0.99);
         List<Trip> tripsInEndingPointArea = tripRepository.findByStartingPointWithin(endingPointArea);
         
-        return all.stream().filter(x -> tripsInStartingPointArea.contains(x) && tripsInEndingPointArea.contains(x)
-                && x.getPlaces() >= search.getPlaces()).collect(Collectors.toList());
+        List<Trip> res = all.stream().filter(x -> tripsInStartingPointArea.contains(x) && tripsInEndingPointArea.contains(x)
+        && x.getPlaces() >= search.getPlaces()).collect(Collectors.toList());
+        return res;
     }
 
     @PostMapping("/search_trips")
