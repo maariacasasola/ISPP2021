@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
+import { FormValidations } from '../../utils/form-validations'
 
 @Component({
   selector: 'frontend-search-form',
@@ -12,7 +13,7 @@ export class SearchFormComponent {
   searchForm = this.fb.group({
     origen: ['', Validators.required],
     destino: ['', Validators.required],
-    fecha: ['', Validators.required],
+    fecha: ['', [Validators.required, FormValidations.isActualDate]],
     //numPasajeros: ['', Validators.required],
   });
 

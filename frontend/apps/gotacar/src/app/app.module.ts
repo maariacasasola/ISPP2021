@@ -21,14 +21,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,7 @@ import {MatCardModule} from '@angular/material/card';
     MainFooterComponent,
     ClientProfilePageComponent,
     SearchFormComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -57,9 +56,9 @@ import {MatCardModule} from '@angular/material/card';
     MatButtonModule,
     MatCardModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [AuthenticatedGuard,GeocoderServiceService, HttpClientModule],
+  providers: [AuthenticatedGuard, GeocoderServiceService, HttpClientModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
