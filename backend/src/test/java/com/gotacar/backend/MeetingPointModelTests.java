@@ -2,6 +2,7 @@ package com.gotacar.backend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -11,6 +12,8 @@ import com.gotacar.backend.models.MeetingPoint;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.Validator;
+
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 public class MeetingPointModelTests {
@@ -34,20 +37,24 @@ public class MeetingPointModelTests {
 
     @Test
     public void setNullLongitud() {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+       
         MeetingPoint mp1 = new MeetingPoint(null, 4.0310, "Name", "Direction");
         Set<ConstraintViolation<MeetingPoint>> constraintViolations = validator.validate(mp1);
 
         ConstraintViolation<MeetingPoint> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("no debe ser nulo");
+        assertThat(violation.getMessage()).isEqualTo("must not be null");
     }
     
     @Test
     public void setNullLatitud() {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+
         MeetingPoint mp1 = new MeetingPoint(0.1283971, null, "Name", "Direction");
         Set<ConstraintViolation<MeetingPoint>> constraintViolations = validator.validate(mp1);
 
         ConstraintViolation<MeetingPoint> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("no debe ser nulo");
+        assertThat(violation.getMessage()).isEqualTo("must not be null");
     }
 
     @Test

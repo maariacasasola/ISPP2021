@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTest {
 
-    @MockBean
-    private UserRepository userRepo;
+    // @MockBean
+    // private UserRepository userRepo;
 
-    private User usuario1;
+    // private User usuario1;
 
 
     // @BeforeEach
@@ -32,12 +32,12 @@ public class UserTest {
     //     usuario1.setLastName("pene");
     // }
 
-    @Test
-    public void testSaveUser() throws Exception{
+    // @Test
+    // public void testSaveUser() throws Exception{
 
-        userRepo.save(usuario1);
+    //     userRepo.save(usuario1);
 
-        verify(userRepo, times(1)).save(any());
-    }
+    //     verify(userRepo, times(1)).save(any());
+    // }
     
 }
