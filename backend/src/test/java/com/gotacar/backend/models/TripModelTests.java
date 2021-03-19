@@ -10,6 +10,9 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.Validator;
+
+import com.gotacar.backend.models.Trip.Trip;
+
 import javax.validation.ConstraintViolation;
 
 import org.junit.jupiter.api.BeforeAll;

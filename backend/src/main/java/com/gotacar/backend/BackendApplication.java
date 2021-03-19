@@ -19,12 +19,12 @@ import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-
+import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
-import com.gotacar.backend.models.Trip;
-import com.gotacar.backend.models.TripRepository;
+
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {

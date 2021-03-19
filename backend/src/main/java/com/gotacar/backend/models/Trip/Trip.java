@@ -1,10 +1,13 @@
-package com.gotacar.backend.models;
+package com.gotacar.backend.models.Trip;
 
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+
+import com.gotacar.backend.models.Location;
+import com.gotacar.backend.models.User;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
