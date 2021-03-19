@@ -1,9 +1,11 @@
 <div class="example-container">
-  <h2>Crea tu propio viaje</h2>
+  <h2 >Crea tu propio viaje</h2>
 
   <div class="form-container">
+    
     <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="form-field" appearance="outline">
+      <div>
+      <mat-form-field appearance="outline">
         <mat-label>Origen</mat-label>
         <input
           matInput
@@ -14,7 +16,7 @@
         />
       </mat-form-field>
 
-      <mat-form-field class="form-field" appearance="outline">
+      <mat-form-field  appearance="outline">
         <mat-label>Destino</mat-label>
         <input
           matInput
@@ -24,7 +26,40 @@
           required
         />
       </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+      <mat-label>Hora inicio</mat-label>
 
+    <input matInput type="time" formControlName="horaInicio" >
+  </mat-form-field>
+  <mat-form-field  appearance="outline">
+    <mat-label>Hora Fin</mat-label>
+  <input matInput type="time" formControlName="horaFin" >
+</mat-form-field>
+</div>
+<div>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Precio</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="price"
+          required
+        />
+      </mat-form-field>
+      
+  <mat-form-field class="form-field" appearance="outline">
+    <input matInput [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Comentarios</mat-label>
+    <textarea matInput formControlName="comentarios"></textarea>
+  </mat-form-field>
+<br>
       <button mat-raised-button type="submit" color="primary">Buscar</button>
       <!--<button mat-raised-button type="submit" [disabled]="!searchForm.valid" color="primary">Buscar</button>-->
     </form>
