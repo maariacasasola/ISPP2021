@@ -1,14 +1,10 @@
-package com.gotacar.backend;
+package com.gotacar.backend.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-
-import com.gotacar.backend.controllers.UserController;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
