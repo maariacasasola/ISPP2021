@@ -1,4 +1,22 @@
+.mat-display-4 {
+    color: white;
+    margin-bottom: -0.1%;
+}
+
+.mat-display-1 {
+    color: rgb(207, 207, 207);
+}
+
+.logo {
+    position:absolute;
+    left:0;
+    top:0;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
 .page-content {
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,6 +29,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    float: bottom;
 }
 
 .login-card mat-form-field {
