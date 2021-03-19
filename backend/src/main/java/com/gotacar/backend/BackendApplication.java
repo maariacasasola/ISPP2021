@@ -77,8 +77,8 @@ public class BackendApplication implements CommandLineRunner {
 		// TRIPS
 		Location location1 = new Location("Sevilla", "Calle Canal 48", 37.3747084, -5.9649715);
 		Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958, -5.976345387146261);
-		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.42663376216525,
-				-5.978099088991483);
+		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38904108989198,
+				-5.999657242969646);
 		Location location4 = new Location("Torneo", "41015, Torneo, Sevilla", 37.42663376216525, -5.978099088991483);
 
 		LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);

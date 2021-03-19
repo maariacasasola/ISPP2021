@@ -12,4 +12,6 @@ public interface TripRepository extends MongoRepository<Trip, String> {
     public List<Trip> findAll();
 
     public List<Trip> findByStartingPointWithin(Circle c);
+
+    public List<Trip> findByEndingPointWithin(Circle c);
 }
