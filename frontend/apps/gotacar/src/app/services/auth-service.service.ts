@@ -100,10 +100,16 @@ export class AuthServiceService {
       `users/${user.uid}`
     );
     const userData: User = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      dni: user.dni,
+      profilePhoto: user.profilePhoto,
+      birthdate: user.birthdate,
+      roles: user.roles,
+      token: user.token,
       emailVerified: user.emailVerified,
     };
     return userRef.set(userData, {

@@ -1,7 +1,13 @@
 export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
     uid: string;
     email: string;
-    displayName: string;
-    photoURL: string;
+    dni: string;
+    profilePhoto: string;
+    birthdate: Date;
+    roles: string[];
+    token: string;
     emailVerified: boolean;
   }
