@@ -36,7 +36,6 @@ public class UserController {
 	private String getJWTToken(User user) {
 		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
 		String roles = user.getRoles().stream().collect(Collectors.joining(","));
-		System.out.println(roles);
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 		String token = Jwts.builder().setId("softtekJWT").setSubject(user.getEmail())

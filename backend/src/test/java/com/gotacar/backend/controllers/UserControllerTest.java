@@ -27,10 +27,4 @@ class AuthoritationControllerTest {
 		mockMvc.perform(post("/user").param("uid", "1")).andExpect(status().isOk());
 		assertThat(controller).isNotNull();
 	}
-
-	// @Test
-	// void testSearchTrip() {
-	// 	// mockMvc.perform(post("/search_trips").param("startingPoint", "Triana").param("endingPoint", "Torneo")
-	// 	// 		.param("date", "2021-06-04").param("places", "4")).andExpect(status().isOk());
-	// }
 }
