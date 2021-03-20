@@ -27,6 +27,8 @@ import { environment } from '../environments/environment';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MeetingPointInterceptor } from './interceptors/meeting-point.interceptor';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,7 @@ import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meetin
     ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [AuthenticatedGuard],
+  providers: [AuthenticatedGuard,{provide: HTTP_INTERCEPTORS, useClass: MeetingPointInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
