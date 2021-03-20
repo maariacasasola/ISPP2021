@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 @RestController
 public class MeetingPointController {
     
@@ -38,4 +44,19 @@ public class MeetingPointController {
             System.out.println(e.getMessage());
         }
     }
+
+	@GetMapping("/search_meeting_points")
+	public List<MeetingPoint> findAllMeetingPoints(){
+		List<MeetingPoint> response = new ArrayList<>();
+		try {
+			response = pointsRepository.findAll();
+			System.out.println(response.toString());
+            
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return response;
+	}
+
 }

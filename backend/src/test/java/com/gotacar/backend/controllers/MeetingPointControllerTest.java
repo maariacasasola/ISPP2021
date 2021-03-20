@@ -1,6 +1,8 @@
 package com.gotacar.backend.controllers;
 
 import org.junit.jupiter.api.BeforeAll;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +21,14 @@ import java.util.List;
 import com.gotacar.backend.models.MeetingPointRepository;
 import com.gotacar.backend.models.User;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gotacar.backend.models.MeetingPoint;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -94,4 +103,28 @@ public class MeetingPointControllerTest {
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
         
     }
+	
+	@Autowired
+	private MockMvc mvc;
+	
+	
+	@Test
+	public void testFindAllMeetingPoints() throws Exception{
+		RequestBuilder builder = MockMvcRequestBuilders.get("/search_meeting_points");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String resBody = mvc.perform(builder).andReturn().getResponse().getContentAsString();
+			List<MeetingPoint> lista = mapper.readValue(resBody, new TypeReference<List<MeetingPoint>>(){});
+
+			this.mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk());
+			assertThat(lista.get(0).getName()).isEqualTo("Plaza de EspaÃ±a");
+			assertThat(lista.get(1).getName()).isEqualTo("Torneo");
+			assertThat(lista.get(2).getName()).isEqualTo("Petit Palace Puerta de Triana");
+			assertThat(lista.get(3).getName()).isEqualTo("Viapol Center");
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+				
+	}
 }

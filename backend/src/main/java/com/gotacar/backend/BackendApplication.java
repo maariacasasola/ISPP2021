@@ -123,7 +123,8 @@ public class BackendApplication implements CommandLineRunner {
 			http.csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
-					.antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest().authenticated();
+					.antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest().authenticated()
+					.antMatchers(HttpMethod.GET,"/search_meeting_points").permitAll().anyRequest().authenticated();
 		}
 	}
 
