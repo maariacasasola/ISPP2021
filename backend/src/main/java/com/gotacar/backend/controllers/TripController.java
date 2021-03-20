@@ -8,11 +8,16 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.Location;
+import com.gotacar.backend.models.User;
+import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +28,9 @@ public class TripController {
 
     @Autowired
     private TripRepository tripRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -49,6 +57,7 @@ public class TripController {
 
     
     @PostMapping("/create_trip")
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
     void createTrip(@RequestBody() String body){
    
         try {
@@ -77,10 +86,12 @@ public class TripController {
 
             String comments= objectMapper.readTree(jsonNode.get("comments").toString()).asText();
  
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+           
 
-
-            Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,null);
-
+            Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,currentUser);
+        
 
             tripRepository.save(trip1);
         } catch (Exception e) {
@@ -89,6 +100,6 @@ public class TripController {
         
     }
 
- 
 
+ 
 }
