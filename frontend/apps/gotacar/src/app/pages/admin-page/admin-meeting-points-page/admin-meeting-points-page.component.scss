@@ -6,11 +6,15 @@
   
 }
 .custom{
-    width: 1555px;
-    padding: 10px;
-    margin: 0 auto;
-    text-align: center;
+    margin-left:30px;
+
 }
+.custom2{
+    margin-left:50px;
+
+}
+
+
 .space{
     float: right;
     max-width: 400px;
@@ -18,3 +22,16 @@
     margin-right: 70px;
     margin-bottom: 10px;
 }
+.grid-container {
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "Formulario Mapa Mapa ."
+      "Formulario Mapa Mapa ."
+      "Formulario Mapa Mapa .";
+  }
+  .Mapa { grid-area: Mapa; }
+  .Formulario { grid-area: Formulario; }

@@ -54,7 +54,11 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     console.log(event)
   }
   filterMarker(){
-    
+    for (var marker of this.markers){
+      let filter= this.filter_meeting_point.controls['filter'].value
+      
+
+    }
   }
   
 

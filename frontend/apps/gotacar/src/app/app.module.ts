@@ -9,6 +9,7 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from "@angular/common/http";
 
 // Google Maps
 import {GoogleMapsModule} from '@angular/google-maps';
@@ -42,6 +43,7 @@ import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meetin
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     MatInputModule,
     BrowserAnimationsModule,
     MatToolbarModule,
