@@ -24,7 +24,7 @@ public class TripController {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    @PostMapping("/search_trips")
+    @PostMapping(path = "/search_trips", consumes = "application/json")
     public List<Trip> searchTrip(@RequestBody() String body) {
         List<Trip> response = new ArrayList<>();
         try {
@@ -34,7 +34,6 @@ public class TripController {
             Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
             LocalDateTime dateJson = OffsetDateTime
                     .parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-
             Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
                     startingPointJson.get("lng").asDouble());
             Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
