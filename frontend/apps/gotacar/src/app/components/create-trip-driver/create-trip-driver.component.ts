@@ -15,6 +15,7 @@ export class CreateTripDriverComponent {
     horaInicio: ['', Validators.required],
     horaFin: ['', Validators.required],
     fecha: ['', Validators.required],
+    numeroPasajero: ['', Validators.required],
     comentarios: ['', Validators.required],
     price: ['', Validators.required],
   });
