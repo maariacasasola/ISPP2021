@@ -69,4 +69,29 @@ public class MeetingPointControllerTest {
         assertThat(meetingPointRepository.findByName("Heliópolis").getAddress()).isEqualTo("Calle Ifni, 41012 Sevilla");
         
     }
+
+    @Test
+    @WithMockUser(value = "spring")
+    void testCreateMeetingPointUser() throws Exception {
+
+        // Construcción del json para el body
+        JSONObject sampleObject = new JSONObject();
+        sampleObject.appendField("lat", -5.982498103652494);
+        sampleObject.appendField("lng", 37.355465467940405);
+        sampleObject.appendField("name", "Heliópolis");
+        sampleObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
+        //Login como administrador
+        String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
+
+        //Obtengo el token
+        String token = response.substring(10, response.length()-2);
+
+        // Petición post al controlador
+        ResultActions result = mockMvc.perform(post("/create_meeting_point").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+        
+    }
 }
