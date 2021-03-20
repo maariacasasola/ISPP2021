@@ -12,8 +12,10 @@ import com.gotacar.backend.models.Trip.TripRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,5 +44,10 @@ public class TripController {
             System.out.println(e.getMessage());
         }
         return response;
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("/list_trips")
+    public List<Trip> listTrips() {
+        return (List<Trip>) tripRepository.findAll();
     }
 }
