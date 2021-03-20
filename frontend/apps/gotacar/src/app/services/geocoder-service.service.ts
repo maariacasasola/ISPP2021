@@ -13,9 +13,9 @@ export class GeocoderServiceService {
     const api_url =
       'https://maps.googleapis.com/maps/api/geocode/json?address=' +
       address +
-      '&key=' +
+      '&region=es&key=' +
       environment.geocoding_api_key;
     return this._http_client.get(api_url).toPromise();
   }
-  
+
 }
