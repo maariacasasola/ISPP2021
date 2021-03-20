@@ -32,6 +32,8 @@ jobs:
         - cd backend
         - mvn test
         - mv ../client-secret.json ./client-secret.json
+        - rm src/main/resources/application.properties
+        - mv src/main/resources/application-prod.properties src/main/resources/application.properties
       deploy:
         provider: gae
         keyfile: client-secret.json
