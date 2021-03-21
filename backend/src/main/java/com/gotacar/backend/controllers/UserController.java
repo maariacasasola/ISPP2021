@@ -23,11 +23,11 @@ import io.jsonwebtoken.security.Keys;
 public class UserController {
 
 	@Autowired
-	private UserRepository UserRepository;
+	private UserRepository userRepository;
 
 	@PostMapping("user")
 	public TokenResponse login(@RequestParam("uid") String userId) {
-		User user = UserRepository.findByUid(userId);
+		User user = userRepository.findByUid(userId);
 		String token = getJWTToken(user);
 		TokenResponse generatedToken = new TokenResponse(token);
 		return generatedToken;
@@ -36,7 +36,6 @@ public class UserController {
 	private String getJWTToken(User user) {
 		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
 		String roles = user.getRoles().stream().collect(Collectors.joining(","));
-		System.out.println(roles);
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 		String token = Jwts.builder().setId("softtekJWT").setSubject(user.getEmail())

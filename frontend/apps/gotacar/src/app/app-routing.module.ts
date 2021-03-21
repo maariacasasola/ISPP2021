@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: '*',
@@ -20,6 +23,10 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
+    path: 'log-in',
+    component: LogInPageComponent,
+  },
+  {
     path: 'authenticated',
     component: AuthenticatedPageComponent,
     canActivate: [AuthenticatedGuard],
@@ -27,6 +34,17 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ClientProfilePageComponent,
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    component: AdminPageComponent,
+    canActivate: [AuthenticatedGuard],
+    children: [
+      {
+        path: 'map',
+        component: AdminMeetingPointsPageComponent,
       },
     ],
   },

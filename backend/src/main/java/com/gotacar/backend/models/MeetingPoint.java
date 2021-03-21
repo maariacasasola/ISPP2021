@@ -21,6 +21,7 @@ public class MeetingPoint {
     public Double lat;
     
     public String name;
+    
     @NotBlank
     @Length(max = 240, message = "La longitud de la dirección no puede ser mayor a 240")
     public String address;
@@ -28,12 +29,12 @@ public class MeetingPoint {
     public MeetingPoint() {
     }
 
-    public MeetingPoint(Double lng, Double lat) {
+    public MeetingPoint(Double lat, Double lng) {
         this.lng = lng;
         this.lat = lat;
     }
 
-    public MeetingPoint(Double lng, Double lat, String address, String name) {
+    public MeetingPoint(Double lat, Double lng, String address, String name) {
         this.lng = lng;
         this.lat = lat;
         this.address = address;

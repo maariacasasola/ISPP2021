@@ -13,6 +13,8 @@ export const environment = {
     appId: '1:856766194920:web:84c7ba1775627a6432155d',
     measurementId: 'G-4CFNZXY3HZ',
   },
+  geocoding_api_key: 'AIzaSyBkp6HzeX3-Rc38pI1ljbvrmSmrZgJ2OAU',
+  api_url: 'http://localhost:8081'
 };
 
 /*

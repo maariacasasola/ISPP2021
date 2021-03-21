@@ -1,10 +1,13 @@
-package com.gotacar.backend.models;
+package com.gotacar.backend.models.Trip;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+
+import com.gotacar.backend.models.Location;
+import com.gotacar.backend.models.User;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
@@ -30,13 +33,13 @@ public class Trip {
 
     @Future
     @NotNull
-    public Date startDate;
+    public LocalDateTime startDate;
 
     @Future
     @NotNull
-    public Date endingDate;
+    public LocalDateTime endingDate;
 
-    public Date cancelationDate;
+    public LocalDateTime cancelationDate;
 
     public String comments;
 
@@ -48,7 +51,7 @@ public class Trip {
 
     public User driver;
 
-    public Trip(Location startingPoint, Location endingPoint, Integer price, Date startDate, Date endingDate,
+    public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
             String comments, Integer places, User driver) {
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
@@ -58,6 +61,7 @@ public class Trip {
         this.comments = comments;
         this.places = places;
         this.driver = driver;
+        this.canceled = false;
     }
 
     @Override

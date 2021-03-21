@@ -1,0 +1,59 @@
+<div class="example-container">
+  <h2>Encuentra tu viaje</h2>
+
+  <div class="form-container">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Origen</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="origen"
+          placeholder="Nervión"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Destino</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="destino"
+          placeholder="Viapol"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Seleccione una fecha</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [min]="minDate"
+          formControlName="fecha"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <!--
+<mat-form-field class="form-field" appearance="outline">
+        <mat-label>Número de pasajeros</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="numPasajeros"
+          required
+        />
+      </mat-form-field>
+     -->
+
+      <button mat-raised-button type="submit" color="primary">Buscar</button>
+      <!--<button mat-raised-button type="submit" [disabled]="!searchForm.valid" color="primary">Buscar</button>-->
+    </form>
+  </div>
+</div>

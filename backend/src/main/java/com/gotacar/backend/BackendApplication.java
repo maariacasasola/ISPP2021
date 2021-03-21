@@ -13,19 +13,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-
-import java.util.Date;
-
+import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
-import com.gotacar.backend.models.Trip;
-import com.gotacar.backend.models.TripRepository;
+
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -51,6 +50,10 @@ public class BackendApplication implements CommandLineRunner {
 	private void loadSampleDate() {
 
 		userRepository.deleteAll();
+		meetingPointRepository.deleteAll();
+		tripRepository.deleteAll();
+
+		// USERS
 		List<String> lista1 = new ArrayList<String>();
 		lista1.add("ROLE_ADMIN");
 		List<String> lista2 = new ArrayList<String>();
@@ -71,22 +74,33 @@ public class BackendApplication implements CommandLineRunner {
 		userRepository.save(user2);
 		userRepository.save(user3);
 
-		// save trips
-		Location location1 = new Location("Bami", "Calle Teba 1", 2.333, -2.111);
-		Location location2 = new Location("Lipa", "Calle Teba 1", 2.333, -2.111);
+		// TRIPS
+		Location location1 = new Location("Sevilla", "Calle Canal 48", 37.3747084, -5.9649715);
+		Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958, -5.976345387146261);
+		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635, -5.999724275498323);
+		Location location4 = new Location("Torneo", "41015, Torneo, Sevilla", 37.397905288097164, -6.000865415980872);
 
-		Trip trip1 = new Trip(location1, location2, 220, new Date(), new Date(), "Cometario", 3, user1);
-		Trip trip2 = new Trip(location2, location1, 220, new Date(), new Date(), "Cometario", 3, user1);
+		LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
+		LocalDateTime fecha5 = LocalDateTime.of(2021, 06, 04, 13, 36, 24);
+		LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
+		LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+
+		Trip trip1 = new Trip(location1, location2, 220, fecha6, fecha7, "Cometario", 3, user1);
+		Trip trip2 = new Trip(location2, location1, 220, fecha6, fecha7, "Cometario", 3, user1);
+		Trip trip3 = new Trip(location3, location4, 40, fecha4, fecha5, "Cometario", 2, user1);
+		Trip trip4 = new Trip(location3, location4, 50, fecha4, fecha5, "Cometario", 3, user1);
 
 		tripRepository.save(trip1);
 		tripRepository.save(trip2);
+		tripRepository.save(trip3);
+		tripRepository.save(trip4);
 
-		// save meeting points
+		// MEETING POINTS
 		meetingPointRepository.save(new MeetingPoint(37.37722160408209, -5.9871317313950705,
 				"41013, Plaza de España, Sevilla", "Plaza de España"));
 		meetingPointRepository
 				.save(new MeetingPoint(37.42663376216525, -5.978099088991483, "41015, Torneo, Sevilla", "Torneo"));
-		meetingPointRepository.save(new MeetingPoint(37.38904108989198, -5.999657242969646,
+		meetingPointRepository.save(new MeetingPoint(37.38919329738635, -5.999724275498323,
 				"Calle Reyes Católicos, 5, 41001 Sevilla", "Petit Palace Puerta de Triana"));
 		meetingPointRepository.save(new MeetingPoint(37.37625144174958, -5.976345387146261,
 				"Av. de Diego Martínez Barrio, 4, 41013 Sevilla", "Viapol Center"));
@@ -97,6 +111,7 @@ public class BackendApplication implements CommandLineRunner {
 		System.out.println(users + " usuarios creados");
 		System.out.println(meetingPoints + " puntos de encuentro creados");
 		System.out.println(trips + " viajes creados");
+
 	}
 
 	@EnableWebSecurity
@@ -107,7 +122,9 @@ public class BackendApplication implements CommandLineRunner {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll().anyRequest().authenticated();
+					.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
+					.antMatchers(HttpMethod.POST, "/search_trips").permitAll()
+					.antMatchers(HttpMethod.GET,"/search_meeting_points").permitAll().anyRequest().authenticated();
 		}
 	}
 

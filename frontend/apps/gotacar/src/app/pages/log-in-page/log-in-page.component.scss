@@ -1,0 +1,51 @@
+.mat-display-4 {
+  color: white;
+  margin-bottom: -0.1%;
+}
+
+.mat-display-1 {
+  color: rgb(207, 207, 207);
+}
+
+.logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+
+.page-content {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #409dc4;
+}
+
+.login-card {
+  min-width: 20vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  float: bottom;
+}
+
+.login-card mat-form-field {
+  width: 100%;
+}
+
+.login-button {
+  color: white;
+  background-color: #409dc4;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20%;
+}

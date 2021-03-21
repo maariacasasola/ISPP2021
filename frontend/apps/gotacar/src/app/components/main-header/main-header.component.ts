@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'frontend-main-header',
@@ -7,8 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MainHeaderComponent implements OnInit {
   @Input() title;
-
-  constructor() {}
+  showFiller = false;
+  constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}
 }
