@@ -10,4 +10,5 @@ export const environment = {
     measurementId: 'G-4CFNZXY3HZ',
   },
   geocoding_api_key: 'AIzaSyBkp6HzeX3-Rc38pI1ljbvrmSmrZgJ2OAU',
+  api_url: 'https://gotacar.ew.r.appspot.com/'
 };

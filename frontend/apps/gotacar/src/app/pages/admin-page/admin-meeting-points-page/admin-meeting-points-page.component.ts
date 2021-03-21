@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
+import { MeetingPointService } from '../../../services/meeting-point.service';
 
 @Component({
   selector: 'frontend-admin-meeting-points-page',
@@ -11,8 +12,8 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow;
 
-  zoom = 12;
-  center = { lat: 37.3754865, lng: -6.0250992 };
+  zoom = 14;
+  center = { lat: 37.38868247472144, lng: -5.984124294177864 };
   isShow = true;
   isShowFilter = true;
   options: google.maps.MapOptions = {
@@ -20,14 +21,10 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     disableDoubleClickZoom: true,
   };
   display?: google.maps.LatLngLiteral;
-  markers = [
-    {
-      position: { lat: 37.3754, lng: -6.025 },
-      title: 'prueba',
-      info: 'Info de punto prueba',
-    },
-  ];
+  markers = [];
   infoContent = '';
+
+  meeting_points;
 
   filter_meeting_point = new FormGroup({
     filter: new FormControl('', Validators.required),
@@ -38,12 +35,37 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     lat: new FormControl('', Validators.required),
     lng: new FormControl('', Validators.required),
   });
+
+  constructor(private _meeting_point_service: MeetingPointService) {
+    this.get_all_meeting_points();
+  }
+
   ngOnInit(): void {}
+
+  async get_all_meeting_points() {
+    try {
+      this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
+      console.log(this.meeting_points);
+      this.meeting_points.forEach((meeting_point) => {
+        this.markers.push({
+          position: {
+            lat: meeting_point?.lat,
+            lng: meeting_point?.lng,
+          },
+          title: meeting_point?.name,
+          info: meeting_point?.address,
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   toggleDisplayCreation() {
     this.isShow = !this.isShow;
     this.isShowFilter = true;
   }
+
   toggleDisplayFilter() {
     this.isShowFilter = !this.isShowFilter;
     this.isShow = true;
@@ -52,6 +74,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   click(event: google.maps.MouseEvent) {
     console.log(event);
   }
+
   filterMarker() {
     for (var marker of this.markers) {
       let filter = this.filter_meeting_point.controls['filter'].value;
@@ -66,7 +89,14 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       lng: Number(event.latLng.lng()),
     });
 
-    //this.markers.push({position:{lat: Number(event.latLng.lat()),lng:Number(event.latLng.lng())},title:'any',info:'any'});
+    // this.markers.push({
+    //   position: {
+    //     lat: Number(event.latLng.lat()),
+    //     lng: Number(event.latLng.lng()),
+    //   },
+    //   title: 'any',
+    //   info: 'any',
+    // });
   }
 
   onSubmit() {
