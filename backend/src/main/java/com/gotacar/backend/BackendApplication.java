@@ -77,11 +77,11 @@ public class BackendApplication implements CommandLineRunner {
 		User user3 = new User("Elba", "Calao", "3", "congitodechocolate@gmail.com", "890703", "http://huiogr.com",
 				fecha3, lista3);
 		User client = new User("Elba", "Calao", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client@gotacar.es", "890703", "http://huiogr.com",
-				fecha3, lista3);
+				fecha3, lista2);
 		User driver = new User("Elba", "Calao", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "890703", "http://huiogr.com",
 				fecha3, lista3);
 		User admin = new User("Elba", "Calao", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "890703", "http://huiogr.com",
-				fecha3, lista3);
+				fecha3, lista1);
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
