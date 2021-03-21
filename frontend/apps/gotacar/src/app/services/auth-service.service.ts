@@ -5,6 +5,8 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { User } from '../shared/services/user';
 import auth from 'firebase/app';
 
@@ -18,7 +20,8 @@ export class AuthServiceService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private _http_client: HttpClient
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -32,33 +35,33 @@ export class AuthServiceService {
     });
   }
 
-  SignIn(email, password) {
+  sign_in(email, password) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.SetUserData(result.user);
+        this.set_user_data(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
       });
   }
 
-  SignUp(email, password) {
+  sign_up(email, password) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
+        this.send_verification_mail();
+        this.set_user_data(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
       });
   }
 
-  async SendVerificationMail() {
+  async send_verification_mail() {
     return this.afAuth.currentUser.then((u) =>
       u.sendEmailVerification().then(() => {
         this.router.navigate(['verify-email-address']);
@@ -66,7 +69,7 @@ export class AuthServiceService {
     );
   }
 
-  ForgotPassword(passwordResetEmail) {
+  forgot_password(passwordResetEmail) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
@@ -77,30 +80,30 @@ export class AuthServiceService {
       });
   }
 
-  get isLoggedIn(): boolean {
+  is_logged_in(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-  GoogleAuth() {
-    return this.AuthLogin(new auth.auth.GoogleAuthProvider());
+  google_auth() {
+    return this.auth_login(new auth.auth.GoogleAuthProvider());
   }
 
-  AuthLogin(provider) {
+  auth_login(provider) {
     return this.afAuth
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
           this.router.navigate(['authenticated', 'profile']);
         });
-        this.SetUserData(result.user);
+        this.set_user_data(result.user);
       })
       .catch((error) => {
         window.alert(error);
       });
   }
 
-  SetUserData(user) {
+  async set_user_data(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
@@ -117,12 +120,26 @@ export class AuthServiceService {
       token: user.token,
       emailVerified: user.emailVerified,
     };
+
+    const token = await this.get_token(userData.uid)
+    console.log(token)
     return userRef.set(userData, {
       merge: true,
     });
   }
 
-  SignOut() {
+  get_token(user_uid) {
+    return this._http_client
+    .post(environment.api_url + '/user', null, {
+      params: {
+        uid: user_uid
+      }
+    })
+    .toPromise();
+    
+  }
+
+  sign_out() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['log-in']);
