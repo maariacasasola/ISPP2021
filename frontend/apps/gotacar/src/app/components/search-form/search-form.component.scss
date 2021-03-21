@@ -1,19 +1,61 @@
-.example-container {
-  text-align: center;
-}
-
 .form-container {
-  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  text-align: center;
+  background-image: url("../../../assets/img/mapa.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.header-card {
+  display: flex;
+  justify-content: center;
 }
 
 .form-field {
-  display: block;
+  margin: 10px;
+  color: #538994;
+  background-color: white;
+  padding: 0px !important;
 }
 
-.blue-snackbar {
-  background: rgb(44, 34, 172);
+mat-icon {
+  color: #538994;
+}
+
+.search{
   color: white;
+}
+
+h1 {
+  font-size: 60px;
+  line-height: 60px;
+  color: #538994;
+}
+
+.search-button {
+  vertical-align: super;
+  color: white;
+  background-color: #538994;
+}
+
+::ng-deep {
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: #538994;
+  }
+
+  .mat-form-field-empty.mat-form-field-label {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #538994;
+  }
 }
