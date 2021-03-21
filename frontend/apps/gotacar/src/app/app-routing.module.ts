@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -45,6 +46,10 @@ const routes: Routes = [
       {
         path: 'map',
         component: AdminMeetingPointsPageComponent,
+      },
+      {
+        path: 'trips',
+        component: AdminTripListPageComponent,
       },
     ],
   },

@@ -47,6 +47,7 @@ import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
+import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.comp
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
     NoAuthMenuComponent,
+    AdminTripListPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

@@ -1,0 +1,34 @@
+<div>
+  <h1>Trips</h1>
+
+  <div *ngFor="let trip of trips">
+    <mat-list role="list">
+      <!--<mat-list-item role="listitem">Item 1</mat-list-item> -->
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{ trip.driver }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-card-subtitle>
+            <b>Hora de salida:</b> {{ trip.startDate }}
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+           <b>Hora de salida:</b>  {{ trip.startDate }}
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+            {{ trip.startingPoint }} &#8594; {{ trip.endingPoint }}
+          </mat-card-subtitle>
+          <mat-card-subtitle>{{ trip.price }}€</mat-card-subtitle>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <br />
+    </mat-list>
+  </div>
+</div>
