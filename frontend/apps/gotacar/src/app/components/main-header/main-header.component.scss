@@ -1,6 +1,17 @@
-header {
+.main-toolbar {
+    background-color: #4da8cf;
+    height: 13%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: blue;
+}
+
+.logo-container{
+  display: flex;
+  width: 5%;
+  height: 90%;
+  margin-left: 2%;
+}
+
+.title{
+  color: white;
+  font-size: 250%;
 }
