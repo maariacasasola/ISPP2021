@@ -9,6 +9,8 @@ import { Validators, FormBuilder } from '@angular/forms';
 })
 export class CreateTripDriverComponent {
 
+  minDate: Date;
+
   createTripForm = this.fb.group({
     origen: ['', Validators.required],
     destino: ['', Validators.required],
@@ -20,11 +22,26 @@ export class CreateTripDriverComponent {
     price: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) { 
+    this.minDate = new Date();
+  }
 
 
   onSubmit(){
     console.log(this.createTripForm.value);
+    this.hourIsValid()
+  }
+
+  hourIsValid():void{
+    const fechaHoraInicial = new Date()
+    fechaHoraInicial.setDate(this.createTripForm.value.fecha)
+    fechaHoraInicial.setTime(this.createTripForm.value.horaInicio)
+    const fechaHoraFinal = this.createTripForm.value.fecha + this.createTripForm.value.horaFin
+    console.log(fechaHoraInicial)
+    console.log(fechaHoraFinal)
+
+
+    
   }
 
 }

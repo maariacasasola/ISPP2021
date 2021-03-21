@@ -30,11 +30,11 @@
         <mat-form-field appearance="outline">
           <mat-label>Hora inicio</mat-label>
 
-          <input matInput type="time" formControlName="horaInicio" />
+          <input matInput type="time" formControlName="horaInicio" required />
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Hora Fin</mat-label>
-          <input matInput type="time" formControlName="horaFin" />
+          <input matInput type="time" formControlName="horaFin" required/>
         </mat-form-field>
       </div>
       <div>
@@ -48,7 +48,7 @@
         </mat-form-field>
 
         <mat-form-field class="form-field" appearance="outline">
-          <input matInput [matDatepicker]="picker" />
+          <input matInput [min]="minDate"  formControlName="fecha" [matDatepicker]="picker" required/>
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
@@ -58,10 +58,10 @@
       </div>
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Comentarios</mat-label>
-        <textarea matInput formControlName="comentarios"></textarea>
+        <textarea matInput formControlName="comentarios" required></textarea>
       </mat-form-field>
       <br />
-      <button mat-raised-button type="submit" color="primary">Crear</button>
+      <button mat-raised-button type="submit"  color="primary">Crear</button>
       <!--<button mat-raised-button type="submit" [disabled]="!searchForm.valid" color="primary">Buscar</button>-->
     </form>
   </div>
