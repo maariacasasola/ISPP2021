@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'frontend-authenticated-page',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class AuthenticatedPageComponent implements OnInit {
   showFiller = false;
 
-  constructor() {}
+  constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}
 }

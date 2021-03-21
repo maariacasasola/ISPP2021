@@ -61,6 +61,7 @@ public class Trip {
         this.comments = comments;
         this.places = places;
         this.driver = driver;
+        this.canceled = false;
     }
 
     @Override

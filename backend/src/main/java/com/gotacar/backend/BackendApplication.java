@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -11,10 +12,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
@@ -24,7 +31,6 @@ import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
-
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -70,14 +76,24 @@ public class BackendApplication implements CommandLineRunner {
 				lista2);
 		User user3 = new User("Elba", "Calao", "3", "congitodechocolate@gmail.com", "890703", "http://huiogr.com",
 				fecha3, lista3);
+		User client = new User("Elba", "Calao", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
+		User driver = new User("Elba", "Calao", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
+		User admin = new User("Elba", "Calao", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
+		userRepository.save(client);
+		userRepository.save(driver);
+		userRepository.save(admin);
 
 		// TRIPS
 		Location location1 = new Location("Sevilla", "Calle Canal 48", 37.3747084, -5.9649715);
 		Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958, -5.976345387146261);
-		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635, -5.999724275498323);
+		Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635,
+				-5.999724275498323);
 		Location location4 = new Location("Torneo", "41015, Torneo, Sevilla", 37.397905288097164, -6.000865415980872);
 
 		LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
@@ -117,14 +133,20 @@ public class BackendApplication implements CommandLineRunner {
 	@EnableWebSecurity
 	@Configuration
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
-	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable()
+			http.csrf().disable().cors().and()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
-					.antMatchers(HttpMethod.POST, "/search_trips").permitAll()
-					.antMatchers(HttpMethod.GET,"/search_meeting_points").permitAll().anyRequest().authenticated();
+					.antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
+					.antMatchers(HttpMethod.GET, "/list_trips").permitAll()
+					.antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest().authenticated();
+		}
+
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/**").allowedOrigins("http://localhost:4200");
 		}
 	}
 

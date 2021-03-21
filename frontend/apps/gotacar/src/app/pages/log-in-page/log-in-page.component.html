@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+  </head>
+  <section class="page-content">
+    <div class="logo">
+      <img
+        src="assets/img/logo2.png"
+        width="10%"
+        height="10%"
+        alt="GotACar-Logo"
+      />
+    </div>
+    <div class="mat-display-4">Accede a GotACar</div>
+    <div class="mat-display-1">¿Nos dices tu email y contraseña?</div>
+    <mat-card class="login-card">
+      <h3>Inicio de sesión</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" #userName required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" #userPassword required />
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="login-button"
+        (click)="authService.sign_in(userName.value, userPassword.value)"
+      >
+        Iniciar sesión
+      </button>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="login-button"
+        (click)="authService.google_auth()"
+      >
+        Iniciar sesión con Google
+      </button>
+    </mat-card>
+  </section>
+</html>

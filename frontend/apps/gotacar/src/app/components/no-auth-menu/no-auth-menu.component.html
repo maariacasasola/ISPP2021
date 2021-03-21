@@ -1,0 +1,19 @@
+<button
+  color="primary"
+  mat-mini-fab
+  [matMenuTriggerFor]="aboveMenu"
+  aria-label="Example icon-button with a menu"
+>
+  <mat-icon>account_circle</mat-icon>
+</button>
+<mat-menu #aboveMenu="matMenu" yPosition="above">
+  <button mat-menu-item>
+    <mat-icon>emoji_people</mat-icon>
+    <span>Regístrate</span>
+  </button>
+  <hr />
+  <button mat-menu-item>
+    <mat-icon>login</mat-icon>
+    <span>Iniciar Sesión</span>
+  </button>
+</mat-menu>

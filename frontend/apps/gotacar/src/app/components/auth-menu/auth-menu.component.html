@@ -1,0 +1,27 @@
+<button
+  color="primary"
+  mat-mini-fab
+  [matMenuTriggerFor]="aboveMenu"
+  aria-label="Example icon-button with a menu"
+>
+  <mat-icon>account_circle</mat-icon>
+</button>
+<mat-menu #aboveMenu="matMenu" yPosition="above">
+  <button mat-menu-item>
+    <mat-icon>sentiment_satisfied_alt </mat-icon>
+    <span>Perfil</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>directions_car</mat-icon>
+    <span>Viajes</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>payments</mat-icon>
+    <span>Transferencias</span>
+  </button>
+  <hr />
+  <button mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</mat-menu>

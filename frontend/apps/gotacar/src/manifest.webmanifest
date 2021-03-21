@@ -1,6 +1,6 @@
 {
-  "name": "gotacar",
-  "short_name": "gotacar",
+  "name": "GotACar",
+  "short_name": "GotACar",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
