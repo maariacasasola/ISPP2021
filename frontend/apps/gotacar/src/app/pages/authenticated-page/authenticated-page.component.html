@@ -1,15 +1,19 @@
-<frontend-main-header (click)="drawer.toggle()" [title]="'Gotacar jeje'"></frontend-main-header>
+<frontend-main-header
+  (click)="drawer.toggle()"
+  [title]="'Gotacar jeje'"
+></frontend-main-header>
 
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
-    <button mat-button color="primary" (click)="authService.SignOut()">Cerrar sesión</button>
+    <button mat-button color="primary" (click)="authService.SignOut()">
+      Cerrar sesión
+    </button>
   </mat-drawer>
 
   <div class="example-sidenav-content">
     <router-outlet></router-outlet>
   </div>
 </mat-drawer-container>
-<frontend-main-header [title]="'Gotacar jeje'"></frontend-main-header>
-<div class = "menu-auth">
+<div class="menu-auth">
   <frontend-auth-menu></frontend-auth-menu>
 </div>

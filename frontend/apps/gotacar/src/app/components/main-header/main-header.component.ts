@@ -9,7 +9,7 @@ import { AuthServiceService } from '../../services/auth-service.service';
 export class MainHeaderComponent implements OnInit {
   @Input() title;
   showFiller = false;
-  constructor(public authService: AuthServiceService) { }
+  constructor(public authService: AuthServiceService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

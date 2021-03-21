@@ -8,9 +8,8 @@ describe('NoAuthMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NoAuthMenuComponent ]
-    })
-    .compileComponents();
+      declarations: [NoAuthMenuComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

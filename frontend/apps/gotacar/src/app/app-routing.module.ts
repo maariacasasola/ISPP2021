@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: '*',
@@ -47,7 +47,7 @@ const routes: Routes = [
         component: AdminMeetingPointsPageComponent,
       },
     ],
-  }
+  },
 ]; // sets up routes constant where you define your routes
 
 // configures NgModule imports and exports

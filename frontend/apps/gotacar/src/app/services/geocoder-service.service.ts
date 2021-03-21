@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GeocoderServiceService {
-
-  constructor(private _http_client: HttpClient) { }
+  constructor(private _http_client: HttpClient) {}
 
   async get_location_from_address(address): Promise<any> {
     const api_url =
@@ -17,5 +16,4 @@ export class GeocoderServiceService {
       environment.geocoding_api_key;
     return this._http_client.get(api_url).toPromise();
   }
-
 }

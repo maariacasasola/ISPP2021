@@ -1,12 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../shared/services/user';
-import auth from 'firebase/app'
+import auth from 'firebase/app';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthServiceService {
   userData: any;
@@ -56,9 +59,11 @@ export class AuthServiceService {
   }
 
   async SendVerificationMail() {
-    return this.afAuth.currentUser.then(u => u.sendEmailVerification().then(() => {
-      this.router.navigate(['verify-email-address']);
-    }));
+    return this.afAuth.currentUser.then((u) =>
+      u.sendEmailVerification().then(() => {
+        this.router.navigate(['verify-email-address']);
+      })
+    );
   }
 
   ForgotPassword(passwordResetEmail) {

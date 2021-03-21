@@ -1,37 +1,37 @@
 .container {
-    max-width: 300px;
-    margin-bottom: 50px;
-    margin-top: 100px;
-    margin-left: 50px;
-  
+  max-width: 300px;
+  margin-bottom: 50px;
+  margin-top: 100px;
+  margin-left: 50px;
 }
-.custom{
-    margin-left:30px;
-
+.custom {
+  margin-left: 30px;
 }
-.custom2{
-    margin-left:50px;
-
+.custom2 {
+  margin-left: 50px;
 }
 
-
-.space{
-    float: right;
-    max-width: 400px;
-    margin-top: 10px;
-    margin-right: 70px;
-    margin-bottom: 10px;
+.space {
+  float: right;
+  max-width: 400px;
+  margin-top: 10px;
+  margin-right: 70px;
+  margin-bottom: 10px;
 }
 .grid-container {
-    display: grid;
-    margin-top: 10px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      "Formulario Mapa Mapa ."
-      "Formulario Mapa Mapa ."
-      "Formulario Mapa Mapa .";
-  }
-  .Mapa { grid-area: Mapa; }
-  .Formulario { grid-area: Formulario; }
+  display: grid;
+  margin-top: 10px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    'Formulario Mapa Mapa .'
+    'Formulario Mapa Mapa .'
+    'Formulario Mapa Mapa .';
+}
+.Mapa {
+  grid-area: Mapa;
+}
+.Formulario {
+  grid-area: Formulario;
+}
