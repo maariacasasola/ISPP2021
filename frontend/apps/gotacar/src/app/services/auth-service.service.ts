@@ -1,13 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-} from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { User } from '../shared/services/user';
 import auth from 'firebase/app';
 
 @Injectable({
@@ -104,42 +100,23 @@ export class AuthServiceService {
   }
 
   async set_user_data(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
-    const userData: User = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      uid: user.uid,
-      email: user.email,
-      dni: user.dni,
-      profilePhoto: user.profilePhoto,
-      birthdate: user.birthdate,
-      roles: user.roles,
-      token: user.token,
-      emailVerified: user.emailVerified,
-    };
-
-    const token = await this.get_token(userData.uid)
-    console.log(token)
-    return userRef.set(userData, {
-      merge: true,
-    });
+    let { token } = await this.get_token(user.uid);
+    token = token.replace('Bearer ', '');
+    localStorage.setItem('token', token);
   }
 
-  get_token(user_uid) {
+  get_token(user_uid): Promise<any> {
     return this._http_client
-    .post(environment.api_url + '/user', null, {
-      params: {
-        uid: user_uid
-      }
-    })
-    .toPromise();
-    
+      .post(environment.api_url + '/user', null, {
+        params: {
+          uid: user_uid,
+        },
+      })
+      .toPromise();
   }
 
   sign_out() {
+    localStorage.removeItem('token');
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['log-in']);

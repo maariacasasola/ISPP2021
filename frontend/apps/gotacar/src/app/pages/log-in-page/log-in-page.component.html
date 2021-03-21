@@ -37,7 +37,7 @@
         mat-flat-button
         color="primary"
         class="login-button"
-        (click)="authService.SignIn(userName.value, userPassword.value)"
+        (click)="authService.sign_in(userName.value, userPassword.value)"
       >
         Iniciar sesión
       </button>
@@ -46,7 +46,7 @@
         mat-flat-button
         color="primary"
         class="login-button"
-        (click)="authService.GoogleAuth()"
+        (click)="authService.google_auth()"
       >
         Iniciar sesión con Google
       </button>

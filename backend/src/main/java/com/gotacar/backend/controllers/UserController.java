@@ -42,7 +42,7 @@ public class UserController {
 				.claim("authorities",
 						grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 600000)).signWith(key).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + 3600000)).signWith(key).compact();
 
 		return "Bearer " + token;
 	}

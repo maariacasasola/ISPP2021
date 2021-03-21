@@ -76,9 +76,18 @@ public class BackendApplication implements CommandLineRunner {
 				lista2);
 		User user3 = new User("Elba", "Calao", "3", "congitodechocolate@gmail.com", "890703", "http://huiogr.com",
 				fecha3, lista3);
+		User client = new User("Elba", "Calao", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
+		User driver = new User("Elba", "Calao", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
+		User admin = new User("Elba", "Calao", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "890703", "http://huiogr.com",
+				fecha3, lista3);
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
+		userRepository.save(client);
+		userRepository.save(driver);
+		userRepository.save(admin);
 
 		// TRIPS
 		Location location1 = new Location("Sevilla", "Calle Canal 48", 37.3747084, -5.9649715);
