@@ -30,7 +30,6 @@ jobs:
         - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
       script:
         - cd backend
-        - mvn test
         - mv ../client-secret.json ./client-secret.json
       deploy:
         provider: gae
