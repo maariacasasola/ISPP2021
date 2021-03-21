@@ -4,13 +4,12 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { AuthServiceService } from './services/auth-service.service';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
 
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
@@ -24,7 +23,10 @@ import { environment } from '../environments/environment';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GeocoderServiceService } from './services/geocoder-service.service';
+import { AppRoutingModule } from './app-routing.module';
 
+// Google Maps
+import { GoogleMapsModule } from '@angular/google-maps';
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -32,12 +34,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MeetingPointInterceptor } from './interceptors/meeting-point.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,15 +56,23 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ClientProfilePageComponent,
     LogInPageComponent,
     SearchFormComponent,
+    MeetingPointMapComponent,
+    AdminPageComponent,
+    AdminMeetingPointsPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    MatInputModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatButtonModule,
     MatSidenavModule,
+    MatFormFieldModule,
     MatIconModule,
     MatCardModule,
     MatButtonModule,
@@ -79,6 +94,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule,
+    GoogleMapsModule,
   ],
   providers: [
     AuthenticatedGuard,
