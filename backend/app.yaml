@@ -1,5 +1,4 @@
 runtime: java11
 instance_class: F1
 env_variables:
-    JAVA_USER_OPTS: '-Dspring.profiles.active=prod'
-    DB_PROD: '${DB_PROD}'
+    JAVA_USER_OPTS: '-Dspring-boot.run.profiles=prod'
