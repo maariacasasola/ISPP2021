@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -22,26 +24,54 @@ export class CreateTripDriverComponent {
     price: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {
     this.minDate = new Date();
   }
 
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.createTripForm.value);
     this.hourIsValid()
+    this.checkOrigen()
   }
 
-  hourIsValid():void{
-    const fechaHoraInicial = new Date()
-    fechaHoraInicial.setDate(this.createTripForm.value.fecha)
-    fechaHoraInicial.setTime(this.createTripForm.value.horaInicio)
-    const fechaHoraFinal = this.createTripForm.value.fecha + this.createTripForm.value.horaFin
-    console.log(fechaHoraInicial)
-    console.log(fechaHoraFinal)
+  checkOrigen() {
+    const origen = this.createTripForm.value.origen;
+    const destino = this.createTripForm.value.destino;
 
+    const isValid = origen == destino;
 
-    
+    if (isValid) {
+      this.openSnackBar(
+        'El origen y el destino no pueden ser el mismo',
+        'Cerrar'
+      );
+    }
+
   }
+
+  hourIsValid() {
+
+    const horaInicio = this.createTripForm.value.horaInicio.trim().toLowerCase();
+    const horaFin = this.createTripForm.value.horaFin.trim().toLowerCase();
+
+    const isValid = horaInicio < horaFin;
+
+    if (!isValid) {
+      this.openSnackBar(
+        'La hora de inicio no puede ser posterior a la hora de fin del viaje',
+        'Cerrar'
+      );
+    }
+
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      panelClass: ['blue-snackbar'],
+    });
+  }
+
 
 }
