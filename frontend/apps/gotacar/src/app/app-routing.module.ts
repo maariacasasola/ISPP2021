@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
+import { CreateTripDriverComponent } from './components/create-trip-driver/create-trip-driver.component';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ClientProfilePageComponent,
+      },
+      {
+        path: 'create-trip',
+        component: CreateTripDriverComponent,
       },
     ],
   },
