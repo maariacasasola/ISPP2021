@@ -1,17 +1,18 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CommonModule, CurrencyPipe, registerLocaleData } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import localeEs from '@angular/common/locales/es';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 
-// Google Maps
+// GOOGLE MAPS
 import { GoogleMapsModule } from '@angular/google-maps';
 
 // SERVICES
@@ -19,6 +20,7 @@ import { TripsService } from './services/trips.service';
 import { AuthServiceService } from './services/auth-service.service';
 import { GeocoderServiceService } from './services/geocoder-service.service';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,6 +51,9 @@ import { MainHeaderComponent } from './components/main-header/main-header.compon
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
+
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [
@@ -66,6 +71,7 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
     AuthMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
+    ConvertCentToEurPipe
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -110,6 +116,17 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
     HttpClientModule,
     AuthServiceService,
     TripsService,
+    ConvertCentToEurPipe,
+    CurrencyPipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'es',
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -18,12 +18,15 @@ import org.springframework.data.geo.Point;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripController {
 
     @Autowired
@@ -53,7 +56,6 @@ public class TripController {
         }
         return response;
     }
-    
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/list_trips")
@@ -68,28 +70,28 @@ public class TripController {
         return lista;
     }
 
-    
     @PostMapping("/create_trip")
-	@PreAuthorize("hasRole('ROLE_DRIVER')")
-    void createTrip(@RequestBody() String body){
-   
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    void createTrip(@RequestBody() String body) {
+
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
 
             JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
-          
-            Location startingPoint = new Location(startingPointJson.get("name").toString(),startingPointJson.get("address").toString(),startingPointJson.get("lng").asDouble(),
-            startingPointJson.get("lat").asDouble());
+
+            Location startingPoint = new Location(startingPointJson.get("name").toString(),
+                    startingPointJson.get("address").toString(), startingPointJson.get("lng").asDouble(),
+                    startingPointJson.get("lat").asDouble());
 
             JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 
-            Location endingPoint = new Location(endingPointJson.get("name").toString(),endingPointJson.get("address").toString(),endingPointJson.get("lng").asDouble(),
-            endingPointJson.get("lat").asDouble());
+            Location endingPoint = new Location(endingPointJson.get("name").toString(),
+                    endingPointJson.get("address").toString(), endingPointJson.get("lng").asDouble(),
+                    endingPointJson.get("lat").asDouble());
 
             Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 
             Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
-
 
             LocalDateTime dateStartJson = OffsetDateTime
                     .parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
@@ -97,22 +99,19 @@ public class TripController {
             LocalDateTime dateEndJson = OffsetDateTime
                     .parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
 
-            String comments= objectMapper.readTree(jsonNode.get("comments").toString()).asText();
- 
+            String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-           
 
-            Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,currentUser);
-        
+            Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,
+                    currentUser);
 
             tripRepository.save(trip1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
 
-
- 
 }

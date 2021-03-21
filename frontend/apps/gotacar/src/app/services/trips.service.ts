@@ -8,9 +8,9 @@ import { environment } from '../../environments/environment';
 export class TripsService {
   constructor(private _http_client: HttpClient) {}
 
-  get_all_trips() {
+  get_all_trips(): Promise<any> {
     return this._http_client
-      .get(environment.api_url + '/search_trips')
+      .get(environment.api_url + '/list_trips')
       .toPromise();
   }
 }

@@ -1,25 +1,28 @@
 <div>
   <h1>Trips</h1>
 
-  <div *ngFor="let trip of trips">
+  <div *ngFor="let trip of trips" class="trips-list">
     <mat-list role="list">
       <!--<mat-list-item role="listitem">Item 1</mat-list-item> -->
       <mat-card class="example-card">
-        <mat-card-header>
-          <mat-card-title>{{ trip.driver }}</mat-card-title>
-        </mat-card-header>
+        <mat-card-title>{{
+          trip?.driver?.firstName + ' ' + trip?.driver?.lastName
+        }}</mat-card-title>
 
         <mat-card-content>
           <mat-card-subtitle>
-            <b>Hora de salida:</b> {{ trip.startDate }}
+            <b>Hora de salida:</b> {{ trip?.startDate }}
           </mat-card-subtitle>
           <mat-card-subtitle>
-           <b>Hora de salida:</b>  {{ trip.startDate }}
+            <b>Hora de salida:</b> {{ trip?.startDate }}
           </mat-card-subtitle>
           <mat-card-subtitle>
-            {{ trip.startingPoint }} &#8594; {{ trip.endingPoint }}
+            {{ trip?.startingPoint?.address }} &#8594;
+            {{ trip?.endingPoint?.address }}
           </mat-card-subtitle>
-          <mat-card-subtitle>{{ trip.price }}€</mat-card-subtitle>
+          <mat-card-subtitle>{{
+            trip?.price | convertCentToEur
+          }}</mat-card-subtitle>
         </mat-card-content>
 
         <mat-card-actions align="end">

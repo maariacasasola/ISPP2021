@@ -15,8 +15,7 @@ export class AdminTripListPageComponent {
 
   async load_trips() {
     try {
-      const response = await this._trips_service.get_all_trips();
-      console.log(response)
+      this.trips = await this._trips_service.get_all_trips();
     } catch (error) {
       console.error(error);
     }
