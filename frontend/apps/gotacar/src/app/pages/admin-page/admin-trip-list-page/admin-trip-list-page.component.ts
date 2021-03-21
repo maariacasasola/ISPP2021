@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
-import { trips } from "../../../trips"
+import { TripsService } from '../../../services/trips.service';
 
 @Component({
   selector: 'frontend-admin-trip-list-page',
   templateUrl: './admin-trip-list-page.component.html',
-  styleUrls: ['./admin-trip-list-page.component.scss']
+  styleUrls: ['./admin-trip-list-page.component.scss'],
 })
 export class AdminTripListPageComponent {
+  trips = [];
 
-  trips = trips;
+  constructor(private _trips_service: TripsService) {
+    this.load_trips();
+  }
 
+  async load_trips() {
+    try {
+      const response = await this._trips_service.get_all_trips();
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

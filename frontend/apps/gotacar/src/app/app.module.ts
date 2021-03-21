@@ -6,27 +6,19 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-
-import { AuthServiceService } from './services/auth-service.service';
-
-import { AppComponent } from './app.component';
-
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
-import { MainHeaderComponent } from './components/main-header/main-header.component';
-import { MainFooterComponent } from './components/main-footer/main-footer.component';
-import { AuthenticatedGuard } from './guards/authenticated.guard';
-import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
-import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment';
-import { SearchFormComponent } from './components/search-form/search-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { GeocoderServiceService } from './services/geocoder-service.service';
 import { AppRoutingModule } from './app-routing.module';
 
 // Google Maps
 import { GoogleMapsModule } from '@angular/google-maps';
+
+// SERVICES
+import { TripsService } from './services/trips.service';
+import { AuthServiceService } from './services/auth-service.service';
+import { GeocoderServiceService } from './services/geocoder-service.service';
+import { AuthenticatedGuard } from './guards/authenticated.guard';
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,14 +32,23 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+
+import { AppComponent } from './app.component';
+import { SearchFormComponent } from './components/search-form/search-form.component';
+import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
+import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
-import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
+import { MainHeaderComponent } from './components/main-header/main-header.component';
+import { MainFooterComponent } from './components/main-footer/main-footer.component';
+import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
+import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-p
     GeocoderServiceService,
     HttpClientModule,
     AuthServiceService,
+    TripsService,
   ],
   bootstrap: [AppComponent],
 })
