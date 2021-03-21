@@ -21,6 +21,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
+import { TripListComponent } from './components/trip-list/trip-list.component';
+import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +34,7 @@ import { MatIconModule } from '@angular/material/icon';
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    TripListComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +48,9 @@ import { MatIconModule } from '@angular/material/icon';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    MatListModule,
+    MatCardModule,
+    
   ],
   providers: [AuthenticatedGuard],
   bootstrap: [AppComponent],

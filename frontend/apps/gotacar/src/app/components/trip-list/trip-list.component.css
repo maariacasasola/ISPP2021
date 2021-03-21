@@ -1,0 +1,9 @@
+.example-card {
+  margin-left: 10px;
+  width: 85%;
+  
+}
+
+.card-actions {
+    align-items: flex-end;
+}
