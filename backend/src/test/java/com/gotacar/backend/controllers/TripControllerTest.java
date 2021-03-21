@@ -2,6 +2,7 @@ package com.gotacar.backend.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -174,4 +175,50 @@ public class TripControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
+    
+
+    @Test
+    void testListTrips() throws Exception {
+        //Login como administrador
+        String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse().getContentAsString();
+
+        //Obtengo el token
+        String token = response.substring(10, response.length()-2);
+
+        // Petición post al controlador
+        ResultActions result = mockMvc.perform(get("/list_trips").header("Authorization", token));
+
+        // Comprobación de que todo ha ido bien
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+        // Solo podemos acceder al body de la respuesta (json) como String,
+        // por eso cuento las veces que aparece la cadena 'startingPoint' (uno por
+        // viaje)
+        // para saber el número de viajes que devuelve la lista
+        String res = result.andReturn().getResponse().getContentAsString();
+        int contador = 0;
+        while (res.indexOf("startingPoint") > -1) {
+            res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(), res.length());
+            contador++;
+        }
+
+        assertThat(contador).isEqualTo(4);
+
+    }
+
+    @Test
+    void testListTripsFailed() throws Exception {
+        //Login como administrador
+        String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
+
+        //Obtengo el token
+        String token = response.substring(10, response.length()-2);
+
+        // Petición post al controlador
+        ResultActions result = mockMvc.perform(get("/list_trips").header("Authorization", token));
+
+        // Comprobación de que está prohibido
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+
+    }
 }

@@ -54,10 +54,18 @@ public class TripController {
         return response;
     }
     
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/list_trips")
     public List<Trip> listTrips() {
-        return (List<Trip>) tripRepository.findAll();
+        List<Trip> lista = new ArrayList<>();
+        try {
+
+            lista = tripRepository.findAll();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lista;
     }
 
     
