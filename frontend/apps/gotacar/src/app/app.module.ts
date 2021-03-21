@@ -27,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Google Maps
 import { GoogleMapsModule } from '@angular/google-maps';
+
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -36,15 +37,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MeetingPointInterceptor } from './interceptors/meeting-point.interceptor';
+import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { MeetingPointInterceptor } from './interceptors/meeting-point.intercepto
     MeetingPointMapComponent,
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
+    AuthMenuComponent,
+    NoAuthMenuComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -95,6 +99,7 @@ import { MeetingPointInterceptor } from './interceptors/meeting-point.intercepto
     HttpClientModule,
     MatSnackBarModule,
     GoogleMapsModule,
+    MatMenuModule,
   ],
   providers: [
     AuthenticatedGuard,
