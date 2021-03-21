@@ -1,6 +1,54 @@
-.menu-no-auth {
-  position: absolute;
-  bottom: 30px;
-  right: 24px;
-  font-size: 18px;
+.information {
+  background-color: #538994;
+}
+
+.header-card {
+  display: flex;
+  color: white;
+  padding-top: 40px;
+  padding-left: 90px;
+}
+
+.information-cards {
+  display: flex;
+  padding: 20px;
+  align-items: baseline;
+  text-align: center;
+  justify-content: center;
+}
+
+.information-card {
+  margin: 20px;
+  height: 200px;
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  color: #538994;
+}
+
+.header-information-card {
+  display: flex;
+  justify-content: center;
+  color: #538994;
+}
+
+.information-icon {
+  color: #538994;
+}
+
+::ng-deep {
+  .mat-card-subtitle {
+    color: white;
+  }
+
+  .mat-card {
+    border: 0px;
+    border-radius: 0px;
+  }
+}
+
+h1 {
+  font-size: 40px;
+  line-height: 60px;
 }

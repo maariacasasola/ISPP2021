@@ -1,59 +1,35 @@
-<div class="example-container">
-  <h2>Encuentra tu viaje</h2>
-
-  <div class="form-container">
+<mat-card class="form-container">
+  <mat-card-header class="header-card">
+    <mat-card-title>
+      <h1>Busca tu viaje</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <span>
+        <mat-icon>trip_origin</mat-icon>
+      </span>
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Origen</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="origen"
-          placeholder="Nervión"
-          required
-        />
+        <input matInput type="text" formControlName="origen" required />
       </mat-form-field>
-
+      <mat-icon>trip_origin</mat-icon>
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Destino</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="destino"
-          placeholder="Viapol"
-          required
-        />
+        <input matInput type="text" formControlName="destino" required />
       </mat-form-field>
-
+      <mat-icon>calendar_today</mat-icon>
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Seleccione una fecha</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [min]="minDate"
-          formControlName="fecha"
-          required
-        />
+        <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="fecha" required />
         <mat-datepicker-toggle matSuffix [for]="picker">
           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-
-      <!--
-<mat-form-field class="form-field" appearance="outline">
-        <mat-label>Número de pasajeros</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="numPasajeros"
-          required
-        />
-      </mat-form-field>
-     -->
-
-      <button mat-raised-button type="submit" color="primary">Buscar</button>
-      <!--<button mat-raised-button type="submit" [disabled]="!searchForm.valid" color="primary">Buscar</button>-->
+      <button mat-icon-button type="submit" class="search-button">
+        <mat-icon class="search">search</mat-icon>
+      </button>
     </form>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
