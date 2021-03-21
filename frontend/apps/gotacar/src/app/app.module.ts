@@ -21,17 +21,23 @@ import { ClientProfilePageComponent } from './pages/authenticated-page/client-pr
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 
 import { environment } from '../environments/environment';
+import { SearchFormComponent } from './components/search-form/search-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { GeocoderServiceService } from './services/geocoder-service.service';
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -42,6 +48,7 @@ import { MatInputModule } from '@angular/material/input';
     MainFooterComponent,
     ClientProfilePageComponent,
     LogInPageComponent,
+    SearchFormComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -62,8 +69,23 @@ import { MatInputModule } from '@angular/material/input';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatSnackBarModule,
   ],
-  providers: [HttpClient, AuthenticatedGuard, AuthServiceService],
+  providers: [
+    AuthenticatedGuard,
+    GeocoderServiceService,
+    HttpClientModule,
+    AuthServiceService,
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
