@@ -2,7 +2,7 @@
   <h2>Crea tu propio viaje</h2>
 
   <div class="form-container">
-    <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
+    <form ngNativeValidate [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
       <div>
         <mat-form-field appearance="outline">
           <mat-label>Origen</mat-label>
@@ -40,11 +40,11 @@
       <div>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Precio</mat-label>
-          <input matInput type="number" formControlName="price" required />
+          <input matInput type="number" step="0.01"  formControlName="price" required />
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Pasajeros</mat-label>
-          <input
+          <input min="1" max="5"
             matInput
             type="number"
             formControlName="numeroPasajero"
