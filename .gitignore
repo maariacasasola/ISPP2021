@@ -3,3 +3,4 @@ bbdd/
 node_modules
 mongo-volume
 /.metadata/
+.idea
