@@ -67,8 +67,9 @@ public class MeetingPointControllerTest {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse().getContentAsString();
 
+        org.json.JSONObject json = new org.json.JSONObject(response);
         //Obtengo el token
-        String token = response.substring(10, response.length()-2);
+        String token = json.getString("token");
 
         // Petición post al controlador
         ResultActions result = mockMvc.perform(post("/create_meeting_point").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
@@ -76,7 +77,6 @@ public class MeetingPointControllerTest {
 
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
         assertThat(meetingPointRepository.findByName("Heliópolis").getAddress()).isEqualTo("Calle Ifni, 41012 Sevilla");
-        
     }
 
     @Test
@@ -93,8 +93,9 @@ public class MeetingPointControllerTest {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
 
+        org.json.JSONObject json = new org.json.JSONObject(response);
         //Obtengo el token
-        String token = response.substring(10, response.length()-2);
+        String token = json.getString("token");
 
         // Petición post al controlador
         ResultActions result = mockMvc.perform(post("/create_meeting_point").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)

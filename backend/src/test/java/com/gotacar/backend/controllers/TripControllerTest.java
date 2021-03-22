@@ -65,7 +65,7 @@ public class TripControllerTest {
 		// para saber el número de viajes que devuelve la lista
 		String res = result.andReturn().getResponse().getContentAsString();
 		int contador = 0;
-		while (res.indexOf("startingPoint") > -1) {
+		while (res.contains("startingPoint")) {
 			res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(), res.length());
 			contador++;
 		}
@@ -120,8 +120,9 @@ public class TripControllerTest {
 		String response = mockMvc.perform(post("/user").param("uid", "3")).andReturn().getResponse()
 				.getContentAsString();
 
-		// Obtengo el token
-		String token = response.substring(10, response.length() - 2);
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		//Obtengo el token
+		String token = json.getString("token");
 
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
@@ -165,8 +166,9 @@ public class TripControllerTest {
 		String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse()
 				.getContentAsString();
 
-		// Obtengo el token
-		String token = response.substring(10, response.length() - 2);
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		//Obtengo el token
+		String token = json.getString("token");
 
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
@@ -182,8 +184,9 @@ public class TripControllerTest {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse().getContentAsString();
 
-        //Obtengo el token
-        String token = response.substring(10, response.length()-2);
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		//Obtengo el token
+		String token = json.getString("token");
 
         // Petición post al controlador
         ResultActions result = mockMvc.perform(get("/list_trips").header("Authorization", token));
@@ -197,7 +200,7 @@ public class TripControllerTest {
         // para saber el número de viajes que devuelve la lista
         String res = result.andReturn().getResponse().getContentAsString();
         int contador = 0;
-        while (res.indexOf("startingPoint") > -1) {
+        while (res.contains("startingPoint")) {
             res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(), res.length());
             contador++;
         }
@@ -211,8 +214,9 @@ public class TripControllerTest {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
 
-        //Obtengo el token
-        String token = response.substring(10, response.length()-2);
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		//Obtengo el token
+		String token = json.getString("token");
 
         // Petición post al controlador
         ResultActions result = mockMvc.perform(get("/list_trips").header("Authorization", token));
