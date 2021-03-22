@@ -9,12 +9,10 @@ import { Location } from '../../shared/services/location-model';
 @Component({
   selector: 'frontend-create-trip-form',
   templateUrl: './create-trip-form.component.html',
-  styleUrls: ['./create-trip-form.component.scss']
+  styleUrls: ['./create-trip-form.component.scss'],
 })
 export class CreateTripFormComponent {
-
   minDate: Date;
-
 
   createTripForm = this.fb.group({
     origen: ['', Validators.required],
@@ -27,15 +25,35 @@ export class CreateTripFormComponent {
     price: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar,
-    private tripService: TripsService, private geoService: GeocoderServiceService) {
+  constructor(
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
+    private tripService: TripsService,
+    private geoService: GeocoderServiceService
+  ) {
     this.minDate = new Date();
-
   }
 
   async onSubmit() {
-    this.hourIsValid()
-    this.checkOrigen()
+    if (this.createTripForm.invalid) {
+      this.createTripForm.markAllAsTouched();
+      return;
+    }
+
+    const hours_valid = this.hourIsValid();
+    if (!hours_valid) {
+      this.openSnackBar('Compruebe las horas de su viaje', 'Cerrar');
+      return;
+    }
+
+    const origin_and_target_valids = this.checkOrigen();
+    if (!origin_and_target_valids) {
+      this.openSnackBar(
+        'El origen y el destino del viaje no pueden coincidir',
+        'Cerrar'
+      );
+      return;
+    }
 
     const fecha = this.createTripForm.value.fecha;
     const horaInicio = this.createTripForm.value.horaInicio;
@@ -47,27 +65,39 @@ export class CreateTripFormComponent {
     const hoursF = horaFin.split(':')[0];
     const minutesF = horaFin.split(':')[1];
 
-    const startDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursI, minutesI, 0);
-    const endingDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursF, minutesF, 0);
-    //////
+    const startDatee = new Date(
+      fecha.getFullYear(),
+      fecha.getMonth(),
+      fecha.getDate(),
+      hoursI,
+      minutesI,
+      0
+    );
+    const endingDatee = new Date(
+      fecha.getFullYear(),
+      fecha.getMonth(),
+      fecha.getDate(),
+      hoursF,
+      minutesF,
+      0
+    );
 
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
 
-
-    const LocationOrigen : Location= {
+    const LocationOrigen: Location = {
       name: '',
       lat: coordinatesOrigin.lat,
       lng: coordinatesOrigin.lng,
       address: coordinatesOrigin.address,
-    }
+    };
 
     const LocationDestino: Location = {
-      name:'',
+      name: '',
       lat: coordinatesTarget.lat,
       lng: coordinatesTarget.lng,
       address: coordinatesTarget.address,
-    }
+    };
     const trip: Trip = {
       starting_point: LocationOrigen,
       ending_point: LocationDestino,
@@ -76,50 +106,33 @@ export class CreateTripFormComponent {
       end_date: endingDatee,
       comments: String(this.createTripForm.value.comentarios),
       places: Number(this.createTripForm.value.numeroPasajero),
-    }
+    };
 
     try {
-      
       const response = this.tripService.create_trip(trip);
       this.createTripForm.reset();
     } catch (error) {
       console.error(error);
     }
-
-
   }
 
   checkOrigen() {
     const origen = this.createTripForm.value.origen;
     const destino = this.createTripForm.value.destino;
-
-    const isValid = origen == destino;
-
-    if (isValid) {
-      
-      this.openSnackBar(
-        'El origen y el destino no pueden ser el mismo',
-        'Cerrar'
-      );
-    }
+    return origen !== destino;
   }
 
   hourIsValid() {
-
-    const horaInicio = this.createTripForm.value.horaInicio.trim().toLowerCase();
+    const horaInicio = this.createTripForm.value.horaInicio
+      .trim()
+      .toLowerCase();
     const horaFin = this.createTripForm.value.horaFin.trim().toLowerCase();
 
     const isValid = horaInicio < horaFin;
 
-    if (!isValid) {
-      
-      this.openSnackBar(
-        'La hora de inicio no puede ser posterior a la hora de fin del viaje',
-        'Cerrar'
-      );
-    }
-
+    return isValid;
   }
+
   async get_origin() {
     try {
       const { results } = await this.geoService.get_location_from_address(
@@ -133,7 +146,10 @@ export class CreateTripFormComponent {
       if (cond1 || cond2 || cond3) {
         const coordinates = {
           name: this.createTripForm.value.origen,
-          address: results[0].address_components[1].long_name + ',' + results[0].address_components[0].long_name,
+          address:
+            results[0].address_components[1].long_name +
+            ',' +
+            results[0].address_components[0].long_name,
           lat: results[0]?.geometry?.location?.lat,
           lng: results[0]?.geometry?.location?.lng,
         };
@@ -162,7 +178,10 @@ export class CreateTripFormComponent {
       if (cond1 || cond2 || cond3) {
         const coordinates = {
           name: this.createTripForm.value.origen,
-          address: results[0].address_components[1].long_name + ',' + results[0].address_components[0].long_name,
+          address:
+            results[0].address_components[1].long_name +
+            ',' +
+            results[0].address_components[0].long_name,
           lat: results[0]?.geometry?.location?.lat,
           lng: results[0]?.geometry?.location?.lng,
         };
@@ -178,13 +197,10 @@ export class CreateTripFormComponent {
     }
   }
 
-
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
       panelClass: ['blue-snackbar'],
     });
   }
-
-
 }
