@@ -125,12 +125,12 @@ public class TripControllerTest {
 		String token = json.getString("token");
 
 		ResultActions result = mockMvc
-				.perform(post("/create_trip").contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(trip.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
-/*
+
 	@Test
 	@WithMockUser(value = "spring")
 	public void testCreateTripDriverWrong() throws Exception {
@@ -171,11 +171,11 @@ public class TripControllerTest {
 		String token = json.getString("token");
 
 		ResultActions result = mockMvc
-				.perform(post("/create_trip").contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(trip.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
-	}*/
+	}
 
     
 

@@ -69,7 +69,8 @@ public class TripController {
         }
         return lista;
     }
-
+    
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/create_trip")
     public Trip createTrip(@RequestBody() String body) {
     	Trip trip1 = new Trip();
