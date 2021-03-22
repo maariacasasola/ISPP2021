@@ -124,7 +124,7 @@ public class TripControllerTest {
 		String token = response.substring(10, response.length() - 2);
 
 		ResultActions result = mockMvc
-				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/create_trip").contentType(MediaType.APPLICATION_JSON)
 						.content(trip.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
@@ -169,7 +169,7 @@ public class TripControllerTest {
 		String token = response.substring(10, response.length() - 2);
 
 		ResultActions result = mockMvc
-				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/create_trip").contentType(MediaType.APPLICATION_JSON)
 						.content(trip.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
