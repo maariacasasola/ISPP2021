@@ -109,10 +109,10 @@ public class TripControllerTest {
 		user.appendField("roles", roles);
 
 		trip.appendField("starting_point", startingPoint);
-		trip.appendField("end_point", startingPoint);
+		trip.appendField("ending_point", endPoint);
 		trip.appendField("price", 15);
-		trip.appendField("startDate", "2021-06-05T13:30:00.000+00");
-		trip.appendField("endingDate", "2021-06-04T13:30:00.000+00");
+		trip.appendField("start_date", "2021-06-05T13:30:00.000+00");
+		trip.appendField("end_date", "2021-06-04T13:30:00.000+00");
 		trip.appendField("comments", "Muy bien si, muy bien");
 		trip.appendField("places", 2);
 
@@ -154,10 +154,10 @@ public class TripControllerTest {
 		endPoint.appendField("name", "start");
 
 		trip.appendField("starting_point", startingPoint);
-		trip.appendField("end_point", startingPoint);
+		trip.appendField("ending_point", endPoint);
 		trip.appendField("price", 15);
-		trip.appendField("startDate", "2021-06-05T13:30:00.000+00");
-		trip.appendField("endingDate", "2021-06-04T13:30:00.000+00");
+		trip.appendField("start_date", "2021-06-05T13:30:00.000+00");
+		trip.appendField("end_date", "2021-06-04T13:30:00.000+00");
 		trip.appendField("comments", "Muy bien si, muy bien");
 		trip.appendField("places", 2);
 

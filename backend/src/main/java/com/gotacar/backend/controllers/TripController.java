@@ -72,9 +72,10 @@ public class TripController {
 
     @PostMapping("/create_trip")
     @PreAuthorize("hasRole('ROLE_DRIVER')")
-    void createTrip(@RequestBody() String body) {
-
+    public Trip createTrip(@RequestBody() String body) {
+    	Trip trip1 = new Trip();
         try {
+        	System.out.println("Trip entra DENTRO DE TRY");
             JsonNode jsonNode = objectMapper.readTree(body);
 
             JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -103,14 +104,25 @@ public class TripController {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-
-            Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,
-                    currentUser);
+            
+            trip1.setCancelationDate(dateEndJson);
+            trip1.setStartingPoint(startingPoint);
+            trip1.setEndingPoint(endingPoint);
+            trip1.setPrice(price);
+            trip1.setComments(comments);
+            trip1.setStartDate(dateStartJson);
+            trip1.setPlaces(placesJson);
+            trip1.setDriver(currentUser);
+            
+            System.out.println(trip1.getId() + "trip llega a crearse");
+            
 
             tripRepository.save(trip1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        return trip1;
 
     }
 
