@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
-  selector: 'frontend-log-in-page',
-  templateUrl: './log-in-page.component.html',
-  styleUrls: ['./log-in-page.component.scss'],
+  selector: 'frontend-admin-menu',
+  templateUrl: './admin-menu.component.html',
+  styleUrls: ['./admin-menu.component.scss'],
 })
-export class LogInPageComponent implements OnInit {
-  app_title="Log In"
+export class AdminMenuComponent implements OnInit {
   constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}

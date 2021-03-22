@@ -1,17 +1,19 @@
 .main-toolbar {
-    background-color: #4da8cf;
-    height: 13%;
-    display: flex;
+  background-color: #538994;
+  height: 10%;
+  display: flex;
 }
 
-.logo-container{
-  display: flex;
+.logo-container {
   width: 5%;
-  height: 90%;
+  height: 70%;
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: flex-start;
   margin-left: 2%;
 }
 
-.title{
+.title {
   color: white;
   font-size: 250%;
 }

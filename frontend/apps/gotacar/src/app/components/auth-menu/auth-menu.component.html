@@ -1,13 +1,8 @@
-<button
-  color="primary"
-  mat-mini-fab
-  [matMenuTriggerFor]="aboveMenu"
-  aria-label="Example icon-button with a menu"
->
+<button mat-mini-fab [matMenuTriggerFor]="aboveMenu" class="auth-button">
   <mat-icon>account_circle</mat-icon>
 </button>
 <mat-menu #aboveMenu="matMenu" yPosition="above">
-  <button mat-menu-item>
+  <button mat-menu-item routerLink="/authenticated/profile">
     <mat-icon>sentiment_satisfied_alt </mat-icon>
     <span>Perfil</span>
   </button>
@@ -20,7 +15,7 @@
     <span>Transferencias</span>
   </button>
   <hr />
-  <button mat-menu-item>
+  <button mat-menu-item (click)="authService.sign_out()">
     <mat-icon>logout</mat-icon>
     <span>Cerrar Sesión</span>
   </button>

@@ -1,9 +1,4 @@
-<button
-  color="primary"
-  mat-mini-fab
-  [matMenuTriggerFor]="aboveMenu"
-  aria-label="Example icon-button with a menu"
->
+<button mat-mini-fab [matMenuTriggerFor]="aboveMenu" class="no-auth-button">
   <mat-icon>account_circle</mat-icon>
 </button>
 <mat-menu #aboveMenu="matMenu" yPosition="above">
@@ -12,7 +7,7 @@
     <span>Regístrate</span>
   </button>
   <hr />
-  <button mat-menu-item>
+  <button mat-menu-item (click)="redirect()">
     <mat-icon>login</mat-icon>
     <span>Iniciar Sesión</span>
   </button>

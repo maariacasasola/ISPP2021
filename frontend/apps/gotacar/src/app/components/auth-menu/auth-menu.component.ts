@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'frontend-auth-menu',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./auth-menu.component.scss'],
 })
 export class AuthMenuComponent implements OnInit {
-  constructor() {}
+  constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}
 }

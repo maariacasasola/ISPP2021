@@ -1,0 +1,18 @@
+<button mat-mini-fab [matMenuTriggerFor]="aboveMenu" class="admin-button">
+  <mat-icon>account_circle</mat-icon>
+</button>
+<mat-menu #aboveMenu="matMenu" yPosition="above">
+  <button mat-menu-item routerLink="/admin/map">
+    <mat-icon>location_on </mat-icon>
+    <span>Vista del mapa</span>
+  </button>
+  <button mat-menu-item routerLink="/admin/trips">
+    <mat-icon>directions_car</mat-icon>
+    <span>Viajes registrados</span>
+  </button>
+  <hr />
+  <button mat-menu-item (click)="authService.sign_out()">
+    <mat-icon>logout</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</mat-menu>
