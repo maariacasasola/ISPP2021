@@ -53,6 +53,7 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
+import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -72,7 +73,8 @@ registerLocaleData(localeEs, 'es');
     AuthMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
-    ConvertCentToEurPipe
+    ConvertCentToEurPipe,
+    AccessForbiddenDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
