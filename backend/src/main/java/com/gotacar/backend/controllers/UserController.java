@@ -29,13 +29,12 @@ public class UserController {
 	public TokenResponse login(@RequestParam("uid") String userId) {
 		User user = userRepository.findByUid(userId);
 		String token = getJWTToken(user);
-		TokenResponse generatedToken = new TokenResponse(token);
-		return generatedToken;
+		return new TokenResponse(token, user.getRoles());
 	}
 
 	private String getJWTToken(User user) {
 		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
-		String roles = user.getRoles().stream().collect(Collectors.joining(","));
+		String roles = String.join(",", user.getRoles());
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 		String token = Jwts.builder().setId("softtekJWT").setSubject(user.getEmail())
@@ -43,7 +42,6 @@ public class UserController {
 						grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 3600000)).signWith(key).compact();
-
 		return "Bearer " + token;
 	}
 }
