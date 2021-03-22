@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {
@@ -13,9 +13,8 @@ import { AccessForbiddenDialogComponent } from '../components/access-forbidden/a
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticatedGuard implements CanActivate {
-  constructor(public router: Router, public dialog: MatDialog) {}
-
+export class DriverGuard implements CanActivate {
+  constructor(public router: Router, private dialog: MatDialog) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -24,7 +23,7 @@ export class AuthenticatedGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const result = localStorage.getItem('roles').includes('ROLE_CLIENT');
+    const result = localStorage.getItem('roles').includes('ROLE_DRIVER');
     if (!result) {
       this.router.navigate(['home']);
       this.dialog.open(AccessForbiddenDialogComponent);

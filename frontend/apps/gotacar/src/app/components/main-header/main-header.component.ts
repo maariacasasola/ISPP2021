@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
@@ -9,7 +10,14 @@ import { AuthServiceService } from '../../services/auth-service.service';
 export class MainHeaderComponent implements OnInit {
   @Input() title;
   showFiller = false;
-  constructor(public authService: AuthServiceService) {}
+  constructor(public authService: AuthServiceService, public router: Router) { }
+  isLogged;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isLogged = this.authService.is_logged_in();
+  }
+
+  redirect() {
+    this.router.navigate(['home']);
+  }
 }

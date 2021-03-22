@@ -5,7 +5,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CommonModule, CurrencyPipe, registerLocaleData } from '@angular/common';
+import {
+  CommonModule,
+  CurrencyPipe,
+  registerLocaleData,
+} from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import localeEs from '@angular/common/locales/es';
 
@@ -36,10 +40,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
+import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
@@ -52,6 +59,9 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
+import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
+import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
+import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -69,9 +79,13 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
-    ConvertCentToEurPipe
+    ConvertCentToEurPipe,
+    AccessForbiddenDialogComponent,
+    CreateTripFormComponent,
+    DriverCreateTripPageComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -84,11 +98,13 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatDialogModule,
     MatSidenavModule,
     MatFormFieldModule,
     MatIconModule,
     MatCardModule,
     MatButtonModule,
+    MatGridListModule,
     MatFormFieldModule,
     MatInputModule,
     AppRoutingModule,

@@ -27,7 +27,8 @@ public class MeetingPointController {
 
     @PostMapping("/create_meeting_point")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    void createMeetingPoint(@RequestBody String body){
+    MeetingPoint createMeetingPoint(@RequestBody String body){
+    	MeetingPoint mp = new MeetingPoint();
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
 
@@ -36,13 +37,18 @@ public class MeetingPointController {
             Double lat = objectMapper.readTree(jsonNode.get("lat").toString()).asDouble();
             Double lng = objectMapper.readTree(jsonNode.get("lng").toString()).asDouble();
 
-            MeetingPoint mp = new MeetingPoint(lat, lng, address, name);
+            mp.setAddress(address);
+            mp.setLat(lat);
+            mp.setLng(lng);
+            mp.setName(name);
 
             pointsRepository.save(mp);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        return mp;
     }
 
 	@GetMapping("/search_meeting_points")

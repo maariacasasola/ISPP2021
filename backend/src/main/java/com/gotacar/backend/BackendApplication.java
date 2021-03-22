@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,16 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
@@ -77,11 +72,11 @@ public class BackendApplication implements CommandLineRunner {
 		User user3 = new User("Elba", "Calao", "3", "congitodechocolate@gmail.com", "890703", "http://huiogr.com",
 				fecha3, lista3);
 		User client = new User("Elba", "Calao", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client@gotacar.es", "890703", "http://huiogr.com",
-				fecha3, lista3);
+				fecha3, lista2);
 		User driver = new User("Elba", "Calao", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "890703", "http://huiogr.com",
 				fecha3, lista3);
 		User admin = new User("Elba", "Calao", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "890703", "http://huiogr.com",
-				fecha3, lista3);
+				fecha3, lista1);
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);

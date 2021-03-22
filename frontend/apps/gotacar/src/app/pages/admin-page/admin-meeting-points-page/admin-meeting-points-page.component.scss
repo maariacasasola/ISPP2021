@@ -5,33 +5,69 @@
   margin-left: 50px;
 }
 .custom {
-  margin-left: 30px;
+  margin-left: 40px;
+  margin-right: 30px;
 }
 .custom2 {
-  margin-left: 50px;
+  margin-left: 10px;
+}
+.buttonSpace{
+  margin: 10px;
+}
+
+.send-button{
+  background-color: #538994;
+  color: white;
 }
 
 .space {
   float: right;
   max-width: 400px;
   margin-top: 10px;
-  margin-right: 70px;
+  margin-right: 120px;
   margin-bottom: 10px;
 }
 .grid-container {
   display: grid;
   margin-top: 10px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas:
     'Formulario Mapa Mapa .'
     'Formulario Mapa Mapa .'
     'Formulario Mapa Mapa .';
+  color: #0e4a6b;
 }
 .Mapa {
   grid-area: Mapa;
+  height: min-content;
 }
 .Formulario {
   grid-area: Formulario;
+}
+
+::ng-deep {
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: #538994;
+  }
+
+  .mat-form-field-empty.mat-form-field-label {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #538994;
+  }
+
+  .mat-form-field-ripple{
+    background-color: #538994 !important;;
+  }
 }

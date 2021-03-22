@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  app_title="Gotacar"
+  app_title="GotACar"
 
   constructor() { }
 

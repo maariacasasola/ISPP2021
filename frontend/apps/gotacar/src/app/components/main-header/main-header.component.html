@@ -1,6 +1,9 @@
 <mat-toolbar class="main-toolbar">
   <div class="logo-container">
-  <img src="assets/img/logo2.png" alt="GotACar-Logo"/>
+    <input type="image" (click)="redirect()" src="assets/img/logo3.png" alt="GotACar-Logo" />
   </div>
-  <span class="title">GotACar</span>
+  <div *ngIf="isLogged; else elseBlock">
+    <frontend-admin-menu></frontend-admin-menu> 
+  </div>
+  <ng-template #elseBlock><frontend-no-auth-menu></frontend-no-auth-menu></ng-template>
 </mat-toolbar>

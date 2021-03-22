@@ -16,7 +16,11 @@ import { AuthServiceService } from '../services/auth-service.service';
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private _router: Router, private _snackbar: MatSnackBar, private _auth_service: AuthServiceService) {}
+  constructor(
+    private _router: Router,
+    private _snackbar: MatSnackBar,
+    private _auth_service: AuthServiceService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -26,7 +30,11 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     let request = req;
 
-    if (token) {
+    if (
+      token &&
+      (req.url.includes('appspot.com') || req.url.includes('localhost'))
+    ) {
+      console.log(req);
       request = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,

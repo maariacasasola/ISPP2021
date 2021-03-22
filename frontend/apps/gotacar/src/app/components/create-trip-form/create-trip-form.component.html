@@ -1,0 +1,86 @@
+<div class="example-container">
+  <h2>Crea tu propio viaje</h2>
+
+  <div class="form-container">
+    <form ngNativeValidate [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Origen</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="origen"
+            placeholder="Los Bermejales"
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Destino</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="destino"
+            placeholder="Nervión"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Hora inicio</mat-label>
+
+          <input matInput type="time" formControlName="horaInicio" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Hora Fin</mat-label>
+          <input matInput type="time" formControlName="horaFin" required />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Precio</mat-label>
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            formControlName="price"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Pasajeros</mat-label>
+          <input
+            min="1"
+            max="4"
+            matInput
+            type="number"
+            formControlName="numeroPasajero"
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="outline">
+          <input
+            matInput
+            [min]="minDate"
+            formControlName="fecha"
+            [matDatepicker]="picker"
+            required
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Comentarios</mat-label>
+        <textarea matInput formControlName="comentarios" required></textarea>
+      </mat-form-field>
+      <br />
+      <button mat-raised-button type="submit" color="primary">Crear</button>
+    </form>
+  </div>
+</div>

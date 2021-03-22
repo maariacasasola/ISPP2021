@@ -1,7 +1,23 @@
 h1 {
   text-align: center;
+  color: #0e4a6b;
+  margin: 20px;
+}
+
+.trip{
+  border: 1px solid #0e4a6b;
+  padding: 30px;
 }
 
 .trips-list {
-  padding: 20px;
+  width: max-content;
+}
+
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
+mat-list{
+  width:90%;
 }

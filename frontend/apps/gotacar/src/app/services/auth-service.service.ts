@@ -100,9 +100,10 @@ export class AuthServiceService {
   }
 
   async set_user_data(user) {
-    let { token } = await this.get_token(user.uid);
+    let { token, roles } = await this.get_token(user.uid);
     token = token.replace('Bearer ', '');
     localStorage.setItem('token', token);
+    localStorage.setItem('roles', roles);
   }
 
   get_token(user_uid): Promise<any> {
@@ -119,7 +120,11 @@ export class AuthServiceService {
     localStorage.removeItem('token');
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('roles');
       this.router.navigate(['log-in']);
     });
   }
+
+  
+
 }
