@@ -50,6 +50,10 @@ public class Trip {
     public Boolean canceled;
 
     public User driver;
+    
+    public Trip() {
+        this.canceled = false;
+    }
 
     public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
             String comments, Integer places, User driver) {
