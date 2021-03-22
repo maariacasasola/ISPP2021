@@ -55,7 +55,7 @@ public class MeetingPointControllerTest {
 
     @Test
     @WithMockUser(value = "spring")
-    void testCreateMeetingPointAdmin() throws Exception {
+    public void testCreateMeetingPointAdmin() throws Exception {
 
         // Construcción del json para el body
         JSONObject sampleObject = new JSONObject();
@@ -81,7 +81,7 @@ public class MeetingPointControllerTest {
 
     @Test
     @WithMockUser(value = "spring")
-    void testCreateMeetingPointUser() throws Exception {
+    public void testCreateMeetingPointUser() throws Exception {
 
         // Construcción del json para el body
         JSONObject sampleObject = new JSONObject();

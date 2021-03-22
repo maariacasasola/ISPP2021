@@ -29,7 +29,7 @@ public class TripControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	void testSearchTrips() throws Exception {
+	public void testSearchTrips() throws Exception {
 
 		// Contrucción del archivo json para el body
 		JSONObject sampleObject = new JSONObject();
@@ -76,7 +76,7 @@ public class TripControllerTest {
 
 	@Test
 	@WithMockUser(value = "spring")
-	void testCreateTripDriver() throws Exception {
+	public void testCreateTripDriver() throws Exception {
 
 		List<String> roles = new ArrayList<>();
 		roles.add("ROLE_ADMIN");
@@ -132,7 +132,7 @@ public class TripControllerTest {
 
 	@Test
 	@WithMockUser(value = "spring")
-	void testCreateTripDriverWrong() throws Exception {
+	public void testCreateTripDriverWrong() throws Exception {
 
 		List<String> roles = new ArrayList<>();
 		roles.add("ROLE_ADMIN");
@@ -178,7 +178,7 @@ public class TripControllerTest {
     
 
     @Test
-    void testListTrips() throws Exception {
+    public void testListTrips() throws Exception {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse().getContentAsString();
 
@@ -207,7 +207,7 @@ public class TripControllerTest {
     }
 
     @Test
-    void testListTripsFailed() throws Exception {
+    public void testListTripsFailed() throws Exception {
         //Login como administrador
         String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
 
