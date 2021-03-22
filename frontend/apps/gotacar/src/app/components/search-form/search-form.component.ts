@@ -45,7 +45,7 @@ export class SearchFormComponent {
         this.searchForm.value.origen
       );
 
-      console.log(results)
+      console.log(results[0]?.geometry?.location?.lat)
 
       const cond1 = results[0].address_components[1].long_name == 'Sevilla';
       const cond2 = results[0].address_components[2].long_name == 'Sevilla';
