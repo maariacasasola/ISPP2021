@@ -52,6 +52,8 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
+import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
+import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -71,7 +73,9 @@ registerLocaleData(localeEs, 'es');
     AuthMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
-    ConvertCentToEurPipe
+    ConvertCentToEurPipe,
+    CreateTripFormComponent,
+    DriverCreateTripPageComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

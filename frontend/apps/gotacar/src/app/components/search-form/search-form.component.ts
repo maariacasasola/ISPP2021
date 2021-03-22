@@ -37,8 +37,6 @@ export class SearchFormComponent {
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
 
-    console.log(coordinatesOrigin);
-    console.log(coordinatesTarget);
   }
 
   async get_origin() {
@@ -46,6 +44,8 @@ export class SearchFormComponent {
       const { results } = await this.geocodeService.get_location_from_address(
         this.searchForm.value.origen
       );
+
+      console.log(results)
 
       const cond1 = results[0].address_components[1].long_name == 'Sevilla';
       const cond2 = results[0].address_components[2].long_name == 'Sevilla';

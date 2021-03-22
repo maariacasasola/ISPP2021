@@ -122,4 +122,7 @@ export class AuthServiceService {
       this.router.navigate(['log-in']);
     });
   }
+
+  
+
 }
