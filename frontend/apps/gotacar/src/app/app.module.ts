@@ -36,6 +36,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -84,6 +85,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatDialogModule,
     MatSidenavModule,
     MatFormFieldModule,
     MatIconModule,
@@ -130,4 +132,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

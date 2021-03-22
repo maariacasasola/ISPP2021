@@ -1,18 +1,19 @@
 import { Component, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+//import {DialogElementsForbiddenDialog} from '../components/access-forbidden/access-forbidden.component';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
+  Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticatedGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(public router: Router, public dialog: MatDialog) {}
   openDialog() {
     this.dialog.open(DialogElementsForbiddenDialog);
@@ -25,12 +26,11 @@ export class AuthenticatedGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      const result = localStorage.getItem('roles').includes("ROLE_CLIENT");
+      const result = localStorage.getItem('roles').includes("ROLE_ADMIN");
       if(!result){ this.router.navigate(['home'])}
       this.openDialog()
     return result;
   }
-  
 }
 
 @Component({
