@@ -37,9 +37,6 @@ export class CreateTripFormComponent {
     this.hourIsValid()
     this.checkOrigen()
 
-
-    console.log(this.createTripForm.value.horaInicio);
-
     const fecha = this.createTripForm.value.fecha;
     const horaInicio = this.createTripForm.value.horaInicio;
     const horaFin = this.createTripForm.value.horaFin;
@@ -49,48 +46,45 @@ export class CreateTripFormComponent {
 
     const hoursF = horaFin.split(':')[0];
     const minutesF = horaFin.split(':')[1];
-    
-    const startDate = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getFullYear(), hoursI, minutesI, 0);
-    const endingDate = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getFullYear(), hoursF, minutesF, 0);
 
-    
+    const startDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursI, minutesI, 0);
+    const endingDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursF, minutesF, 0);
+
+    //////
+
+    const coordinatesOrigin = await this.get_origin();
+    const coordinatesTarget = await this.get_target();
 
 
-    /*
-         const coordinatesOrigin = await this.get_origin();
-         const coordinatesTarget = await this.get_target();
-     
-         const LocationOrigen: Location = {
-           lat: coordinatesOrigin.coordinates.lat,
-           lng: coordinatesOrigin.coordinates.lng,
-           address: '',
-           name: '',
-         }
-     
-         const LocationDestino: Location = {
-           lat: coordinatesDestino.lat,
-           lng: coordinatesDestino.lng,
-           address: '',
-           name:'',
-         }
-         const trip: Trip = {
-           starting_point: LocationOrigen,
-           endingPoint: LocationDestino,
-           price: this.createTripForm.value.price,
-           startDate: this.createTripForm.value.startDate,
-           endingDate: this.createTripForm.value.endingDate,
-           cancelationDate: this.createTripForm.value.cancelationDate,
-           comment: this.createTripForm.value.comment,
-           places: this.createTripForm.value.numeroPasajero,
-           canceled: false,
-         }
-     
-         try {
-           this.tripService.create_trip(trip);
-         } catch (error) {
-           console.error(error);
-         }
-     */
+    const LocationOrigen = {
+      lat: coordinatesOrigin.lat,
+      lng: coordinatesOrigin.lng,
+      address: coordinatesOrigin.address,
+    }
+
+    const LocationDestino = {
+      lat: coordinatesTarget.lat,
+      lng: coordinatesTarget.lng,
+      address: coordinatesTarget.address,
+    }
+    const trip: Trip = {
+      starting_point: LocationOrigen,
+      endingPoint: LocationDestino,
+      price: this.createTripForm.value.price,
+      startDate: startDatee,
+      endingDate: endingDatee,
+      cancelationDate: this.createTripForm.value.cancelationDate,
+      comment: this.createTripForm.value.comment,
+      places: this.createTripForm.value.numeroPasajero,
+      canceled: false,
+    }
+
+    try {
+      this.tripService.create_trip(trip);
+    } catch (error) {
+      console.error(error);
+    }
+
 
   }
 
@@ -106,7 +100,6 @@ export class CreateTripFormComponent {
         'Cerrar'
       );
     }
-    console.log
   }
 
   hourIsValid() {
@@ -130,15 +123,14 @@ export class CreateTripFormComponent {
         this.createTripForm.value.origen
       );
 
-      console.log(results[0]?.geometry?.location?.lat);
-      console.log(results[0]?.geometry?.location?.lng);
-
       const cond1 = results[0].address_components[1].long_name == 'Sevilla';
       const cond2 = results[0].address_components[2].long_name == 'Sevilla';
       const cond3 = results[0].address_components[3].long_name == 'Sevilla';
 
       if (cond1 || cond2 || cond3) {
         const coordinates = {
+          name: this.createTripForm.value.origen,
+          address: results[0].address_components[1].long_name + ',' + results[0].address_components[0].long_name,
           lat: results[0]?.geometry?.location?.lat,
           lng: results[0]?.geometry?.location?.lng,
         };
@@ -166,6 +158,8 @@ export class CreateTripFormComponent {
 
       if (cond1 || cond2 || cond3) {
         const coordinates = {
+          name: this.createTripForm.value.origen,
+          address: results[0].address_components[1].long_name + ',' + results[0].address_components[0].long_name,
           lat: results[0]?.geometry?.location?.lat,
           lng: results[0]?.geometry?.location?.lng,
         };
