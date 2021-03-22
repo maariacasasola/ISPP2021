@@ -46,7 +46,6 @@ export class SearchFormComponent {
       const { results } = await this.geocodeService.get_location_from_address(
         this.searchForm.value.origen
       );
-
       const cond1 = results[0].address_components[1].long_name == 'Sevilla';
       const cond2 = results[0].address_components[2].long_name == 'Sevilla';
       const cond3 = results[0].address_components[3].long_name == 'Sevilla';

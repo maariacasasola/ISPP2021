@@ -36,10 +36,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
+import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
@@ -69,6 +71,7 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
     ConvertCentToEurPipe
@@ -89,6 +92,7 @@ registerLocaleData(localeEs, 'es');
     MatIconModule,
     MatCardModule,
     MatButtonModule,
+    MatGridListModule,
     MatFormFieldModule,
     MatInputModule,
     AppRoutingModule,

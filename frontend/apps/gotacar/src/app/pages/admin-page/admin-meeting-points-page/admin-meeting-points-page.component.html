@@ -1,7 +1,5 @@
-<frontend-main-header [title]="'Gotacar jeje'"></frontend-main-header>
-
 <div class="grid-container">
-  <div class="Formulario">
+  <div class="formulario">
     <div class="space">
       <button mat-fab color="warn" (click)="toggleDisplayCreation()">
         <mat-icon>add_location_alt</mat-icon>
@@ -60,7 +58,7 @@
         <div class="custom2">
           <button
             mat-raised-button
-            color="primary"
+            class="send-button"
             type="submit"
             (click)="onSubmit()"
             [disabled]="!new_meeting_point.valid"
@@ -85,7 +83,7 @@
         <div class="custom2">
           <button
             mat-raised-button
-            color="primary"
+            class="send-button"
             type="submit"
             (click)="filterMarker()"
             [disabled]="!filter_meeting_point.valid"
@@ -99,8 +97,8 @@
 
   <div class="Mapa">
     <google-map
-      height="450px"
-      width="100%"
+      height="500px"
+      width="140%"
       [zoom]="zoom"
       [center]="center"
       [options]="options"
