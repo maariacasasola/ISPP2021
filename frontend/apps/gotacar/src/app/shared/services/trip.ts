@@ -3,13 +3,11 @@ import { Location } from "./location-model"
 export interface Trip {
 
     starting_point: Location;
-    endingPoint: Location;
+    ending_point: Location;
     price: number;
-    startDate: Date;
-    endingDate: Date;
-    cancelationDate: Date;
-    comment: string;
+    start_date: Date;
+    end_date: Date;
+    comments: string;
     places: number;
-    canceled: boolean;
 
 }

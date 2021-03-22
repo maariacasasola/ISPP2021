@@ -49,38 +49,39 @@ export class CreateTripFormComponent {
 
     const startDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursI, minutesI, 0);
     const endingDatee = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hoursF, minutesF, 0);
-
     //////
 
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
 
 
-    const LocationOrigen = {
+    const LocationOrigen : Location= {
+      name: '',
       lat: coordinatesOrigin.lat,
       lng: coordinatesOrigin.lng,
       address: coordinatesOrigin.address,
     }
 
-    const LocationDestino = {
+    const LocationDestino: Location = {
+      name:'',
       lat: coordinatesTarget.lat,
       lng: coordinatesTarget.lng,
       address: coordinatesTarget.address,
     }
     const trip: Trip = {
       starting_point: LocationOrigen,
-      endingPoint: LocationDestino,
-      price: this.createTripForm.value.price,
-      startDate: startDatee,
-      endingDate: endingDatee,
-      cancelationDate: this.createTripForm.value.cancelationDate,
-      comment: this.createTripForm.value.comment,
-      places: this.createTripForm.value.numeroPasajero,
-      canceled: false,
+      ending_point: LocationDestino,
+      price: Number(this.createTripForm.value.price),
+      start_date: startDatee,
+      end_date: endingDatee,
+      comments: String(this.createTripForm.value.comentarios),
+      places: Number(this.createTripForm.value.numeroPasajero),
     }
 
     try {
-      this.tripService.create_trip(trip);
+      
+      const response = this.tripService.create_trip(trip);
+      this.createTripForm.reset();
     } catch (error) {
       console.error(error);
     }
@@ -95,6 +96,7 @@ export class CreateTripFormComponent {
     const isValid = origen == destino;
 
     if (isValid) {
+      
       this.openSnackBar(
         'El origen y el destino no pueden ser el mismo',
         'Cerrar'
@@ -110,6 +112,7 @@ export class CreateTripFormComponent {
     const isValid = horaInicio < horaFin;
 
     if (!isValid) {
+      
       this.openSnackBar(
         'La hora de inicio no puede ser posterior a la hora de fin del viaje',
         'Cerrar'

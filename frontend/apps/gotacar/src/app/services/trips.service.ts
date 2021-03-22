@@ -18,15 +18,14 @@ export class TripsService {
   async create_trip(trip: Trip) {
     const body = {
       starting_point: trip.starting_point,
-      endingPoint: trip.endingPoint,
+      ending_point: trip.ending_point,
       price: trip.price,
-      startDate: trip.startDate,
-      endingDate: trip.endingDate,
-      cancelationDate: trip.cancelationDate,
-      comment: trip.comment,
+      start_date: trip.start_date,
+      end_date: trip.end_date,
+      comments: trip.comments,
       places: trip.places,
-      canceled: trip.canceled,
     }
+
     return this._http_client
       .post(environment.api_url + '/create_trip', body).toPromise()
 
