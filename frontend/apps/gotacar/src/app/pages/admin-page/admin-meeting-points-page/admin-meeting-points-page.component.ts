@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 import { MeetingPointService } from '../../../services/meeting-point.service';
+import { MeetingPoint } from '../../../shared/services/meeting-point';
 
 @Component({
   selector: 'frontend-admin-meeting-points-page',
@@ -15,7 +16,6 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   zoom = 14;
   center = { lat: 37.38868247472144, lng: -5.984124294177864 };
   isShow = true;
-  isShowFilter = true;
   options: google.maps.MapOptions = {
     disableDefaultUI: true,
     disableDoubleClickZoom: true,
@@ -26,9 +26,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
 
   meeting_points;
 
-  filter_meeting_point = new FormGroup({
-    filter: new FormControl('', Validators.required),
-  });
+  
   new_meeting_point = new FormGroup({
     name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -63,23 +61,20 @@ export class AdminMeetingPointsPageComponent implements OnInit {
 
   toggleDisplayCreation() {
     this.isShow = !this.isShow;
-    this.isShowFilter = true;
+    this.new_meeting_point.reset();
+
+  }
+  resetForm(){
+    this.new_meeting_point.reset();
   }
 
-  toggleDisplayFilter() {
-    this.isShowFilter = !this.isShowFilter;
-    this.isShow = true;
-  }
+  
 
   click(event: google.maps.MouseEvent) {
     console.log(event);
   }
 
-  filterMarker() {
-    for (var marker of this.markers) {
-      let filter = this.filter_meeting_point.controls['filter'].value;
-    }
-  }
+  
 
   addMarker(event: google.maps.MapMouseEvent) {
     this.new_meeting_point.setValue({
@@ -89,25 +84,26 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       lng: Number(event.latLng.lng()),
     });
 
-    // this.markers.push({
-    //   position: {
-    //     lat: Number(event.latLng.lat()),
-    //     lng: Number(event.latLng.lng()),
-    //   },
-    //   title: 'any',
-    //   info: 'any',
-    // });
+    
   }
 
-  onSubmit() {
-    this.markers.push({
-      position: {
+  async onSubmit() {
+    
+    try {
+      const newMeetingPoint: MeetingPoint = {
+        name: String(this.new_meeting_point.controls['name'].value),
+        address: String(this.new_meeting_point.controls['address'].value),
         lat: Number(this.new_meeting_point.controls['lat'].value),
         lng: Number(this.new_meeting_point.controls['lng'].value),
-      },
-      title: String(this.new_meeting_point.controls['address'].value),
-      info: String(this.new_meeting_point.controls['name'].value),
-    });
+      }
+      const response = await this._meeting_point_service.post_meeting_point(newMeetingPoint);
+      //TODO: Comprobar respuesta 
+      this.get_all_meeting_points();
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+   
   }
 
   openInfo(marker: MapMarker, content) {

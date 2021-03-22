@@ -1,4 +1,4 @@
-<frontend-main-header [title]="'Gotacar jeje'"></frontend-main-header>
+
 
 <div class="grid-container">
   <div class="Formulario">
@@ -7,15 +7,11 @@
         <mat-icon>add_location_alt</mat-icon>
       </button>
     </div>
-    <div class="space">
-      <button mat-fab color="primary" (click)="toggleDisplayFilter()">
-        <mat-icon>filter_alt</mat-icon>
-      </button>
-    </div>
+    
 
     <div class="custom" [hidden]="isShow">
       <form class="custom" [formGroup]="new_meeting_point">
-        <h3>Nuevo punto de encuentro</h3>
+        
 
         <mat-form-field appearance="fill">
           <mat-label>Nombre</mat-label>
@@ -58,43 +54,32 @@
         </mat-form-field>
 
         <div class="custom2">
-          <button
+          <button class="buttonSpace"
+            mat-raised-button
+            style="background-color: #4DA8CF; color: white;"
+            (click)="resetForm()"
+            
+          >
+            Limpiar
+          </button>
+
+          <button class="buttonSpace"
             mat-raised-button
             color="primary"
             type="submit"
             (click)="onSubmit()"
             [disabled]="!new_meeting_point.valid"
           >
-            Enviar
+            Crear
           </button>
+
+          
         </div>
       </form>
     </div>
-    <div class="custom" [hidden]="isShowFilter">
-      <form class="custom" [formGroup]="filter_meeting_point">
-        <h3>Filtra puntos de encuentro</h3>
-        <mat-form-field appearance="fill">
-          <mat-label>Filtrar puntos</mat-label>
-          <input
-            type="text"
-            formControlName="filter"
-            matInput
-            placeholder="Nombre Info"
-          />
-        </mat-form-field>
-        <div class="custom2">
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            (click)="filterMarker()"
-            [disabled]="!filter_meeting_point.valid"
-          >
-            Enviar
-          </button>
-        </div>
-      </form>
-    </div>
+    
+      
+    
   </div>
 
   <div class="Mapa">
