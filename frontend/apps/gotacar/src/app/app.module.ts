@@ -36,6 +36,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -52,6 +53,7 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
+import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -71,7 +73,8 @@ registerLocaleData(localeEs, 'es');
     AuthMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
-    ConvertCentToEurPipe
+    ConvertCentToEurPipe,
+    AccessForbiddenDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -84,6 +87,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatDialogModule,
     MatSidenavModule,
     MatFormFieldModule,
     MatIconModule,
@@ -130,4 +134,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

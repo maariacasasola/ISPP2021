@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
+import { AdminGuard } from './guards/admin.guard';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
@@ -41,7 +42,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminPageComponent,
-    canActivate: [AuthenticatedGuard],
+    canActivate: [AdminGuard],
     children: [
       {
         path: 'map',
