@@ -37,8 +37,6 @@ export class SearchFormComponent {
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
 
-    console.log(coordinatesOrigin);
-    console.log(coordinatesTarget);
   }
 
   async get_origin() {
