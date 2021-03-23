@@ -5,27 +5,25 @@
   margin-left: 50px;
 }
 .custom {
-  margin-left: 40px;
+  margin-left: 60px;
   margin-right: 30px;
+  width: max-content;
+  padding: 0px;
+  display: grid;
 }
 .custom2 {
   margin-left: 10px;
 }
-.buttonSpace{
+
+.send-button {
+  background-color: #538994;
+  color: white;
   margin: 10px;
 }
 
-.send-button{
-  background-color: #538994;
-  color: white;
-}
-
 .space {
-  float: right;
-  max-width: 400px;
-  margin-top: 10px;
-  margin-right: 120px;
-  margin-bottom: 10px;
+  margin-left: 20px;
+  width: max-content;
 }
 .grid-container {
   display: grid;
@@ -34,9 +32,9 @@
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    'Formulario Mapa Mapa .'
-    'Formulario Mapa Mapa .'
-    'Formulario Mapa Mapa .';
+    "Formulario Mapa Mapa ."
+    "Formulario Mapa Mapa ."
+    "Formulario Mapa Mapa .";
   color: #0e4a6b;
 }
 .Mapa {
@@ -67,7 +65,7 @@
     color: #538994;
   }
 
-  .mat-form-field-ripple{
-    background-color: #538994 !important;;
+  .mat-form-field-ripple {
+    background-color: #538994 !important;
   }
 }

@@ -62,6 +62,7 @@ import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
 import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
 import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -74,6 +75,7 @@ registerLocaleData(localeEs, 'es');
     MainFooterComponent,
     ClientProfilePageComponent,
     LogInPageComponent,
+    ErrorPageComponent,
     SearchFormComponent,
     MeetingPointMapComponent,
     AdminPageComponent,

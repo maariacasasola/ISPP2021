@@ -5,6 +5,7 @@ import { TripsService } from '../../services/trips.service';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { Trip } from '../../shared/services/trip';
 import { Location } from '../../shared/services/location-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-create-trip-form',
@@ -29,7 +30,8 @@ export class CreateTripFormComponent {
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
     private tripService: TripsService,
-    private geoService: GeocoderServiceService
+    private geoService: GeocoderServiceService,
+    public router: Router
   ) {
     this.minDate = new Date();
   }
@@ -107,10 +109,10 @@ export class CreateTripFormComponent {
       comments: String(this.createTripForm.value.comentarios),
       places: Number(this.createTripForm.value.numeroPasajero),
     };
-
+    
     try {
       const response = this.tripService.create_trip(trip);
-      this.createTripForm.reset();
+      this.router.navigate(['home'])
     } catch (error) {
       console.error(error);
     }

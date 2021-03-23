@@ -8,66 +8,35 @@
 
     <div class="custom" [hidden]="isShow">
       <form class="custom" [formGroup]="new_meeting_point">
+        <h3>Añadir punto de encuentro</h3>
         <mat-form-field appearance="fill">
           <mat-label>Nombre</mat-label>
-          <input
-            type="text"
-            formControlName="name"
-            matInput
-            placeholder="Marker1"
-          />
+          <input type="text" formControlName="name" matInput />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Direccion</mat-label>
-          <input
-            type="text"
-            formControlName="address"
-            matInput
-            placeholder="Marker1"
-          />
+          <input type="text" formControlName="address" matInput />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Latitud</mat-label>
-          <input
-            type="text"
-            formControlName="lat"
-            matInput
-            placeholder="Marker1"
-          />
+          <input type="text" formControlName="lat" matInput />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Longitud</mat-label>
-          <input
-            type="text"
-            formControlName="lng"
-            matInput
-            placeholder="Marker1"
-          />
+          <input type="text" formControlName="lng" matInput />
         </mat-form-field>
 
         <div class="custom2">
-          <button
-            class="buttonSpace"
-            mat-raised-button
-            class="send-button"
-            type="submit"
-            (click)="onSubmit()"
-            [disabled]="!new_meeting_point.valid"
-          >
+          <button mat-raised-button class="send-button" type="submit" (click)="onSubmit()"
+            [disabled]="!new_meeting_point.valid">
             Limpiar
           </button>
 
-          <button
-            class="buttonSpace"
-            mat-raised-button
-            class="send-button"
-            type="submit"
-            (click)="onSubmit()"
-            [disabled]="!new_meeting_point.valid"
-          >
+          <button mat-raised-button class="send-button" type="submit" (click)="onSubmit()"
+            [disabled]="!new_meeting_point.valid">
             Crear
           </button>
         </div>
@@ -76,22 +45,10 @@
   </div>
 
   <div class="Mapa">
-    <google-map
-      height="500px"
-      width="140%"
-      [zoom]="zoom"
-      [center]="center"
-      [options]="options"
-      (mapClick)="addMarker($event)"
-      (mapClick)="click($event)"
-    >
-      <map-marker
-        #markerElem="mapMarker"
-        *ngFor="let marker of markers"
-        [position]="marker.position"
-        [title]="marker.title"
-        (mapClick)="openInfo(markerElem, marker.info)"
-      >
+    <google-map height="500px" width="140%" [zoom]="zoom" [center]="center" [options]="options"
+      (mapClick)="addMarker($event)" (mapClick)="click($event)">
+      <map-marker #markerElem="mapMarker" *ngFor="let marker of markers" [position]="marker.position"
+        [title]="marker.title" (mapClick)="openInfo(markerElem, marker.info)">
       </map-marker>
 
       <map-info-window>{{ infoContent }}</map-info-window>
