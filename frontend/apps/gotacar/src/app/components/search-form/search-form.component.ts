@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TripsService } from '../../services/trips.service';
 
 @Component({
   selector: 'frontend-search-form',
@@ -10,10 +11,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SearchFormComponent {
   searchForm = this.fb.group({
-    origen: ['', Validators.required],
-    destino: ['', Validators.required],
-    fecha: ['', Validators.required],
-    //numPasajeros: ['', Validators.required],
+    origin: ['', Validators.required],
+    target: ['', Validators.required],
+    date: ['', Validators.required],
+    // TODO: Poner required y poner formulario campo
+    places: [1],
   });
 
   minDate: Date;
@@ -24,7 +26,8 @@ export class SearchFormComponent {
   constructor(
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private geocodeService: GeocoderServiceService
+    private geocodeService: GeocoderServiceService,
+    private _trips_service: TripsService
   ) {
     this.minDate = new Date();
   }
@@ -36,22 +39,39 @@ export class SearchFormComponent {
     }
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
+    const { places, date } = this.searchForm.value;
+    console.log(places);
+    console.log(date);
 
+    try {
+      const result = await this._trips_service.seach_trips(
+        coordinatesOrigin,
+        coordinatesTarget,
+        places,
+        date
+      );
+
+      // TODO: Mostrar el resultado en una página
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async get_origin() {
     try {
       const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.origen
+        this.searchForm.value.origin
       );
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
 
-      if (cond1 || cond2 || cond3) {
+      const search_result = results.filter((result) =>
+        JSON.stringify(result).includes('Sevilla')
+      );
+
+      if (search_result.length > 0) {
         const coordinates = {
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
+          lat: search_result[0]?.geometry?.location?.lat,
+          lng: search_result[0]?.geometry?.location?.lng,
         };
         return coordinates;
       } else {
@@ -68,17 +88,17 @@ export class SearchFormComponent {
   async get_target() {
     try {
       const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.destino
+        this.searchForm.value.target
       );
 
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
+      const search_result = results.filter((result) =>
+        JSON.stringify(result).includes('Sevilla')
+      );
 
-      if (cond1 || cond2 || cond3) {
+      if (search_result.length > 0) {
         const coordinates = {
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
+          lat: search_result[0]?.geometry?.location?.lat,
+          lng: search_result[0]?.geometry?.location?.lng,
         };
         return coordinates;
       } else {
