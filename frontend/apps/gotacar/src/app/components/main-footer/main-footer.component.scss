@@ -1,0 +1,22 @@
+footer{
+    background-color: white;
+    color: #444444;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding:10px;
+    justify-items: center;
+    border:#444444;
+}
+
+.footer-content{
+    display: flex;
+    align-items: center;
+}
+
+img{
+    align-items: center;
+}
+
+p{
+    padding: 20px 0 20px 20px;
+}

@@ -34,6 +34,7 @@ export class SearchFormComponent {
       this.searchForm.markAllAsTouched();
       return;
     }
+    console.log(this.searchForm)
     const coordinatesOrigin = await this.get_origin();
     const coordinatesTarget = await this.get_target();
 

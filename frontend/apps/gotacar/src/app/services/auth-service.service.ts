@@ -78,7 +78,19 @@ export class AuthServiceService {
 
   is_logged_in(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null ? true : false;
+  }
+
+  is_admin(): boolean {
+    return this.is_logged_in() && localStorage.getItem('roles').includes('ROLE_ADMIN');
+  }
+
+  is_client(): boolean {
+    return this.is_logged_in() && localStorage.getItem('roles').includes('ROLE_CLIENT');
+  }
+
+  is_driver(): boolean {
+    return this.is_client() && localStorage.getItem('roles').includes('ROLE_DRIVER');
   }
 
   google_auth() {
@@ -125,6 +137,6 @@ export class AuthServiceService {
     });
   }
 
-  
+
 
 }
