@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 import { MeetingPointService } from '../../../services/meeting-point.service';
 import { MeetingPoint } from '../../../shared/services/meeting-point';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'frontend-admin-meeting-points-page',
   templateUrl: './admin-meeting-points-page.component.html',
@@ -34,7 +34,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     lng: new FormControl('', Validators.required),
   });
 
-  constructor(private _meeting_point_service: MeetingPointService) {
+  constructor(private _meeting_point_service: MeetingPointService,private _snackBar: MatSnackBar,) {
     this.get_all_meeting_points();
   }
 
@@ -43,7 +43,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   async get_all_meeting_points() {
     try {
       this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
-      console.log(this.meeting_points);
+     
       this.meeting_points.forEach((meeting_point) => {
         this.markers.push({
           position: {
@@ -70,9 +70,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
 
   
 
-  click(event: google.maps.MouseEvent) {
-    console.log(event);
-  }
+  
 
   
 
@@ -97,7 +95,13 @@ export class AdminMeetingPointsPageComponent implements OnInit {
         lng: Number(this.new_meeting_point.controls['lng'].value),
       }
       const response = await this._meeting_point_service.post_meeting_point(newMeetingPoint);
-      //TODO: Comprobar respuesta 
+      const meeting_point_created = response['address'].toString();
+      if (response){
+        this.openSnackBar(
+          'Punto creado satisfactoriamente en '+ meeting_point_created,
+          'Cerrar'
+        );
+      }
       this.get_all_meeting_points();
       console.log(response)
     } catch (error) {
@@ -109,5 +113,11 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   openInfo(marker: MapMarker, content) {
     this.infoContent = content;
     this.info.open(marker);
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      panelClass: ['blue-snackbar'],
+    });
   }
 }
