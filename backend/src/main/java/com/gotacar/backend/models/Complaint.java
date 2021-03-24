@@ -1,14 +1,12 @@
 package com.gotacar.backend.models;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;

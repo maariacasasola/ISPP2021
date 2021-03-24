@@ -16,8 +16,8 @@ public class ConplaintAppeal {
     @Id
     String id;
 
-    // @NotNull
-    // public Complaint complaint;
+    @NotNull
+    public Complaint complaint;
 
     @Length(max = 5000)
     @NotBlank
@@ -29,15 +29,15 @@ public class ConplaintAppeal {
     public ConplaintAppeal() {
     }
 
-    public ConplaintAppeal(String c, Boolean check) {
-        // this.complaint = comp;
+    public ConplaintAppeal(String c, Boolean check, Complaint comp) {
+        this.complaint = comp;
         this.content = c;
         this.checked = check;
     }
 
     @Override
     public String toString() {
-        return String.format("ComplaintAppeal[id=%s, content=%s, checked=%s]", id, content, checked.toString());
+        return String.format("ComplaintAppeal[id=%s, content=%s, checked=%s, complaint=%s]", id, content, checked.toString(), complaint.toString());
 
     }
 }
