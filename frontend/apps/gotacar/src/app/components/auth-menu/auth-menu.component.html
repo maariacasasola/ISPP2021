@@ -6,9 +6,21 @@
     <mat-icon>sentiment_satisfied_alt </mat-icon>
     <span>Perfil</span>
   </button>
-  <button mat-menu-item *ngIf="authService.is_driver()" routerLink="/authenticated/create-trips">
+  <button
+    mat-menu-item
+    *ngIf="authService.is_driver()"
+    routerLink="/authenticated/create-trips"
+  >
     <mat-icon>directions_car</mat-icon>
     <span>Publicar viaje</span>
+  </button>
+  <button
+    mat-menu-item
+    *ngIf="authService.is_driver()"
+    routerLink="/authenticated/trips"
+  >
+    <mat-icon>view_list </mat-icon>
+    <span>Mis Viajes</span>
   </button>
   <hr />
   <button mat-menu-item (click)="authService.sign_out()">

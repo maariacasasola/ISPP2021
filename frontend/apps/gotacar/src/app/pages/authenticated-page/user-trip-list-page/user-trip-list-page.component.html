@@ -1,0 +1,43 @@
+<div>
+  <h1>VIAJES REGISTRADOS</h1>
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
+      <mat-list role="list">
+        <mat-card class="trip">
+          <mat-card-title class="card-title">{{
+            trip?.user?.firstName + ' ' + trip?.user?.lastName
+          }}</mat-card-title>
+          <br /><br/>
+          <mat-card-content class="card-content">
+            <mat-card-subtitle>
+              <b>Hora de salida:</b> {{ trip?.startDate }}
+            </mat-card-subtitle>
+            <br>
+            <mat-card-subtitle>
+              <b>Hora de llegada:</b> {{ trip?.endingDate }}
+            </mat-card-subtitle>
+            <br>
+            <div style="text-align:center">
+            <mat-card-subtitle>
+              {{ trip?.startingPoint?.address }} &#8594;
+              {{ trip?.endingPoint?.address }}
+            </mat-card-subtitle>
+            <b>
+            <mat-card-subtitle>{{
+              trip?.price | convertCentToEur
+            }}</mat-card-subtitle>
+            </b>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-raised-button class="button">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <br />
+      </mat-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
