@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class User {
   public String lastName;
 
   @NotBlank
+  @Indexed(unique = true)
   public String uid;
 
   @Email(message = "Invalid email")
