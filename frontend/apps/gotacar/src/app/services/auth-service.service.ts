@@ -82,15 +82,27 @@ export class AuthServiceService {
   }
 
   is_admin(): boolean {
-    return this.is_logged_in() && localStorage.getItem('roles')?.includes('ROLE_ADMIN');
+    let has_admin_role = false;
+    if (localStorage.getItem('roles')) {
+      has_admin_role = localStorage.getItem('roles').includes('ROLE_ADMIN');
+    }
+    return this.is_logged_in() && has_admin_role;
   }
 
   is_client(): boolean {
-    return this.is_logged_in() && localStorage.getItem('roles')?.includes('ROLE_CLIENT');
+    let has_client_role = false;
+    if (localStorage.getItem('roles')) {
+      has_client_role = localStorage.getItem('roles').includes('ROLE_CLIENT');
+    }
+    return this.is_logged_in() && has_client_role;
   }
 
   is_driver(): boolean {
-    return this.is_client() && localStorage.getItem('roles')?.includes('ROLE_DRIVER');
+    let has_driver_role = false;
+    if (localStorage.getItem('roles')) {
+      has_driver_role = localStorage.getItem('roles').includes('ROLE_DRIVER');
+    }
+    return this.is_client() && has_driver_role;
   }
 
   google_auth() {
@@ -136,7 +148,4 @@ export class AuthServiceService {
       this.router.navigate(['log-in']);
     });
   }
-
-
-
 }

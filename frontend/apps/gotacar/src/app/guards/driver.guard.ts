@@ -23,7 +23,10 @@ export class DriverGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const result = localStorage.getItem('roles').includes('ROLE_DRIVER');
+    let result = false;
+    if (localStorage.getItem('roles')) {
+      result = localStorage.getItem('roles').includes('ROLE_DRIVER');
+    }
     if (!result) {
       this.router.navigate(['home']);
       this.dialog.open(AccessForbiddenDialogComponent);
