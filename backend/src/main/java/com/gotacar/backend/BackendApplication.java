@@ -23,8 +23,8 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrders.TripOrder;
-import com.gotacar.backend.models.TripOrders.TripOrderRepository;
+import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
@@ -193,21 +193,21 @@ public class BackendApplication implements CommandLineRunner {
 
 		// TRIP ORDERS
 		// -----------------------------------------------------------------------------------------
-		TripOrder tripOrder1 = new TripOrder(trip6, client,  LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1, "COMPLETED");
-		TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700, "", 2, "REFUNDED");
-		TripOrder tripOrder3 = new TripOrder(trip7, client3, LocalDateTime.of(2021, 03, 20, 14, 46, 37), 400, "", 1, "COMPLETED");
-		TripOrder tripOrder4 = new TripOrder(trip7, client5, LocalDateTime.of(2021, 03, 20, 15, 29, 25), 400, "", 1, "COMPLETED");
-		TripOrder tripOrder5 = new TripOrder(trip8, client4, LocalDateTime.of(2021, 03, 21, 10, 57, 42), 450, "", 1, "COMPLETED");
-		TripOrder tripOrder6 = new TripOrder(trip8, client7, LocalDateTime.of(2021, 03, 21, 11, 17, 28), 900, "", 2, "COMPLETED");
-		TripOrder tripOrder7 = new TripOrder(trip6, client6, LocalDateTime.of(2021, 03, 20, 16, 57, 42), 350, "", 1, "REFUNDED");
-		TripOrder tripOrder8 = new TripOrder(trip6, client8, LocalDateTime.of(2021, 03, 20, 11, 37, 16), 350, "", 1, "COMPLETED");
-		TripOrder tripOrder9 = new TripOrder(trip8, client3, LocalDateTime.of(2021, 03, 21, 11, 50, 52), 450, "", 1, "REFUNDED");
-		TripOrder tripOrder10 = new TripOrder(trip1, client5, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 440, "", 2, "COMPLETED");
-		TripOrder tripOrder11 = new TripOrder(trip2, client8, LocalDateTime.of(2021, 03, 24, 20, 33, 27), 220, "", 1, "COMPLETED");
-		TripOrder tripOrder12 = new TripOrder(trip3, client, LocalDateTime.of(2021, 03, 24, 17, 35, 22), 400, "", 2, "COMPLETED");
-		TripOrder tripOrder13 = new TripOrder(trip2, client7, LocalDateTime.of(2021, 03, 24, 22, 50, 03), 220, "", 1, "COMPLETED");
-		TripOrder tripOrder14 = new TripOrder(trip4, driver, LocalDateTime.of(2021, 03, 24, 23, 46, 32), 300, "", 1, "COMPLETED");
-		TripOrder tripOrder15 = new TripOrder(trip5, client2, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2, "COMPLETED");
+		TripOrder tripOrder1 = new TripOrder(trip6, client,  LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
+		TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700, "", 2);
+		TripOrder tripOrder3 = new TripOrder(trip7, client3, LocalDateTime.of(2021, 03, 20, 14, 46, 37), 400, "", 1);
+		TripOrder tripOrder4 = new TripOrder(trip7, client5, LocalDateTime.of(2021, 03, 20, 15, 29, 25), 400, "", 1);
+		TripOrder tripOrder5 = new TripOrder(trip8, client4, LocalDateTime.of(2021, 03, 21, 10, 57, 42), 450, "", 1);
+		TripOrder tripOrder6 = new TripOrder(trip8, client7, LocalDateTime.of(2021, 03, 21, 11, 17, 28), 900, "", 2);
+		TripOrder tripOrder7 = new TripOrder(trip6, client6, LocalDateTime.of(2021, 03, 20, 16, 57, 42), 350, "", 1);
+		TripOrder tripOrder8 = new TripOrder(trip6, client8, LocalDateTime.of(2021, 03, 20, 11, 37, 16), 350, "", 1);
+		TripOrder tripOrder9 = new TripOrder(trip8, client3, LocalDateTime.of(2021, 03, 21, 11, 50, 52), 450, "", 1);
+		TripOrder tripOrder10 = new TripOrder(trip1, client5, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 440, "", 2);
+		TripOrder tripOrder11 = new TripOrder(trip2, client8, LocalDateTime.of(2021, 03, 24, 20, 33, 27), 220, "", 1);
+		TripOrder tripOrder12 = new TripOrder(trip3, client, LocalDateTime.of(2021, 03, 24, 17, 35, 22), 400, "", 2);
+		TripOrder tripOrder13 = new TripOrder(trip2, client7, LocalDateTime.of(2021, 03, 24, 22, 50, 03), 220, "", 1);
+		TripOrder tripOrder14 = new TripOrder(trip4, driver, LocalDateTime.of(2021, 03, 24, 23, 46, 32), 300, "", 1);
+		TripOrder tripOrder15 = new TripOrder(trip5, client2, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2);
 
 		tripOrderRepository.save(tripOrder1);
 		tripOrderRepository.save(tripOrder2);
