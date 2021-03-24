@@ -24,7 +24,10 @@ export class AuthenticatedGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const result = localStorage.getItem('roles').includes('ROLE_CLIENT');
+    let result = false;
+    if (localStorage.getItem('roles')) {
+      result = localStorage.getItem('roles').includes('ROLE_CLIENT');
+    }
     if (!result) {
       this.router.navigate(['home']);
       this.dialog.open(AccessForbiddenDialogComponent);

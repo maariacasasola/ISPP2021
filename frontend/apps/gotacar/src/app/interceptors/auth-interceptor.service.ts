@@ -34,7 +34,6 @@ export class AuthInterceptorService implements HttpInterceptor {
       token &&
       (req.url.includes('appspot.com') || req.url.includes('localhost'))
     ) {
-      console.log(req);
       request = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,

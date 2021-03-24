@@ -1,14 +1,19 @@
 <mat-toolbar class="main-toolbar">
   <div class="logo-container">
-    <input type="image" (click)="redirect()" src="assets/img/logo3.png" alt="GotACar-Logo" />
+    <input
+      type="image"
+      (click)="redirect()"
+      src="assets/img/logo3.png"
+      alt="GotACar-Logo"
+    />
   </div>
-  <div *ngIf="isAdmin">
-    <frontend-admin-menu></frontend-admin-menu> 
+  <div *ngIf="isAdmin()">
+    <frontend-admin-menu></frontend-admin-menu>
   </div>
-  <div *ngIf="isClient">
-    <frontend-auth-menu></frontend-auth-menu> 
+  <div *ngIf="isClient()">
+    <frontend-auth-menu></frontend-auth-menu>
   </div>
-  <div *ngIf="!isLogged">
-    <frontend-no-auth-menu></frontend-no-auth-menu> 
+  <div *ngIf="!isLogged()">
+    <frontend-no-auth-menu></frontend-no-auth-menu>
   </div>
 </mat-toolbar>
