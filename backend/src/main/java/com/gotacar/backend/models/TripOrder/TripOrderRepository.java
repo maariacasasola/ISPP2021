@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.TripOrders;
+package com.gotacar.backend.models.TripOrder;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -82,15 +82,15 @@ export class AuthServiceService {
   }
 
   is_admin(): boolean {
-    return this.is_logged_in() && localStorage.getItem('roles').includes('ROLE_ADMIN');
+    return this.is_logged_in() && localStorage.getItem('roles')?.includes('ROLE_ADMIN');
   }
 
   is_client(): boolean {
-    return this.is_logged_in() && localStorage.getItem('roles').includes('ROLE_CLIENT');
+    return this.is_logged_in() && localStorage.getItem('roles')?.includes('ROLE_CLIENT');
   }
 
   is_driver(): boolean {
-    return this.is_client() && localStorage.getItem('roles').includes('ROLE_DRIVER');
+    return this.is_client() && localStorage.getItem('roles')?.includes('ROLE_DRIVER');
   }
 
   google_auth() {
