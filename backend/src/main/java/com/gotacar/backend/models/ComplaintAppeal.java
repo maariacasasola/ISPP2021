@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ConplaintAppeal {
+public class ComplaintAppeal {
 
     @Id
     String id;
@@ -26,10 +26,10 @@ public class ConplaintAppeal {
     @NotNull
     public Boolean checked;
 
-    public ConplaintAppeal() {
+    public ComplaintAppeal() {
     }
 
-    public ConplaintAppeal(String c, Boolean check, Complaint comp) {
+    public ComplaintAppeal(String c, Boolean check, Complaint comp) {
         this.complaint = comp;
         this.content = c;
         this.checked = check;

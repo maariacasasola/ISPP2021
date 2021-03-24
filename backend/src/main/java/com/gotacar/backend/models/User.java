@@ -9,6 +9,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.URL;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class User {
   public String email;
 
   @Pattern(regexp = "[0-9]{8,8}[A-Z]", message = "Invalid dni number")
+  @UniqueElements
   public String dni;
 
   @URL(message = "Photo must be an url")
