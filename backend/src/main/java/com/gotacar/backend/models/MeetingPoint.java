@@ -17,6 +17,7 @@ public class MeetingPoint {
 
     @NotNull
     public Double lng;
+    
     @NotNull
     public Double lat;
     

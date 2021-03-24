@@ -23,6 +23,10 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
+import com.gotacar.backend.models.TripOrders.TripOrder;
+import com.gotacar.backend.models.TripOrders.TripOrderRepository;
+import com.gotacar.backend.models.Complaint;
+import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
@@ -41,11 +45,11 @@ public class BackendApplication implements CommandLineRunner {
 	@Autowired
 	private TripRepository tripRepository;
 
-	// @Autowired
-	// private TripOrderRepository tripOrderRepository;
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
 
 	@Autowired
-	private ComplaintAppealRepository conplaintAppealRepository;
+	private ComplaintAppealRepository complaintAppealRepository;
 
 	@Autowired
 	private ComplaintRepository complaintRepository;
@@ -64,8 +68,9 @@ public class BackendApplication implements CommandLineRunner {
 		userRepository.deleteAll();
 		meetingPointRepository.deleteAll();
 		tripRepository.deleteAll();
+		tripOrderRepository.deleteAll();
 		complaintRepository.deleteAll();
-		conplaintAppealRepository.deleteAll();
+		complaintAppealRepository.deleteAll();
 
 		// USERS
 		// -----------------------------------------------------------------------------------------
@@ -127,7 +132,6 @@ public class BackendApplication implements CommandLineRunner {
 
 		// MEETING POINTS
 		// -----------------------------------------------------------------------------------------
-
 		MeetingPoint meetingPoint1 = new MeetingPoint(37.37722160408209, -5.9871317313950705,
 				"41013, Plaza de España, Sevilla", "Plaza de España");
 		MeetingPoint meetingPoint2 = new MeetingPoint(37.42663376216525, -5.978099088991483, "41015, Torneo, Sevilla",
@@ -175,8 +179,8 @@ public class BackendApplication implements CommandLineRunner {
 		Trip trip4 = new Trip(location3, location4, 300, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 3, driver3);
 		Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2, driver2);
 		Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Lagoh", 2, driver);
-		Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9, "Viaje desde Reina Mercedes hasta Torneo", 1, driver2);
-		Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 2, driver3);
+		Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9, "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
+		Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3, driver3);
 
 		tripRepository.save(trip1);
 		tripRepository.save(trip2);
@@ -189,19 +193,71 @@ public class BackendApplication implements CommandLineRunner {
 
 		// TRIP ORDERS
 		// -----------------------------------------------------------------------------------------
-		
+		TripOrder tripOrder1 = new TripOrder(trip6, client,  LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1, "COMPLETED");
+		TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700, "", 2, "REFUNDED");
+		TripOrder tripOrder3 = new TripOrder(trip7, client3, LocalDateTime.of(2021, 03, 20, 14, 46, 37), 400, "", 1, "COMPLETED");
+		TripOrder tripOrder4 = new TripOrder(trip7, client5, LocalDateTime.of(2021, 03, 20, 15, 29, 25), 400, "", 1, "COMPLETED");
+		TripOrder tripOrder5 = new TripOrder(trip8, client4, LocalDateTime.of(2021, 03, 21, 10, 57, 42), 450, "", 1, "COMPLETED");
+		TripOrder tripOrder6 = new TripOrder(trip8, client7, LocalDateTime.of(2021, 03, 21, 11, 17, 28), 900, "", 2, "COMPLETED");
+		TripOrder tripOrder7 = new TripOrder(trip6, client6, LocalDateTime.of(2021, 03, 20, 16, 57, 42), 350, "", 1, "REFUNDED");
+		TripOrder tripOrder8 = new TripOrder(trip6, client8, LocalDateTime.of(2021, 03, 20, 11, 37, 16), 350, "", 1, "COMPLETED");
+		TripOrder tripOrder9 = new TripOrder(trip8, client3, LocalDateTime.of(2021, 03, 21, 11, 50, 52), 450, "", 1, "REFUNDED");
+		TripOrder tripOrder10 = new TripOrder(trip1, client5, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 440, "", 2, "COMPLETED");
+		TripOrder tripOrder11 = new TripOrder(trip2, client8, LocalDateTime.of(2021, 03, 24, 20, 33, 27), 220, "", 1, "COMPLETED");
+		TripOrder tripOrder12 = new TripOrder(trip3, client, LocalDateTime.of(2021, 03, 24, 17, 35, 22), 400, "", 2, "COMPLETED");
+		TripOrder tripOrder13 = new TripOrder(trip2, client7, LocalDateTime.of(2021, 03, 24, 22, 50, 03), 220, "", 1, "COMPLETED");
+		TripOrder tripOrder14 = new TripOrder(trip4, driver, LocalDateTime.of(2021, 03, 24, 23, 46, 32), 300, "", 1, "COMPLETED");
+		TripOrder tripOrder15 = new TripOrder(trip5, client2, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2, "COMPLETED");
+
+		tripOrderRepository.save(tripOrder1);
+		tripOrderRepository.save(tripOrder2);
+		tripOrderRepository.save(tripOrder3);
+		tripOrderRepository.save(tripOrder4);
+		tripOrderRepository.save(tripOrder1);
+		tripOrderRepository.save(tripOrder5);
+		tripOrderRepository.save(tripOrder6);
+		tripOrderRepository.save(tripOrder7);
+		tripOrderRepository.save(tripOrder8);
+		tripOrderRepository.save(tripOrder9);
+		tripOrderRepository.save(tripOrder10);
+		tripOrderRepository.save(tripOrder11);
+		tripOrderRepository.save(tripOrder12);
+		tripOrderRepository.save(tripOrder13);
+		tripOrderRepository.save(tripOrder14);
+		tripOrderRepository.save(tripOrder15);
+
 		// COMPLAINTS
 		// -----------------------------------------------------------------------------------------
+		Complaint complaint1 = new Complaint("Queja por velocidad", "El conductor iba demasiado rápido, no me he sentido seguro", trip6, client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+		Complaint complaint2 = new Complaint("Queja por retraso", "El conductor se ha retrasado 10 min, he llegado tarde a mi destino", trip7, client3, LocalDateTime.of(2021, 03, 20, 18, 00, 04), "ACCEPTED");
+		Complaint complaint3 = new Complaint("Queja por mala educación", "El conductor ha sido desagradable", trip7, client5, LocalDateTime.of(2021, 03, 20, 18, 00, 00), "ALREADY_RESOLVED");
+		Complaint complaint4 = new Complaint("Queja por retraso", "El conductor se ha retrasado 5 min", trip8, client4, LocalDateTime.of(2021, 03, 21, 12, 30, 00), "REFUSED");
+
+		complaintRepository.save(complaint1);
+		complaintRepository.save(complaint2);
+		complaintRepository.save(complaint3);
+		complaintRepository.save(complaint4);
 
 		// COMPLAINT APPEALS
 		// -----------------------------------------------------------------------------------------
+		ComplaintAppeal complaintAppeal1 = new ComplaintAppeal("El retraso fue causado por necesidades personales, suelo ser puntual", false, complaint2);
 
+		complaintAppealRepository.save(complaintAppeal1);
+
+		//COMPORBACIÓN
+		// -----------------------------------------------------------------------------------------
 		Long users = userRepository.count();
 		Long meetingPoints = meetingPointRepository.count();
 		Long trips = tripRepository.count();
+		Long tripOrders = tripOrderRepository.count();
+		Long complaints = complaintRepository.count();
+		Long complaintAppeals = complaintAppealRepository.count();
 		System.out.println(users + " usuarios creados");
 		System.out.println(meetingPoints + " puntos de encuentro creados");
 		System.out.println(trips + " viajes creados");
+		System.out.println(tripOrders + " reservas creadas");
+		System.out.println(complaints + " quejas creadas");
+		System.out.println(complaintAppeals + " apelaciones creadas");
 
 	}
 

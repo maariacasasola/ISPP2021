@@ -117,7 +117,7 @@ public class TripControllerTest {
 		trip.appendField("places", 2);
 
 		// Login como conductor
-		String response = mockMvc.perform(post("/user").param("uid", "3")).andReturn().getResponse()
+		String response = mockMvc.perform(post("/user").param("uid", "h9HmVQqlBQXD289O8t8q7aN2Gzg1")).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
@@ -163,7 +163,7 @@ public class TripControllerTest {
 		trip.appendField("places", 2);
 
 		// Login como conductor
-		String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse()
+		String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2")).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
@@ -182,7 +182,7 @@ public class TripControllerTest {
     @Test
     public void testListTrips() throws Exception {
         //Login como administrador
-        String response = mockMvc.perform(post("/user").param("uid", "1")).andReturn().getResponse().getContentAsString();
+        String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2")).andReturn().getResponse().getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		//Obtengo el token
@@ -205,14 +205,14 @@ public class TripControllerTest {
             contador++;
         }
 
-        assertThat(contador).isEqualTo(4);
+        assertThat(contador).isEqualTo(8);
 
     }
 
     @Test
     public void testListTripsFailed() throws Exception {
         //Login como administrador
-        String response = mockMvc.perform(post("/user").param("uid", "2")).andReturn().getResponse().getContentAsString();
+        String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1")).andReturn().getResponse().getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		//Obtengo el token
