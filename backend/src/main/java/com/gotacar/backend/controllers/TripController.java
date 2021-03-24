@@ -75,7 +75,6 @@ public class TripController {
     public Trip createTrip(@RequestBody() String body) {
     	Trip trip1 = new Trip();
         try {
-        	System.out.println("Trip entra DENTRO DE TRY");
             JsonNode jsonNode = objectMapper.readTree(body);
 
             JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());

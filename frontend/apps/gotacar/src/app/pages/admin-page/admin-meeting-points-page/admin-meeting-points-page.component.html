@@ -30,7 +30,7 @@
         </mat-form-field>
 
         <div class="custom2">
-          <button mat-raised-button class="send-button" type="submit" (click)="onSubmit()"
+          <button mat-raised-button class="send-button"  (click)="resetForm()"
             [disabled]="!new_meeting_point.valid">
             Limpiar
           </button>
@@ -46,7 +46,7 @@
 
   <div class="Mapa">
     <google-map height="500px" width="140%" [zoom]="zoom" [center]="center" [options]="options"
-      (mapClick)="addMarker($event)" (mapClick)="click($event)">
+      (mapClick)="addMarker($event)" >
       <map-marker #markerElem="mapMarker" *ngFor="let marker of markers" [position]="marker.position"
         [title]="marker.title" (mapClick)="openInfo(markerElem, marker.info)">
       </map-marker>

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class TripOrder {
 
     public User user;
 
-    public Date date;
+    public LocalDateTime date;
 
     public Integer price;
 
@@ -28,7 +28,7 @@ public class TripOrder {
 
     public String status;
 
-    public TripOrder(Trip trip, User user, Date date, Integer price, String payment_intent, Integer places, String status) {
+    public TripOrder(Trip trip, User user, LocalDateTime date, Integer price, String payment_intent, Integer places, String status) {
         this.trip = trip;
         this.user = user;
         this.date = date;
