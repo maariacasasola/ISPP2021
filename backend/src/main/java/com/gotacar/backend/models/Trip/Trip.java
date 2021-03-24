@@ -36,7 +36,6 @@ public class Trip {
     public LocalDateTime startDate;
 
     @Future
-    @NotNull
     public LocalDateTime endingDate;
 
     public LocalDateTime cancelationDate;

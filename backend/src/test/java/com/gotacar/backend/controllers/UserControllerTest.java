@@ -23,8 +23,8 @@ class AuthoritationControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	void testUserController() throws Exception {
-		mockMvc.perform(post("/user").param("uid", "1")).andExpect(status().isOk());
+	private void testUserController() throws Exception {
+		mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2")).andExpect(status().isOk());
 		assertThat(controller).isNotNull();
 	}
 }
