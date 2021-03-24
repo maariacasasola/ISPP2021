@@ -208,7 +208,7 @@ public class BackendApplication implements CommandLineRunner {
 	@EnableWebSecurity
 	@Configuration
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
-	class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+	static class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable().cors().and()
