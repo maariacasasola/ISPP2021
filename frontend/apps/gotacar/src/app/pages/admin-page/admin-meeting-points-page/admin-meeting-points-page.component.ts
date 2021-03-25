@@ -26,7 +26,6 @@ export class AdminMeetingPointsPageComponent implements OnInit {
 
   meeting_points;
 
-  
   new_meeting_point = new FormGroup({
     name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -34,7 +33,10 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     lng: new FormControl('', Validators.required),
   });
 
-  constructor(private _meeting_point_service: MeetingPointService,private _snackBar: MatSnackBar,) {
+  constructor(
+    private _meeting_point_service: MeetingPointService,
+    private _snackBar: MatSnackBar
+  ) {
     this.get_all_meeting_points();
   }
 
@@ -43,7 +45,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   async get_all_meeting_points() {
     try {
       this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
-     
+
       this.meeting_points.forEach((meeting_point) => {
         this.markers.push({
           position: {
@@ -62,17 +64,10 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   toggleDisplayCreation() {
     this.isShow = !this.isShow;
     this.new_meeting_point.reset();
-
   }
-  resetForm(){
+  resetForm() {
     this.new_meeting_point.reset();
   }
-
-  
-
-  
-
-  
 
   addMarker(event: google.maps.MapMouseEvent) {
     this.new_meeting_point.setValue({
@@ -81,39 +76,38 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       lat: Number(event.latLng.lat()),
       lng: Number(event.latLng.lng()),
     });
-
-    
   }
 
   async onSubmit() {
-    
     try {
       const newMeetingPoint: MeetingPoint = {
         name: String(this.new_meeting_point.controls['name'].value),
         address: String(this.new_meeting_point.controls['address'].value),
         lat: Number(this.new_meeting_point.controls['lat'].value),
         lng: Number(this.new_meeting_point.controls['lng'].value),
-      }
-      const response = await this._meeting_point_service.post_meeting_point(newMeetingPoint);
+      };
+      const response = await this._meeting_point_service.post_meeting_point(
+        newMeetingPoint
+      );
       const meeting_point_created = response['address'].toString();
-      if (response){
+      if (response) {
         this.openSnackBar(
-          'Punto creado satisfactoriamente en '+ meeting_point_created,
+          'Punto creado satisfactoriamente en ' + meeting_point_created,
           'Cerrar'
         );
       }
       this.get_all_meeting_points();
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
-   
   }
 
   openInfo(marker: MapMarker, content) {
     this.infoContent = content;
     this.info.open(marker);
   }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,

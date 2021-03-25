@@ -1,4 +1,4 @@
-<frontend-main-header [title]="app_title"></frontend-main-header>
+<frontend-main-header></frontend-main-header>
 <section class="page-content">
   <div>
     <h1>Accede a GotACar</h1>
@@ -18,12 +18,21 @@
         <input matInput type="password" #userPassword required />
       </mat-form-field>
     </div>
-    <button mat-flat-button color="primary" class="login-button"
-      (click)="authService.sign_in(userName.value, userPassword.value)">
+    <button
+      mat-flat-button
+      color="primary"
+      class="login-button"
+      (click)="authService.sign_in(userName.value, userPassword.value)"
+    >
       Iniciar sesión
     </button>
 
-    <button mat-flat-button color="primary" class="login-button" (click)="authService.google_auth()">
+    <button
+      mat-flat-button
+      color="primary"
+      class="login-button"
+      (click)="authService.google_auth()"
+    >
       Iniciar sesión con Google
     </button>
   </mat-card>

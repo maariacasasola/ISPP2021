@@ -8,7 +8,6 @@ import { AuthServiceService } from '../../services/auth-service.service';
   styleUrls: ['./main-header.component.scss'],
 })
 export class MainHeaderComponent {
-  @Input() title;
   showFiller = false;
 
   constructor(public authService: AuthServiceService, public router: Router) {}

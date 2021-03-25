@@ -13,20 +13,16 @@ import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class TripController {
 
     @Autowired
@@ -69,11 +65,11 @@ public class TripController {
         }
         return lista;
     }
-    
+
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/create_trip")
     public Trip createTrip(@RequestBody() String body) {
-    	Trip trip1 = new Trip();
+        Trip trip1 = new Trip();
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
 
@@ -103,7 +99,7 @@ public class TripController {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-            
+
             trip1.setCancelationDate(dateEndJson);
             trip1.setStartingPoint(startingPoint);
             trip1.setEndingPoint(endingPoint);
@@ -112,17 +108,21 @@ public class TripController {
             trip1.setStartDate(dateStartJson);
             trip1.setPlaces(placesJson);
             trip1.setDriver(currentUser);
-            
+
             System.out.println(trip1.getId() + "trip llega a crearse");
-            
+
 
             tripRepository.save(trip1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return trip1;
 
     }
 
+    @GetMapping("/trip/{tripId}")
+    public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
+            return tripRepository.findById(new ObjectId(tripId));
+    }
 }

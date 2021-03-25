@@ -39,16 +39,16 @@ public class TripControllerTest {
 		JSONObject startingPoint = new JSONObject();
 		startingPoint.appendField("name", "Cerca Triana");
 		startingPoint.appendField("address", "Calle cerca de triana");
-		startingPoint.appendField("lat", 37.39005423652009);
-		startingPoint.appendField("lng", -5.998501215420612);
+		startingPoint.appendField("lat", -5.998501215420612);
+		startingPoint.appendField("lng", 37.39005423652009);
 
 		sampleObject.appendField("starting_point", startingPoint);
 
 		JSONObject endingPoint = new JSONObject();
 		endingPoint.appendField("name", "Cerca Torneo");
 		endingPoint.appendField("address", "Calle cerca de torneo");
-		endingPoint.appendField("lat", 37.3881289645203);
-		endingPoint.appendField("lng", -6.00020437294197);
+		endingPoint.appendField("lat", -6.00020437294197);
+		endingPoint.appendField("lng", 37.3881289645203);
 
 		sampleObject.appendField("ending_point", endingPoint);
 
@@ -176,8 +176,6 @@ public class TripControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
-
-    
 
     @Test
     public void testListTrips() throws Exception {

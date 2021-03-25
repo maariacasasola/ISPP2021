@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Trip } from '../shared/services/trip'
+import { Trip } from '../shared/services/trip';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripsService {
-  constructor(private _http_client: HttpClient) { }
+  constructor(private _http_client: HttpClient) {}
 
   get_all_trips(): Promise<any> {
     return this._http_client
@@ -24,11 +24,16 @@ export class TripsService {
       end_date: trip.end_date,
       comments: trip.comments,
       places: trip.places,
-    }
+    };
 
     return this._http_client
-      .post(environment.api_url + '/create_trip', body).toPromise()
-
+      .post(environment.api_url + '/create_trip', body)
+      .toPromise();
   }
 
+  async get_trip(trip_id: String): Promise<any> {
+    return this._http_client
+      .get(environment.api_url + '/trip/' + trip_id)
+      .toPromise();
+  }
 }

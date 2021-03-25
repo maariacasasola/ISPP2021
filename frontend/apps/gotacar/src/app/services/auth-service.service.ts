@@ -148,4 +148,8 @@ export class AuthServiceService {
       this.router.navigate(['log-in']);
     });
   }
+
+  get_user() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
 }
