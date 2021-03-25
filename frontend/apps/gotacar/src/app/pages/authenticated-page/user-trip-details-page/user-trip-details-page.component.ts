@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserTripDetailsPageComponent implements OnInit {
   trip;
+  user = JSON.parse(localStorage.getItem('user'));
 
   constructor(
     private route: ActivatedRoute,
@@ -18,11 +19,11 @@ export class UserTripDetailsPageComponent implements OnInit {
     // First get the product id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     const tripIdFromRoute = Number(routeParams.get('tripId'));
-    console.log(tripIdFromRoute);
+
+    console.log(this.user.uid);  
 
     // Find the product that correspond with the id provided in route.
     this.trip = trips.find(trip => trip.id === tripIdFromRoute);
-    console.log(this.trip)
   }
 
 }

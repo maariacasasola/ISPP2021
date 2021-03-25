@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { trips } from "../../../trips"
+import { trips } from '../../../trips'
 
 @Component({
   selector: 'frontend-user-trip-list-page',
@@ -9,5 +9,6 @@ import { trips } from "../../../trips"
 export class UserTripListPageComponent{
 
   trips = trips;
+
 
 }
