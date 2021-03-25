@@ -15,6 +15,13 @@ export class TripsService {
       .toPromise();
   }
 
+  get_trips_by_userUID(uid): Promise<any> {
+    console.log('hola', uid)
+    return this._http_client
+      .get(environment.api_url + '/list_trip_orders', uid)
+      .toPromise();
+  }
+
   async create_trip(trip: Trip) {
     const body = {
       starting_point: trip.starting_point,
