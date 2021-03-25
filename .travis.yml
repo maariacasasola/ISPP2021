@@ -4,6 +4,11 @@ jobs:
   include:
   - language: node_js
     node_js: 14
+    addons:
+      sonarcloud:
+        organization: "ispp2021"
+        token:
+          secure: "RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ="
     script:
     - cd frontend
     - npm ci
@@ -11,11 +16,6 @@ jobs:
     - sonar-scanner
     after_success:
     - ng build --prod
-    addons:
-    sonarcloud:
-      organization: "ispp2021"
-      token:
-        secure: "RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ="
     deploy:
     - provider: firebase
       skip_cleanup: true
