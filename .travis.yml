@@ -1,51 +1,60 @@
 services:
-- mongodb
+  - mongodb
 jobs:
   include:
-  - language: node_js
-    node_js: 14
-    addons:
-      sonarcloud:
-        organization: "ispp2021"
-        token:
-          secure: "RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ="
-    script:
-    - cd frontend
-    - npm ci
-    - ng test
-    - sonar-scanner
-    after_success:
-    - ng build --prod
-    deploy:
-    - provider: firebase
-      skip_cleanup: true
-      token: "$FB_DEPLOY"
-      project: gotacar
-      on:
-        branch: master
-    - provider: firebase
-      token: "$FB_DEPLOY"
-      skip_cleanup: true
-      project: gotacar-prepro
-      on:
-        branch: develop
-  - dist: trusty
-    language: java
-    jdk: oraclejdk11
-    before_script:
-    - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
-    script:
-    - cd backend
-    - mvn test
-    - mv ../client-secret.json ./client-secret.json
-    deploy:
-      provider: gae
-      keyfile: client-secret.json
-      project: gotacar
-      on:
-        branch: master
+    - language: node_js
+      node_js: 14
+      addons:
+        sonarcloud:
+          organization: ispp2021
+          token:
+            secure: NgygypWfUt9Vwcm2bZT/qo384RnyPSOCNJwQWb7iVpaOtR4btKqe4YoqPDJ7sV3VcXiiBG6rLFUkKLQ+5fJw1SUWogdrcBcYgKkg6C9nqL5aHgM3NBFmNc8G2RlCq0sybG5OIm26cPFGsSClvWCYhXQXBRCVB7Vkw2UapFLFkpsH+jq+h10Jw+jD99+cq0yNi8z9c8F7R59AT9Vn/bQWiCo4Wd4xhm6ooVS7TimzqGAfYpPvPU0EzvE8YhaHfWk8oZvNgST+U2NVbW1u4l0G6FxaNqy5CZFZlDh8BalfPKxd1RHbtucBWUPqEPpHTswO0Yaldbfyw604ppzxl6KhDiTZ0QdBBl3YSZqnAg3eYUPpISvSP3hyZF8fFF1N7ugo6li7NQ7iKOxoJWgsrzgssS5geTu87KZt5SxWQufFRUZvhSH6bOR/LngKVqiHfNEmrVGZNif0VJmwQ+V5ZpyHOtq7K1JJDtswI/3dNs0xDrjSC1ZpydT4Md9a3niuky5AkdTJTGdEbvqM4ekWgAALy33BIp4sT7KH3i12RO/J1wVpGbpgyw2J+PzMtaZEJ35hmhhLb9WfBs2fCmCh6auOQx+ns9oBQazNIOUUxCDlhWU9jyDGB5VNYhdkuAkqqf3Dh96KfcobVdqfYeEnLmzZe9tmaQrC/6c02eXZhOpax98=
+      script:
+        - cd frontend
+        - npm ci
+        - ng test
+        - sonar-scanner
+      after_success:
+        - ng build --prod
+      deploy:
+        - provider: firebase
+          skip_cleanup: true
+          token: "$FB_DEPLOY"
+          project: gotacar
+          on:
+            branch: master
+        - provider: firebase
+          token: "$FB_DEPLOY"
+          skip_cleanup: true
+          project: gotacar-prepro
+          on:
+            branch: develop
+    - dist: trusty
+      language: java
+      jdk: oraclejdk11
+      addons:
+        sonarcloud:
+          organization: "ispp2021"
+          token:
+            secure: "l1Udx0uVSvoZupJPhpFtrLA0RWq8oSYKet4QNCxfFYlMsXz/SqpL2eifWUFBTyX8+GvialN+xoEi02HqCSl93IoeYTSrXvmoMLhKjgZE2poeRST0WpsSgATv3n0nLAErTm2mTFa/6pZf08fFvNPqOsQpvyz7Yf0FjB5NLyEpUoII/IBRI8SQfK1qpIhJk4HcIPr6KuFQcO/y8FcMMOlDwrcoZAbR9M9nLx2gsicksHTI9027rJTC8/Wmhs/M2QVdT41W+BXp8mG4X+q6JiAaPAdRzxzCuVrh24ZqaX+iKSy4Bnkc6hYsp9dbcPVkIjLxMUWkiNt0KZCiIdJg5MB1oMNrLK/YaZMsJorqbvr184SuhyZa0KPak62vi1xWOPEq/585TnTcGhMgUj4ZSDb+hELKr4WAjukHAV62TAUl258ASvSigcFMIc3DPV9vywcSPgOG7wFrvcVT5acLXag6O5YfYbzj4LNuzwNpXxGHcI7aqDKgGLp1dnNOmne5NgVnTM8yleSXGEn22yTlXmV0Rjl+2MYRghgG8S0q0JwpE5ikT3V5uv9vv8Gst4G44HO98ZACkF3zSELfS2y1PVx1oF+K7mZItOG+pqFfPo5xlF86dcEeQ+gq4Yui0Z2cwimY4iPHOf+092ELJ6UuSCTEKVxqcCEFJox0WWdkn/aCNes="
+      before_script:
+        - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
+      script:
+        - cd backend
+        - mvn test
+        - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+        - mv ../client-secret.json ./client-secret.json
+      deploy:
+        provider: gae
+        keyfile: client-secret.json
+        project: gotacar
+        on:
+          branch: master
 before_install:
-- openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
-  -in client-secret.json.enc -out client-secret.json -d
+  - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
+    -in client-secret.json.enc -out client-secret.json -d
 dd:
-  secure: RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ=
+  secure: NgygypWfUt9Vwcm2bZT/qo384RnyPSOCNJwQWb7iVpaOtR4btKqe4YoqPDJ7sV3VcXiiBG6rLFUkKLQ+5fJw1SUWogdrcBcYgKkg6C9nqL5aHgM3NBFmNc8G2RlCq0sybG5OIm26cPFGsSClvWCYhXQXBRCVB7Vkw2UapFLFkpsH+jq+h10Jw+jD99+cq0yNi8z9c8F7R59AT9Vn/bQWiCo4Wd4xhm6ooVS7TimzqGAfYpPvPU0EzvE8YhaHfWk8oZvNgST+U2NVbW1u4l0G6FxaNqy5CZFZlDh8BalfPKxd1RHbtucBWUPqEPpHTswO0Yaldbfyw604ppzxl6KhDiTZ0QdBBl3YSZqnAg3eYUPpISvSP3hyZF8fFF1N7ugo6li7NQ7iKOxoJWgsrzgssS5geTu87KZt5SxWQufFRUZvhSH6bOR/LngKVqiHfNEmrVGZNif0VJmwQ+V5ZpyHOtq7K1JJDtswI/3dNs0xDrjSC1ZpydT4Md9a3niuky5AkdTJTGdEbvqM4ekWgAALy33BIp4sT7KH3i12RO/J1wVpGbpgyw2J+PzMtaZEJ35hmhhLb9WfBs2fCmCh6auOQx+ns9oBQazNIOUUxCDlhWU9jyDGB5VNYhdkuAkqqf3Dh96KfcobVdqfYeEnLmzZe9tmaQrC/6c02eXZhOpax98=
+env:
+  global:
+    secure: l1Udx0uVSvoZupJPhpFtrLA0RWq8oSYKet4QNCxfFYlMsXz/SqpL2eifWUFBTyX8+GvialN+xoEi02HqCSl93IoeYTSrXvmoMLhKjgZE2poeRST0WpsSgATv3n0nLAErTm2mTFa/6pZf08fFvNPqOsQpvyz7Yf0FjB5NLyEpUoII/IBRI8SQfK1qpIhJk4HcIPr6KuFQcO/y8FcMMOlDwrcoZAbR9M9nLx2gsicksHTI9027rJTC8/Wmhs/M2QVdT41W+BXp8mG4X+q6JiAaPAdRzxzCuVrh24ZqaX+iKSy4Bnkc6hYsp9dbcPVkIjLxMUWkiNt0KZCiIdJg5MB1oMNrLK/YaZMsJorqbvr184SuhyZa0KPak62vi1xWOPEq/585TnTcGhMgUj4ZSDb+hELKr4WAjukHAV62TAUl258ASvSigcFMIc3DPV9vywcSPgOG7wFrvcVT5acLXag6O5YfYbzj4LNuzwNpXxGHcI7aqDKgGLp1dnNOmne5NgVnTM8yleSXGEn22yTlXmV0Rjl+2MYRghgG8S0q0JwpE5ikT3V5uv9vv8Gst4G44HO98ZACkF3zSELfS2y1PVx1oF+K7mZItOG+pqFfPo5xlF86dcEeQ+gq4Yui0Z2cwimY4iPHOf+092ELJ6UuSCTEKVxqcCEFJox0WWdkn/aCNes=
