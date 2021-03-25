@@ -13,16 +13,25 @@ jobs:
       deploy:
         - provider: firebase
           skip_cleanup: true
-          token: $FB_DEPLOY
+          token: "$FB_DEPLOY"
           project: gotacar
           on:
             branch: master
         - provider: firebase
-          token: $FB_DEPLOY
+          token: "$FB_DEPLOY"
           skip_cleanup: true
           project: gotacar-prepro
           on:
             branch: develop
+      addons:
+        sonarcloud:
+          organization: "ispp2021"
+          token:
+            secure: "vzr+ByHhmUE06jjKCWBMaHZn5qke69rGNXaDfiQJFd9HJyaoW5JmyIw5Kk84GLxuIgGCExprGZbvjA/+CK8Na6sPP9GyHTivp4uDWgDZy7o9+5K3GhP7yFmNznCqc+gxlUtpN2gAAsBdQEmY+6ZmVYriTm7VTuq8CoSJC9lVe4SsWJ5HrNwWznDiRRfO8jJkeRnQu/AN29uZ1Jrg8urEMoAAgfKX2L6n04Q9quja//SmVf6XqcaQszPtTT892jQ3ZHX6HE5VbTfEG2oNELsDHZArcZXMlBRulMBKx2WP9M9uRBZXlJLMo8TBkgYCGNZKY57RQqhTmiijNdWnO8JErF7hhOkiZGNmn9wt9s9DeN7CF5PoJX32/7pbtx/l3tfTTnFbEl61G/4wvxk4SjaACgt11oRepXf7LGZPnfr92HmYpAqLfF0HSHT+yV97ysVPPLLw+SDWeOMnOd5NZ/4yXSyc9yOHHIXekBALECOhVg1GcOaEoYJyk44VNN9ejZ/ff33I3/Nd4mN8ETiX9r6Cu42r2yI6pSyzTUc9FZsM7AEiZ8KV2xI0PcIJ+jiltoSKKGl4qx2VqT74wHCeGwFBnEUhN1vHo3VavuQ0UqziIbNaWzTmYz6Iq0qhJUnHrVIV6aKGkoVIRv3J7KXedTivAqDAvuYer69L5E1jRvMFnkg=" # encrypted value of your token
+
+      script:
+        # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+        - sonar-scanner
     - dist: trusty
       language: java
       jdk: oraclejdk11
@@ -38,6 +47,18 @@ jobs:
         project: gotacar
         on:
           branch: master
+      addons:
+        sonarcloud:
+          organization: "ispp2021"
+          token:
+            secure: "vzr+ByHhmUE06jjKCWBMaHZn5qke69rGNXaDfiQJFd9HJyaoW5JmyIw5Kk84GLxuIgGCExprGZbvjA/+CK8Na6sPP9GyHTivp4uDWgDZy7o9+5K3GhP7yFmNznCqc+gxlUtpN2gAAsBdQEmY+6ZmVYriTm7VTuq8CoSJC9lVe4SsWJ5HrNwWznDiRRfO8jJkeRnQu/AN29uZ1Jrg8urEMoAAgfKX2L6n04Q9quja//SmVf6XqcaQszPtTT892jQ3ZHX6HE5VbTfEG2oNELsDHZArcZXMlBRulMBKx2WP9M9uRBZXlJLMo8TBkgYCGNZKY57RQqhTmiijNdWnO8JErF7hhOkiZGNmn9wt9s9DeN7CF5PoJX32/7pbtx/l3tfTTnFbEl61G/4wvxk4SjaACgt11oRepXf7LGZPnfr92HmYpAqLfF0HSHT+yV97ysVPPLLw+SDWeOMnOd5NZ/4yXSyc9yOHHIXekBALECOhVg1GcOaEoYJyk44VNN9ejZ/ff33I3/Nd4mN8ETiX9r6Cu42r2yI6pSyzTUc9FZsM7AEiZ8KV2xI0PcIJ+jiltoSKKGl4qx2VqT74wHCeGwFBnEUhN1vHo3VavuQ0UqziIbNaWzTmYz6Iq0qhJUnHrVIV6aKGkoVIRv3J7KXedTivAqDAvuYer69L5E1jRvMFnkg=" # encrypted value of your token
+
+      script:
+        # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+        - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar   
 before_install:
   - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
     -in client-secret.json.enc -out client-secret.json -d
+env:
+  global:
+    secure: vzr+ByHhmUE06jjKCWBMaHZn5qke69rGNXaDfiQJFd9HJyaoW5JmyIw5Kk84GLxuIgGCExprGZbvjA/+CK8Na6sPP9GyHTivp4uDWgDZy7o9+5K3GhP7yFmNznCqc+gxlUtpN2gAAsBdQEmY+6ZmVYriTm7VTuq8CoSJC9lVe4SsWJ5HrNwWznDiRRfO8jJkeRnQu/AN29uZ1Jrg8urEMoAAgfKX2L6n04Q9quja//SmVf6XqcaQszPtTT892jQ3ZHX6HE5VbTfEG2oNELsDHZArcZXMlBRulMBKx2WP9M9uRBZXlJLMo8TBkgYCGNZKY57RQqhTmiijNdWnO8JErF7hhOkiZGNmn9wt9s9DeN7CF5PoJX32/7pbtx/l3tfTTnFbEl61G/4wvxk4SjaACgt11oRepXf7LGZPnfr92HmYpAqLfF0HSHT+yV97ysVPPLLw+SDWeOMnOd5NZ/4yXSyc9yOHHIXekBALECOhVg1GcOaEoYJyk44VNN9ejZ/ff33I3/Nd4mN8ETiX9r6Cu42r2yI6pSyzTUc9FZsM7AEiZ8KV2xI0PcIJ+jiltoSKKGl4qx2VqT74wHCeGwFBnEUhN1vHo3VavuQ0UqziIbNaWzTmYz6Iq0qhJUnHrVIV6aKGkoVIRv3J7KXedTivAqDAvuYer69L5E1jRvMFnkg=
