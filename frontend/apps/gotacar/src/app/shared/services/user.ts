@@ -10,4 +10,5 @@ export interface User {
   roles: string[];
   token: string;
   emailVerified: boolean;
+  bannedUntil: Date;
 }

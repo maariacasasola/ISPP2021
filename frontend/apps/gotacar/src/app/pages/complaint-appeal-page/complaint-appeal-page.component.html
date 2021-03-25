@@ -1,0 +1,26 @@
+<frontend-main-header [title]="app_title"></frontend-main-header>
+<section class="page-content">
+  <div>
+    <h2>Tu usuario ha sido baneado debido a la siguiente queja:</h2>
+  </div>
+  <mat-card class="appeal-card">
+    <mat-card-header><mat-card-title>Titulo</mat-card-title></mat-card-header>
+    <mat-card-content>Contnido</mat-card-content>
+  </mat-card>
+  <div>
+    <h1>Crea tu queja</h1>
+  </div>
+  <mat-card class="appeal-card">
+    <form [formGroup]="complaintAppealForm" class="form-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Contenido</mat-label>
+        <input matInput type="text" formControlName="content" />
+      </mat-form-field>
+    </form>
+    <button mat-flat-button color="primary" class="create-button"
+      (click)="create_complaint_appeal()">
+      Crear apelación
+    </button>
+  </mat-card>
+</section>
+<frontend-main-footer></frontend-main-footer>

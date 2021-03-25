@@ -1,0 +1,70 @@
+.logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+
+.page-content {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin: 80px;
+  min-height: 100vh;
+  color: #0e4a6b;
+}
+
+.appeal-card {
+  min-width: 20vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #538994;
+  border: 2px solid #0e4a6b;
+}
+
+.appeal-card mat-form-field {
+  width: 100%;
+  color: #538994;
+  margin: 20px;
+}
+
+.form-fields{
+  display: flex;
+}
+
+.create-button {
+  color: white;
+  background-color: #538994;
+  margin: 20px;
+  width: 100%;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20%;
+}
+
+::ng-deep {
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: #538994;
+  }
+
+  .mat-form-field-empty.mat-form-field-label {
+    color: #538994;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #538994;
+  }
+}

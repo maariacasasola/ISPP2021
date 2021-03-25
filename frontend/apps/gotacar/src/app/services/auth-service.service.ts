@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import auth from 'firebase/app';
+import { MatDialog } from '@angular/material/dialog';
+import { ComplaintAppealDialogComponent } from '../components/complaint-appeal/complaint-appeal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +19,8 @@ export class AuthServiceService {
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    private _http_client: HttpClient
+    private _http_client: HttpClient,
+    private dialog: MatDialog,
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -39,6 +42,9 @@ export class AuthServiceService {
           this.router.navigate(['home']);
         });
         this.set_user_data(result.user);
+        if(this.is_banned){
+          this.dialog.open(ComplaintAppealDialogComponent);
+        }
       })
       .catch((error) => {
         window.alert(error.message);
@@ -103,6 +109,10 @@ export class AuthServiceService {
       has_driver_role = localStorage.getItem('roles').includes('ROLE_DRIVER');
     }
     return this.is_client() && has_driver_role;
+  }
+
+  async is_banned(): Promise<any> {
+    return await this.userData.bannedUntil !== null;
   }
 
   google_auth() {

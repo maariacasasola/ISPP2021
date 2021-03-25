@@ -63,6 +63,7 @@ import { AccessForbiddenDialogComponent } from './components/access-forbidden/ac
 import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { ComplaintAppealPageComponent } from './pages/complaint-appeal-page/complaint-appeal-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -75,6 +76,7 @@ registerLocaleData(localeEs, 'es');
     MainFooterComponent,
     ClientProfilePageComponent,
     LogInPageComponent,
+    ComplaintAppealPageComponent,
     ErrorPageComponent,
     SearchFormComponent,
     MeetingPointMapComponent,

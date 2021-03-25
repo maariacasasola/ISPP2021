@@ -8,6 +8,7 @@ import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-p
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
+import { ComplaintAppealPageComponent } from './pages/complaint-appeal-page/complaint-appeal-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'error',
     component: ErrorPageComponent,
+  },
+  {
+    path: 'complaint-appeal',
+    component: ComplaintAppealPageComponent,
   },
   {
     path: 'authenticated',
