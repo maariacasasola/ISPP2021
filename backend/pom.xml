@@ -15,6 +15,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<sonar.projectKey>gotacar-back</sonar.projectKey>
+		<sonar.coverage.jacoco.xmlReportPaths>target/sute/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
 		<dependency>
