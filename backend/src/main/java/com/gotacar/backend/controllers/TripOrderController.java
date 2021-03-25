@@ -22,8 +22,8 @@ public class TripOrderController {
     private TripOrderRepository tripOrderRepository;
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    @RequestMapping("/list_triporders")
-    public List<TripOrder> listHiredTrips(@RequestParam("uid") String uid) {
+    @RequestMapping("/list_trip_orders")
+    public List<TripOrder> listTripOrders(@RequestParam("uid") String uid) {
         List<TripOrder> lista = new ArrayList<>();
         try {
             lista = tripOrderRepository.findByUserUid(uid);

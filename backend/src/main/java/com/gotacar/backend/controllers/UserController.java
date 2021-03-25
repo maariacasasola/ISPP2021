@@ -33,7 +33,7 @@ public class UserController {
 	}
 
 	private String getJWTToken(User user) {
-		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
+		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS";
 		String roles = String.join(",", user.getRoles());
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
