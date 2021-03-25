@@ -4,7 +4,6 @@ import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Max;
