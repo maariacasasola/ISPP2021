@@ -1,0 +1,41 @@
+<div>
+  <h1>LISTA DE QUEJAS DE USUARIOS</h1>
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let complaint of complaints" class="complaints-list">
+      <mat-list role="list">
+        <mat-card class="complaint">
+          <mat-card-title>
+            <mat-card-content class = "user-title">
+              {{ complaint?.user?.firstName + ' ' + complaint?.user?.lastName }}
+            </mat-card-content>
+            <mat-card-content class = "complaint-title">
+              <i>{{ complaint?.title}}</i>
+            </mat-card-content>
+          </mat-card-title>
+          <br /><br />
+          <mat-card-content class="card-content">
+            <mat-card-subtitle>
+              <b>Creación de la queja:</b> {{ complaint?.creationDate }}
+            </mat-card-subtitle>
+            <br />
+            <mat-card-subtitle>
+              <b>Descripción:</b> {{ complaint?.content }}
+            </mat-card-subtitle>
+            <br>
+            <mat-card-subtitle>
+              <b>Estado:</b> {{ complaint?.status }}
+            </mat-card-subtitle>
+            <br />
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-raised-button class="button">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <br />
+      </mat-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
