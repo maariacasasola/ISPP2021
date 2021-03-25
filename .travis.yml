@@ -1,43 +1,51 @@
 services:
-  - mongodb
+- mongodb
 jobs:
   include:
-    - language: node_js
-      node_js: 14
-      script:
-        - cd frontend
-        - npm ci
-        - ng test
-      after_success:
-        - ng build --prod
-      deploy:
-        - provider: firebase
-          skip_cleanup: true
-          token: $FB_DEPLOY
-          project: gotacar
-          on:
-            branch: master
-        - provider: firebase
-          token: $FB_DEPLOY
-          skip_cleanup: true
-          project: gotacar-prepro
-          on:
-            branch: develop
-    - dist: trusty
-      language: java
-      jdk: oraclejdk11
-      before_script:
-        - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
-      script:
-        - cd backend
-        - mvn test
-        - mv ../client-secret.json ./client-secret.json
-      deploy:
-        provider: gae
-        keyfile: client-secret.json
-        project: gotacar
-        on:
-          branch: master
+  - language: node_js
+    node_js: 14
+    script:
+    - cd frontend
+    - npm ci
+    - ng test
+    - sonar-scanner
+    after_success:
+    - ng build --prod
+    addons:
+    sonarcloud:
+      organization: "ispp2021"
+      token:
+        secure: "RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ="
+    deploy:
+    - provider: firebase
+      skip_cleanup: true
+      token: "$FB_DEPLOY"
+      project: gotacar
+      on:
+        branch: master
+    - provider: firebase
+      token: "$FB_DEPLOY"
+      skip_cleanup: true
+      project: gotacar-prepro
+      on:
+        branch: develop
+  - dist: trusty
+    language: java
+    jdk: oraclejdk11
+    before_script:
+    - mongo admin --eval 'db.createUser({user:"usuario",pwd:"secreto",roles:["readWrite"]});'
+    script:
+    - cd backend
+    - mvn test
+    - mv ../client-secret.json ./client-secret.json
+    deploy:
+      provider: gae
+      keyfile: client-secret.json
+      project: gotacar
+      on:
+        branch: master
 before_install:
-  - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
-    -in client-secret.json.enc -out client-secret.json -d
+- openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
+  -in client-secret.json.enc -out client-secret.json -d
+dd:
+  secure: RT12+89IW3AH6299NZltE3QXazAREmOofc5iLc0ouSl9uQy2nC+V/vl+h/4nyzfuz2mv9yxG4TLQiLXCN0LKdlCMkRzhGcD27QChgOTXYJmpqL7zWeZi7Wt6uaND7gs0eypay/bftyHC5noerlnVTDZDo9WCuLsozMsfcQnAuSLnskkKZ/qKtDTcuf975NPJ7DmFTKcR32Iu4KBnVNaOZ/d0+gn8rYJt/PUBHSnzukcA7308pqDHwpYapcKG8eMS+QqpJJw3sKfAh3rJzGvVpsy9fOTfsAtPW1tAUtqCTlQkOieziqvfrvS7Or+Lu3lec0YvpFJlO1DC/lGA8w6EBk/XNISB4MCvXeXrtjTh6uTmJYaUhvG67q9t+DaQOkbsNlvX33TICGWSqbUre6mRFckN0JmtAIB3G7aBNcJTjhtZAPrgmYsfRcLXGuP9F5TOwLU496lfJISesRDBr26jPq7LmpqtQ0J918kHepnDLRThIYdcidgkgSCmG8acbESWlU1rFnHgUIjZ6AeIVE2uMetSWhSZX22a3njbfcjxJI0zR/KU1ccIcK2D6RL86B8VnmOqjoeOAdlzDC79oUlfLdBxQajXEhR7wLI5dR0UlUEYmqRo123W7z73nGYCf694Pj5W/nDLukRsllz8sIfyQufs7duJOc8SVLZDCxUQ3tQ=
