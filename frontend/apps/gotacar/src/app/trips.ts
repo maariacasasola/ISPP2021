@@ -40,6 +40,7 @@ const user2 = {
 
 export const trips = [
     {
+        id:1,
         startingPoint: location1,
         endingPoint: location2,
         price: 220,
@@ -50,6 +51,7 @@ export const trips = [
         user: user1,
     },
     {
+        id:2,
         startingPoint: location1,
         endingPoint: location2,
         price: 220,
@@ -60,6 +62,7 @@ export const trips = [
         user: user1,
     },
     {
+        id:3,
         startingPoint: location1,
         endingPoint: location2,
         price: 220,
