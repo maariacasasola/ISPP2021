@@ -79,4 +79,34 @@ public class ComplaintController {
 
     }
 
+    @PostMapping("/penalize/")
+    @PreAuthorize("hasRole('ROLE_ADMIN")
+    public User Penalize(@RequestBody String body){
+
+        try{
+            JsonNode jsonNode = objectMapper.readTree(body);
+            LocalDateTime dateBanned = OffsetDateTime
+            .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
+
+            String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
+            ObjectId complaintObjectId = new ObjectId(idComplaint);
+            Complaint complaintFinal = complaintRepository.findById(complaintObjectId);
+            Trip tripComplaint = complaintFinal.getTrip();
+            User userBanned = tripComplaint.getDriver();
+
+
+
+
+            
+            
+            
+
+
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    }
+
+    }
+
 }
