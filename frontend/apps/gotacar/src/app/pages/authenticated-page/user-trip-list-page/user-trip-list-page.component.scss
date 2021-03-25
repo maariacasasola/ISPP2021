@@ -1,0 +1,35 @@
+h1 {
+    text-align: center;
+    color: #0e4a6b;
+    margin: 20px;
+    font-size: 30px;
+  }
+  
+  .trip {
+    border: 1px solid #0e4a6b;
+    padding: 30px;
+  
+  }
+  
+  .card-title {
+    text-align: right;
+    color: #0e4a6b;
+    font-size: 30px;
+  }
+  
+  .mat-card-subtitle {
+    font-size: 20px;
+  }
+  
+  .trips-list {
+    width: max-content;
+  }
+  
+  .button {
+    background-color: #0e4a6b;
+    color: white;
+  }
+  
+  mat-list {
+    width: 90%;
+  }
