@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { trips } from '../../../trips';
 import { ActivatedRoute } from '@angular/router';
+import { TripsService } from '../../../services/trips.service';
 
 @Component({
   selector: 'frontend-user-trip-details-page',
@@ -9,17 +9,32 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserTripDetailsPageComponent implements OnInit {
   trip;
-  user = JSON.parse(localStorage.getItem('user'));
+  tripOrders = [];
+  userUID;
 
   constructor(
     private route: ActivatedRoute,
-  ) { }
+    private _trips_service: TripsService,
+  ) {
+  
+  }
 
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
-    const tripIdFromRoute = Number(routeParams.get('tripId')); 
+    const tripIdFromRoute = routeParams.get('tripId');
 
-    this.trip = trips.find(trip => trip.id === tripIdFromRoute);
+    this.trip = this.tripOrders.find(t => t.id === tripIdFromRoute);
+
+  }
+
+
+
+  async load_trips_by_user() {
+    try {
+      this.tripOrders = await this._trips_service.get_trips();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }

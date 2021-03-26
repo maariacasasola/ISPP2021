@@ -1,1 +1,8 @@
-<p>user-trip-details-page works!</p>
+<h2>Trip Details</h2>
+
+<div *ngIf="trip">
+  <h3>{{ trip.name }}</h3>
+  <h4>{{ trip.price | currency }}</h4>
+  <p>{{ trip.description }}</p>
+
+</div>

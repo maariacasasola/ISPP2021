@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Trip } from '../shared/services/trip'
@@ -15,10 +15,10 @@ export class TripsService {
       .toPromise();
   }
 
-  get_trips_by_userUID(uid): Promise<any> {
-    console.log('hola', uid)
+  get_trips(): Promise<any> {
+
     return this._http_client
-      .get(environment.api_url + '/list_trip_orders', uid)
+      .get(environment.api_url + '/list_trip_orders')
       .toPromise();
   }
 

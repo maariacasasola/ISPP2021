@@ -7,19 +7,19 @@ import { TripsService } from '../../../services/trips.service';
   templateUrl: './user-trip-list-page.component.html',
   styleUrls: ['./user-trip-list-page.component.scss']
 })
-export class UserTripListPageComponent{
+export class UserTripListPageComponent {
 
   trips = [];
-  userUID;
 
   constructor(private _trips_service: TripsService) {
-    this.userUID = JSON.parse(localStorage.getItem('user')).uid;
+
     this.load_trips_by_user();
   }
 
   async load_trips_by_user() {
     try {
-      this.trips = await this._trips_service.get_trips_by_userUID(this.userUID);
+      this.trips = await this._trips_service.get_trips();
+      console.log(this.trips);
     } catch (error) {
       console.error(error);
     }
