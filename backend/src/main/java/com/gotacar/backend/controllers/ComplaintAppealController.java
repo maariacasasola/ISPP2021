@@ -3,7 +3,6 @@ package com.gotacar.backend.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.User;
@@ -16,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,8 +26,6 @@ public class ComplaintAppealController {
 
     @Autowired
     private UserRepository userRepository;
-
-    private static ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/complaint_appeals/list")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
