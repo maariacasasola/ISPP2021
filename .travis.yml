@@ -12,7 +12,7 @@ jobs:
       script:
         - cd frontend
         - npm ci
-        - ng test
+        - npx jest --coverage
         - sonar-scanner
       after_success:
         - ng build --prod
