@@ -1,6 +1,7 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -79,33 +80,32 @@ public class ComplaintController {
 
     }
 
-    @PostMapping("/penalize/")
-    @PreAuthorize("hasRole('ROLE_ADMIN")
+    @PostMapping("/penalize")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User Penalize(@RequestBody String body){
+
+        User userBanned = new User();
 
         try{
             JsonNode jsonNode = objectMapper.readTree(body);
+
             LocalDateTime dateBanned = OffsetDateTime
             .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
 
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-            ObjectId complaintObjectId = new ObjectId(idComplaint);
-            Complaint complaintFinal = complaintRepository.findById(complaintObjectId);
+
+            Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
             Trip tripComplaint = complaintFinal.getTrip();
-            User userBanned = tripComplaint.getDriver();
-
-
-
-
+            userBanned = tripComplaint.getDriver();
+            userBanned.setBannedUntil(dateBanned);
+            userRepository.save(userBanned);
             
-            
-            
-
 
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
+        return userBanned;
 
     }
 
