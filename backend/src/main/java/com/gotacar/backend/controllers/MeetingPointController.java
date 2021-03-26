@@ -27,7 +27,7 @@ public class MeetingPointController {
 
     @PostMapping("/create_meeting_point")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    MeetingPoint createMeetingPoint(@RequestBody String body){
+    public MeetingPoint createMeetingPoint(@RequestBody String body){
     	MeetingPoint mp = new MeetingPoint();
         try {
             JsonNode jsonNode = objectMapper.readTree(body);

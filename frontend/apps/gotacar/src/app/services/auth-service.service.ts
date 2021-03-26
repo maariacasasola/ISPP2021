@@ -114,7 +114,7 @@ export class AuthServiceService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['authenticated', 'profile']);
+          this.router.navigate(['home']);
         });
         this.set_user_data(result.user);
       })

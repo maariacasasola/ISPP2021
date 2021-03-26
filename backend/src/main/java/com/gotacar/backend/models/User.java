@@ -1,15 +1,18 @@
 package com.gotacar.backend.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +30,7 @@ public class User {
   public String lastName;
 
   @NotBlank
+  @Indexed(unique = true)
   public String uid;
 
   @Email(message = "Invalid email")
@@ -42,6 +46,9 @@ public class User {
   public LocalDate birthdate;
 
   public List<String> roles;
+
+  @Future
+  public LocalDateTime bannedUntil;
 
   public User() {
   }

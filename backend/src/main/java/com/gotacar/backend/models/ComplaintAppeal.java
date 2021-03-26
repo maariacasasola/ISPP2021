@@ -19,7 +19,7 @@ public class ComplaintAppeal {
     @NotNull
     public Complaint complaint;
 
-    @Length(max = 5000)
+    @Length(max = 200)
     @NotBlank
     public String content;
 
@@ -29,10 +29,10 @@ public class ComplaintAppeal {
     public ComplaintAppeal() {
     }
 
-    public ComplaintAppeal(String c, Boolean check, Complaint comp) {
-        this.complaint = comp;
-        this.content = c;
-        this.checked = check;
+    public ComplaintAppeal(String content, Boolean checked, Complaint complaint) {
+        this.complaint = complaint;
+        this.content = content;
+        this.checked = checked;
     }
 
     @Override
