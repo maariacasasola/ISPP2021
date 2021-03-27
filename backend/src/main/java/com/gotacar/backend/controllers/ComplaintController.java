@@ -50,8 +50,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            List<Complaint> complaints = new ArrayList<>();
-            complaints = complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
+            List<Complaint> complaints =  complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
             return complaints;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
