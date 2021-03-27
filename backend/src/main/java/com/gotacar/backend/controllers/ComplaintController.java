@@ -1,6 +1,7 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +91,35 @@ public class ComplaintController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
+
+    }
+
+    @PostMapping("/penalize")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public User Penalize(@RequestBody String body){
+
+        User userBanned = new User();
+
+        try{
+            JsonNode jsonNode = objectMapper.readTree(body);
+
+            LocalDateTime dateBanned = OffsetDateTime
+            .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
+
+            String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
+
+            Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
+            Trip tripComplaint = complaintFinal.getTrip();
+            userBanned = tripComplaint.getDriver();
+            userBanned.setBannedUntil(dateBanned);
+            userRepository.save(userBanned);
+            
+
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    }
+        return userBanned;
 
     }
 
