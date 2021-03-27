@@ -66,6 +66,7 @@ import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
+import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-complaints-list-page/admin-complaints-list-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripListComponent } from './components/trip-list/trip-list.component';
 
@@ -95,6 +96,7 @@ registerLocaleData(localeEs, 'es');
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
+    AdminComplaintsListPageComponent
     TripSearchResultPageComponent,
     TripListComponent,
   ],
