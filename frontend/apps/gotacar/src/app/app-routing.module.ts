@@ -13,6 +13,7 @@ import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'error',
     component: ErrorPageComponent,
+  },
+  {
+    path: 'trip-search-result',
+    component: TripSearchResultPageComponent,
   },
   {
     path: 'authenticated',

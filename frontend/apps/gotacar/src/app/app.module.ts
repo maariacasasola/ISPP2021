@@ -42,6 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -65,6 +66,8 @@ import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-complaints-list-page/admin-complaints-list-page.component';
+import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
+import { TripListComponent } from './components/trip-list/trip-list.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -92,6 +95,8 @@ registerLocaleData(localeEs, 'es');
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     AdminComplaintsListPageComponent
+    TripSearchResultPageComponent,
+    TripListComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -112,6 +117,7 @@ registerLocaleData(localeEs, 'es');
     MatButtonModule,
     MatGridListModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
     AppRoutingModule,
     HttpClientModule,

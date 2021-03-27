@@ -121,6 +121,7 @@ public class BackendApplication implements CommandLineRunner {
 		User client8 = new User("Pedro", "Serrano", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE8", "client8@gotacar.com", "42941220L",
 				"http://dniclient.com", fecha2, lista2);
 
+				
 		userRepository.save(client);
 		userRepository.save(client2);
 		userRepository.save(client3);
