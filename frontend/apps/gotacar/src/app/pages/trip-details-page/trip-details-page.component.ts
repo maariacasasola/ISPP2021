@@ -37,17 +37,13 @@ export class TripDetailsPageComponent {
   }
 
   async order_trip() {
-    // Call your backend to create the Checkout session.
-    // When the customer clicks on the button, redirect them to Checkout.
     const stripe = await this.stripePromise;
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: 'cs_test_a13m1QAjYFE4OlWfrl1IAqQnaanGGy98Mv4kp5pBX05tdSgLymHvTmuvas'
+    const response = await stripe.redirectToCheckout({
+      sessionId: 'cs_test_a1yTWkOMa3yv6mf1dJ8JeGr9lkfSbwBVQ2vJ0nfYq02WEnrXOiKElvXE8K'
     });
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
-    if (error) {
-      console.log(error);
+    console.log(response)
+    if (response.error) {
+      console.log(response.error);
     }
   }
 }
