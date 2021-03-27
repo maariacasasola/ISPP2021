@@ -2,6 +2,7 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,7 +49,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            return complaintRepository.findAll();
+            return complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }

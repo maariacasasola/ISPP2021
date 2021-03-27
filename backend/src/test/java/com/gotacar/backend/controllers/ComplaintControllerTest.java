@@ -81,7 +81,7 @@ public class ComplaintControllerTest {
             });
 
             this.mockMvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk());
-            assertThat(lista.size()).isEqualTo(4);
+            assertThat(lista.size()).isEqualTo(1);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
