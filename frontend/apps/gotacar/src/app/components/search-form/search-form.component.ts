@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TripsService } from '../../services/trips.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-search-form',
@@ -10,10 +12,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SearchFormComponent {
   searchForm = this.fb.group({
-    origen: ['', Validators.required],
-    destino: ['', Validators.required],
-    fecha: ['', Validators.required],
-    //numPasajeros: ['', Validators.required],
+    origin: ['', Validators.required],
+    target: ['', Validators.required],
+    date: ['', Validators.required],
+    // TODO: Poner required y poner formulario campo
+    places: [1],
   });
 
   minDate: Date;
@@ -24,7 +27,7 @@ export class SearchFormComponent {
   constructor(
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private geocodeService: GeocoderServiceService
+    private _router: Router
   ) {
     this.minDate = new Date();
   }
@@ -34,69 +37,15 @@ export class SearchFormComponent {
       this.searchForm.markAllAsTouched();
       return;
     }
-    console.log(this.searchForm)
-    const coordinatesOrigin = await this.get_origin();
-    const coordinatesTarget = await this.get_target();
+    const { places, date, origin, target } = this.searchForm.value;
 
-  }
-
-  async get_origin() {
-    try {
-      const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.origen
-      );
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
-
-      if (cond1 || cond2 || cond3) {
-        const coordinates = {
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
-        };
-        return coordinates;
-      } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el origen'
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async get_target() {
-    try {
-      const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.destino
-      );
-
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
-
-      if (cond1 || cond2 || cond3) {
-        const coordinates = {
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
-        };
-        return coordinates;
-      } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el destino'
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-      panelClass: ['blue-snackbar'],
+    this._router.navigate(['/', 'trip-search-result'], {
+      queryParams: {
+        origin,
+        target,
+        places,
+        date,
+      },
     });
   }
 }

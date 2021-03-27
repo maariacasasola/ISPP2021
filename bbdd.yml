@@ -9,7 +9,8 @@ USUARIO
         dni: string,
         profile_photo: string,
         birthdate: string,
-        roles: [string] : ['admin', 'client', 'driver']
+        roles: [string] : ['admin', 'client', 'driver'],
+        banned_until: date
 }
 
 MEETING_POINT
@@ -46,5 +47,33 @@ TRIP
         driver: User,
 }
 
-DRIVER_DATA
-----------------------------
+TRIP_ORDER
+-----------------------
+{
+        trip: Trip,
+        user: User,
+        date: date,
+        price: integer,
+        payment_intent: string (STRIPE NOS LO DA),
+        places: integer,
+        status: ['COMPLETED', 'REFUNDED']
+}
+
+COMPLAINT
+-----------------------
+{
+        title: string,
+        content: string,
+        user: User,
+        trip: Trip,
+        created_at: date,
+        status: ['PENDING', 'ALREADY_RESOLVED', 'ACCEPTED', 'REFUSED'] (Default 'PENDING')
+}
+
+COMPLAINT_APPEAL
+-----------------------
+{
+        complaint: Complaint,
+        content: string,
+        checked: boolean (Default false)
+}
