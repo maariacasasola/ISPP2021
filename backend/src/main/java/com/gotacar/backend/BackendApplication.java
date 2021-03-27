@@ -277,6 +277,7 @@ public class BackendApplication implements CommandLineRunner {
 					.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
 					.antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
 					.antMatchers(HttpMethod.GET, "/list_trips").permitAll()
+					.antMatchers(HttpMethod.POST, "/cancel_trip_driver").permitAll()
 					.antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest().authenticated();
 		}
 

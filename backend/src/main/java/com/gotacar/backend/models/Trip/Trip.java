@@ -39,6 +39,8 @@ public class Trip {
     public LocalDateTime endingDate;
 
     public LocalDateTime cancelationDate;
+    
+    public LocalDateTime cancelationDateLimit;
 
     public String comments;
 
@@ -51,16 +53,20 @@ public class Trip {
     public User driver;
     
     public Trip() {
-        this.canceled = false;
+//        this.canceled = false;
     }
 
     public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
             String comments, Integer places, User driver) {
+    	
+    	LocalDateTime cancelationDateLimit = startDate.minusHours(1);
+    	
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
         this.price = price;
         this.startDate = startDate;
         this.endingDate = endingDate;
+        this.cancelationDateLimit = cancelationDateLimit;
         this.comments = comments;
         this.places = places;
         this.driver = driver;
