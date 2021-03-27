@@ -2,7 +2,6 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
