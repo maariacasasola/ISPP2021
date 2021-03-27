@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Point, Trip } from '../shared/services/trip';
@@ -12,6 +12,13 @@ export class TripsService {
   get_all_trips(): Promise<any> {
     return this._http_client
       .get(environment.api_url + '/list_trips')
+      .toPromise();
+  }
+
+  get_trips(): Promise<any> {
+
+    return this._http_client
+      .get(environment.api_url + '/list_trip_orders')
       .toPromise();
   }
 

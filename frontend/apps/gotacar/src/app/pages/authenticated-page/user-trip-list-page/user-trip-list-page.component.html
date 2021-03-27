@@ -1,0 +1,49 @@
+<div>
+  <h1>VIAJES REGISTRADOS</h1>
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
+      <mat-list role="list">
+        <mat-card class="trip">
+          <mat-card-title class="card-title">{{
+            trip?.user?.firstName + ' ' + trip?.user?.lastName
+          }}</mat-card-title>
+          <br /><br/>
+          <mat-card-content class="card-content">
+            <mat-card-subtitle>
+              <b>Hora de salida:</b> {{ trip?.trip?.startDate }}
+            </mat-card-subtitle>
+            <br>
+            <mat-card-subtitle>
+              <b>Hora de llegada:</b> {{ trip?.trip?.endingDate }}
+            </mat-card-subtitle>
+            <br>
+            <div style="text-align:center">
+            <mat-card-subtitle>
+              {{ trip?.trip?.startingPoint?.address }} &#8594;
+              {{ trip?.trip?.endingPoint?.address }}
+            </mat-card-subtitle>
+            <b>
+            <mat-card-subtitle>{{
+              trip?.price | convertCentToEur
+            }}</mat-card-subtitle>
+             <mat-card-subtitle>{{
+              trip?.status
+            }}</mat-card-subtitle>
+            </b>
+            </div>
+          </mat-card-content>
+          <mt-card-content>
+          {{trip?.trip?.comments}}
+          </mt-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-raised-button class="button" [routerLink] = 'trip.id'>
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <br />
+      </mat-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
