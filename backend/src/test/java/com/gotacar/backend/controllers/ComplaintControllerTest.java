@@ -70,13 +70,12 @@ public class ComplaintControllerTest {
 
     
     @Test
-    public void ListComplaints() throws Exception {
+    public void ListComplaintsTest() throws Exception {
        String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2"))
                                 .andReturn().getResponse().getContentAsString();
         RequestBuilder builder = MockMvcRequestBuilders.get("/complaints/list");
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("hola");
- try {
+        try {
             String resBody = mockMvc.perform(builder).andReturn().getResponse().getContentAsString();
             List<Complaint> lista = mapper.readValue(resBody, new TypeReference<List<Complaint>>() {
             });
