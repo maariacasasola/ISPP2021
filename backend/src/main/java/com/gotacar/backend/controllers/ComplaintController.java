@@ -2,6 +2,7 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 public class ComplaintController {
@@ -41,6 +43,20 @@ public class ComplaintController {
     private UserRepository userRepository;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
+
+    @GetMapping("/complaints/list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Complaint> listComplaints() {
+        try {
+            List<Complaint> complaints = new ArrayList<>();
+
+            complaints = complaintRepository.findAll();
+            
+            return complaints;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
 
     @PostMapping("/complaints/create")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
