@@ -109,4 +109,32 @@ public class MeetingPointControllerTest {
         }
 
     }
+
+/*
+    @Test
+    @WithMockUser(value = "spring")
+    public void testDeleteMeetingPoint() throws Exception {
+        //construyo en json
+        JSONObject sampleObject = new JSONObject();
+
+        //obtener un mp para borrar
+        MeetingPoint mp = MeetingPointRepository.findAll().get(0);
+        // Login como administrador
+        String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1")).andReturn()
+                .getResponse().getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        // Obtengo el token
+        String token = json.getString("token");
+        // Llamo al controlador para borrar
+        String mpId = mp.getId();
+        ResultActions result = mockMvc.perform(
+        post("/delete_meeting_point/" + mpId).header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+       
+        assertThrows(meetingPointRepository.findById(mpId));
+        System.out.println(e.getMessage());
+        
+    }*/
 }
