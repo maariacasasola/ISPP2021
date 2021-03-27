@@ -121,6 +121,7 @@ public class BackendApplication implements CommandLineRunner {
 		User client8 = new User("Pedro", "Serrano", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE8", "client8@gotacar.com", "42941220L",
 				"http://dniclient.com", fecha2, lista2);
 
+				
 		userRepository.save(client);
 		userRepository.save(client2);
 		userRepository.save(client3);
@@ -241,8 +242,12 @@ public class BackendApplication implements CommandLineRunner {
 		// COMPLAINT APPEALS
 		// -----------------------------------------------------------------------------------------
 		ComplaintAppeal complaintAppeal1 = new ComplaintAppeal("El retraso fue causado por necesidades personales, suelo ser puntual", false, complaint2);
-
+		ComplaintAppeal complaintAppeal2 = new ComplaintAppeal("El retraso fue causado por necesidades personales", true, complaint2);
+		ComplaintAppeal complaintAppeal3 = new ComplaintAppeal("El retraso fue causado por necesidades", false, complaint3);
+		
 		complaintAppealRepository.save(complaintAppeal1);
+		complaintAppealRepository.save(complaintAppeal2);
+		complaintAppealRepository.save(complaintAppeal3);
 
 		//COMPORBACIÓN
 		// -----------------------------------------------------------------------------------------

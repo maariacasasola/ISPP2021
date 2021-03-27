@@ -6,12 +6,14 @@ import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meetin
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
+import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,10 @@ const routes: Routes = [
     component: ErrorPageComponent,
   },
   {
+    path: 'trip-search-result',
+    component: TripSearchResultPageComponent,
+  },
+  {
     path: 'authenticated',
     component: AuthenticatedPageComponent,
     canActivate: [AuthenticatedGuard],
@@ -51,6 +57,10 @@ const routes: Routes = [
       {
         path: 'trips',
         component: UserTripListPageComponent,
+      },
+      {
+        path: 'trips/:trip/create-complaint',
+        component: ClientComplaintPageComponent,
       },
     ],
   },
