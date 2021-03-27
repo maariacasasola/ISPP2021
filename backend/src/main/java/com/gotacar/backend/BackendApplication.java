@@ -130,6 +130,9 @@ public class BackendApplication implements CommandLineRunner {
         userRepository.save(client7);
         userRepository.save(client8);
 
+        String a = client.getId();
+        System.out.println("idUser "+a);
+
         // MEETING POINTS
         // -----------------------------------------------------------------------------------------
         MeetingPoint meetingPoint1 = new MeetingPoint(37.37722160408209, -5.9871317313950705,
@@ -189,6 +192,9 @@ public class BackendApplication implements CommandLineRunner {
         tripRepository.save(trip6);
         tripRepository.save(trip7);
         tripRepository.save(trip8);
+
+        String asd = trip1.getId();
+        System.out.println("idTrip "+asd);
 
         // TRIP ORDERS
         // -----------------------------------------------------------------------------------------
