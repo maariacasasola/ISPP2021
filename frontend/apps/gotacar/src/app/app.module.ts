@@ -27,6 +27,7 @@ import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 
 // ANGULAR MATERIAL
+import {MatListModule} from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -63,6 +64,7 @@ import { AccessForbiddenDialogComponent } from './components/access-forbidden/ac
 import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { PenaltyDialogComponent } from './components/penalty-dialog/penalty-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -87,7 +89,8 @@ registerLocaleData(localeEs, 'es');
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
     CreateTripFormComponent,
-    DriverCreateTripPageComponent
+    DriverCreateTripPageComponent,
+    PenaltyDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -102,6 +105,7 @@ registerLocaleData(localeEs, 'es');
     MatButtonModule,
     MatDialogModule,
     MatSidenavModule,
+    MatListModule,
     MatFormFieldModule,
     MatIconModule,
     MatCardModule,
