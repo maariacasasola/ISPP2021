@@ -1,6 +1,8 @@
 package com.gotacar.backend.controllers;
 
+import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintRepository;
+import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -116,5 +119,38 @@ public class ComplaintControllerTest {
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
         assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El viaje aún no se ha realizado");
    }
+
+
+   @Test
+   public void penalizeTest() throws Exception{
+
+       List<Complaint> listaC = new ArrayList<>();
+       listaC = complaintRepository.findAll();
+       final String value = listaC.get(0).getId(); 
+       
+       JSONObject sampleObject = new JSONObject();
+       sampleObject.appendField("id_complaint", value);
+       sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
+
+       String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2"))
+                               .andReturn().getResponse().getContentAsString();
+
+
+       org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+       String token = json2.getString("token");
+
+       ResultActions result = mockMvc.perform(post("/penalize").header("Authorization", token)
+                               .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                               .accept(MediaType.APPLICATION_JSON));
+       
+       assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+       assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
+
+
+
+   }
+
+
 
 }
