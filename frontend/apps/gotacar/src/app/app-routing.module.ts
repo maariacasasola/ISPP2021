@@ -10,6 +10,7 @@ import { ClientProfilePageComponent } from './pages/authenticated-page/client-pr
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'log-in',
     component: LogInPageComponent,
+  },
+  {
+    path: 'trip-search-result',
+    component: TripSearchResultPageComponent
   },
   {
     path: 'authenticated',

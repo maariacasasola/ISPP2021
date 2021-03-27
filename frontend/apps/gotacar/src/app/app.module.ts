@@ -42,6 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -62,6 +63,8 @@ import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
 import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
 import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
+import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
+import { TripListComponent } from './components/trip-list/trip-list.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -85,7 +88,9 @@ registerLocaleData(localeEs, 'es');
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
     CreateTripFormComponent,
-    DriverCreateTripPageComponent
+    DriverCreateTripPageComponent,
+    TripSearchResultPageComponent,
+    TripListComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -106,6 +111,7 @@ registerLocaleData(localeEs, 'es');
     MatButtonModule,
     MatGridListModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
     AppRoutingModule,
     HttpClientModule,

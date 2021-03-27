@@ -44,6 +44,8 @@ export class TripsService {
       ending_point: ending_point,
     };
 
+    console.log(body)
+
     return this._http_client
       .post(environment.api_url + '/search_trips', body)
       .toPromise();
