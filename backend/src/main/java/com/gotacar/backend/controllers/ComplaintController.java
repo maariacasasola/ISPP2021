@@ -48,11 +48,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            List<Complaint> complaints = new ArrayList<>();
-
-            complaints = complaintRepository.findAll();
-            
-            return complaints;
+            return complaintRepository.findAll();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }

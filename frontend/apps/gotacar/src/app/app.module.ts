@@ -64,6 +64,7 @@ import { CreateTripFormComponent } from './components/create-trip-form/create-tr
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
+import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-complaints-list-page/admin-complaints-list-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -89,7 +90,8 @@ registerLocaleData(localeEs, 'es');
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
     CreateTripFormComponent,
-    DriverCreateTripPageComponent
+    DriverCreateTripPageComponent,
+    AdminComplaintsListPageComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

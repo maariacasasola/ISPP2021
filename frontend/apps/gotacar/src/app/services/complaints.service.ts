@@ -9,6 +9,12 @@ import { Complaint } from '../shared/services/complaint';
 export class ComplaintsService {
   constructor(private _http_client: HttpClient) {  }
 
+  get_all_complaints(): Promise<any> {
+    return this._http_client
+      .get(environment.api_url + '/complaints/list')
+      .toPromise();
+  }
+
   async create_complaint(complaint: Complaint) {
     const body = {
         title: complaint.title,
