@@ -9,21 +9,21 @@
               {{ complaint?.user?.firstName + ' ' + complaint?.user?.lastName }}
             </mat-card-content>
             <mat-card-content class = "complaint-title">
-              <i>{{ complaint?.title}}</i>
+              <em>{{ complaint?.title}}</em>
             </mat-card-content>
           </mat-card-title>
           <br /><br />
           <mat-card-content class="card-content">
             <mat-card-subtitle>
-              <b>Creación de la queja:</b> {{ complaint?.creationDate }}
+              <strong>Creación de la queja:</strong> {{ complaint?.creationDate }}
             </mat-card-subtitle>
             <br />
             <mat-card-subtitle>
-              <b>Descripción:</b> {{ complaint?.content }}
+              <strong>Descripción:</strong> {{ complaint?.content }}
             </mat-card-subtitle>
             <br>
             <mat-card-subtitle>
-              <b>Estado:</b> {{ complaint?.status }}
+              <strong>Estado:</strong> {{ complaint?.status }}
             </mat-card-subtitle>
             <br />
           </mat-card-content>
