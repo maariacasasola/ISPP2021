@@ -1,0 +1,27 @@
+.trips-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  gap: 20px 20px;
+  grid-template-areas: '. .';
+  padding: 20px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.driver-photo {
+  background-size: cover;
+  height: 60px;
+  width: 60px;
+}
+
+.places-and-price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #0e4a6b;
+}
