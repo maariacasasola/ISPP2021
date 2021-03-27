@@ -2,8 +2,8 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +24,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 public class ComplaintController {
@@ -49,7 +50,9 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            return complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
+            List<Complaint> complaints = new ArrayList<>();
+            complaints = complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
+            return complaints;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
