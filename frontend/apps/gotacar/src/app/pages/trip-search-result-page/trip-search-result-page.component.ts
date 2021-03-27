@@ -45,6 +45,7 @@ export class TripSearchResultPageComponent implements OnInit {
         this.places,
         new Date(this.date)
       );
+      console.log(this.trips);
     } catch (error) {
       console.error(error);
     }
