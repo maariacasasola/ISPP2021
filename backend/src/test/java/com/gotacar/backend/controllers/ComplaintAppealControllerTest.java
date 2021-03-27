@@ -2,21 +2,31 @@ package com.gotacar.backend.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-import net.minidev.json.JSONObject;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gotacar.backend.models.Complaint;
+import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintRepository;
+
+
 
 
 @SpringBootTest
@@ -32,62 +42,47 @@ public class ComplaintAppealControllerTest {
     @Test
     @WithMockUser(value = "spring")
     public void testCreateComplaintAppealDriver() throws Exception {
+        List<Complaint> muertos = new ArrayList<>();
+        muertos = complaintRepository.findAll();
+        final String value = muertos.get(0).getId(); // whatever the final "value" is.
+        final ObjectMapper objectMapper = new ObjectMapper();
+        List<String> list = new ArrayList<>();
+        list.add("complaint");
+        list.add("id");
+        ObjectNode json = null;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            final String prop = list.get(i);
+            final ObjectNode objectNode = objectMapper.createObjectNode();
 
-        List<String> data = new ArrayList<>();
-        data.add("complaint");
-        data.add("id");
-        data.add("content");
-        data.add("checked");
-
-        List<String> datos = new ArrayList<>();
-        datos.add("1");
-        datos.add("Porque spy gilipollas");
-        datos.add("false");
-        Boolean flag = false;
-        
-        Map<String, String> mydata = new HashMap<>();
-        Map<String, JSONObject> newdata = new HashMap<>();
-        JSONObject result = new JSONObject();
-
-        for (int i = 0; i < data.size(); i++) {
-            if (flag) {
-                mydata.put(data.get(i), datos.get(0));
-                result = generateJson(mydata);
-                flag = false;
+            if (json == null) {
+                objectNode.put(prop, value);
             } else {
-                flag = data.get(i)=="complaint"?true:false;
-                if (!flag){
-                    newdata.put(data.get(i), result.appendField(data.get(i),datos.get(i)));
-                }else{
-                    newdata.put(data.get(i), result);
-                    
-                }
-                System.out.println(result);
-                    result = generateJson(newdata);
-                    newdata.clear();
-                 
-
+                objectNode.put(prop, json);
             }
+            json = objectNode;
+
         }
-        System.out.println(result);
-        // Login como administrador
-        // String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1")).andReturn()
-        //         .getResponse().getContentAsString();
+        json.put("content", "gilipollas");
+        json.put("checked", "false");
+        System.out.println("final" + json);
 
-        // org.json.JSONObject json = new org.json.JSONObject(response);
-        // // Obtengo el token
-        // String token = json.getString("token");
 
-        // // Petición post al controlador
-        // ResultActions result = mockMvc.perform(
-        //         post("/complaint_appeal").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-        //                 .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+        // Login como driver
+        String response = mockMvc.perform(post("/user").param("uid", "h9HmVQqlBQXD289O8t8q7aN2Gzg1")).andReturn()
+                .getResponse().getContentAsString();
 
-        // assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-        // assertThat(result.andReturn().getResponse().getContentType().equals(ComplaintAppeal.class.toString()));
+        org.json.JSONObject json2 = new org.json.JSONObject(response);
+        // Obtengo el token
+        String token = json2.getString("token");
 
+        // Petición post al controlador
+        ResultActions result = mockMvc.perform(
+                post("/complaint_appeal").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                        .content(json.toString()).accept(MediaType.APPLICATION_JSON));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(result.andReturn().getResponse().getContentType().equals(ComplaintAppeal.class.toString()));
     }
-    private static JSONObject generateJson(Map<String,?> data) {
-        return new JSONObject(data);
-    }
+       
+
 }

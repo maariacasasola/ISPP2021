@@ -8,6 +8,8 @@ import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +37,7 @@ public class AppealController {
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
             JsonNode complaintJson = objectMapper.readTree(jsonNode.get("complaint").toString());
-            Complaint complaint = complaintRepository.findById(complaintJson.get("id").asText()).orElseGet(()->null);
+            Complaint complaint = complaintRepository.findById(complaintJson.get("id").asText()).orElseGet(()-> null);
             
             String content = jsonNode.get("content").toString();
             Boolean checked = Boolean.parseBoolean(jsonNode.get("checked").toString());
