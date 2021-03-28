@@ -43,7 +43,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -98,7 +97,7 @@ registerLocaleData(localeEs, 'es');
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
-    AdminComplaintsListPageComponent
+    AdminComplaintsListPageComponent,
     TripSearchResultPageComponent,
     TripListComponent,
     PenaltyDialogComponent
