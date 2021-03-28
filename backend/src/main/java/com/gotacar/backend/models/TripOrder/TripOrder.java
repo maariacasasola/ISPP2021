@@ -33,7 +33,7 @@ public class TripOrder {
     public Integer price;
 
     @NotBlank
-    public String payment_intent;
+    public String paymentIntent;
 
     @NotNull
     @Min(1)
@@ -42,12 +42,12 @@ public class TripOrder {
 
     public String status;
 
-    public TripOrder(Trip trip, User user, LocalDateTime date, Integer price, String payment_intent, Integer places) {
+    public TripOrder(Trip trip, User user, LocalDateTime date, Integer price, String paymentIntent, Integer places) {
         this.trip = trip;
         this.user = user;
         this.date = date;
         this.price = price;
-        this.payment_intent = payment_intent;
+        this.paymentIntent = paymentIntent;
         this.places = places;
         this.status = "COMPLETED";
     }

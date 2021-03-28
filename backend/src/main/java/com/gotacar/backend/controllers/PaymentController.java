@@ -7,11 +7,15 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gotacar.backend.models.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class PaymentController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -30,8 +37,10 @@ public class PaymentController {
             Integer amount = objectMapper.readTree(jsonNode.get("amount").toString()).asInt();
             Integer quantity = objectMapper.readTree(jsonNode.get("quantity").toString()).asInt();
             String description = objectMapper.readTree(jsonNode.get("description").toString()).asText();
-            String idUser = objectMapper.readTree(jsonNode.get("idUser").toString()).asText();
             String idTrip = objectMapper.readTree(jsonNode.get("idTrip").toString()).asText();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String idUser = userRepository.findByEmail(authentication.getPrincipal().toString()).getId();
+
 
             // TODO: Añadir como variable de entorno
             Stripe.apiKey = "sk_test_51I0FjpJ65m70MT01alImpvRuOOYBczw0EVZmF2oMlA5WbWNjOkqbIz0ty1IZXWNnAWe3F4xnozb8I4g3I4JDfJd500W5tuKdUh";
