@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Complaint } from '../shared/services/complaint';
+import { Penalty } from '../shared/services/penalty';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,13 @@ export class ComplaintsService {
         tripId: complaint.tripId.toString(),
     }
     return this._http_client.post(environment.api_url + '/complaints/create', body).toPromise();
+  }
+  async penalty_complaint(penalty:Penalty){
+    const body = {
+      id_complaint:penalty.id_complaint,
+      date_banned:penalty.date_banned,
+    }
+    return this._http_client.post(environment.api_url+'/penalize',body).toPromise();
+
   }
 }
