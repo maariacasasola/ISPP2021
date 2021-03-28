@@ -63,6 +63,20 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
+    this.bannedUntil=null;
+  }
+
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.uid = uid;
+    this.email = email;
+    this.dni = dni;
+    this.profilePhoto = profilePhoto;
+    this.birthdate = birthdate;
+    this.roles = roles;
+    this.bannedUntil=bannedUntil;
   }
 
   @Override

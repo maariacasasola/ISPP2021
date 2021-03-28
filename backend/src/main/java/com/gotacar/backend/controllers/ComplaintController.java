@@ -47,7 +47,7 @@ public class ComplaintController {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/complaints/list")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
     public List<Complaint> listComplaints() {
         try {
             List<Complaint> complaints =  complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());

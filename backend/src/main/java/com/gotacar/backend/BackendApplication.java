@@ -95,7 +95,7 @@ public class BackendApplication implements CommandLineRunner {
 		User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
 				null, fecha3, lista3);
 		User driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com",
-				"312312312R", null, fecha1, lista3);
+				"312312312R", null, fecha1, lista3,LocalDateTime.of(2021, 06, 04, 13, 30, 24));
 		User driver3 = new User("Marina", "Chacón", "h9HmVQqlBQXD289O8t8q7aN2Gzg3", "driver3@gmail.com", "312412412J",
 				null, fecha1, lista3);
 
