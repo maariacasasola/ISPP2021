@@ -6,23 +6,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import net.minidev.json.JSONObject;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
-import com.gotacar.backend.models.ComplaintRepository;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,9 +31,6 @@ public class ComplaintAppealControllerTest {
 
         @Autowired
         private ComplaintAppealRepository complaintAppealRepository;
-
-        @Autowired
-        private ComplaintRepository complaintRepository;
 
         @Test
         public void listComplaintAppealsUncheckedTest() throws Exception {
@@ -204,32 +199,12 @@ public class ComplaintAppealControllerTest {
         @Test
         @WithMockUser(value = "spring")
         public void testCreateComplaintAppealDriver() throws Exception {
-                List<Complaint> muertos = new ArrayList<>();
-                muertos = complaintRepository.findAll();
-                final String value = muertos.get(0).getId(); // whatever the final "value" is.
-                final ObjectMapper objectMapper = new ObjectMapper();
-                List<String> list = new ArrayList<>();
-                list.add("complaint");
-                list.add("id");
-                ObjectNode json = null;
-                for (int i = list.size() - 1; i >= 0; i--) {
-                        final String prop = list.get(i);
-                        final ObjectNode objectNode = objectMapper.createObjectNode();
-
-                        if (json == null) {
-                                objectNode.put(prop, value);
-                        } else {
-                                objectNode.put(prop, json);
-                        }
-                        json = objectNode;
-
-                }
-                json.put("content", "gilipollas");
-                json.put("checked", "false");
-                System.out.println("final" + json);
+            JSONObject sampleObject = new JSONObject();
+            sampleObject.appendField("content", "soy tonto");
+            sampleObject.appendField("checked", false);
 
                 // Login como driver
-                String response = mockMvc.perform(post("/user").param("uid", "h9HmVQqlBQXD289O8t8q7aN2Gzg1"))
+                String response = mockMvc.perform(post("/user").param("uid", "h9HmVQqlBQXD289O8t8q7aN2Gzg2"))
                                 .andReturn().getResponse().getContentAsString();
 
                 org.json.JSONObject json2 = new org.json.JSONObject(response);
@@ -238,10 +213,17 @@ public class ComplaintAppealControllerTest {
 
                 // Petición post al controlador
                 ResultActions result = mockMvc.perform(post("/complaint_appeal").header("Authorization", token)
-                                .contentType(MediaType.APPLICATION_JSON).content(json.toString())
-                                .accept(MediaType.APPLICATION_JSON));
+                            .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                            .accept(MediaType.APPLICATION_JSON));
+
+                String complaint = result.andReturn().getResponse().getContentAsString();
+
+                String[]trim = complaint.split(",");
+                trim = trim[1].split(":");
+                String id = trim[trim.length-1];
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(id).isNotEqualTo("null");
                 assertThat(result.andReturn().getResponse().getContentType().equals(ComplaintAppeal.class.toString()));
         }
 

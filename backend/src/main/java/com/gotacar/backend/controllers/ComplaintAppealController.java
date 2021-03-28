@@ -2,19 +2,29 @@ package com.gotacar.backend.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
+import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.Trip.TripRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,10 +32,18 @@ import org.springframework.web.server.ResponseStatusException;
 public class ComplaintAppealController {
 
     @Autowired
+    private ComplaintRepository complaintRepository;
+
+    @Autowired
     private ComplaintAppealRepository complaintAppealRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TripRepository tripRepository;
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/complaint_appeals/list")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -83,5 +101,41 @@ public class ComplaintAppealController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.LOCKED, e.getMessage(), e);
         }
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PostMapping(path = "/complaint_appeal", consumes = "application/json")
+    public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
+        ComplaintAppeal appeal = new ComplaintAppeal();
+        try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString()); 
+            List<String> trips = tripRepository.findAll().stream().filter(a->a.driver.dni.equals(user.dni) && a.driver.bannedUntil!=null).map(x-> x.getId()).collect(Collectors.toList());
+            int j =0;
+            List<Complaint> complaint = complaintRepository.findAll();
+            Complaint res = new Complaint();
+            while (j<complaint.size()){
+                if (trips.contains(complaint.get(j).getTrip().getId())&&complaint.get(j).getStatus().equals("ACCEPTED")){
+                    res = complaint.get(j);
+                    break;
+                }
+                j++;
+            }
+            JsonNode jsonNode = objectMapper.readTree(body); 
+            String content = jsonNode.get("content").toString();
+            Boolean checked = Boolean.parseBoolean(jsonNode.get("checked").toString());
+            
+            appeal.setComplaint(res);
+            appeal.setContent(content);
+            appeal.setChecked(checked);
+
+            complaintAppealRepository.save(appeal);
+               
+        }catch(Exception e){
+            throw(new IllegalArgumentException(e.getMessage()));
+        }
+        return appeal;
     }
 }
