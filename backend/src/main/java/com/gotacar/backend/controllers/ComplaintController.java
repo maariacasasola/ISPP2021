@@ -105,14 +105,16 @@ public class ComplaintController {
 
             LocalDateTime dateBanned = OffsetDateTime
             .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
-
+            
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-
+            
             Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
             Trip tripComplaint = complaintFinal.getTrip();
             userBanned = tripComplaint.getDriver();
             userBanned.setBannedUntil(dateBanned);
             userRepository.save(userBanned);
+            
+            
             
 
 

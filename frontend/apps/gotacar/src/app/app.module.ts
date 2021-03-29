@@ -27,7 +27,6 @@ import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 
 // ANGULAR MATERIAL
-import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';

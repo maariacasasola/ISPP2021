@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material/dialog';
-import { PenaltyDialogComponent } from '../../../components/penalty-dialog/penalty-dialog.component';
+
 @Component({
   selector: 'frontend-admin-trip-list-page',
   templateUrl: './admin-trip-list-page.component.html',
@@ -10,7 +9,7 @@ import { PenaltyDialogComponent } from '../../../components/penalty-dialog/penal
 export class AdminTripListPageComponent {
   trips = [];
 
-  constructor(private _trips_service: TripsService, private _my_dialog: MatDialog) {
+  constructor(private _trips_service: TripsService) {
     this.load_trips();
   }
 
@@ -21,17 +20,5 @@ export class AdminTripListPageComponent {
       console.error(error);
     }
   }
-  openDialog(data){
-    const dialogConfig = new MatDialogConfig();
-   
-    console.log(data)
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    this._my_dialog.open(PenaltyDialogComponent,dialogConfig);
-    const dialogRef = this._my_dialog.open(PenaltyDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
-    );    
-  }
+  
 }
