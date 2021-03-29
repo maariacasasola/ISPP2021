@@ -70,6 +70,7 @@ import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-compl
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripListComponent } from './components/trip-list/trip-list.component';
 import { PenaltyDialogComponent } from './components/penalty-dialog/penalty-dialog.component';
+import { ComplaintAppealDialogComponent } from './components/complaint-appeal-dialog/complaint-appeal-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -98,6 +99,7 @@ registerLocaleData(localeEs, 'es');
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
     AdminComplaintsListPageComponent,
+    ComplaintAppealDialogComponent,
     TripSearchResultPageComponent,
     TripListComponent,
     PenaltyDialogComponent
