@@ -35,7 +35,6 @@ export class PenaltyDialogComponent implements OnInit {
     const data:Penalty ={
       id_complaint:this.id_complaint,
       date_banned: new Date(this.penalty_form.value.date_banned),
-      //rejected:false,
 
     }
     
@@ -44,13 +43,6 @@ export class PenaltyDialogComponent implements OnInit {
   }
   
   onNoClick(): void {
-    // const data:Penalty ={
-    //   id_complaint:'',
-    //   date_banned:new Date(),
-    //   rejected:true,
-
-    // }
-    
     this._dialogRef.close();
   }
 

@@ -44,7 +44,8 @@ export class AdminComplaintsListPageComponent{
     if (!dialog_response) {
       return
     }
-    this._complaints_service.penalty_complaint(dialog_response);
+    this._complaints_service.penalty_complaint(dialog_response).then(()=>this.load_complaints());
+    
     
   }
   rejectComplaint(){

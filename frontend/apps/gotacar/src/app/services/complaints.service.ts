@@ -11,7 +11,7 @@ import { ComplaintAppeal } from '../shared/services/complaint-appeal';
 export class ComplaintsService {
   constructor(private _http_client: HttpClient) { }
 
-  get_all_complaints(): Promise<any> {
+  async get_all_complaints(): Promise<any> {
     return this._http_client
       .get(environment.api_url + '/complaints/list')
       .toPromise();
@@ -33,7 +33,7 @@ export class ComplaintsService {
     }
     return this._http_client.post(environment.api_url+'/penalize',body).toPromise();
 
-
+  }
   async create_complaint_appeal(complaint_appeal: ComplaintAppeal) {
     const body = {
       content: complaint_appeal.content,
