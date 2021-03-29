@@ -148,4 +148,28 @@ public class ComplaintController {
 
     }
 
+    @PostMapping("/refuse")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Complaint RefusedComplaint(@RequestBody String body){
+
+        try{
+
+            JsonNode jsonNode = objectMapper.readTree(body);
+
+            String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
+
+            Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
+
+            complaintFinal.setStatus("REFUSED");
+            complaintRepository.save(complaintFinal);
+
+    
+        return complaintFinal;
+
+        } catch (Exception e) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    }
+
+    }
+
 }

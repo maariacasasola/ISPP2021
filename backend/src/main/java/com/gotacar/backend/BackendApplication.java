@@ -181,7 +181,10 @@ public class BackendApplication implements CommandLineRunner {
 		Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2, driver2);
 		Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Lagoh", 2, driver);
 		Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9, "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
-		Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3, driver3);
+		Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3, driver);
+		Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3, driver);
+		Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3, driver);
+
 
 		tripRepository.save(trip1);
 		tripRepository.save(trip2);
@@ -191,6 +194,8 @@ public class BackendApplication implements CommandLineRunner {
 		tripRepository.save(trip6);
 		tripRepository.save(trip7);
 		tripRepository.save(trip8);
+		tripRepository.save(trip9);
+		tripRepository.save(trip10);
 
 		// TRIP ORDERS
 		// -----------------------------------------------------------------------------------------
@@ -209,6 +214,9 @@ public class BackendApplication implements CommandLineRunner {
 		TripOrder tripOrder13 = new TripOrder(trip2, client7, LocalDateTime.of(2021, 03, 24, 22, 50, 03), 220, "", 1);
 		TripOrder tripOrder14 = new TripOrder(trip4, driver, LocalDateTime.of(2021, 03, 24, 23, 46, 32), 300, "", 1);
 		TripOrder tripOrder15 = new TripOrder(trip5, client2, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2);
+		TripOrder tripOrder16 = new TripOrder(trip9, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2);
+		TripOrder tripOrder17 = new TripOrder(trip10, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500, "", 2);
+
 
 		tripOrderRepository.save(tripOrder1);
 		tripOrderRepository.save(tripOrder2);
@@ -226,6 +234,8 @@ public class BackendApplication implements CommandLineRunner {
 		tripOrderRepository.save(tripOrder13);
 		tripOrderRepository.save(tripOrder14);
 		tripOrderRepository.save(tripOrder15);
+		tripOrderRepository.save(tripOrder16);
+		tripOrderRepository.save(tripOrder17);
 
 		// COMPLAINTS
 		// -----------------------------------------------------------------------------------------
@@ -233,11 +243,17 @@ public class BackendApplication implements CommandLineRunner {
 		Complaint complaint2 = new Complaint("Queja por retraso", "El conductor se ha retrasado 10 min, he llegado tarde a mi destino", trip7, client3, LocalDateTime.of(2021, 03, 20, 18, 00, 04), "ACCEPTED");
 		Complaint complaint3 = new Complaint("Queja por mala educación", "El conductor ha sido desagradable", trip7, client5, LocalDateTime.of(2021, 03, 20, 18, 00, 00), "ALREADY_RESOLVED");
 		Complaint complaint4 = new Complaint("Queja por retraso", "El conductor se ha retrasado 5 min", trip8, client4, LocalDateTime.of(2021, 03, 21, 12, 30, 00), "REFUSED");
+		Complaint complaint5 = new Complaint("Queja por velocidad1", "El conductor iba demasiado rápido, no me he sentido seguro", trip6, client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+		Complaint complaint6 = new Complaint("Queja por velocidad2", "El conductor iba demasiado rápido, no me he sentido seguro", trip7, client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+		Complaint complaint7 = new Complaint("Queja por velocidad3", "El conductor iba demasiado rápido, no me he sentido seguro", trip8, client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
 
 		complaintRepository.save(complaint1);
 		complaintRepository.save(complaint2);
 		complaintRepository.save(complaint3);
 		complaintRepository.save(complaint4);
+		complaintRepository.save(complaint5);
+		complaintRepository.save(complaint6);
+		complaintRepository.save(complaint7);
 
 		// COMPLAINT APPEALS
 		// -----------------------------------------------------------------------------------------

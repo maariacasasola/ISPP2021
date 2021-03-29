@@ -7,6 +7,7 @@ import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -152,9 +154,10 @@ public class ComplaintControllerTest {
 
                 List<Complaint> listaC = new ArrayList<>();
                 listaC = complaintRepository.findAll();
-                final String value = listaC.get(0).getId();
+                final String value = listaC.get(1).getId();
 
                 JSONObject sampleObject = new JSONObject();
+
                 sampleObject.appendField("id_complaint", value);
                 sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
 
@@ -169,9 +172,69 @@ public class ComplaintControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
                                 .accept(MediaType.APPLICATION_JSON));
 
+                String tripsUser = result.andReturn().getResponse().getContentAsString();
+        
+
+                String[]trim = tripsUser.split(",");
+                trim = trim[0].split(":");
+                String idaux = trim[trim.length-1];
+                String id = idaux.replace("\"", "");
+           
+                List<String> trips = tripRepository.findAll().stream().filter(a->a.driver.id.equals(id)).map(x-> x.getId()).collect(Collectors.toList());
+                List<Complaint> complaintAll = complaintRepository.findAll();
+                int j =0;
+    
+                while(j<complaintAll.size()){
+
+    
+                    if((trips.contains(complaintAll.get(j).getTrip().getId())) && !(complaintAll.get(j).getId().equals(value))){
+
+                        assertThat(complaintAll.get(j).getStatus()).isEqualTo("ALREADY_RESOLVED");
+
+                        }
+                         
+                        
+                j++;
+                }   
+                
+                Complaint acceptedComp = complaintRepository.findById(value).get();
+
+                assertThat(acceptedComp.getStatus()).isEqualTo("ACCEPTED");
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
+
+        }
+
+        @Test
+        public void refuseTest() throws Exception {
+
+                List<Complaint> listaC = new ArrayList<>();
+                listaC = complaintRepository.findAll();
+                final String value = listaC.get(1).getId();
+
+                JSONObject sampleObject = new JSONObject();
+
+                sampleObject.appendField("id_complaint", value);
+
+                String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2"))
+                                .andReturn().getResponse().getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/refuse").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+                
+                Complaint acceptedComp = complaintRepository.findById(value).get();
+
+                assertThat(acceptedComp.getStatus()).isEqualTo("REFUSED");
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
 
         }
 
 }
+
+
