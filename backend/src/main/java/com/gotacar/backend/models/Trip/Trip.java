@@ -59,6 +59,9 @@ public class Trip {
     public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
             String comments, Integer places, User driver) {
     	
+    	LocalDateTime cancelationDateLimit = startDate.minusHours(1);
+        
+        this.setCancelationDateLimit(cancelationDateLimit);
     	
     	
         this.startingPoint = startingPoint;
