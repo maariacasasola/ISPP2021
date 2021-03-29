@@ -13,6 +13,8 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
+import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
@@ -37,6 +39,9 @@ public class TripController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private TripOrderRepository tripOrderRepository;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -166,6 +171,15 @@ public class TripController {
 				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
 				userRepository.save(driver);
 			}
+			
+			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
+			
+			for(TripOrder order : orders){
+				order.setStatus("REFUNDED_PENDING");
+	            tripOrderRepository.save(order);
+			}
+			
+
 			
             tripRepository.save(trip1);
         } catch (Exception e) {
