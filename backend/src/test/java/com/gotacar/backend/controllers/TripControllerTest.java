@@ -188,17 +188,7 @@ public class TripControllerTest {
 
         org.json.JSONObject jsonW = new org.json.JSONObject(responseW);
         // Obtengo el token
-        String tokenW = jsonW.getString("token");
-        
-    	
-    	// Login como conductor del viaje
-        String response = mockMvc.perform(post("/user").param("uid", "h9HmVQqlBQXD289O8t8q7aN2Gzg2")).andReturn()
-                .getResponse().getContentAsString();
-
-        org.json.JSONObject json = new org.json.JSONObject(response);
-        // Obtengo el token
-        String token = json.getString("token");
-       
+        String tokenW = jsonW.getString("token");       
         
         //Obtengo un viaje de este usuraio
         User driver = userRepository.findByUid("h9HmVQqlBQXD289O8t8q7aN2Gzg2");
