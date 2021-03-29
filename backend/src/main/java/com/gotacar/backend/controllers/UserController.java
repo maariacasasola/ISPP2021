@@ -10,8 +10,11 @@ import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.utils.TokenResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +35,12 @@ public class UserController {
 		return new TokenResponse(token, user.getRoles());
 	}
 
+	@GetMapping("current_user")
+	public User currentUser(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+		return user;
+	}
 	private String getJWTToken(User user) {
 		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
 		String roles = String.join(",", user.getRoles());

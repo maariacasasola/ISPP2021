@@ -42,7 +42,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -70,6 +69,7 @@ import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-compl
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripListComponent } from './components/trip-list/trip-list.component';
 import { PenaltyDialogComponent } from './components/penalty-dialog/penalty-dialog.component';
+import { ComplaintAppealDialogComponent } from './components/complaint-appeal-dialog/complaint-appeal-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -98,6 +98,7 @@ registerLocaleData(localeEs, 'es');
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
     AdminComplaintsListPageComponent,
+    ComplaintAppealDialogComponent,
     TripSearchResultPageComponent,
     TripListComponent,
     PenaltyDialogComponent
