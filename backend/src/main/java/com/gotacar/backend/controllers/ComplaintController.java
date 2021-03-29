@@ -98,10 +98,10 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User Penalize(@RequestBody String body){
 
-        User userBanned = new User();
 
         try{
             JsonNode jsonNode = objectMapper.readTree(body);
+            User userBanned = new User();
 
             LocalDateTime dateBanned = OffsetDateTime
             .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
@@ -109,19 +109,42 @@ public class ComplaintController {
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
             
             Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
+ 
             Trip tripComplaint = complaintFinal.getTrip();
             userBanned = tripComplaint.getDriver();
+            String userDni  = userBanned.getDni();
+          
+
+            List<String> trips = tripRepository.findAll().stream().filter(a->a.driver.dni.equals(userDni)).map(x-> x.getId()).collect(Collectors.toList());
+            List<Complaint> complaintAll = complaintRepository.findAll();
+            int j =0;
+
+            while(j<complaintAll.size()){
+
+                if(trips.contains(complaintAll.get(j).getTrip().getId())){
+
+                    complaintAll.get(j).setStatus("ALREADY_RESOLVED");
+
+                    complaintRepository.save(complaintAll.get(j));
+
+                }
+                j++;
+            }
+
+
+            complaintFinal.setStatus("ACCEPTED");
+            complaintRepository.save(complaintFinal);
             userBanned.setBannedUntil(dateBanned);
             userRepository.save(userBanned);
             
-            
+            return userBanned;
             
 
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
-        return userBanned;
+        
 
     }
 
