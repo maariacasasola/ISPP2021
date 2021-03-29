@@ -48,7 +48,9 @@ export class AdminComplaintsListPageComponent{
     
     
   }
-  rejectComplaint(){
+  rejectComplaint(complaint){
+    this._complaints_service.refuse_complain(complaint.id);
+    this.load_complaints();
     
   }
   

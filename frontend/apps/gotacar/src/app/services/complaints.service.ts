@@ -41,4 +41,11 @@ export class ComplaintsService {
     }
     return this._http_client.post(environment.api_url + '/complaint_appeal', body).toPromise();
   }
+  async refuse_complain(idComplaint:string){
+    const body = {
+      id_complaint:idComplaint,
+    }
+    return this._http_client.post(environment.api_url+'/refuse',body).toPromise();
+
+  }
 }
