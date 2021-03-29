@@ -42,6 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -101,7 +102,7 @@ registerLocaleData(localeEs, 'es');
     ComplaintAppealDialogComponent,
     TripSearchResultPageComponent,
     TripListComponent,
-    PenaltyDialogComponent
+    PenaltyDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -116,7 +117,6 @@ registerLocaleData(localeEs, 'es');
     MatButtonModule,
     MatDialogModule,
     MatSidenavModule,
-    MatListModule,
     MatFormFieldModule,
     MatIconModule,
     MatCardModule,
@@ -164,4 +164,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
