@@ -61,9 +61,13 @@ public class PaymentController {
             params.put("line_items", lineItems);
             params.put("mode", "payment");
             params.put("locale", "es");
-            Map<String, String> metadata = new HashMap<>();
+            Map<String, Object> metadata = new HashMap<>();
             metadata.put("userId", idUser);
             metadata.put("tripId", idTrip);
+            metadata.put("quantity", quantity);
+            metadata.put("amount", amount);
+            metadata.put("currency", "EUR");
+            metadata.put("name", description);
             params.put("metadata", metadata);
 
             return Session.create(params).getId();

@@ -35,30 +35,31 @@ public class TripOrderController {
         
         try{
             Session session = Session.retrieve(sessionId);
-            String tripId = session.getMetadata().values().toArray()[0].toString();
-            String userId = session.getMetadata().values().toArray()[1].toString();            
+            String tripId = session.getMetadata().values().toArray()[3].toString();
+            String userId = session.getMetadata().values().toArray()[5].toString();            
             LocalDateTime date = LocalDateTime.now();
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
-            System.out.println(session);
-            Integer quantity = session.getLineItems().getData().get(1).toString().length();
+            Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(userId).get();    
                     
             Integer places = trip.getPlaces();
-            if (places > quantity) {
+            if (places >= quantity) {
                 places = places - quantity;
             } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no se ha pagado todavía");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
-            try {
-                session.getPaymentStatus().equals("paid");
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no se ha pagado todavía", e);
-            }
-            TripOrder res = new TripOrder(trip, user, date, price, paymentIntent, places);
+
+            // if (!session.getPaymentStatus().equals("paid")){
+            //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no se ha pagado todavía", e);
+            // }
+        
+            TripOrder res = new TripOrder(trip, user, date, price, paymentIntent, quantity);
 
             tripOrderRepository.save(res);
+            trip.setPlaces(places);
+            tripRepository.save(trip);
 
             return res;
 
