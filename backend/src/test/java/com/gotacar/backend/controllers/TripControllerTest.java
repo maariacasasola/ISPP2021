@@ -132,7 +132,8 @@ public class TripControllerTest {
                 .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
     	
         	//compruebo que obtengo una respuesta correcta
-        	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(201);
+        	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        	assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo(null);
            
 
         } catch (Exception e) {
@@ -168,7 +169,7 @@ public class TripControllerTest {
                 .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
     	
         	//compruebo que obtengo una respuesta correcta
-        	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(208);
+        	assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El viaje ya está cancelado");
            
 
         } catch (Exception e) {
@@ -212,7 +213,7 @@ public class TripControllerTest {
                 .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
     	
         	//compruebo que obtengo una respuesta correcta
-        	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+        	assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("Usted no ha realizado este viaje");
            
 
         } catch (Exception e) {
