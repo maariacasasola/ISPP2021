@@ -1,9 +1,11 @@
 package com.gotacar.backend.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.TripOrder.TripOrder;
 import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 
@@ -48,8 +50,11 @@ public class TripOrderController {
         try {
             ObjectId tripOrderObjectId = new ObjectId(id);
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
-            tripOrder.setStatus("REFUNDED_PENDING");
-            tripOrderRepository.save(tripOrder);
+            Trip trip = tripOrder.getTrip();
+            if(trip.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
+                tripOrder.setStatus("REFUNDED_PENDING");
+                tripOrderRepository.save(tripOrder);
+            }
             return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

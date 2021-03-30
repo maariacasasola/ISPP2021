@@ -5,6 +5,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +24,9 @@ public class TripOrderControllerTest {
 
     @Autowired
 	private MockMvc mockMvc;
+
+    @Autowired
+    private TripOrderRepository tripOrderRepository;
 
     @Test
     public void testListTripOrders() throws Exception {
@@ -37,7 +47,42 @@ public class TripOrderControllerTest {
         }
 
         assertThat(contador).isEqualTo(2);
+    }
 
+    @Test
+    public void testCancelTripOrderRequest() throws Exception {
+        String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2")).andReturn().getResponse().getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+        List<TripOrder> lista = tripOrderRepository.findByUserUid("qG6h1Pc4DLbPTTTKmXdSxIMEUUE2");
+        String id = lista.get(0).id;
+
+        mockMvc.perform(get("/cancel_trip_order_request/"+id).header("Authorization", token));
+
+        ObjectId tripOrderObjectId = new ObjectId(id);
+        TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+
+        assertThat(tripOrder.status).isEqualTo("REFUNDED_PENDING");
+    }
+
+    @Test
+    public void testCancelTripOrder() throws Exception {
+        String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2")).andReturn().getResponse().getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+        
+        List<TripOrder> lista = tripOrderRepository.findByUserUid("qG6h1Pc4DLbPTTTKmXdSxIMEUUE2");
+        String id = lista.get(0).id;
+
+        mockMvc.perform(get("/cancel_trip_order/"+id).header("Authorization", token));
+
+        ObjectId tripOrderObjectId = new ObjectId(id);
+        TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+
+        assertThat(tripOrder.status).isEqualTo("REFUNDED");
     }
     
 }

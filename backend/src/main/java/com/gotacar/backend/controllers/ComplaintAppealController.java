@@ -12,7 +12,6 @@ import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 
 import org.bson.types.ObjectId;

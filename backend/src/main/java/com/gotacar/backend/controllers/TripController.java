@@ -1,5 +1,6 @@
 package com.gotacar.backend.controllers;
 
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -12,9 +13,12 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
+import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
@@ -34,6 +39,9 @@ public class TripController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private TripOrderRepository tripOrderRepository;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -104,7 +112,10 @@ public class TripController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
             
-            trip1.setCancelationDate(dateEndJson);
+            LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
+            
+            trip1.setCancelationDateLimit(cancelationDateLimit);
+            trip1.setEndingDate(dateEndJson);
             trip1.setStartingPoint(startingPoint);
             trip1.setEndingPoint(endingPoint);
             trip1.setPrice(price);
@@ -113,7 +124,7 @@ public class TripController {
             trip1.setPlaces(placesJson);
             trip1.setDriver(currentUser);
             
-            System.out.println(trip1.getId() + "trip llega a crearse");
+         
             
 
             tripRepository.save(trip1);
@@ -124,5 +135,60 @@ public class TripController {
         return trip1;
 
     }
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PostMapping("/cancel_trip_driver")
+    public Trip CancelTripDriver(@RequestBody() String body) {
+    	Trip trip1 = new Trip();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(body);          
+          
+            trip1 = tripRepository.findById(jsonNode.get("id").asText()).orElseGet(()-> null);
+            
+            Boolean canceled = trip1.getCanceled();
+            
+            
+            //Compruebo si el conductor del viaje es el usuario logueado
+            User driver = trip1.getDriver();
+            
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+            
+            
+            if(!((currentUser.getId()).equals(driver.getId()))) {            	
+            	throw new Exception("Usted no ha realizado este viaje");
+            }
+            
+            //Si ya esta cencelado, envía un mensaje y no modifica el viaje
+            if(canceled == true) {
+            	throw new Exception("El viaje ya está cancelado");	
+            }
+            
+			trip1.setCanceled(true);
+			trip1.setCancelationDate(LocalDateTime.now());
+			
+			
+			if(trip1.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
+				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
+				userRepository.save(driver);
+			}
+			
+			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
+			
+			for(TripOrder order : orders){
+				order.setStatus("REFUNDED_PENDING");
+	            tripOrderRepository.save(order);
+			}
+			
+
+			
+            tripRepository.save(trip1);
+        } catch (Exception e) {
+        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+        
+        return trip1;
+
+    }
+    
 
 }
