@@ -28,8 +28,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
-import net.minidev.json.JSONObject;
-
 import com.gotacar.backend.BackendApplication;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
@@ -166,14 +164,15 @@ public class TripControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         // Obtengo el token
         String token = json.getString("token");
-
-        JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("id", trip.getId());
+        
+        String tripId = trip.getId();       
 
         ResultActions result = mockMvc.perform(
-                post("/cancel_trip_driver").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-                        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-
+                post("/cancel_trip_driver/{trip_id}", tripId)
+                	.header("Authorization", token)
+                	.contentType(MediaType.APPLICATION_JSON)
+                	.accept(MediaType.APPLICATION_JSON)
+                	);
         // compruebo que obtengo una respuesta correcta
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
         assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo(null);
@@ -194,13 +193,13 @@ public class TripControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         // Obtengo el token
         String token = json.getString("token");
+        
+        String tripId = trip.getId();
 
-        JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("id", trip.getId());
-
-        ResultActions result = mockMvc.perform(
-                post("/cancel_trip_driver").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-                        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(post("/cancel_trip_driver/{trip_id}"
+                ,tripId).header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
 
         // compruebo que obtengo una respuesta correcta
         assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El viaje ya está cancelado");

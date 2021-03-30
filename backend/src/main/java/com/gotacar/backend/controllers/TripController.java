@@ -24,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -136,13 +137,11 @@ public class TripController {
 
     }
     @PreAuthorize("hasRole('ROLE_DRIVER')")
-    @PostMapping("/cancel_trip_driver")
-    public Trip cancelTripDriver(@RequestBody() String body) {
+    @PostMapping("/cancel_trip_driver/{trip_id}")
+    public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
     	Trip trip1 = new Trip();
-        try {
-            JsonNode jsonNode = objectMapper.readTree(body);          
-          
-            trip1 = tripRepository.findById(new ObjectId(jsonNode.get("id").asText()));
+        try {          
+        	trip1 = tripRepository.findById(new ObjectId(tripId));
             
             Boolean canceled = trip1.getCanceled();
             
@@ -176,9 +175,7 @@ public class TripController {
 			for(TripOrder order : orders){
 				order.setStatus("REFUNDED_PENDING");
 	            tripOrderRepository.save(order);
-			}
-			
-
+			}			
 			
             tripRepository.save(trip1);
         } catch (Exception e) {
