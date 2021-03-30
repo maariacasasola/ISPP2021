@@ -12,7 +12,7 @@ export class ComplaintsService {
   constructor(private _http_client: HttpClient) { }
 
   async get_all_complaints(): Promise<any> {
-    return this._http_client
+    return await this._http_client
       .get(environment.api_url + '/complaints/list')
       .toPromise();
   }
@@ -42,10 +42,8 @@ export class ComplaintsService {
     return this._http_client.post(environment.api_url + '/complaint_appeal', body).toPromise();
   }
   async refuse_complain(idComplaint:string){
-    const body = {
-      id_complaint:idComplaint,
-    }
-    return this._http_client.post(environment.api_url+'/refuse',body).toPromise();
+    
+    return this._http_client.post(environment.api_url+'/refuse/'+idComplaint,null).toPromise();
 
   }
 }

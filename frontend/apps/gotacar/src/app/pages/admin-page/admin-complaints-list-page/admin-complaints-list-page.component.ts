@@ -3,6 +3,7 @@ import { ComplaintsService } from '../../../services/complaints.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material/dialog';
 import { PenaltyDialogComponent } from '../../../components/penalty-dialog/penalty-dialog.component';
 import { Penalty } from '../../../shared/services/penalty';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'frontend-admin-complaints-list-page',
   templateUrl: './admin-complaints-list-page.component.html',
@@ -13,7 +14,7 @@ export class AdminComplaintsListPageComponent{
 
   complaints = [];
 
-  constructor(private _complaints_service: ComplaintsService, private _my_dialog: MatDialog) {
+  constructor(private _complaints_service: ComplaintsService, private _my_dialog: MatDialog, private _snackBar: MatSnackBar) {
     this.load_complaints();
   }
 
@@ -30,7 +31,7 @@ export class AdminComplaintsListPageComponent{
     
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    console.log(data.trip)
+
     dialogConfig.data={
       id_complaint : data.id,
     }
@@ -43,13 +44,33 @@ export class AdminComplaintsListPageComponent{
     console.log(dialog_response)
     if (!dialog_response) {
       return
+      
     }
-    this._complaints_service.penalty_complaint(dialog_response).then(()=>this.load_complaints());
+    await this._complaints_service.penalty_complaint(dialog_response);
     
+    
+    this.openSnackBar(
+      'Se acepta la queja de '+ data?.user?.firstName +' y se penaliza a su conductor',
+      'Cerrar'
+    );
     
   }
-  rejectComplaint(complaint){
-    this._complaints_service.refuse_complain(complaint.id);
+  async rejectComplaint(complaint){
+    await this._complaints_service.refuse_complain(complaint.id);
+    
+    
+    this.openSnackBar(
+      'Se rechaza la queja de '+complaint?.user?.firstName,
+      'Cerrar'
+    );
+   
+    
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      panelClass: ['blue-snackbar'],
+    });
     this.load_complaints();
     
   }
