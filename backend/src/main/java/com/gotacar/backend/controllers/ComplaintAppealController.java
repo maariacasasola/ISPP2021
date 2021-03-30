@@ -102,38 +102,39 @@ public class ComplaintAppealController {
         }
     }
 
-
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping(path = "/complaint_appeal", consumes = "application/json")
     public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
         ComplaintAppeal appeal = new ComplaintAppeal();
         try {
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString()); 
-            List<String> trips = tripRepository.findAll().stream().filter(a->a.driver.dni.equals(user.dni) && a.driver.bannedUntil!=null).map(x-> x.getId()).collect(Collectors.toList());
-            int j =0;
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            List<String> trips = tripRepository.findAll().stream()
+                    .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(x -> x.getId())
+                    .collect(Collectors.toList());
+            int j = 0;
             List<Complaint> complaint = complaintRepository.findAll();
             Complaint res = new Complaint();
-            while (j<complaint.size()){
-                if (trips.contains(complaint.get(j).getTrip().getId())&&complaint.get(j).getStatus().equals("ACCEPTED")){
+            while (j < complaint.size()) {
+                if (trips.contains(complaint.get(j).getTrip().getId())
+                        && complaint.get(j).getStatus().equals("ACCEPTED")) {
                     res = complaint.get(j);
                     break;
                 }
                 j++;
             }
-            JsonNode jsonNode = objectMapper.readTree(body); 
+            JsonNode jsonNode = objectMapper.readTree(body);
             String content = jsonNode.get("content").toString();
             Boolean checked = Boolean.parseBoolean(jsonNode.get("checked").toString());
-            
+
             appeal.setComplaint(res);
             appeal.setContent(content);
             appeal.setChecked(checked);
 
             complaintAppealRepository.save(appeal);
-               
-        }catch(Exception e){
-            throw(new IllegalArgumentException(e.getMessage()));
+
+        } catch (Exception e) {
+            throw (new IllegalArgumentException(e.getMessage()));
         }
         return appeal;
     }
