@@ -16,6 +16,7 @@ import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.TripOrder.TripOrder;
 import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,6 @@ public class TripController {
     public List<Trip> listTrips() {
         List<Trip> lista = new ArrayList<>();
         try {
-
             lista = tripRepository.findAll();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -137,12 +137,12 @@ public class TripController {
     }
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/cancel_trip_driver")
-    public Trip CancelTripDriver(@RequestBody() String body) {
+    public Trip cancelTripDriver(@RequestBody() String body) {
     	Trip trip1 = new Trip();
         try {
             JsonNode jsonNode = objectMapper.readTree(body);          
           
-            trip1 = tripRepository.findById(jsonNode.get("id").asText()).orElseGet(()-> null);
+            trip1 = tripRepository.findById(new ObjectId(jsonNode.get("id").asText()));
             
             Boolean canceled = trip1.getCanceled();
             
@@ -152,7 +152,6 @@ public class TripController {
             
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-            
             
             if(!((currentUser.getId()).equals(driver.getId()))) {            	
             	throw new Exception("Usted no ha realizado este viaje");
