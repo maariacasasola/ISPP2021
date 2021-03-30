@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import net.minidev.json.JSONObject;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +160,7 @@ public class PaymentController {
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(userId).get();
             Integer places = trip.getPlaces();
-            
+
             if (places >= quantity) {
                 places = places - quantity;
             } else {
