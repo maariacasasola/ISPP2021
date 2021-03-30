@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -96,7 +97,7 @@ public class ComplaintController {
 
     @PostMapping("/penalize")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User Penalize(@RequestBody String body){
+    public User penalize(@RequestBody String body){
 
 
         try{
@@ -148,15 +149,13 @@ public class ComplaintController {
 
     }
 
-    @PostMapping("/refuse")
+    @PostMapping("/refuse/{complaintId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Complaint RefusedComplaint(@RequestBody String body){
+    public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId){
 
         try{
 
-            JsonNode jsonNode = objectMapper.readTree(body);
-
-            String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
+            String idComplaint = complaintId;
 
             Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
 
@@ -164,9 +163,10 @@ public class ComplaintController {
             complaintRepository.save(complaintFinal);
 
     
-        return complaintFinal;
+            return complaintFinal;
 
-        } catch (Exception e) {
+        
+         } catch (Exception e) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 

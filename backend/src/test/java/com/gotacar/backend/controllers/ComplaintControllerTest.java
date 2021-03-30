@@ -208,13 +208,6 @@ public class ComplaintControllerTest {
         @Test
         public void refuseTest() throws Exception {
 
-                List<Complaint> listaC = new ArrayList<>();
-                listaC = complaintRepository.findAll();
-                final String value = listaC.get(1).getId();
-
-                JSONObject sampleObject = new JSONObject();
-
-                sampleObject.appendField("id_complaint", value);
 
                 String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2"))
                                 .andReturn().getResponse().getContentAsString();
@@ -222,14 +215,16 @@ public class ComplaintControllerTest {
                 org.json.JSONObject json2 = new org.json.JSONObject(response);
 
                 String token = json2.getString("token");
-
-                ResultActions result = mockMvc.perform(post("/refuse").header("Authorization", token)
-                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
-                                .accept(MediaType.APPLICATION_JSON));
+                String complaintId = complaintRepository.findAll().get(1).getId();
                 
-                Complaint acceptedComp = complaintRepository.findById(value).get();
 
-                assertThat(acceptedComp.getStatus()).isEqualTo("REFUSED");
+                ResultActions result = mockMvc.perform(post("/refuse/{complaintId}"
+                        ,complaintId).header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+                Complaint complaint = complaintRepository.findById(complaintId).orElseGet(()->null);
+              
+
+                assertThat(complaint.getStatus()).isEqualTo("REFUSED");
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
 
