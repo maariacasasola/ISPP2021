@@ -2,9 +2,6 @@ package com.gotacar.backend.models.TripOrder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import com.gotacar.backend.models.Trip.Trip;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

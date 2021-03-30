@@ -1,7 +1,6 @@
 package com.gotacar.backend.models.Trip;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 import javax.validation.constraints.Future;
