@@ -165,7 +165,7 @@ public class TripController {
 			trip1.setCancelationDate(LocalDateTime.now());
 			
 			
-			if(trip1.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
+			if(trip1.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
 				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
 				userRepository.save(driver);
 			}
@@ -184,6 +184,20 @@ public class TripController {
         
         return trip1;
 
+    }
+    
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @RequestMapping("/list_trips_driver")
+    public List<Trip> listTripsDriver() {
+        List<Trip> lista = new ArrayList<>();
+        try {
+        	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+            lista = tripRepository.findByDriver(currentUser);
+        } catch (Exception e) {
+        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+        return lista;
     }
     
 
