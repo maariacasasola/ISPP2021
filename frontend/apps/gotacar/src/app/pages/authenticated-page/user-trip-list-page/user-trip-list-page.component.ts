@@ -25,4 +25,12 @@ export class UserTripListPageComponent {
     }
   }
 
+  async cancelTripOrder(id){
+    try {
+      await this._trips_service.cancel_trip(String(id));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 }

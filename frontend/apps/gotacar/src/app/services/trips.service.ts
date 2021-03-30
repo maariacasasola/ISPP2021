@@ -38,6 +38,13 @@ export class TripsService {
       .toPromise();
   }
 
+  cancel_trip(id: string){
+    let params = new HttpParams();
+    params = params.set('id', id);
+    console.log(environment.api_url + '/cancel_trip_order_request/'+id);
+    return this._http_client.post(environment.api_url + '/cancel_trip_order_request/'+id, null);
+  }
+
   seach_trips(
     starting_point: Point,
     ending_point: Point,
