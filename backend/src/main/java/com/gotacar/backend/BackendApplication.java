@@ -239,22 +239,22 @@ public class BackendApplication implements CommandLineRunner {
                 TripOrder tripOrder15 = new TripOrder(trip5, client2, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500,
                                 "", 2);
 
-                tripOrderRepository.save(tripOrder1);
-                tripOrderRepository.save(tripOrder2);
-                tripOrderRepository.save(tripOrder3);
-                tripOrderRepository.save(tripOrder4);
-                tripOrderRepository.save(tripOrder1);
-                tripOrderRepository.save(tripOrder5);
-                tripOrderRepository.save(tripOrder6);
-                tripOrderRepository.save(tripOrder7);
-                tripOrderRepository.save(tripOrder8);
-                tripOrderRepository.save(tripOrder9);
-                tripOrderRepository.save(tripOrder10);
-                tripOrderRepository.save(tripOrder11);
-                tripOrderRepository.save(tripOrder12);
-                tripOrderRepository.save(tripOrder13);
-                tripOrderRepository.save(tripOrder14);
-                tripOrderRepository.save(tripOrder15);
+                // tripOrderRepository.save(tripOrder1);
+                // tripOrderRepository.save(tripOrder2);
+                // tripOrderRepository.save(tripOrder3);
+                // tripOrderRepository.save(tripOrder4);
+                // tripOrderRepository.save(tripOrder1);
+                // tripOrderRepository.save(tripOrder5);
+                // tripOrderRepository.save(tripOrder6);
+                // tripOrderRepository.save(tripOrder7);
+                // tripOrderRepository.save(tripOrder8);
+                // tripOrderRepository.save(tripOrder9);
+                // tripOrderRepository.save(tripOrder10);
+                // tripOrderRepository.save(tripOrder11);
+                // tripOrderRepository.save(tripOrder12);
+                // tripOrderRepository.save(tripOrder13);
+                // tripOrderRepository.save(tripOrder14);
+                // tripOrderRepository.save(tripOrder15);
 
                 // COMPLAINTS
                 // -----------------------------------------------------------------------------------------
@@ -296,9 +296,6 @@ public class BackendApplication implements CommandLineRunner {
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
-
-                Trip tripp = tripRepository.findById(trip1.getId()).get();
-                tripp.getTripOrders().stream().forEach(x -> System.out.println(x.getId()));
         }
 
         @EnableWebSecurity

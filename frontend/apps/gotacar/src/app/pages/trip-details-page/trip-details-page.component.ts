@@ -59,7 +59,7 @@ export class TripDetailsPageComponent {
       // Creamos sesión en stripe para pagar
       const { session_id } = await this._trip_service.create_stripe_session(
         this.get_trip_id(),
-        1,
+        2,
         this.get_trip_description()
       );
       // Vamos al checkout para procesar el pago

@@ -112,7 +112,6 @@ public class PaymentController {
         try {
             event = Webhook.constructEvent(body, signHeader, "whsec_MoNvDTpMO3cckakAlgAMw2o3SAukccj5");
         } catch (Exception e) {
-            // Invalid payload
             return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
         }
 
@@ -125,8 +124,7 @@ public class PaymentController {
             // A delayed notification payment will have an `unpaid` status, as
             // you're still waiting for funds to be transferred from the customer's
             // account.
-            System.out.println(session.getPaymentStatus());
-            if (session.getPaymentStatus() == "paid") {
+            if (session.getPaymentStatus().equals("paid")) {
                 // Fulfill the purchase
                 fulfillOrder(session);
             }
@@ -148,8 +146,7 @@ public class PaymentController {
     public void fulfillOrder(Session session) {
         String tripId = session.getMetadata().values().toArray()[3].toString();
         String userId = session.getMetadata().values().toArray()[5].toString();
-        TripOrder pendingTripOrder = tripRepository.findById(tripId).get().getTripOrders().stream()
-                .filter(x -> x.getUser().getId() == userId && x.getStatus() == "PENDING").findFirst().get();
+        TripOrder pendingTripOrder = tripOrderRepository.searchTripOrderByTripAndUser(tripId, userId);
         pendingTripOrder.setStatus("PAID");
         tripOrderRepository.save(pendingTripOrder);
     }
@@ -164,20 +161,15 @@ public class PaymentController {
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(userId).get();
-
             Integer places = trip.getPlaces();
+            
             if (places >= quantity) {
                 places = places - quantity;
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
 
-            if (!session.getPaymentStatus().equals("paid")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no se ha pagado todavía");
-            }
-
             TripOrder res = new TripOrder(trip, user, date, price, paymentIntent, quantity);
-
             tripOrderRepository.save(res);
             trip.setPlaces(places);
             tripRepository.save(trip);
@@ -185,7 +177,6 @@ public class PaymentController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-
     }
 
 }
