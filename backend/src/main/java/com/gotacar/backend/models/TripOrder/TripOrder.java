@@ -49,6 +49,6 @@ public class TripOrder {
         this.price = price;
         this.paymentIntent = paymentIntent;
         this.places = places;
-        this.status = "COMPLETED";
+        this.status = "PROCCESSING";
     }
 }

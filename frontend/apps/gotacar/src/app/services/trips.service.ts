@@ -36,4 +36,19 @@ export class TripsService {
       .get(environment.api_url + '/trip/' + trip_id)
       .toPromise();
   }
+
+  async create_stripe_session(
+    trip_id,
+    quantity,
+    description
+  ): Promise<any> {
+    const body = {
+      quantity: quantity,
+      description: description,
+      idTrip: trip_id,
+    };
+    return this._http_client
+      .post(environment.api_url + '/create_session', body)
+      .toPromise();
+  }
 }

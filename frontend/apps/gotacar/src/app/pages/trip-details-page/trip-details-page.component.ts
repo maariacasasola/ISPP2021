@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'apps/gotacar/src/environments/environment';
@@ -14,11 +15,12 @@ export class TripDetailsPageComponent {
   page_title = 'Detalles del viaje';
   trip;
   stripePromise = loadStripe(environment.stripe_api_key);
-  priceId = 'pi_1IYy25J65m70MT01Iq6TEyKq';
 
   constructor(
     private _route: ActivatedRoute,
-    private _trip_service: TripsService
+    private _trip_service: TripsService,
+    private _snackbar: MatSnackBar,
+    private _auth_service: AuthServiceService
   ) {
     this.load_trip();
   }
@@ -30,20 +32,58 @@ export class TripDetailsPageComponent {
   private async load_trip() {
     try {
       this.trip = await this._trip_service.get_trip(this.get_trip_id());
-      console.log(this.trip);
     } catch (error) {
       console.error(error);
     }
   }
 
+  get_trip_description() {
+    return (
+      'Viaje desde ' +
+      this.trip?.startingPoint?.address +
+      ' hasta ' +
+      this.trip?.endingPoint?.address
+    );
+  }
+
   async order_trip() {
+    // Comprobamos que esté logueado
+    if (!this._auth_service.is_client()) {
+      this._snackbar.open('Tienes que loguearte para continuar', null, {
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      // Creamos sesión en stripe para pagar
+      const { session_id } = await this._trip_service.create_stripe_session(
+        this.get_trip_id(),
+        1,
+        this.get_trip_description()
+      );
+      // Vamos al checkout para procesar el pago
+      await this.go_to_checkout(session_id);
+    } catch (error) {
+      console.error(error);
+      this._snackbar.open('Ha ocurrido un error al comprar el viaje', null, {
+        duration: 3000,
+      });
+    }
+  }
+
+  async go_to_checkout(session_id) {
     const stripe = await this.stripePromise;
     const response = await stripe.redirectToCheckout({
-      sessionId: 'cs_test_a1yTWkOMa3yv6mf1dJ8JeGr9lkfSbwBVQ2vJ0nfYq02WEnrXOiKElvXE8K'
+      sessionId: session_id,
     });
-    console.log(response)
+    console.log(response);
     if (response.error) {
-      console.log(response.error);
+      this._snackbar.open('Ha ocurrido un error al procesar el pago', null, {
+        duration: 3000,
+      });
+    } else {
+      console.log('JEJEEEE');
     }
   }
 }

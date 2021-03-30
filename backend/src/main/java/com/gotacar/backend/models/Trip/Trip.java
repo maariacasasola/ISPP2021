@@ -1,6 +1,8 @@
 package com.gotacar.backend.models.Trip;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
@@ -8,9 +10,11 @@ import javax.validation.constraints.NotNull;
 
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
+import com.gotacar.backend.models.TripOrder.TripOrder;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -49,13 +53,16 @@ public class Trip {
     public Boolean canceled;
 
     public User driver;
-    
+
+    @DBRef
+    public List<TripOrder> tripOrders;
+
     public Trip() {
         this.canceled = false;
     }
 
-    public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate, LocalDateTime endingDate,
-            String comments, Integer places, User driver) {
+    public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate,
+            LocalDateTime endingDate, String comments, Integer places, User driver) {
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
         this.price = price;
