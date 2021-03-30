@@ -39,10 +39,7 @@ export class TripsService {
   }
 
   cancel_trip(id: string){
-    let params = new HttpParams();
-    params = params.set('id', id);
-    console.log(environment.api_url + '/cancel_trip_order_request/'+id);
-    return this._http_client.post(environment.api_url + '/cancel_trip_order_request/'+id, null);
+    return this._http_client.post(environment.api_url + '/cancel_trip_order_request/'+id, null).toPromise();
   }
 
   seach_trips(

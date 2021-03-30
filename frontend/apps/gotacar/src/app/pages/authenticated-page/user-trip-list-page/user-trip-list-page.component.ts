@@ -1,5 +1,7 @@
 
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { TripsService } from '../../../services/trips.service';
 
 @Component({
@@ -11,9 +13,10 @@ export class UserTripListPageComponent {
 
   trips = [];
 
-  constructor(private _trips_service: TripsService) {
+  constructor(private _trips_service: TripsService, private _snackBar: MatSnackBar) {
 
     this.load_trips_by_user();
+    
   }
 
   async load_trips_by_user() {
@@ -28,9 +31,22 @@ export class UserTripListPageComponent {
   async cancelTripOrder(id){
     try {
       await this._trips_service.cancel_trip(String(id));
+      this.openSnackBar(
+        'Se ha cancelado el viaje',
+        'Cerrar'
+      );
+      window.location.reload();
+
     } catch (error) {
       console.error(error);
     }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      panelClass: ['blue-snackbar'],
+    });
   }
 
 }

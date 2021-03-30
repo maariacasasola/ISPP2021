@@ -37,7 +37,7 @@
           </mt-card-content>
 
           <mat-card-actions align="end">
-           <button mat-raised-button color="warn" (click) = (cancelTripOrder(trip.id))>
+           <button mat-raised-button color="warn" [disabled]="trip?.status === 'REFUNDED_PENDING'" (click) = (cancelTripOrder(trip.id))>
               <mat-icon>cancel_presentation</mat-icon>
             </button>
             <button mat-raised-button class="button" [routerLink] = 'trip.id'>
