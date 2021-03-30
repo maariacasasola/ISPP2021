@@ -219,7 +219,7 @@ public class TripControllerTest {
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 		// compruebo que obtengo una respuesta correcta
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo(null);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 	}
 
 	@Test
@@ -296,7 +296,7 @@ public class TripControllerTest {
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo(null);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 	}
 
 	// @Test
