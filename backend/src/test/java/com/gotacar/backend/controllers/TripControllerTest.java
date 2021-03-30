@@ -149,6 +149,34 @@ public class TripControllerTest {
         assertThat(contador).isEqualTo(1);
 
     }
+    
+    @Test
+    public void testFindTripsByDriver() throws Exception {
+    	Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+        Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+        Mockito.when(tripRepository.findByDriver(driver)).thenReturn(java.util.Arrays.asList(trip));
+
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc
+                .perform(get("/list_trips_driver").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+        String res = result.andReturn().getResponse().getContentAsString();
+        int contador = 0;
+        while (res.contains("startingPoint")) {
+            res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(), res.length());
+            contador++;
+        }
+
+        assertThat(contador).isEqualTo(1);
+
+    }
 
     @Test
     public void testCancelTripDriver() throws Exception {
