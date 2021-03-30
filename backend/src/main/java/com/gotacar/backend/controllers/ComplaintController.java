@@ -47,7 +47,7 @@ public class ComplaintController {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/complaints/list")
-    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
             List<Complaint> complaints =  complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
@@ -60,7 +60,6 @@ public class ComplaintController {
     @PostMapping("/complaints/create")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Complaint fileComplaint(@RequestBody String body) {
-
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -97,9 +96,7 @@ public class ComplaintController {
     @PostMapping("/penalize")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User Penalize(@RequestBody String body){
-
         User userBanned = new User();
-
         try{
             JsonNode jsonNode = objectMapper.readTree(body);
 
@@ -108,16 +105,11 @@ public class ComplaintController {
             
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
             
-            Complaint complaintFinal = complaintRepository.findById(idComplaint).orElseGet(()->null);
+            Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
             Trip tripComplaint = complaintFinal.getTrip();
             userBanned = tripComplaint.getDriver();
             userBanned.setBannedUntil(dateBanned);
-            userRepository.save(userBanned);
-            
-            
-            
-
-
+            userRepository.save(userBanned); 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
