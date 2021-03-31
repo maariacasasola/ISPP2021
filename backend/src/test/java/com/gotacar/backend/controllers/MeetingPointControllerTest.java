@@ -131,4 +131,6 @@ public class MeetingPointControllerTest {
         assertThat(lista.size()).isEqualTo(1);
 
     }
+
+
 }
