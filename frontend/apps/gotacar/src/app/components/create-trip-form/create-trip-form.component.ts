@@ -76,6 +76,8 @@ export class CreateTripFormComponent {
       lng: coordinatesTarget.lng,
       address: coordinatesTarget.address,
     };
+
+    
     const trip: Trip = {
       starting_point: LocationOrigen,
       ending_point: LocationDestino,
@@ -87,7 +89,6 @@ export class CreateTripFormComponent {
     };
 
     try {
-      console.log(trip);
       const response = this.tripService.create_trip(trip);
       this.router.navigate(['home'])
     } catch (error) {

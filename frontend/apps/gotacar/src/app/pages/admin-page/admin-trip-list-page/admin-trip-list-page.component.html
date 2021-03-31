@@ -11,7 +11,7 @@
 
           <mat-card-content>
             <mat-card-subtitle>
-              <b>Hora de salida:</b> {{ trip?.startDate | date: 'medium' }}
+              <b>Hora de salida:</b> {{ getStartDate(trip) | date: 'medium' }}
             </mat-card-subtitle>
             <mat-card-subtitle>
               <b>Hora de llegada:</b> {{ trip?.endingDate | date: 'medium' }}

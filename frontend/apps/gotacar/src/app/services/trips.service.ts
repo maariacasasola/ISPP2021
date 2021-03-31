@@ -32,6 +32,7 @@ export class TripsService {
       comments: trip.comments,
       places: trip.places,
     };
+    console.log(body);
 
     return this._http_client
       .post(environment.api_url + '/create_trip', body)
