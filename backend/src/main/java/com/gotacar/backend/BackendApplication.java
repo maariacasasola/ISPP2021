@@ -312,6 +312,7 @@ public class BackendApplication implements CommandLineRunner {
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
                                         .antMatchers(HttpMethod.POST, "/stripe-webhook").permitAll()
+                                        .antMatchers(HttpMethod.GET, "/").permitAll()
                                         .antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest()
                                         .authenticated();
                 }

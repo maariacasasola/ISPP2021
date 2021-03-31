@@ -14,6 +14,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,11 +47,16 @@ public class PaymentController {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    @Value("${STRIPE_API_KEY}")
+    private String stripeApiKey;
+
+    @Value("${STRIPE_WEBHOOK_SECRET}")
+    private String stripeWebhookSecret;
+
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping("/create_session")
     public Map<String, Object> createSession(@RequestBody() String body) {
-        // TODO: Añadir como variable de entorno
-        Stripe.apiKey = "sk_test_51I0FjpJ65m70MT01alImpvRuOOYBczw0EVZmF2oMlA5WbWNjOkqbIz0ty1IZXWNnAWe3F4xnozb8I4g3I4JDfJd500W5tuKdUh";
+        Stripe.apiKey = stripeApiKey;
 
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
@@ -108,7 +114,8 @@ public class PaymentController {
         Event event = null;
 
         try {
-            event = Webhook.constructEvent(body, signHeader, "whsec_MoNvDTpMO3cckakAlgAMw2o3SAukccj5");
+            // TODO: Configurar secret de stripe webhook
+            event = Webhook.constructEvent(body, signHeader, stripeWebhookSecret);
         } catch (Exception e) {
             return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
         }
