@@ -54,3 +54,14 @@
   color: white;
   background-color: $secondary;
 }
+
+@media (max-width: 760px) {
+  .trip-details-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .driver-status {
+    margin: 20px 0;
+  }
+}

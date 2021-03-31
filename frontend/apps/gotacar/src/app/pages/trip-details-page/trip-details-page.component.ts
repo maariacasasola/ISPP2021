@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'apps/gotacar/src/environments/environment';
+import { TripOrderFormDialogComponent } from '../../components/trip-order-form-dialog/trip-order-form-dialog.component';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { TripsService } from '../../services/trips.service';
 
@@ -20,7 +22,8 @@ export class TripDetailsPageComponent {
     private _route: ActivatedRoute,
     private _trip_service: TripsService,
     private _snackbar: MatSnackBar,
-    private _auth_service: AuthServiceService
+    private _auth_service: AuthServiceService,
+    private _dialog: MatDialog
   ) {
     this.load_trip();
   }
@@ -56,10 +59,27 @@ export class TripDetailsPageComponent {
     }
 
     try {
+      const trip_order_dialog = this._dialog.open(
+        TripOrderFormDialogComponent,
+        {
+          data: {
+            trip_description: this.get_trip_description(),
+            max_places: this.trip.places,
+          },
+          panelClass: 'login-dialog',
+        }
+      );
+
+      const response = await trip_order_dialog.afterClosed().toPromise();
+
+      if (!response) {
+        return;
+      }
+
       // Creamos sesión en stripe para pagar
       const { session_id } = await this._trip_service.create_stripe_session(
         this.get_trip_id(),
-        2,
+        response.places,
         this.get_trip_description()
       );
       // Vamos al checkout para procesar el pago

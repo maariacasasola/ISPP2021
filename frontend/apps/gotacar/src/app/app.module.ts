@@ -67,6 +67,7 @@ import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
 import { TripMapComponent } from './components/trip-map/trip-map.component';
+import { TripOrderFormDialogComponent } from './components/trip-order-form-dialog/trip-order-form-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -94,6 +95,7 @@ registerLocaleData(localeEs, 'es');
     DriverCreateTripPageComponent,
     TripDetailsPageComponent,
     TripMapComponent,
+    TripOrderFormDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

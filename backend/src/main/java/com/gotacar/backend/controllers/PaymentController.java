@@ -133,7 +133,7 @@ public class PaymentController {
             fulfillOrder(session_succeeded);
             break;
         case "checkout.session.async_payment_failed":
-            //TODO: Sé que no se usa, me falta gestionar un evento 
+            // TODO: Sé que no se usa, me falta gestionar un evento
             Session session_failed = (Session) event.getDataObjectDeserializer().getObject().get();
             // Send an email to the customer asking them to retry their order
             // emailCustomerAboutFailedPayment(session);
