@@ -25,9 +25,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 
 @RestController
 public class ComplaintController {
@@ -50,7 +50,8 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            List<Complaint> complaints =  complaintRepository.findAll().stream().filter(x->x.getStatus().equals("PENDING")).collect(Collectors.toList());
+            List<Complaint> complaints = complaintRepository.findAll().stream()
+                    .filter(x -> x.getStatus().equals("PENDING")).collect(Collectors.toList());
             return complaints;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -95,25 +96,67 @@ public class ComplaintController {
 
     @PostMapping("/penalize")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User Penalize(@RequestBody String body){
-        User userBanned = new User();
-        try{
+    public User penalize(@RequestBody String body) {
+        try {
             JsonNode jsonNode = objectMapper.readTree(body);
+            User userBanned = new User();
 
             LocalDateTime dateBanned = OffsetDateTime
-            .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
-            
+                    .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
+
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-            
+
             Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
             Trip tripComplaint = complaintFinal.getTrip();
             userBanned = tripComplaint.getDriver();
+            String userDni = userBanned.getDni();
+
+            List<String> trips = tripRepository.findAll().stream().filter(a -> a.driver.dni.equals(userDni))
+                    .map(x -> x.getId()).collect(Collectors.toList());
+            List<Complaint> complaintAll = complaintRepository.findAll();
+            int j = 0;
+
+            while (j < complaintAll.size()) {
+
+                if (trips.contains(complaintAll.get(j).getTrip().getId())) {
+
+                    complaintAll.get(j).setStatus("ALREADY_RESOLVED");
+
+                    complaintRepository.save(complaintAll.get(j));
+
+                }
+                j++;
+            }
+
+            complaintFinal.setStatus("ACCEPTED");
+            complaintRepository.save(complaintFinal);
             userBanned.setBannedUntil(dateBanned);
-            userRepository.save(userBanned); 
+            userRepository.save(userBanned);
+
+            return userBanned;
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+
     }
-        return userBanned;
+
+    @PostMapping("/refuse/{complaintId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId) {
+        try {
+            String idComplaint = complaintId;
+
+            Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
+
+            complaintFinal.setStatus("REFUSED");
+            complaintRepository.save(complaintFinal);
+
+            return complaintFinal;
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
 
     }
 

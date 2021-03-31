@@ -11,8 +11,8 @@ import { ComplaintAppeal } from '../shared/services/complaint-appeal';
 export class ComplaintsService {
   constructor(private _http_client: HttpClient) {}
 
-  get_all_complaints(): Promise<any> {
-    return this._http_client
+  async get_all_complaints(): Promise<any> {
+    return await this._http_client
       .get(environment.api_url + '/complaints/list')
       .toPromise();
   }
@@ -27,17 +27,16 @@ export class ComplaintsService {
       .post(environment.api_url + '/complaints/create', body)
       .toPromise();
   }
-
-  async penalty_complaint(penalty: Penalty) {
-    const body = {
-      id_complaint: penalty.id_complaint,
-      date_banned: penalty.date_banned,
-    };
-    return this._http_client
-      .post(environment.api_url + '/penalize', body)
-      .toPromise();
-  }
   
+  async penalty_complaint(penalty:Penalty){
+    const body = {
+      id_complaint:penalty.id_complaint,
+      date_banned:penalty.date_banned,
+    }
+    return this._http_client.post(environment.api_url+'/penalize',body).toPromise();
+
+  }
+
   async create_complaint_appeal(complaint_appeal: ComplaintAppeal) {
     const body = {
       content: complaint_appeal.content,
@@ -46,5 +45,10 @@ export class ComplaintsService {
     return this._http_client
       .post(environment.api_url + '/complaint_appeal', body)
       .toPromise();
+  }
+  async refuse_complain(idComplaint:string){
+    
+    return this._http_client.post(environment.api_url+'/refuse/'+idComplaint,null).toPromise();
+
   }
 }

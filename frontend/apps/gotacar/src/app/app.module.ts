@@ -123,7 +123,6 @@ registerLocaleData(localeEs, 'es');
     MatButtonModule,
     MatGridListModule,
     MatFormFieldModule,
-    MatListModule,
     MatInputModule,
     AppRoutingModule,
     HttpClientModule,
