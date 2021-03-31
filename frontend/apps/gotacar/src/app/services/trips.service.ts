@@ -49,7 +49,7 @@ export class TripsService {
       starting_point: starting_point,
       ending_point: ending_point,
     };
-    return this._http_client.post(environment.api_url + '/search_trips', body);
+    return this._http_client.post(environment.api_url + '/search_trips', body).toPromise();
   }
 
   async get_trip(trip_id: String): Promise<any> {
@@ -66,6 +66,18 @@ export class TripsService {
     };
     return this._http_client
       .post(environment.api_url + '/create_session', body)
+      .toPromise();
+  }
+
+  get_driver_trips(): Promise<any> {
+    return this._http_client
+      .get(environment.api_url + '/list_trips_driver')
+      .toPromise();
+  }
+
+  cancel_driver_trip(trip_id: string) {
+    return this._http_client
+      .post(environment.api_url + '/cancel_trip_driver/' + trip_id, null)
       .toPromise();
   }
 }

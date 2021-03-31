@@ -118,7 +118,7 @@ public class BackendApplication implements CommandLineRunner {
                                 "35131220T", "http://dniclient.com", fecha1, lista2);
                 User client7 = new User("Laura", "Muñoz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7", "clien7@gotacar.es",
                                 "80270336K", "http://dniclient.com", fecha3, lista2);
-                User client8 = new User("Pedro", "Serrano", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE8", "client8@gotacar.com",
+                User client8 = new User("Pedro", "Serrano", "oQfGQi4xechNkcQEdHg29sM5rP33", "client8@gotacar.com",
                                 "42941220L", "http://dniclient.com", fecha2, lista2);
 
                 userRepository.save(client);
@@ -350,7 +350,9 @@ public class BackendApplication implements CommandLineRunner {
 
                 @Override
                 public void addCorsMappings(CorsRegistry registry) {
-                        registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+                        registry.addMapping("/**").allowedOrigins("http://localhost:4200")
+                                        .allowedOrigins("https://gotacar.es")
+                                        .allowedOrigins("https://preproduccion.gotacar.es");
                 }
         }
 

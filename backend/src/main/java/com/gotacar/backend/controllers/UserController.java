@@ -10,6 +10,7 @@ import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.utils.TokenResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -30,9 +32,13 @@ public class UserController {
 
 	@PostMapping("user")
 	public TokenResponse login(@RequestParam("uid") String userId) {
+		try {
 		User user = userRepository.findByUid(userId);
 		String token = getJWTToken(user);
-		return new TokenResponse(token, user.getRoles());
+		return new TokenResponse(token, user.getRoles());	
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
 	}
 
 	@GetMapping("current_user")
