@@ -48,10 +48,14 @@
     <google-map height="500px" width="140%" [zoom]="zoom" [center]="center" [options]="options"
       (mapClick)="addMarker($event)" >
       <map-marker #markerElem="mapMarker" *ngFor="let marker of markers" [position]="marker.position"
-        [title]="marker.title" (mapClick)="openInfo(markerElem, marker.info)">
+        [title]="marker.title" (mapClick)="openInfo(markerElem, marker.info, marker.position)">
       </map-marker>
 
-      <map-info-window>{{ infoContent }}</map-info-window>
+      <map-info-window>{{ infoContent }}
+        <button mat-mini-fab color="warn" (click)="deleteMarker(infoPosition)">
+          Delete
+        </button>
+      </map-info-window>
     </google-map>
   </div>
 </div>
