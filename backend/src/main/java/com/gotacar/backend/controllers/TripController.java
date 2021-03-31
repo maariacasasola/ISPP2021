@@ -2,6 +2,9 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,12 +105,17 @@ public class TripController {
 
 			Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
 
-			LocalDateTime dateStartJson = OffsetDateTime
-					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
+			ZonedDateTime dateStartZone = ZonedDateTime
+					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
+			LocalDateTime dateStartJson = dateStartZone.toLocalDateTime();
 
-			LocalDateTime dateEndJson = OffsetDateTime
-					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
+			ZonedDateTime dateEndZone = ZonedDateTime
+					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
+			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
+			LocalDateTime dateEndJson = dateEndZone.toLocalDateTime();
 
 			String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
 
@@ -125,7 +133,6 @@ public class TripController {
 			trip1.setStartDate(dateStartJson);
 			trip1.setPlaces(placesJson);
 			trip1.setDriver(currentUser);
-
 
 			tripRepository.save(trip1);
 		} catch (Exception e) {
