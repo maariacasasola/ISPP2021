@@ -1,14 +1,18 @@
 package com.gotacar.backend.models.TripOrder;
 
+import java.util.List;
+
+import com.gotacar.backend.models.Trip.Trip;
+
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
-import java.util.Optional;
-
 public interface TripOrderRepository extends MongoRepository<TripOrder, String>, TripOrderRepositoryCustom  {
+    
+    TripOrder findById(ObjectId id);
 
-    public Optional<TripOrder> findById(String id);
+    List<TripOrder> findByUserUid(String uid);
 
-    public List<TripOrder> findByUserUid(String uid);
+    List<TripOrder> findByTrip(Trip trip);
     
 }
