@@ -25,4 +25,10 @@ export class MeetingPointService {
     .post(environment.api_url + '/create_meeting_point',body).toPromise()
     
   }
+
+  delete_meeting_point(id){
+    return this._http_client
+    .delete(environment.api_url + '/delete_meeting_point', id).toPromise()
+    
+  }
 }
