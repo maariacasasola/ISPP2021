@@ -7,7 +7,7 @@ import { Point, Trip } from '../shared/services/trip';
   providedIn: 'root',
 })
 export class TripsService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   get_all_trips(): Promise<any> {
     return this._http_client
@@ -79,5 +79,9 @@ export class TripsService {
     return this._http_client
       .post(environment.api_url + '/cancel_trip_driver/' + trip_id, null)
       .toPromise();
+  }
+
+  cancel_trip(id: string) {
+    return this._http_client.post(environment.api_url + '/cancel_trip_order_request/' + id, null).toPromise();
   }
 }

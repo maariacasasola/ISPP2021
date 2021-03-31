@@ -51,7 +51,7 @@ public class TripOrderController {
             ObjectId tripOrderObjectId = new ObjectId(id);
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
             Trip trip = tripOrder.getTrip();
-            if(trip.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
+            if(trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
                 tripOrder.setStatus("REFUNDED_PENDING");
                 tripOrderRepository.save(tripOrder);
             }
