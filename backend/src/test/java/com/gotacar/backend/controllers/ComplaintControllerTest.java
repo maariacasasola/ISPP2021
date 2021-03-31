@@ -39,7 +39,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minidev.json.JSONObject;
 
@@ -62,6 +61,12 @@ public class ComplaintControllerTest {
                 @Bean
                 public UserRepository mockU() {
                         UserRepository mockService = Mockito.mock(UserRepository.class);
+                        return mockService;
+                }
+
+                @Bean
+                public TripRepository mockT() {
+                        TripRepository mockService = Mockito.mock(TripRepository.class);
                         return mockService;
                 }
         }
@@ -132,16 +137,16 @@ public class ComplaintControllerTest {
                 Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
-                String response = mockMvc.perform(post("/user").param("uid", admin.getUid()))
-                                .andReturn().getResponse().getContentAsString();
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
 
                 org.json.JSONObject json = new org.json.JSONObject(response);
-                
+
                 // Obtengo el token
                 String token = json.getString("token");
 
                 ResultActions result = mockMvc.perform(get("/complaints/list").header("Authorization", token)
-                .contentType(MediaType.APPLICATION_JSON));
+                                .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 
@@ -159,13 +164,14 @@ public class ComplaintControllerTest {
         public void penalizeTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+                Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
 
                 JSONObject sampleObject = new JSONObject();
                 sampleObject.appendField("id_complaint", complaint.getId());
                 sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
 
-                String response = mockMvc.perform(post("/user").param("uid", admin.getUid()))
-                                .andReturn().getResponse().getContentAsString();
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
 
                 org.json.JSONObject json2 = new org.json.JSONObject(response);
 
@@ -175,63 +181,31 @@ public class ComplaintControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
                                 .accept(MediaType.APPLICATION_JSON));
 
-                String tripsUser = result.andReturn().getResponse().getContentAsString();
-        
-
-                String[]trim = tripsUser.split(",");
-                trim = trim[0].split(":");
-                String idaux = trim[trim.length-1];
-                String id = idaux.replace("\"", "");
-           
-                List<String> trips = tripRepository.findAll().stream().filter(a->a.driver.id.equals(id)).map(x-> x.getId()).collect(Collectors.toList());
-                List<Complaint> complaintAll = complaintRepository.findAll();
-                int j =0;
-    
-                while(j<complaintAll.size()){
-
-    
-                    if((trips.contains(complaintAll.get(j).getTrip().getId())) && !(complaintAll.get(j).getId().equals(value))){
-
-                        assertThat(complaintAll.get(j).getStatus()).isEqualTo("ALREADY_RESOLVED");
-
-                        }
-                         
-                        
-                j++;
-                }   
-                
-                Complaint acceptedComp = complaintRepository.findById(value).get();
-
-                assertThat(acceptedComp.getStatus()).isEqualTo("ACCEPTED");
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
                 assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
+                assertThat(trip.getDriver().getBannedUntil()).isNotNull();
 
         }
 
         @Test
         public void refuseTest() throws Exception {
+                Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
-
-                String response = mockMvc.perform(post("/user").param("uid", "Ej7NpmWydRWMIg28mIypzsI4BgM2"))
-                                .andReturn().getResponse().getContentAsString();
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
 
                 org.json.JSONObject json2 = new org.json.JSONObject(response);
 
                 String token = json2.getString("token");
-                String complaintId = complaintRepository.findAll().get(1).getId();
-                
 
-                ResultActions result = mockMvc.perform(post("/refuse/{complaintId}"
-                        ,complaintId).header("Authorization", token)
-                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
-                Complaint complaint = complaintRepository.findById(complaintId).orElseGet(()->null);
-              
+                ResultActions result = mockMvc.perform(post("/refuse/{complaintId}", complaint.getId())
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON));
 
-                assertThat(complaint.getStatus()).isEqualTo("REFUSED");
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
-                assertThat(complaint.getTrip().getDriver().getBannedUntil()).isNotNull();
-
+                assertThat(complaint.getStatus()).isEqualTo("REFUSED");
         }
 
         // @Test
@@ -279,64 +253,66 @@ public class ComplaintControllerTest {
         // assertThat(result.andReturn().getResponse().getContentType().equals(Complaint.class.toString()));
         // }
 
-               // @Test
+        // @Test
         // public void CreateComplaintUserErrorTest() throws Exception {
-        //         // Construcción del json para el body
-        //         List<Trip> lt = tripRepository.findAll();
+        // // Construcción del json para el body
+        // List<Trip> lt = tripRepository.findAll();
 
-        //         JSONObject sampleObject = new JSONObject();
+        // JSONObject sampleObject = new JSONObject();
 
-        //         sampleObject.appendField("title", "Queja test");
-        //         sampleObject.appendField("content", "Queja para el test");
-        //         sampleObject.appendField("tripId", lt.get(5).getId());
+        // sampleObject.appendField("title", "Queja test");
+        // sampleObject.appendField("content", "Queja para el test");
+        // sampleObject.appendField("tripId", lt.get(5).getId());
 
-        //         // Login como administrador
-        //         String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7"))
-        //                         .andReturn().getResponse().getContentAsString();
+        // // Login como administrador
+        // String response = mockMvc.perform(post("/user").param("uid",
+        // "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7"))
+        // .andReturn().getResponse().getContentAsString();
 
-        //         org.json.JSONObject json = new org.json.JSONObject(response);
+        // org.json.JSONObject json = new org.json.JSONObject(response);
 
-        //         // Obtengo el token
-        //         String token = json.getString("token");
+        // // Obtengo el token
+        // String token = json.getString("token");
 
-        //         // Petición post al controlador
-        //         ResultActions result = mockMvc.perform(post("/complaints/create").header("Authorization", token)
-        //                         .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
-        //                         .accept(MediaType.APPLICATION_JSON));
-        //         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
-        //         assertThat(result.andReturn().getResponse().getErrorMessage())
-        //                         .isEqualTo("Usted no ha realizado este viaje");
+        // // Petición post al controlador
+        // ResultActions result =
+        // mockMvc.perform(post("/complaints/create").header("Authorization", token)
+        // .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+        // .accept(MediaType.APPLICATION_JSON));
+        // assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+        // assertThat(result.andReturn().getResponse().getErrorMessage())
+        // .isEqualTo("Usted no ha realizado este viaje");
         // }
 
         // @Test
         // public void CreateComplaintTripErrorTest() throws Exception {
-        //         // Construcción del json para el body
-        //         List<Trip> lt = tripRepository.findAll();
+        // // Construcción del json para el body
+        // List<Trip> lt = tripRepository.findAll();
 
-        //         JSONObject sampleObject = new JSONObject();
+        // JSONObject sampleObject = new JSONObject();
 
-        //         sampleObject.appendField("title", "Queja test");
-        //         sampleObject.appendField("content", "Queja para el test");
-        //         sampleObject.appendField("tripId", lt.get(1).getId());
+        // sampleObject.appendField("title", "Queja test");
+        // sampleObject.appendField("content", "Queja para el test");
+        // sampleObject.appendField("tripId", lt.get(1).getId());
 
-        //         // Login como administrador
-        //         String response = mockMvc.perform(post("/user").param("uid", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7"))
-        //                         .andReturn().getResponse().getContentAsString();
+        // // Login como administrador
+        // String response = mockMvc.perform(post("/user").param("uid",
+        // "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7"))
+        // .andReturn().getResponse().getContentAsString();
 
-        //         org.json.JSONObject json = new org.json.JSONObject(response);
+        // org.json.JSONObject json = new org.json.JSONObject(response);
 
-        //         // Obtengo el token
-        //         String token = json.getString("token");
+        // // Obtengo el token
+        // String token = json.getString("token");
 
-        //         // Petición post al controlador
-        //         ResultActions result = mockMvc.perform(post("/complaints/create").header("Authorization", token)
-        //                         .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
-        //                         .accept(MediaType.APPLICATION_JSON));
-        //         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
-        //         assertThat(result.andReturn().getResponse().getErrorMessage())
-        //                         .isEqualTo("El viaje aún no se ha realizado");
+        // // Petición post al controlador
+        // ResultActions result =
+        // mockMvc.perform(post("/complaints/create").header("Authorization", token)
+        // .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+        // .accept(MediaType.APPLICATION_JSON));
+        // assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+        // assertThat(result.andReturn().getResponse().getErrorMessage())
+        // .isEqualTo("El viaje aún no se ha realizado");
         // }
 
 }
-
-
