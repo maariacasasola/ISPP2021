@@ -141,7 +141,7 @@ public class TripOrderControllerTest {
 
     @Test
     public void testCancelTripOrderRequest() throws Exception {
-        trip.setCancelationDateLimit(LocalDateTime.now().minusDays(1));
+        trip.setCancelationDateLimit(LocalDateTime.now().plusDays(1));
         Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
         Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
         Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
