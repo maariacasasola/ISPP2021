@@ -108,6 +108,7 @@ export class CreateTripFormComponent {
       end_date: endingDatee,
       comments: String(this.createTripForm.value.comentarios),
       places: Number(this.createTripForm.value.numeroPasajero),
+      cancelationDateLimit: null,
     };
     
     try {

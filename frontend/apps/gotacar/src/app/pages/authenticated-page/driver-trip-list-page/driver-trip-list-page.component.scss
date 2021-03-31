@@ -1,0 +1,31 @@
+h1 {
+  text-align: center;
+  color: #0e4a6b;
+  margin: 20px;
+}
+
+.trip{
+  border: 1px solid #0e4a6b;
+  padding: 30px;
+}
+
+.trips-list {
+  width: max-content;
+}
+
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
+.no-button{
+  height: 35px;
+}
+
+mat-list{
+  width:90%;
+}
+
+mat-card-content{
+  width: max-content;
+}

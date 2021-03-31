@@ -8,6 +8,7 @@ export interface Trip {
   end_date: Date;
   comments: string;
   places: number;
+  cancelationDateLimit: Date;
 }
 
 export interface Point {
