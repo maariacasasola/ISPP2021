@@ -105,6 +105,7 @@ public class TripController {
 			LocalDateTime dateStartJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
 
+
 			LocalDateTime dateEndJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
 
@@ -124,6 +125,7 @@ public class TripController {
 			trip1.setStartDate(dateStartJson);
 			trip1.setPlaces(placesJson);
 			trip1.setDriver(currentUser);
+
 
 			tripRepository.save(trip1);
 		} catch (Exception e) {

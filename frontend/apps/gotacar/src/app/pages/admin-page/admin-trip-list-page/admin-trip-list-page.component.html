@@ -1,38 +1,38 @@
 <div>
   <h1>VIAJES REGISTRADOS</h1>
   <mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
-    <mat-list role="list">
-      <!--<mat-list-item role="listitem">Item 1</mat-list-item> -->
-      <mat-card class="trip">
-        <mat-card-title>{{
-          trip?.driver?.firstName + ' ' + trip?.driver?.lastName
-        }}</mat-card-title>
+    <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
+      <mat-list role="list">
+        <!--<mat-list-item role="listitem">Item 1</mat-list-item> -->
+        <mat-card class="trip">
+          <mat-card-title>{{
+            trip?.driver?.firstName + ' ' + trip?.driver?.lastName
+          }}</mat-card-title>
 
-        <mat-card-content>
-          <mat-card-subtitle>
-            <b>Hora de salida:</b> {{ trip?.startDate }}
-          </mat-card-subtitle>
-          <mat-card-subtitle>
-            <b>Hora de llegada:</b> {{ trip?.endingDate }}
-          </mat-card-subtitle>
-          <mat-card-subtitle>
-            {{ trip?.startingPoint?.address }} &#8594;
-            {{ trip?.endingPoint?.address }}
-          </mat-card-subtitle>
-          <mat-card-subtitle>{{
-            trip?.price | convertCentToEur
-          }}</mat-card-subtitle>
-        </mat-card-content>
+          <mat-card-content>
+            <mat-card-subtitle>
+              <b>Hora de salida:</b> {{ trip?.startDate | date: 'medium' }}
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+              <b>Hora de llegada:</b> {{ trip?.endingDate | date: 'medium' }}
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+              {{ trip?.startingPoint?.address }} &#8594;
+              {{ trip?.endingPoint?.address }}
+            </mat-card-subtitle>
+            <mat-card-subtitle>{{
+              trip?.price | convertCentToEur
+            }}</mat-card-subtitle>
+          </mat-card-content>
 
-        <mat-card-actions align="end">
-          <button mat-raised-button class="button">
-            <mat-icon>open_in_new</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-      <br />
-    </mat-list>
-  </mat-grid-tile>
+          <mat-card-actions align="end">
+            <button mat-raised-button class="button">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <br />
+      </mat-list>
+    </mat-grid-tile>
   </mat-grid-list>
 </div>
