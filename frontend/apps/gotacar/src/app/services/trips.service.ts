@@ -51,10 +51,20 @@ export class TripsService {
       ending_point: ending_point,
     };
 
-    console.log(body)
-
     return this._http_client
       .post(environment.api_url + '/search_trips', body)
+      .toPromise();
+  }
+
+  get_driver_trips(): Promise<any> {
+    return this._http_client
+      .get(environment.api_url + '/list_trips_driver')
+      .toPromise();
+  }
+
+  cancel_driver_trip(trip_id: string) {
+    return this._http_client
+      .post(environment.api_url + '/cancel_trip_driver/' + trip_id, null)
       .toPromise();
   }
 }

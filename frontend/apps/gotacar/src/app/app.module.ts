@@ -71,6 +71,8 @@ import { TripSearchResultPageComponent } from './pages/trip-search-result-page/t
 import { TripListComponent } from './components/trip-list/trip-list.component';
 import { PenaltyDialogComponent } from './components/penalty-dialog/penalty-dialog.component';
 import { ComplaintAppealDialogComponent } from './components/complaint-appeal-dialog/complaint-appeal-dialog.component';
+import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
+import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -90,6 +92,8 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    DriverTripListPageComponent,
+    CancelTripDialogComponent,
     AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
