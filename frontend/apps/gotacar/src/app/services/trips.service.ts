@@ -49,7 +49,7 @@ export class TripsService {
       starting_point: starting_point,
       ending_point: ending_point,
     };
-    return this._http_client.post(environment.api_url + '/search_trips', body);
+    return this._http_client.post(environment.api_url + '/search_trips', body).toPromise();
   }
 
   async get_trip(trip_id: String): Promise<any> {
