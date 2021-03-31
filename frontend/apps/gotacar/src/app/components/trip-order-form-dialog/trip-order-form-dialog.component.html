@@ -1,0 +1,23 @@
+<button class="close-button" (click)="close()">
+  <mat-icon>close</mat-icon>
+</button>
+<h2>{{ data.trip_description }}</h2>
+<div mat-dialog-content class="dialog-content">
+  <p>Seleccione el número de plazas</p>
+  <mat-form-field>
+    <mat-label>Número de plazas</mat-label>
+    <input
+      type="number"
+      [max]="data.max_places"
+      min="1"
+      matInput
+      [formControl]="places_form"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-flat-button (click)="close()">Cancelar</button>
+  <button mat-flat-button class="submit-button" (click)="submit()">
+    Comprar
+  </button>
+</div>

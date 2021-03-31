@@ -1,0 +1,33 @@
+<div class="trips-list">
+  <mat-card class="trip-card" *ngFor="let trip of trips">
+    <mat-card-header>
+      <div
+        class="driver-photo"
+        mat-card-avatar
+        [ngStyle]="{
+          'background-image': 'url(' + get_profile_photo(trip) + ')'
+        }"
+      ></div>
+      <mat-card-title>
+        Viaje desde {{ trip?.startingPoint?.address }} hasta
+        {{ trip?.endingPoint?.address }}
+      </mat-card-title>
+      <mat-card-subtitle
+        >{{ trip?.driver?.firstName }}
+        {{ trip?.driver?.lastName }}</mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ trip?.comments }}
+      </p>
+      <div class="places-and-price">
+        <h3>Plazas disponibles: {{ trip?.places }}</h3>
+        <h3>Precio: {{ trip?.price | convertCentToEur }}</h3>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="card-actions">
+      <button mat-flat-button>Ver más</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

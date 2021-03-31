@@ -20,4 +20,5 @@ export class AdminTripListPageComponent {
       console.error(error);
     }
   }
+  
 }

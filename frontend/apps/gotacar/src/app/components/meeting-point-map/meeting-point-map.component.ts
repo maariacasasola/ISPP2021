@@ -19,13 +19,7 @@ export class MeetingPointMapComponent implements OnInit {
     disableDoubleClickZoom: true,
   };
   display?: google.maps.LatLngLiteral;
-  markers = [
-    {
-      position: { lat: 37.3754, lng: -6.025 },
-      title: 'prueba',
-      info: 'Info de punto prueba',
-    },
-  ];
+  markers = [];
   infoContent = '';
 
   ngOnInit(): void {}

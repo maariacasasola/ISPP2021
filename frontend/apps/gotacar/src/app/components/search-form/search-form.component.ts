@@ -3,6 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TripsService } from '../../services/trips.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-search-form',
@@ -26,8 +27,7 @@ export class SearchFormComponent {
   constructor(
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private geocodeService: GeocoderServiceService,
-    private _trips_service: TripsService
+    private _router: Router
   ) {
     this.minDate = new Date();
   }
@@ -37,86 +37,15 @@ export class SearchFormComponent {
       this.searchForm.markAllAsTouched();
       return;
     }
-    console.log(this.searchForm)
-    const coordinatesOrigin = await this.get_origin();
-    const coordinatesTarget = await this.get_target();
-    const { places, date } = this.searchForm.value;
-    console.log(places);
-    console.log(date);
+    const { places, date, origin, target } = this.searchForm.value;
 
-    try {
-      const result = await this._trips_service.seach_trips(
-        coordinatesOrigin,
-        coordinatesTarget,
+    this._router.navigate(['/', 'trip-search-result'], {
+      queryParams: {
+        origin,
+        target,
         places,
-        date
-      );
-
-      // TODO: Mostrar el resultado en una página
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async get_origin() {
-    try {
-      const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.origin
-      );
-
-      const search_result = results.filter((result) =>
-        JSON.stringify(result).includes('Sevilla')
-      );
-
-      if (search_result.length > 0) {
-        const coordinates = {
-          lat: search_result[0]?.geometry?.location?.lat,
-          lng: search_result[0]?.geometry?.location?.lng,
-        };
-        return coordinates;
-      } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el origen'
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async get_target() {
-    try {
-      const { results } = await this.geocodeService.get_location_from_address(
-        this.searchForm.value.target
-      );
-
-      const search_result = results.filter((result) =>
-        JSON.stringify(result).includes('Sevilla')
-      );
-
-      if (search_result.length > 0) {
-        const coordinates = {
-          lat: search_result[0]?.geometry?.location?.lat,
-          lng: search_result[0]?.geometry?.location?.lng,
-        };
-        return coordinates;
-      } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el destino'
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-      panelClass: ['blue-snackbar'],
+        date,
+      },
     });
   }
 }

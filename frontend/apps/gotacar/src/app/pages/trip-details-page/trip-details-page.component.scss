@@ -1,0 +1,67 @@
+@import '~colors.scss';
+
+.trip-details-container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 20px 20px;
+  grid-template-areas: 'trip map map';
+}
+
+.map {
+  grid-area: map;
+}
+
+.trip {
+  grid-area: trip;
+  padding: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.trip-info {
+  grid-area: trip;
+  display: flex;
+  flex-direction: column;
+}
+
+.price-and-places {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.price {
+  color: #538994;
+  font-size: 1.25rem;
+}
+
+.driver-status {
+  background-color: $primary;
+  padding: 10px;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.driver-status img {
+  height: 100px;
+  width: 100px;
+}
+
+.buy-button {
+  color: white;
+  background-color: $secondary;
+}
+
+@media (max-width: 760px) {
+  .trip-details-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .driver-status {
+    margin: 20px 0;
+  }
+}

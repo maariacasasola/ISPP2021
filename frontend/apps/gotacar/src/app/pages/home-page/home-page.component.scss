@@ -52,3 +52,15 @@ h1 {
   font-size: 40px;
   line-height: 60px;
 }
+
+@media(max-width: 760px) {
+  .header-card {
+    padding: 0;
+  }
+
+  .information-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
