@@ -350,9 +350,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 @Override
                 public void addCorsMappings(CorsRegistry registry) {
-                        registry.addMapping("/**").allowedOrigins("http://localhost:4200")
-                                        .allowedOrigins("https://gotacar.es")
-                                        .allowedOrigins("https://preproduccion.gotacar.es");
+                        registry.addMapping("/**");
                 }
         }
 
