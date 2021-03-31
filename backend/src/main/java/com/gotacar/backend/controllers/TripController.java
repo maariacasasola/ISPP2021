@@ -31,9 +31,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class TripController {
 
 	@Autowired
@@ -196,4 +197,8 @@ public class TripController {
 		return lista;
 	}
 
+    @GetMapping("/trip/{tripId}")
+    public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
+            return tripRepository.findById(new ObjectId(tripId));
+    }
 }

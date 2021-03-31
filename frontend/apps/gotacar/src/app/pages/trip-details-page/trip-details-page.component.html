@@ -1,0 +1,28 @@
+<frontend-main-header></frontend-main-header>
+<section class="trip-details-container">
+  <div class="trip">
+    <div class="trip-info">
+      <h2>
+        {{ get_trip_description() }}
+      </h2>
+      <h3>Fecha y hora: {{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</h3>
+      <h3>
+        Conductor: {{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}
+      </h3>
+      <div class="price-and-places">
+        <span>Plazas disponibles: {{ trip?.places }}</span>
+        <span class="price">{{ trip?.price | convertCentToEur }}</span>
+      </div>
+    </div>
+    <div class="driver-status" matTooltip="Conductor verificado por GotACar">
+      <img src="assets/logos_conductores/conductor_verificado.svg" />
+    </div>
+    <button mat-flat-button class="buy-button" (click)="order_trip()">
+      Reservar viaje
+    </button>
+  </div>
+  <div class="map">
+    <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>
+  </div>
+</section>
+<frontend-main-footer></frontend-main-footer>

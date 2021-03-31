@@ -157,7 +157,7 @@ public class ComplaintControllerTest {
                         contador++;
                 }
 
-                assertThat(contador).isEqualTo(1);
+                assertThat(contador).isEqualTo(2);
         }
 
         @Test

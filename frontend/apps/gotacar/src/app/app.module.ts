@@ -43,6 +43,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -71,6 +73,9 @@ import { TripSearchResultPageComponent } from './pages/trip-search-result-page/t
 import { TripListComponent } from './components/trip-list/trip-list.component';
 import { PenaltyDialogComponent } from './components/penalty-dialog/penalty-dialog.component';
 import { ComplaintAppealDialogComponent } from './components/complaint-appeal-dialog/complaint-appeal-dialog.component';
+import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
+import { TripMapComponent } from './components/trip-map/trip-map.component';
+import { TripOrderFormDialogComponent } from './components/trip-order-form-dialog/trip-order-form-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -103,6 +108,9 @@ registerLocaleData(localeEs, 'es');
     TripSearchResultPageComponent,
     TripListComponent,
     PenaltyDialogComponent,
+    TripDetailsPageComponent,
+    TripMapComponent,
+    TripOrderFormDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -137,6 +145,8 @@ registerLocaleData(localeEs, 'es');
     MatNativeDateModule,
     MatButtonModule,
     MatCardModule,
+    MatChipsModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule,

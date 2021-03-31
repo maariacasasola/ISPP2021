@@ -1,6 +1,6 @@
 .main-toolbar {
   background-color: #538994;
-  height: 10%;
+  height: 8%;
   display: flex;
 }
 
@@ -16,4 +16,8 @@
 .title {
   color: white;
   font-size: 250%;
+}
+
+.logo:hover {
+  cursor: pointer;
 }

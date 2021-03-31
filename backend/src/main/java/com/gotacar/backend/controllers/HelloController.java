@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@RequestMapping("/hello")
+	@RequestMapping("/")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Holaaaa");
+		return String.format("La API funciona correctamente");
 	}
 
 	@PreAuthorize("hasRole('ROLE_CLIENT') OR hasRole('ROLE_DRIVER')")

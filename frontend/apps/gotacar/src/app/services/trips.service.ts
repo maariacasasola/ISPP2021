@@ -16,7 +16,6 @@ export class TripsService {
   }
 
   get_trips(): Promise<any> {
-
     return this._http_client
       .get(environment.api_url + '/list_trip_orders')
       .toPromise();
@@ -38,7 +37,7 @@ export class TripsService {
       .toPromise();
   }
 
-  seach_trips(
+  async seach_trips(
     starting_point: Point,
     ending_point: Point,
     places: number,
@@ -50,11 +49,23 @@ export class TripsService {
       starting_point: starting_point,
       ending_point: ending_point,
     };
+    return this._http_client.post(environment.api_url + '/search_trips', body);
+  }
 
-    console.log(body)
-
+  async get_trip(trip_id: String): Promise<any> {
     return this._http_client
-      .post(environment.api_url + '/search_trips', body)
+      .get(environment.api_url + '/trip/' + trip_id)
+      .toPromise();
+  }
+
+  async create_stripe_session(trip_id, quantity, description): Promise<any> {
+    const body = {
+      quantity: quantity,
+      description: description,
+      idTrip: trip_id,
+    };
+    return this._http_client
+      .post(environment.api_url + '/create_session', body)
       .toPromise();
   }
 }
