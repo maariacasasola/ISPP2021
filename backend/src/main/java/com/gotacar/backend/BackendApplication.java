@@ -249,24 +249,24 @@ public class BackendApplication implements CommandLineRunner {
                 TripOrder tripOrder17 = new TripOrder(trip10, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500,
                                 "", 2);
 
-                tripOrderRepository.save(tripOrder1);
-                tripOrderRepository.save(tripOrder2);
-                tripOrderRepository.save(tripOrder3);
-                tripOrderRepository.save(tripOrder4);
-                tripOrderRepository.save(tripOrder1);
-                tripOrderRepository.save(tripOrder5);
-                tripOrderRepository.save(tripOrder6);
-                tripOrderRepository.save(tripOrder7);
-                tripOrderRepository.save(tripOrder8);
-                tripOrderRepository.save(tripOrder9);
-                tripOrderRepository.save(tripOrder10);
-                tripOrderRepository.save(tripOrder11);
-                tripOrderRepository.save(tripOrder12);
-                tripOrderRepository.save(tripOrder13);
-                tripOrderRepository.save(tripOrder14);
-                tripOrderRepository.save(tripOrder15);
-                tripOrderRepository.save(tripOrder16);
-                tripOrderRepository.save(tripOrder17);
+                // tripOrderRepository.save(tripOrder1);
+                // tripOrderRepository.save(tripOrder2);
+                // tripOrderRepository.save(tripOrder3);
+                // tripOrderRepository.save(tripOrder4);
+                // tripOrderRepository.save(tripOrder1);
+                // tripOrderRepository.save(tripOrder5);
+                // tripOrderRepository.save(tripOrder6);
+                // tripOrderRepository.save(tripOrder7);
+                // tripOrderRepository.save(tripOrder8);
+                // tripOrderRepository.save(tripOrder9);
+                // tripOrderRepository.save(tripOrder10);
+                // tripOrderRepository.save(tripOrder11);
+                // tripOrderRepository.save(tripOrder12);
+                // tripOrderRepository.save(tripOrder13);
+                // tripOrderRepository.save(tripOrder14);
+                // tripOrderRepository.save(tripOrder15);
+                // tripOrderRepository.save(tripOrder16);
+                // tripOrderRepository.save(tripOrder17);
 
                 // COMPLAINTS
                 // -----------------------------------------------------------------------------------------
@@ -342,6 +342,7 @@ public class BackendApplication implements CommandLineRunner {
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
                                         .antMatchers(HttpMethod.POST, "/cancel_trip_driver").permitAll()
+                                        .antMatchers(HttpMethod.POST, "/stripe-webhook").permitAll()
                                         .antMatchers(HttpMethod.GET, "/").permitAll()
                                         .antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest()
                                         .authenticated();
