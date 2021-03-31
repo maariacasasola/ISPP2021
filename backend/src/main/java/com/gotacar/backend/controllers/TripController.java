@@ -1,6 +1,5 @@
 package com.gotacar.backend.controllers;
 
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -24,6 +23,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,159 +36,164 @@ import org.springframework.web.server.ResponseStatusException;
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripController {
 
-    @Autowired
-    private TripRepository tripRepository;
+	@Autowired
+	private TripRepository tripRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private TripOrderRepository tripOrderRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
 
-    @PostMapping(path = "/search_trips", consumes = "application/json")
-    public List<Trip> searchTrip(@RequestBody() String body) {
-        List<Trip> response = new ArrayList<>();
-        try {
-            JsonNode jsonNode = objectMapper.readTree(body);
-            JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
-            JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
-            Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
-            LocalDateTime dateJson = OffsetDateTime
-                    .parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-            Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
-                    startingPointJson.get("lng").asDouble());
-            Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
-            response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return response;
-    }
+	private static ObjectMapper objectMapper = new ObjectMapper();
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/list_trips")
-    public List<Trip> listTrips() {
-        List<Trip> lista = new ArrayList<>();
-        try {
-            lista = tripRepository.findAll();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return lista;
-    }
-    
-    @PreAuthorize("hasRole('ROLE_DRIVER')")
-    @PostMapping("/create_trip")
-    public Trip createTrip(@RequestBody() String body) {
-    	Trip trip1 = new Trip();
-        try {
-            JsonNode jsonNode = objectMapper.readTree(body);
+	@PostMapping(path = "/search_trips", consumes = "application/json")
+	public List<Trip> searchTrip(@RequestBody() String body) {
+		List<Trip> response = new ArrayList<>();
+		try {
+			JsonNode jsonNode = objectMapper.readTree(body);
+			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
+			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
+			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
+			LocalDateTime dateJson = OffsetDateTime
+					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
+			Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
+					startingPointJson.get("lng").asDouble());
+			Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
+			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return response;
+	}
 
-            JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping("/list_trips")
+	public List<Trip> listTrips() {
+		List<Trip> lista = new ArrayList<>();
+		try {
+			lista = tripRepository.findAll();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return lista;
+	}
 
-            Location startingPoint = new Location(startingPointJson.get("name").toString(),
-                    startingPointJson.get("address").toString(), startingPointJson.get("lng").asDouble(),
-                    startingPointJson.get("lat").asDouble());
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/create_trip")
+	public Trip createTrip(@RequestBody() String body) {
+		Trip trip1 = new Trip();
+		try {
+			JsonNode jsonNode = objectMapper.readTree(body);
 
-            JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
+			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 
-            Location endingPoint = new Location(endingPointJson.get("name").toString(),
-                    endingPointJson.get("address").toString(), endingPointJson.get("lng").asDouble(),
-                    endingPointJson.get("lat").asDouble());
+			Location startingPoint = new Location(startingPointJson.get("name").toString(),
+					startingPointJson.get("address").toString(), startingPointJson.get("lng").asDouble(),
+					startingPointJson.get("lat").asDouble());
 
-            Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
+			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 
-            Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
+			Location endingPoint = new Location(endingPointJson.get("name").toString(),
+					endingPointJson.get("address").toString(), endingPointJson.get("lng").asDouble(),
+					endingPointJson.get("lat").asDouble());
 
-            LocalDateTime dateStartJson = OffsetDateTime
-                    .parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
+			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 
-            LocalDateTime dateEndJson = OffsetDateTime
-                    .parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
+			Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
 
-            String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
+			LocalDateTime dateStartJson = OffsetDateTime
+					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-            
-            LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
-            
-            trip1.setCancelationDateLimit(cancelationDateLimit);
-            trip1.setEndingDate(dateEndJson);
-            trip1.setStartingPoint(startingPoint);
-            trip1.setEndingPoint(endingPoint);
-            trip1.setPrice(price);
-            trip1.setComments(comments);
-            trip1.setStartDate(dateStartJson);
-            trip1.setPlaces(placesJson);
-            trip1.setDriver(currentUser);
-            
-         
-            
+			LocalDateTime dateEndJson = OffsetDateTime
+					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
 
-            tripRepository.save(trip1);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return trip1;
+			String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
 
-    }
-    @PreAuthorize("hasRole('ROLE_DRIVER')")
-    @PostMapping("/cancel_trip_driver")
-    public Trip cancelTripDriver(@RequestBody() String body) {
-    	Trip trip1 = new Trip();
-        try {
-            JsonNode jsonNode = objectMapper.readTree(body);          
-          
-            trip1 = tripRepository.findById(new ObjectId(jsonNode.get("id").asText()));
-            
-            Boolean canceled = trip1.getCanceled();
-            
-            
-            //Compruebo si el conductor del viaje es el usuario logueado
-            User driver = trip1.getDriver();
-            
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-            
-            if(!((currentUser.getId()).equals(driver.getId()))) {            	
-            	throw new Exception("Usted no ha realizado este viaje");
-            }
-            
-            //Si ya esta cencelado, envía un mensaje y no modifica el viaje
-            if(canceled == true) {
-            	throw new Exception("El viaje ya está cancelado");	
-            }
-            
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+
+			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
+
+			trip1.setCancelationDateLimit(cancelationDateLimit);
+			trip1.setEndingDate(dateEndJson);
+			trip1.setStartingPoint(startingPoint);
+			trip1.setEndingPoint(endingPoint);
+			trip1.setPrice(price);
+			trip1.setComments(comments);
+			trip1.setStartDate(dateStartJson);
+			trip1.setPlaces(placesJson);
+			trip1.setDriver(currentUser);
+
+			tripRepository.save(trip1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return trip1;
+
+	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/cancel_trip_driver/{trip_id}")
+	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
+		Trip trip1 = new Trip();
+		try {
+			trip1 = tripRepository.findById(new ObjectId(tripId));
+
+			Boolean canceled = trip1.getCanceled();
+
+			// Compruebo si el conductor del viaje es el usuario logueado
+			User driver = trip1.getDriver();
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+
+			if (!((currentUser.getId()).equals(driver.getId()))) {
+				throw new Exception("Usted no ha realizado este viaje");
+			}
+
+			// Si ya esta cencelado, envía un mensaje y no modifica el viaje
+			if (canceled == true) {
+				throw new Exception("El viaje ya está cancelado");
+			}
+
 			trip1.setCanceled(true);
 			trip1.setCancelationDate(LocalDateTime.now());
-			
-			
-			if(trip1.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
+
+			if (trip1.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
 				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
 				userRepository.save(driver);
 			}
-			
+
 			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
-			
-			for(TripOrder order : orders){
+
+			for (TripOrder order : orders) {
 				order.setStatus("REFUNDED_PENDING");
-	            tripOrderRepository.save(order);
+				tripOrderRepository.save(order);
 			}
-			
 
-			
-            tripRepository.save(trip1);
-        } catch (Exception e) {
-        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-        
-        return trip1;
+			tripRepository.save(trip1);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
-    }
-    
+		return trip1;
+
+	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@GetMapping("/list_trips_driver")
+	public List<Trip> listTripsDriver() {
+		List<Trip> lista = new ArrayList<>();
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			lista = tripRepository.findByDriver(currentUser);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+		return lista;
+	}
 
 }
