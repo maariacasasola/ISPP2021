@@ -200,6 +200,11 @@ public class TripController {
 
     @GetMapping("/trip/{tripId}")
     public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
-            return tripRepository.findById(new ObjectId(tripId));
+        try {  
+        	Trip trip = tripRepository.findById(new ObjectId(tripId));
+        	return trip;
+    	} catch (Exception e) {
+    		throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    	}	
     }
 }
