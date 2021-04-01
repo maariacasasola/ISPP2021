@@ -66,6 +66,7 @@ public class ComplaintAppealController {
             ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(complaintAppealObjectId);
             if (complaintAppeal.getChecked() == false) {
                 User u = userRepository.findByUid(complaintAppeal.getComplaint().getTrip().getDriver().getUid());
+                complaintAppeal.getComplaint().getTrip().setDriver(u);
                 u.setBannedUntil(null);
                 userRepository.save(u);
                 complaintAppeal.setChecked(true);
@@ -133,9 +134,11 @@ public class ComplaintAppealController {
 
             complaintAppealRepository.save(appeal);
 
+            return appeal;
+
         } catch (Exception e) {
             throw (new IllegalArgumentException(e.getMessage()));
         }
-        return appeal;
+       
     }
 }
