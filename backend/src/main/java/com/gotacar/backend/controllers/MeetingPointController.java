@@ -58,7 +58,6 @@ public class MeetingPointController {
 		List<MeetingPoint> response = new ArrayList<>();
 		try {
 			response = pointsRepository.findAll();
-			System.out.println(response.toString());
             return response;
 		} catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
