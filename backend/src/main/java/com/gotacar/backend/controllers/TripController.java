@@ -61,11 +61,13 @@ public class TripController {
 			Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
 					startingPointJson.get("lng").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
+			
 			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+			return response;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
-		return response;
+		
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -74,10 +76,10 @@ public class TripController {
 		List<Trip> lista = new ArrayList<>();
 		try {
 			lista = tripRepository.findAll();
+			return lista;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		return lista;
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
@@ -127,12 +129,10 @@ public class TripController {
 			trip1.setDriver(currentUser);
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return trip1;
-
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}		
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
@@ -175,11 +175,12 @@ public class TripController {
 			}
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
-		return trip1;
+
 
 	}
 
@@ -191,10 +192,10 @@ public class TripController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			lista = tripRepository.findByDriver(currentUser);
+			return lista;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-		}
-		return lista;
+		}		
 	}
 
     @GetMapping("/trip/{tripId}")

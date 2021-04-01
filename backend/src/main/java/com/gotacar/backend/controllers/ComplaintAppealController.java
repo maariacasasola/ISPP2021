@@ -77,7 +77,7 @@ public class ComplaintAppealController {
             }
 
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.LOCKED, e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
 
@@ -98,7 +98,7 @@ public class ComplaintAppealController {
             }
 
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.LOCKED, e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
 
