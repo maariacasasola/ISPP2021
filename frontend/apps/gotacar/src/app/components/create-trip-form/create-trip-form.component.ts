@@ -81,7 +81,7 @@ export class CreateTripFormComponent {
     const trip: Trip = {
       starting_point: LocationOrigen,
       ending_point: LocationDestino,
-      price: Number(this.createTripForm.value.price),
+      price: Number(this.createTripForm.value.price)*100,
       start_date: new Date(this.createTripForm.value.fechaHoraInicio),
       end_date: new Date(this.createTripForm.value.fechaHoraFin),
       comments: String(this.createTripForm.value.comentarios),
