@@ -42,7 +42,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -62,7 +61,7 @@ import { MainFooterComponent } from './components/main-footer/main-footer.compon
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
-import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
+import { AccessForbiddenDialogComponent } from './components/access-forbidden-dialog/access-forbidden-dialog.component';
 import { CreateTripFormComponent } from './components/create-trip-form/create-trip-form.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
