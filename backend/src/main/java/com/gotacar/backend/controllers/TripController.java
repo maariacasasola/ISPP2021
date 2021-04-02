@@ -58,9 +58,9 @@ public class TripController {
 			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 			LocalDateTime dateJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-			Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
-					startingPointJson.get("lng").asDouble());
-			Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
+			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),startingPointJson.get("lat").asDouble());
+			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
+			
 			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

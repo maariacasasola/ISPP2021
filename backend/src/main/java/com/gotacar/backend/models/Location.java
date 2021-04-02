@@ -23,7 +23,7 @@ public class Location {
     @BsonProperty("name")
     public String name;
 
-    public Location(String name, String address, Double lng, Double lat) {
+    public Location(String name, String address, Double lat, Double lng) {
         this.name = name;
         this.address = address;
         this.lng = lng;
