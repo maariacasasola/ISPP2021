@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-trip-list',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TripListComponent implements OnInit {
   @Input() trips;
 
-  constructor() {}
+  constructor(private _router: Router) {}
 
   ngOnInit(): void {}
 
@@ -16,5 +17,9 @@ export class TripListComponent implements OnInit {
     return trip?.driver?.profilePhoto
       ? trip?.driver?.profilePhoto
       : 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png';
+  }
+
+  see_trip_details(trip_id) {
+    this._router.navigate(['/', 'trip', trip_id]);
   }
 }
