@@ -41,28 +41,55 @@ export class AdminComplaintsListPageComponent{
     const dialogRef = this._my_dialog.open(PenaltyDialogComponent, dialogConfig);
     
     const dialog_response = await dialogRef.afterClosed().toPromise();
-    console.log(dialog_response)
+   
     if (!dialog_response) {
       return
       
     }
-    await this._complaints_service.penalty_complaint(dialog_response);
+    try {
+      const response= await this._complaints_service.penalty_complaint(dialog_response);
+      if (response) {
+        console.log(response)
+        this.openSnackBar(
+          'Se acepta la queja de '+ data?.user?.firstName +' y se penaliza a su conductor '+ response['firstName']+' '+ response['lastName'],
+          'Cerrar'
+        );
+      }
+      await this.load_complaints();
+      
+    } catch (error) {
+      this.openSnackBar(
+        'No se pudo penalizar, hubo un error',
+        'Cerrar'
+      );
+      
+    }
     
     
-    this.openSnackBar(
-      'Se acepta la queja de '+ data?.user?.firstName +' y se penaliza a su conductor',
-      'Cerrar'
-    );
+    
+   
     
   }
   async rejectComplaint(complaint){
-    await this._complaints_service.refuse_complain(complaint.id);
+    try {
+      const response = await this._complaints_service.refuse_complain(complaint.id);
+      if (response) {
+        this.openSnackBar(
+          'Se rechaza la queja de '+complaint?.user?.firstName,
+          'Cerrar'
+        );
+        await this.load_complaints();
+      }
+    } catch (error) {
+
+      this.openSnackBar(
+        'No se pudo rechazar, hubo un error',
+        'Cerrar'
+      );
+    }
     
     
-    this.openSnackBar(
-      'Se rechaza la queja de '+complaint?.user?.firstName,
-      'Cerrar'
-    );
+    
    
     
   }
@@ -71,7 +98,13 @@ export class AdminComplaintsListPageComponent{
       duration: 5000,
       panelClass: ['blue-snackbar'],
     });
-    this.load_complaints();
+    
+    
+  }
+  isPending(data:string):string{
+    if (data==="PENDING") {
+      return 'Pendiente';
+    }
     
   }
   

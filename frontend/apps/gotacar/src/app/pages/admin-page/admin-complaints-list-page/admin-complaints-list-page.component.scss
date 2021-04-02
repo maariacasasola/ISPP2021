@@ -1,46 +1,45 @@
-h1 {
-    text-align: center;
-    color: #0e4a6b;
-    margin: 20px;
-    font-size: 30px;
-  }
+ h1 {
+     text-align: center;
+     color: #0e4a6b;
+     margin: 20px;
+     font-size: 30px;
+ }
 
-  .trip {
-    border: 1px solid #0e4a6b;
-    padding: 30px;
+  .complaint {
+     border: 1px solid #0e4a6b;
+     padding: 30px;
+     margin: 10px;
 
-  }
+ }
 
   .card-title {
-    text-align: right;
-    color: #0e4a6b;
-    font-size: 30px;
-  }
+     text-align: right;
+     color: #0e4a6b;
+     font-size: 30px;
+   }
 
-  .mat-card-subtitle {
-    font-size: 20px;
-  }
+   .mat-card-subtitle {
+     font-size: 20px;
+   }
 
-  .trips-list {
-    width: max-content;
-  }
 
-  .button {
-    background-color: #0e4a6b;
-    color: white;
-  }
 
-  mat-list {
-    width: 90%;
-  }
+   .button {
+     background-color: #0e4a6b;
+     color: white;
+   }
 
-.user-title{
-  font-size: 23px;
-  color: #0e4a6b;
 
-}
-.complaint-title{
+ .user-title{
+   font-size: 23px;
+   color: #0e4a6b;
+ }
+ .complaint-title{
   text-align: center;
-  font-size: 23px;
-  color: #0a1d27;
-} 
+   font-size: 23px;
+   color: #0a1d27;
+ 
+ } 
+.content{padding: 16px;}
+
+
