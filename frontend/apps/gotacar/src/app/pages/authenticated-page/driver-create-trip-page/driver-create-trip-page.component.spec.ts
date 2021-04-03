@@ -8,9 +8,8 @@ describe('DriverCreateTripPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DriverCreateTripPageComponent ]
-    })
-    .compileComponents();
+      declarations: [DriverCreateTripPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

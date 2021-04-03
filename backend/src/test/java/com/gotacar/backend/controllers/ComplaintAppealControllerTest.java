@@ -228,7 +228,7 @@ public class ComplaintAppealControllerTest {
                                                 .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON));
 
-                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(423);
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
                 assertThat(result.andReturn().getResponse().getErrorMessage())
                                 .isEqualTo("Esta apelación ya está resuelta");
         }
@@ -298,7 +298,7 @@ public class ComplaintAppealControllerTest {
                 ResultActions result = mockMvc.perform(post("/complaint_appeals/{complaintAppealId}/reject",appeal.getId()).header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON));
 
-                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(423);
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
                 assertThat(result.andReturn().getResponse().getErrorMessage())
                                 .isEqualTo("Esta apelación ya está resuelta");
         }

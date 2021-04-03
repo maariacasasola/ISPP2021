@@ -6,10 +6,12 @@ import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,26 +45,39 @@ public class MeetingPointController {
             mp.setName(name);
 
             pointsRepository.save(mp);
-
+            return mp;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw (new IllegalArgumentException(e.getMessage()));
         }
         
-        return mp;
+        
     }
 
 	@GetMapping("/search_meeting_points")
 	public List<MeetingPoint> findAllMeetingPoints(){
-		List<MeetingPoint> response = new ArrayList<>();
 		try {
+            List<MeetingPoint> response = new ArrayList<>();
 			response = pointsRepository.findAll();
-			System.out.println(response.toString());
-            
+            return response;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
+        }	
 		
-		return response;
 	}
+
+    //Delete
+    @PostMapping("/delete_meeting_point")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteMeetingPoint(@RequestBody String body){
+        try{
+            JsonNode jsonNode = objectMapper.readTree(body);
+            String id = objectMapper.readTree(jsonNode.get("mpId").toString()).asText();
+            MeetingPoint mp = pointsRepository.findById(id).get();
+            pointsRepository.delete(mp);
+            return "meeting point: " + id + "deleted";
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
 
 }

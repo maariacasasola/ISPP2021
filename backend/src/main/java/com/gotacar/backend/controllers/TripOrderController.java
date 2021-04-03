@@ -35,9 +35,9 @@ public class TripOrderController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @RequestMapping("/list_trip_orders")
     public List<TripOrder> listTripOrders() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByEmail(authentication.getPrincipal().toString());
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             return tripOrderRepository.findByUserUid(user.getUid());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -51,7 +51,7 @@ public class TripOrderController {
             ObjectId tripOrderObjectId = new ObjectId(id);
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
             Trip trip = tripOrder.getTrip();
-            if(trip.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
+            if(trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
                 tripOrder.setStatus("REFUNDED_PENDING");
                 tripOrderRepository.save(tripOrder);
             }

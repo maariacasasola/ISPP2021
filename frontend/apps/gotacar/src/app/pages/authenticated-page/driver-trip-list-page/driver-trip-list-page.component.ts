@@ -1,4 +1,3 @@
-
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,15 +9,17 @@ import { Trip } from '../../../shared/services/trip';
 @Component({
   selector: 'frontend-driver-trip-list-page',
   templateUrl: './driver-trip-list-page.component.html',
-  styleUrls: ['./driver-trip-list-page.component.scss']
+  styleUrls: ['./driver-trip-list-page.component.scss'],
 })
 export class DriverTripListPageComponent {
-
   trips = [];
 
-  constructor(private _trips_service: TripsService, private _snackbar: MatSnackBar,
-    private _auth_service: AuthServiceService, private dialog: MatDialog,) {
-
+  constructor(
+    private _trips_service: TripsService,
+    private _snackbar: MatSnackBar,
+    private _auth_service: AuthServiceService,
+    private dialog: MatDialog
+  ) {
     this.load_trips_by_driver();
   }
 
@@ -37,7 +38,10 @@ export class DriverTripListPageComponent {
   async cancel(trip_id, cancelationDateLimit: string) {
     try {
       if (new Date(cancelationDateLimit) < new Date()) {
-        this.dialog.open(CancelTripDialogComponent, {data: trip_id, disableClose: true})
+        this.dialog.open(CancelTripDialogComponent, {
+          data: trip_id,
+          disableClose: true,
+        });
       } else {
         await this._trips_service.cancel_driver_trip(trip_id);
         this._snackbar.open('Viaje cancelado correctamente', null, {
@@ -49,5 +53,4 @@ export class DriverTripListPageComponent {
       console.error(error);
     }
   }
-
 }

@@ -12,7 +12,7 @@ describe('MainFooterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [MainFooterComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   });
 

@@ -29,7 +29,7 @@ export class TripMapComponent implements OnInit {
     this.load_markers();
   }
 
-  openInfo(marker: MapMarker, content) {    
+  openInfo(marker: MapMarker, content) {
     this.marker_info = content;
     this.info.open(marker);
   }

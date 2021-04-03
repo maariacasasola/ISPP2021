@@ -1,5 +1,5 @@
 <div>
-  <h1>VIAJES REGISTRADOS</h1>
+  <h1>VIAJES CONTRATADOS</h1>
   <mat-grid-list cols="2" rowHeight="2:1">
     <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
       <mat-list role="list">
@@ -7,37 +7,50 @@
           <mat-card-title class="card-title">{{
             trip?.user?.firstName + ' ' + trip?.user?.lastName
           }}</mat-card-title>
-          <br /><br/>
+          <br /><br />
           <mat-card-content class="card-content">
             <mat-card-subtitle>
-              <b>Hora de salida:</b> {{ trip?.trip?.startDate }}
+              <b>Hora de salida:</b>
+              {{ trip?.trip?.startDate | date: 'medium' }}
             </mat-card-subtitle>
-            <br>
+            <br />
             <mat-card-subtitle>
-              <b>Hora de llegada:</b> {{ trip?.trip?.endingDate }}
+              <b>Hora de llegada:</b>
+              {{ trip?.trip?.endingDate | date: 'medium' }}
             </mat-card-subtitle>
-            <br>
-            <div style="text-align:center">
-            <mat-card-subtitle>
-              {{ trip?.trip?.startingPoint?.address }} &#8594;
-              {{ trip?.trip?.endingPoint?.address }}
-            </mat-card-subtitle>
-            <b>
-            <mat-card-subtitle>{{
-              trip?.price | convertCentToEur
-            }}</mat-card-subtitle>
-             <mat-card-subtitle>{{
-              trip?.status
-            }}</mat-card-subtitle>
-            </b>
+            <br />
+            <div style="text-align: center">
+              <mat-card-subtitle>
+                {{ trip?.trip?.startingPoint?.address }} &#8594;
+                {{ trip?.trip?.endingPoint?.address }}
+              </mat-card-subtitle>
+              <b>
+                <mat-card-subtitle>{{
+                  trip?.price | convertCentToEur
+                }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ trip?.status }}</mat-card-subtitle>
+              </b>
             </div>
           </mat-card-content>
           <mt-card-content>
-          {{trip?.trip?.comments}}
+            {{ trip?.trip?.comments }}
           </mt-card-content>
 
           <mat-card-actions align="end">
-            <button mat-raised-button class="button" [routerLink] = 'trip.id'>
+            <button
+              *ngIf="
+                !(
+                  trip?.status === 'REFUNDED_PENDING' ||
+                  trip?.status === 'REFUNDED'
+                )
+              "
+              mat-raised-button
+              color="warn"
+              (click)="cancelTripOrder(trip.id)"
+            >
+              <mat-icon>cancel_presentation</mat-icon>
+            </button>
+            <button mat-raised-button class="button" [routerLink]="trip.id">
               <mat-icon>open_in_new</mat-icon>
             </button>
           </mat-card-actions>

@@ -2,6 +2,8 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripController {
 
 	@Autowired
@@ -50,41 +52,42 @@ public class TripController {
 
 	@PostMapping(path = "/search_trips", consumes = "application/json")
 	public List<Trip> searchTrip(@RequestBody() String body) {
-		List<Trip> response = new ArrayList<>();
 		try {
+			List<Trip> response = new ArrayList<>();
 			JsonNode jsonNode = objectMapper.readTree(body);
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 			LocalDateTime dateJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-			Point startingPoint = new Point(startingPointJson.get("lat").asDouble(),
-					startingPointJson.get("lng").asDouble());
-			Point endingPoint = new Point(endingPointJson.get("lat").asDouble(), endingPointJson.get("lng").asDouble());
+			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
+					startingPointJson.get("lat").asDouble());
+			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
 			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+			return response;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
-		return response;
+
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/list_trips")
 	public List<Trip> listTrips() {
-		List<Trip> lista = new ArrayList<>();
 		try {
+			List<Trip> lista = new ArrayList<>();
 			lista = tripRepository.findAll();
+			return lista;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		return lista;
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
-		Trip trip1 = new Trip();
 		try {
+			Trip trip1 = new Trip();
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -103,11 +106,17 @@ public class TripController {
 
 			Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
 
-			LocalDateTime dateStartJson = OffsetDateTime
-					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText()).toLocalDateTime();
+			ZonedDateTime dateStartZone = ZonedDateTime
+					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-			LocalDateTime dateEndJson = OffsetDateTime
-					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText()).toLocalDateTime();
+			LocalDateTime dateStartJson = dateStartZone.toLocalDateTime();
+
+			ZonedDateTime dateEndZone = ZonedDateTime
+					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
+			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
+			LocalDateTime dateEndJson = dateEndZone.toLocalDateTime();
 
 			String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
 
@@ -127,19 +136,17 @@ public class TripController {
 			trip1.setDriver(currentUser);
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
-
-		return trip1;
-
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
-		Trip trip1 = new Trip();
 		try {
+			Trip trip1 = new Trip();
 			trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -175,30 +182,33 @@ public class TripController {
 			}
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-
-		return trip1;
 
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@GetMapping("/list_trips_driver")
 	public List<Trip> listTripsDriver() {
-		List<Trip> lista = new ArrayList<>();
 		try {
+			List<Trip> lista = new ArrayList<>();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			lista = tripRepository.findByDriver(currentUser);
+			return lista;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		return lista;
 	}
 
-    @GetMapping("/trip/{tripId}")
-    public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
-            return tripRepository.findById(new ObjectId(tripId));
-    }
+	@GetMapping("/trip/{tripId}")
+	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
+		try {
+			return tripRepository.findById(new ObjectId(tripId));
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 }

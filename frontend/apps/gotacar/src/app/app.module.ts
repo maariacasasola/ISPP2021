@@ -16,6 +16,9 @@ import localeEs from '@angular/common/locales/es';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 
+///FLEX LAYOUT
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 // GOOGLE MAPS
 import { GoogleMapsModule } from '@angular/google-maps';
 
@@ -78,6 +81,8 @@ import { TripMapComponent } from './components/trip-map/trip-map.component';
 import { TripOrderFormDialogComponent } from './components/trip-order-form-dialog/trip-order-form-dialog.component';
 import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
 import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
+import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
+import { ComplaintAppealsService } from './services/complaint-appeals.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -115,6 +120,7 @@ registerLocaleData(localeEs, 'es');
     TripDetailsPageComponent,
     TripMapComponent,
     TripOrderFormDialogComponent,
+    AdminComplaintAppealsListPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -156,12 +162,14 @@ registerLocaleData(localeEs, 'es');
     MatSnackBarModule,
     GoogleMapsModule,
     MatMenuModule,
+    FlexLayoutModule,
   ],
   providers: [
     AuthenticatedGuard,
     GeocoderServiceService,
     HttpClientModule,
     AuthServiceService,
+    ComplaintAppealsService,
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,

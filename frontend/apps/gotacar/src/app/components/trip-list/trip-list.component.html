@@ -27,7 +27,9 @@
       </div>
     </mat-card-content>
     <mat-card-actions class="card-actions">
-      <button mat-flat-button>Ver más</button>
+      <button (click)="see_trip_details(trip?.id)" mat-flat-button>
+        Ver más
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
