@@ -100,8 +100,8 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping(path = "/complaint_appeal", consumes = "application/json")
     public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
-        ComplaintAppeal appeal = new ComplaintAppeal();
         try {
+            ComplaintAppeal appeal = new ComplaintAppeal();
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             List<String> trips = tripRepository.findAll().stream()
