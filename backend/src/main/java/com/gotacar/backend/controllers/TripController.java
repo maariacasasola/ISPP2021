@@ -3,7 +3,6 @@ package com.gotacar.backend.controllers;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +52,8 @@ public class TripController {
 
 	@PostMapping(path = "/search_trips", consumes = "application/json")
 	public List<Trip> searchTrip(@RequestBody() String body) {
-		List<Trip> response = new ArrayList<>();
 		try {
+			List<Trip> response = new ArrayList<>();
 			JsonNode jsonNode = objectMapper.readTree(body);
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
@@ -76,8 +75,8 @@ public class TripController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/list_trips")
 	public List<Trip> listTrips() {
-		List<Trip> lista = new ArrayList<>();
 		try {
+			List<Trip> lista = new ArrayList<>();
 			lista = tripRepository.findAll();
 			return lista;
 		} catch (Exception e) {
@@ -88,8 +87,8 @@ public class TripController {
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
-		Trip trip1 = new Trip();
 		try {
+			Trip trip1 = new Trip();
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -147,8 +146,8 @@ public class TripController {
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
-		Trip trip1 = new Trip();
 		try {
+			Trip trip1 = new Trip();
 			trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -194,8 +193,8 @@ public class TripController {
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
 	@GetMapping("/list_trips_driver")
 	public List<Trip> listTripsDriver() {
-		List<Trip> lista = new ArrayList<>();
 		try {
+			List<Trip> lista = new ArrayList<>();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			lista = tripRepository.findByDriver(currentUser);
@@ -208,8 +207,7 @@ public class TripController {
 	@GetMapping("/trip/{tripId}")
 	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
 		try {
-			Trip trip = tripRepository.findById(new ObjectId(tripId));
-			return trip;
+			return tripRepository.findById(new ObjectId(tripId));
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
