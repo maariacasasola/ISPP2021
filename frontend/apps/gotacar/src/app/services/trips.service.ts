@@ -55,7 +55,7 @@ export class TripsService {
       .toPromise();
   }
 
-  async get_trip(trip_id: String): Promise<any> {
+  async get_trip(trip_id: string): Promise<any> {
     return this._http_client
       .get(environment.api_url + '/trip/' + trip_id)
       .toPromise();

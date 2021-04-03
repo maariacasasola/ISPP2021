@@ -28,7 +28,7 @@ export class TripDetailsPageComponent {
     this.load_trip();
   }
 
-  private get_trip_id(): String {
+  private get_trip_id(): string {
     return this._route.snapshot.params['trip_id'];
   }
 

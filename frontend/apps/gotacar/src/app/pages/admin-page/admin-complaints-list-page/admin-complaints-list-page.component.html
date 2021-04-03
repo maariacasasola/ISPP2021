@@ -9,30 +9,20 @@
       *ngFor="let complaint of complaints"
     >
       <mat-card class="complaint">
-        <mat-card-title>
-          <mat-card-content class="complaint-title">
-            <em>{{ complaint?.title }}</em>
-          </mat-card-content>
-          <mat-card-content class="user-title">
+        <mat-card-title class="complaint-title">
+          {{ complaint?.title }}
+        </mat-card-title>
+        <mat-card-content class="card-content">
+          <h3 class="user-title">
             <strong> Queja realizada por </strong>:
             {{ complaint?.user?.firstName + ' ' + complaint?.user?.lastName }}
-          </mat-card-content>
-        </mat-card-title>
-        <br /><br />
-        <mat-card-content class="card-content">
-          <mat-card-subtitle>
+          </h3>
+          <p>
             <strong>Creación de la queja:</strong>
             {{ complaint?.creationDate | date: 'short' }}
-          </mat-card-subtitle>
-          <br />
-          <mat-card-subtitle>
-            <strong>Descripción:</strong> {{ complaint?.content }}
-          </mat-card-subtitle>
-          <br />
-          <mat-card-subtitle>
-            <strong>Estado:</strong> {{ isPending(complaint?.status) }}
-          </mat-card-subtitle>
-          <br />
+          </p>
+          <p><strong>Descripción:</strong> {{ complaint?.content }}</p>
+          <p><strong>Estado:</strong> {{ isPending(complaint?.status) }}</p>
         </mat-card-content>
         <mat-card-actions align="end">
           <button

@@ -18,6 +18,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
+import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,10 @@ const routes: Routes = [
         path: 'complaints',
         component: AdminComplaintsListPageComponent,
       },
+      {
+        path: 'complaint-appeals',
+        component: AdminComplaintAppealsListPageComponent
+      }
     ],
   },
 ]; // sets up routes constant where you define your routes
