@@ -104,7 +104,7 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver3);
 
                 // Clients
-                User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
+                User client = new User("Martín", "Romero", "gHiQxzWlXleUoEdQLmosPMlSk8f2", "client@gotacar.es",
                                 "89070336D", "http://dniclient.com", fecha3, lista2);
                 User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
                                 "42131220T", "http://dniclient.com", fecha2, lista2);
@@ -341,6 +341,7 @@ public class BackendApplication implements CommandLineRunner {
                                         .authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
+                                        .antMatchers(HttpMethod.GET, "/trip/{tripId}").permitAll()
                                         .antMatchers(HttpMethod.POST, "/cancel_trip_driver").permitAll()
                                         .antMatchers(HttpMethod.POST, "/stripe-webhook").permitAll()
                                         .antMatchers(HttpMethod.GET, "/").permitAll()
