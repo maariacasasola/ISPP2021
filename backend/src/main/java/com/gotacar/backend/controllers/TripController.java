@@ -63,7 +63,6 @@ public class TripController {
 			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
 					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
-
 			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
 			return response;
 		} catch (Exception e) {

@@ -49,9 +49,7 @@ public class ComplaintAppealController {
     public List<ComplaintAppeal> listComplaintAppeals() {
         try {
             List<ComplaintAppeal> complaintAppeals = new ArrayList<>();
-
             complaintAppeals = complaintAppealRepository.findByChecked(false);
-
             return complaintAppeals;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -72,7 +70,6 @@ public class ComplaintAppealController {
                 complaintAppeal.setChecked(true);
                 complaintAppealRepository.save(complaintAppeal);
                 return complaintAppeal;
-
             } else {
                 throw new Exception("Esta apelación ya está resuelta");
             }
@@ -88,16 +85,13 @@ public class ComplaintAppealController {
         try {
             ObjectId complaintAppealObjectId = new ObjectId(complaintAppealId);
             ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(complaintAppealObjectId);
-
             if (complaintAppeal.getChecked() == false) {
                 complaintAppeal.setChecked(true);
                 complaintAppealRepository.save(complaintAppeal);
                 return complaintAppeal;
-
             } else {
                 throw new Exception("Esta apelación ya está resuelta");
             }
-
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
