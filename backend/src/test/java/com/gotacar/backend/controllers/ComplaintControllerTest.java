@@ -29,7 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.gotacar.backend.BackendApplication;
-import com.gotacar.backend.controllers.MeetingPointControllerTest.TestConfig;
+import com.gotacar.backend.controllers.ComplaintControllerTest.TestConfig;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -55,18 +55,6 @@ public class ComplaintControllerTest {
                 @Primary
                 public ComplaintRepository mockB() {
                         ComplaintRepository mockService = Mockito.mock(ComplaintRepository.class);
-                        return mockService;
-                }
-
-                @Bean
-                public UserRepository mockU() {
-                        UserRepository mockService = Mockito.mock(UserRepository.class);
-                        return mockService;
-                }
-
-                @Bean
-                public TripRepository mockT() {
-                        TripRepository mockService = Mockito.mock(TripRepository.class);
                         return mockService;
                 }
         }
