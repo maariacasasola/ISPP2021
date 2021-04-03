@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -66,15 +67,13 @@ public class MeetingPointController {
 	}
 
     //Delete
-    @PostMapping("/delete_meeting_point")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteMeetingPoint(@RequestBody String body){
+    @PostMapping("/delete_meeting_point/{mpId}")
+     public String deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
         try{
-            JsonNode jsonNode = objectMapper.readTree(body);
-            String id = objectMapper.readTree(jsonNode.get("mpId").toString()).asText();
-            MeetingPoint mp = pointsRepository.findById(id).get();
+            MeetingPoint mp = pointsRepository.findById(mpId).get();
             pointsRepository.delete(mp);
-            return "meeting point: " + id + "deleted";
+            return "meeting point: " + mpId + "deleted";
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
