@@ -36,7 +36,7 @@ import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.TripOrder.TripOrder;
 import com.gotacar.backend.models.TripOrder.TripOrderRepository;
-import com.gotacar.backend.controllers.MeetingPointControllerTest.TestConfig;
+import com.gotacar.backend.controllers.TripControllerTest.TestConfig;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,19 +53,6 @@ public class TripControllerTest {
 			TripRepository mockService = Mockito.mock(TripRepository.class);
 			return mockService;
 		}
-
-		@Bean
-		public UserRepository mockU() {
-			UserRepository mockService = Mockito.mock(UserRepository.class);
-			return mockService;
-		}
-
-		@Bean
-		public TripOrderRepository mockTO() {
-			TripOrderRepository mockService = Mockito.mock(TripOrderRepository.class);
-			return mockService;
-		}
-
 	}
 
 	@Autowired

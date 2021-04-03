@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import com.gotacar.backend.controllers.MeetingPointControllerTest.TestConfig;
+import com.gotacar.backend.controllers.TripOrderControllerTest.TestConfig;
 import com.gotacar.backend.BackendApplication;
 
 @SpringBootTest
@@ -50,12 +50,6 @@ public class TripOrderControllerTest {
         @Primary
         public TripOrderRepository mockB() {
             TripOrderRepository mockService = Mockito.mock(TripOrderRepository.class);
-            return mockService;
-        }
-
-        @Bean
-        public UserRepository mockU() {
-            UserRepository mockService = Mockito.mock(UserRepository.class);
             return mockService;
         }
 

@@ -38,7 +38,7 @@ import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.BackendApplication;
-import com.gotacar.backend.controllers.MeetingPointControllerTest.TestConfig;
+import com.gotacar.backend.controllers.ComplaintAppealControllerTest.TestConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,19 +57,6 @@ public class ComplaintAppealControllerTest {
                         ComplaintAppealRepository mockService = Mockito.mock(ComplaintAppealRepository.class);
                         return mockService;
                 }
-
-                @Bean
-                public UserRepository mockU() {
-                        UserRepository mockService = Mockito.mock(UserRepository.class);
-                        return mockService;
-                }
-
-                @Bean
-                public TripRepository mockT() {
-                        TripRepository mockService = Mockito.mock(TripRepository.class);
-                        return mockService;
-                }
-
         }
 
         @Autowired
