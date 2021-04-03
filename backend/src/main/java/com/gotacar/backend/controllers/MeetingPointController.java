@@ -73,7 +73,6 @@ public class MeetingPointController {
             JsonNode jsonNode = objectMapper.readTree(body);
             String id = objectMapper.readTree(jsonNode.get("mpId").toString()).asText();
             MeetingPoint mp = pointsRepository.findById(id).get();
-            Boolean deletable = true; //modificar en caso de que haya alguna condicion por la cual no se deba borrar un meeting point
             pointsRepository.delete(mp);
             return "meeting point: " + id + "deleted";
             
