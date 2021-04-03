@@ -37,7 +37,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripController {
 
 	@Autowired
@@ -61,14 +61,16 @@ public class TripController {
 			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 			LocalDateTime dateJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),startingPointJson.get("lat").asDouble());
+			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
+					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
-			
+
 			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+			return response;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
-		return response;
+
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -77,10 +79,10 @@ public class TripController {
 		List<Trip> lista = new ArrayList<>();
 		try {
 			lista = tripRepository.findAll();
+			return lista;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		return lista;
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
@@ -136,12 +138,10 @@ public class TripController {
 			trip1.setDriver(currentUser);
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
-
-		return trip1;
-
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
@@ -184,11 +184,10 @@ public class TripController {
 			}
 
 			tripRepository.save(trip1);
+			return trip1;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-
-		return trip1;
 
 	}
 
@@ -200,14 +199,19 @@ public class TripController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			lista = tripRepository.findByDriver(currentUser);
+			return lista;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		return lista;
 	}
 
-    @GetMapping("/trip/{tripId}")
-    public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
-            return tripRepository.findById(new ObjectId(tripId));
-    }
+	@GetMapping("/trip/{tripId}")
+	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
+		try {
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			return trip;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 }

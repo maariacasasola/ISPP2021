@@ -185,19 +185,6 @@ public class TripControllerTest {
 	}
 
 	@Test
-	void testFindTripsByDriverWrong() throws Exception {
-		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
-		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
-		Mockito.when(tripRepository.findByDriver(driver)).thenReturn(java.util.Arrays.asList(trip));
-
-		ResultActions result = mockMvc.perform(
-				get("/list_trips_driver").header("Authorization", "auth").contentType(MediaType.APPLICATION_JSON));
-
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
-
-	}
-
-	@Test
 	public void testCancelTripDriver() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);

@@ -35,9 +35,10 @@ public class TripOrderController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @RequestMapping("/list_trip_orders")
     public List<TripOrder> listTripOrders() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             return tripOrderRepository.findByUserUid(user.getUid());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

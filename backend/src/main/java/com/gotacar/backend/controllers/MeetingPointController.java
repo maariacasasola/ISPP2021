@@ -45,12 +45,12 @@ public class MeetingPointController {
             mp.setName(name);
 
             pointsRepository.save(mp);
-
+            return mp;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw (new IllegalArgumentException(e.getMessage()));
         }
         
-        return mp;
+        
     }
 
 	@GetMapping("/search_meeting_points")
@@ -58,13 +58,11 @@ public class MeetingPointController {
 		List<MeetingPoint> response = new ArrayList<>();
 		try {
 			response = pointsRepository.findAll();
-			System.out.println(response.toString());
-            
+            return response;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
+        }	
 		
-		return response;
 	}
 
     //Delete
