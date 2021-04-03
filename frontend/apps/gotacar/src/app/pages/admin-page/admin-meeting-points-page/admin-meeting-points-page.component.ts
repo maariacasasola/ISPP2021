@@ -78,7 +78,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       console.log(this.meeting_points);
       this.meeting_points_array = Array.from(this.meeting_points);
       console.log(this.meeting_points_array);
-      let meeting_point = this.meeting_points_array.find(
+      const meeting_point = this.meeting_points_array.find(
         (x) => x.lat === infoPosition.lat && x.lng === infoPosition.lng
       );
       console.log(meeting_point);

@@ -5,7 +5,7 @@ h1 {
   font-size: 30px;
 }
 
-.trip {
+.complaint-appeal {
   border: 1px solid #0e4a6b;
   padding: 30px;
 }
@@ -16,7 +16,7 @@ h1 {
   font-size: 30px;
 }
 
-.trips-list {
+.complaint-appeals-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px 20px;
@@ -29,8 +29,17 @@ h1 {
   color: white;
 }
 
+.card-actions {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 @media (max-width: 760px) {
-  .trips-list {
+  .complaint-appeals-list {
     display: flex;
     flex-direction: column;
   }
