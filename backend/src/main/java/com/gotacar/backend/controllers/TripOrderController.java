@@ -35,7 +35,6 @@ public class TripOrderController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @RequestMapping("/list_trip_orders")
     public List<TripOrder> listTripOrders() {
-
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());

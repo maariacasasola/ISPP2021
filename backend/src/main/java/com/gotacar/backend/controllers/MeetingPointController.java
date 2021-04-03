@@ -55,8 +55,8 @@ public class MeetingPointController {
 
 	@GetMapping("/search_meeting_points")
 	public List<MeetingPoint> findAllMeetingPoints(){
-		List<MeetingPoint> response = new ArrayList<>();
 		try {
+            List<MeetingPoint> response = new ArrayList<>();
 			response = pointsRepository.findAll();
             return response;
 		} catch (Exception e) {
@@ -75,7 +75,6 @@ public class MeetingPointController {
             MeetingPoint mp = pointsRepository.findById(id).get();
             pointsRepository.delete(mp);
             return "meeting point: " + id + "deleted";
-            
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
