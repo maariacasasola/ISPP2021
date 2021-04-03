@@ -10,11 +10,13 @@
           <br /><br />
           <mat-card-content class="card-content">
             <mat-card-subtitle>
-              <b>Hora de salida:</b> {{ trip?.trip?.startDate  | date  : 'medium'   }}
+              <b>Hora de salida:</b>
+              {{ trip?.trip?.startDate | date: 'medium' }}
             </mat-card-subtitle>
             <br />
             <mat-card-subtitle>
-              <b>Hora de llegada:</b> {{ trip?.trip?.endingDate  | date  : 'medium'   }}
+              <b>Hora de llegada:</b>
+              {{ trip?.trip?.endingDate | date: 'medium' }}
             </mat-card-subtitle>
             <br />
             <div style="text-align: center">
@@ -35,7 +37,13 @@
           </mt-card-content>
 
           <mat-card-actions align="end">
-            <button *ngIf="!(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED')"
+            <button
+              *ngIf="
+                !(
+                  trip?.status === 'REFUNDED_PENDING' ||
+                  trip?.status === 'REFUNDED'
+                )
+              "
               mat-raised-button
               color="warn"
               (click)="cancelTripOrder(trip.id)"

@@ -12,8 +12,10 @@ import { TripsService } from '../../services/trips.service';
 export class CancelTripDialogComponent {
   constructor(
     private _dialog_ref: MatDialogRef<CancelTripDialogComponent>,
-    private _auth_service: AuthServiceService, private _trips_service: TripsService, @Inject(MAT_DIALOG_DATA) private data: string
-  ) { }
+    private _auth_service: AuthServiceService,
+    private _trips_service: TripsService,
+    @Inject(MAT_DIALOG_DATA) private data: string
+  ) {}
 
   async continue() {
     await this._trips_service.cancel_driver_trip(this.data);

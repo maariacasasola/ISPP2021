@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { ComplaintsService } from '../../../services/complaints.service';
-import {
-  MatDialog,
-  MatDialogConfig,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PenaltyDialogComponent } from '../../../components/penalty-dialog/penalty-dialog.component';
 import { Penalty } from '../../../shared/services/penalty';
 import { MatSnackBar } from '@angular/material/snack-bar';

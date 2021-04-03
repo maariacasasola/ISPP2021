@@ -1,20 +1,25 @@
 <section class="page-content">
-    <mat-card class="container">
-        <mat-card-header>
-            <mat-card-title>Crea tu queja al conductor</mat-card-title>
-        </mat-card-header>
-            <form [formGroup]="complaintForm" (ngSubmit)="create_complaint()">
-                <div class="form-fields">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Título</mat-label>
-                        <input matInput type="text" formControlName="title" required />
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Contenido</mat-label>
-                        <textarea matInput type="text" formControlName="content" required ></textarea>
-                    </mat-form-field>
-                </div>
-                <button class="button" mat-raised-button type="submit">Crear</button>
-            </form>
-    </mat-card>
+  <mat-card class="container">
+    <mat-card-header>
+      <mat-card-title>Crea tu queja al conductor</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="complaintForm" (ngSubmit)="create_complaint()">
+      <div class="form-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput type="text" formControlName="title" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contenido</mat-label>
+          <textarea
+            matInput
+            type="text"
+            formControlName="content"
+            required
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <button class="button" mat-raised-button type="submit">Crear</button>
+    </form>
+  </mat-card>
 </section>

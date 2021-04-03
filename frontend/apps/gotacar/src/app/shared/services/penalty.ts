@@ -1,5 +1,4 @@
 export interface Penalty {
-    id_complaint:string,
-    date_banned:Date,
-
+  id_complaint: string;
+  date_banned: Date;
 }

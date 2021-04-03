@@ -2,7 +2,7 @@
 
 <section class="page-container">
   <div class="search-info" *ngIf="trips">
-    <h2>{{ trips?.length }} viajes encontrados </h2>
+    <h2>{{ trips?.length }} viajes encontrados</h2>
   </div>
   <frontend-trip-list *ngIf="trips" [trips]="trips"></frontend-trip-list>
 </section>

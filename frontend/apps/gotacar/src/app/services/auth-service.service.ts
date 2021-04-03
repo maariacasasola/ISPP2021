@@ -20,7 +20,7 @@ export class AuthServiceService {
     public router: Router,
     public ngZone: NgZone,
     private _http_client: HttpClient,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -115,10 +115,12 @@ export class AuthServiceService {
     this.get_user_data().then((result) => {
       bool = result.bannedUntil !== null;
       if (bool) {
-        const t=this.dialog.open(ComplaintAppealDialogComponent, { disableClose: true});
-        t.afterClosed().subscribe(()=>this.sign_out())
+        const t = this.dialog.open(ComplaintAppealDialogComponent, {
+          disableClose: true,
+        });
+        t.afterClosed().subscribe(() => this.sign_out());
       }
-    })
+    });
   }
 
   async get_user_data(): Promise<any> {

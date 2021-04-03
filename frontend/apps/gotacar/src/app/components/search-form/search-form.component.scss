@@ -2,7 +2,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url("../../../assets/img/mapa.jpg");
+  background-image: url('../../../assets/img/mapa.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -23,7 +23,7 @@ mat-icon {
   color: #0e4a6b;
 }
 
-.search{
+.search {
   color: white;
 }
 
@@ -36,7 +36,7 @@ h1 {
 .search-button {
   vertical-align: super;
   color: white;
-  background-color: #0e4a6b
+  background-color: #0e4a6b;
 }
 
 ::ng-deep {

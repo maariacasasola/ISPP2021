@@ -7,7 +7,7 @@ import { Point, Trip } from '../shared/services/trip';
   providedIn: 'root',
 })
 export class TripsService {
-  constructor(private _http_client: HttpClient) { }
+  constructor(private _http_client: HttpClient) {}
 
   get_all_trips(): Promise<any> {
     return this._http_client
@@ -50,7 +50,9 @@ export class TripsService {
       starting_point: starting_point,
       ending_point: ending_point,
     };
-    return this._http_client.post(environment.api_url + '/search_trips', body).toPromise();
+    return this._http_client
+      .post(environment.api_url + '/search_trips', body)
+      .toPromise();
   }
 
   async get_trip(trip_id: String): Promise<any> {
@@ -83,6 +85,8 @@ export class TripsService {
   }
 
   cancel_trip(id: string) {
-    return this._http_client.post(environment.api_url + '/cancel_trip_order_request/' + id, null).toPromise();
+    return this._http_client
+      .post(environment.api_url + '/cancel_trip_order_request/' + id, null)
+      .toPromise();
   }
 }

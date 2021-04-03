@@ -5,27 +5,28 @@
       <mat-list role="list">
         <mat-card class="trip">
           <mat-card-content>
+            <p><strong>Hora de salida:</strong> {{ trip?.startDate }}</p>
+            <p><strong>Hora de llegada:</strong> {{ trip?.endingDate }}</p>
             <p>
-              <strong>Hora de salida:</strong> {{ trip?.startDate }}
+              <strong>Punto de salida:</strong>
+              {{ trip?.startingPoint?.address }}
             </p>
             <p>
-              <strong>Hora de llegada:</strong> {{ trip?.endingDate }}
+              <strong>Punto de llegada:</strong>
+              {{ trip?.endingPoint?.address }}
             </p>
-            <p>
-              <strong>Punto de salida:</strong> {{ trip?.startingPoint?.address }}
-            </p>
-            <p>
-              <strong>Punto de llegada:</strong> {{ trip?.endingPoint?.address }}
-            </p>
-            <p>
-              <strong>Precio:</strong> {{ trip?.price | convertCentToEur }}
-            </p>
+            <p><strong>Precio:</strong> {{ trip?.price | convertCentToEur }}</p>
             <p>
               <strong *ngIf="trip?.canceled">Cancelado</strong>
             </p>
           </mat-card-content>
           <mat-card-actions align="end">
-            <button mat-raised-button class="button" *ngIf="!trip?.canceled && can_cancel(trip?.startDate)" (click)="cancel(trip?.id, trip?.cancelationDateLimit)" >
+            <button
+              mat-raised-button
+              class="button"
+              *ngIf="!trip?.canceled && can_cancel(trip?.startDate)"
+              (click)="cancel(trip?.id, trip?.cancelationDateLimit)"
+            >
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-card-actions>

@@ -1,5 +1,5 @@
 module.exports = {
   projects: ['<rootDir>/apps/gotacar'],
-  "collectCoverage": true,
+  collectCoverage: true,
   coverageReporters: ['lcov'],
 };

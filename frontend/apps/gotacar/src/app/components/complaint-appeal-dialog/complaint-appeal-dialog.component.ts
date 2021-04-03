@@ -13,10 +13,11 @@ export class ComplaintAppealDialogComponent {
   complaintAppealForm: FormGroup = new FormGroup({
     content: new FormControl(''),
   });
-  constructor(public router: Router,
+  constructor(
+    public router: Router,
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
-    private _complaints_service: ComplaintsService,
-  ) { }
+    private _complaints_service: ComplaintsService
+  ) {}
 
   close() {
     this._dialog_ref.close();
@@ -26,7 +27,7 @@ export class ComplaintAppealDialogComponent {
     try {
       const new_complaint_appeal = {
         content: this.complaintAppealForm.value.content || '',
-        checked: "false",
+        checked: 'false',
       };
       this._complaints_service.create_complaint_appeal(new_complaint_appeal);
       this._dialog_ref.close();

@@ -7,7 +7,7 @@ import { AuthServiceService } from '../../services/auth-service.service';
   styleUrls: ['./log-in-page.component.scss'],
 })
 export class LogInPageComponent implements OnInit {
-  app_title="Log In"
+  app_title = 'Log In';
   constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}

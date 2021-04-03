@@ -71,25 +71,24 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     this.new_meeting_point.reset();
   }
 
-  
-  async deleteMarker(infoPosition){
-    console.log(infoPosition)
+  async deleteMarker(infoPosition) {
+    console.log(infoPosition);
     try {
       this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
-      console.log(this.meeting_points)
+      console.log(this.meeting_points);
       this.meeting_points_array = Array.from(this.meeting_points);
-      console.log(this.meeting_points_array)
-      let meeting_point = this.meeting_points_array.find(x => x.lat === infoPosition.lat && x.lng === infoPosition.lng);
-      console.log(meeting_point)
-      console.log(meeting_point.id)
+      console.log(this.meeting_points_array);
+      let meeting_point = this.meeting_points_array.find(
+        (x) => x.lat === infoPosition.lat && x.lng === infoPosition.lng
+      );
+      console.log(meeting_point);
+      console.log(meeting_point.id);
       this._meeting_point_service.delete_meeting_point(meeting_point.id);
-      this.get_all_meeting_points()
-      
+      this.get_all_meeting_points();
     } catch (error) {
       console.error(error);
     }
   }
-  
 
   addMarker(event: google.maps.MapMouseEvent) {
     this.new_meeting_point.setValue({

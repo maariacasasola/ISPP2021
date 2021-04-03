@@ -12,7 +12,7 @@ export class NoAuthMenuComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  redirect(){
-    this.router.navigate(['log-in'])
+  redirect() {
+    this.router.navigate(['log-in']);
   }
 }

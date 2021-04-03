@@ -32,9 +32,9 @@
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    "Formulario Mapa Mapa ."
-    "Formulario Mapa Mapa ."
-    "Formulario Mapa Mapa .";
+    'Formulario Mapa Mapa .'
+    'Formulario Mapa Mapa .'
+    'Formulario Mapa Mapa .';
   color: #0e4a6b;
 }
 .Mapa {
@@ -68,7 +68,7 @@
   .mat-form-field-ripple {
     background-color: #538994 !important;
   }
-  .Punto{
+  .Punto {
     display: flex;
     align-items: center;
     flex-direction: column;

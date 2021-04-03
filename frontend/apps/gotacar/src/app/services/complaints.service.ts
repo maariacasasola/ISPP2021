@@ -27,14 +27,15 @@ export class ComplaintsService {
       .post(environment.api_url + '/complaints/create', body)
       .toPromise();
   }
-  
-  async penalty_complaint(penalty:Penalty){
-    const body = {
-      id_complaint:penalty.id_complaint,
-      date_banned:penalty.date_banned,
-    }
-    return this._http_client.post(environment.api_url+'/penalize',body).toPromise();
 
+  async penalty_complaint(penalty: Penalty) {
+    const body = {
+      id_complaint: penalty.id_complaint,
+      date_banned: penalty.date_banned,
+    };
+    return this._http_client
+      .post(environment.api_url + '/penalize', body)
+      .toPromise();
   }
 
   async create_complaint_appeal(complaint_appeal: ComplaintAppeal) {
@@ -46,9 +47,9 @@ export class ComplaintsService {
       .post(environment.api_url + '/complaint_appeal', body)
       .toPromise();
   }
-  async refuse_complain(idComplaint:string){
-    
-    return this._http_client.post(environment.api_url+'/refuse/'+idComplaint,null).toPromise();
-
+  async refuse_complain(idComplaint: string) {
+    return this._http_client
+      .post(environment.api_url + '/refuse/' + idComplaint, null)
+      .toPromise();
   }
 }

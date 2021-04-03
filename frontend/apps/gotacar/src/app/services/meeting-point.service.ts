@@ -14,21 +14,21 @@ export class MeetingPointService {
       .get(environment.api_url + '/search_meeting_points')
       .toPromise();
   }
-  async post_meeting_point(meetingPoint: MeetingPoint){
+  async post_meeting_point(meetingPoint: MeetingPoint) {
     const body = {
-      name:meetingPoint.name,
-      address:meetingPoint.address,
-      lat:meetingPoint.lat,
-      lng:meetingPoint.lng,
-    }
+      name: meetingPoint.name,
+      address: meetingPoint.address,
+      lat: meetingPoint.lat,
+      lng: meetingPoint.lng,
+    };
     return this._http_client
-    .post(environment.api_url + '/create_meeting_point',body).toPromise()
-    
+      .post(environment.api_url + '/create_meeting_point', body)
+      .toPromise();
   }
 
-  delete_meeting_point(id){
+  delete_meeting_point(id) {
     return this._http_client
-    .delete(environment.api_url + '/delete_meeting_point', id).toPromise()
-    
+      .delete(environment.api_url + '/delete_meeting_point', id)
+      .toPromise();
   }
 }

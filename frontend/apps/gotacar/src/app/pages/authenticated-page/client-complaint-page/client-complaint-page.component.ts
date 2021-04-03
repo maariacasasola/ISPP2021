@@ -7,20 +7,22 @@ import { ComplaintsService } from '../../../services/complaints.service';
 @Component({
   selector: 'frontend-client-complaint-page',
   templateUrl: './client-complaint-page.component.html',
-  styleUrls: ['./client-complaint-page.component.scss']
+  styleUrls: ['./client-complaint-page.component.scss'],
 })
 export class ClientComplaintPageComponent implements OnInit {
-
   complaintForm: FormGroup = new FormGroup({
     title: new FormControl(''),
     content: new FormControl(''),
   });
-  constructor(private _complaints_service: ComplaintsService, private route: ActivatedRoute, private router: Router,
-    private _snackbar: MatSnackBar) { }
+  constructor(
+    private _complaints_service: ComplaintsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private _snackbar: MatSnackBar
+  ) {}
 
-  ngOnInit(): void {
-  }
-  
+  ngOnInit(): void {}
+
   async create_complaint() {
     try {
       const new_complaint = {
@@ -28,7 +30,9 @@ export class ClientComplaintPageComponent implements OnInit {
         content: this.complaintForm.value.content || '',
         tripId: this.route.snapshot.params['trip'],
       };
-      const message = await this._complaints_service.create_complaint(new_complaint);
+      const message = await this._complaints_service.create_complaint(
+        new_complaint
+      );
       if (message) {
         this._snackbar.open('Queja registrada correctamente', null, {
           duration: 3000,
@@ -49,5 +53,4 @@ export class ClientComplaintPageComponent implements OnInit {
       console.error(error);
     }
   }
-
 }

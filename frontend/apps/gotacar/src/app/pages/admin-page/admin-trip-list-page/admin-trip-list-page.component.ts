@@ -22,8 +22,7 @@ export class AdminTripListPageComponent {
     }
   }
 
-  getStartDate(trip){
-    return new Date(trip.startDate)
+  getStartDate(trip) {
+    return new Date(trip.startDate);
   }
-  
 }

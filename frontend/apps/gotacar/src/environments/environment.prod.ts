@@ -11,5 +11,6 @@ export const environment = {
   },
   geocoding_api_key: 'AIzaSyBkp6HzeX3-Rc38pI1ljbvrmSmrZgJ2OAU',
   api_url: 'https://gotacar.ew.r.appspot.com',
-  stripe_api_key: 'pk_test_51I0FjpJ65m70MT01jLdRMb5KR6blj6ifmQuK2DvQq8f1SbQOZsKgdRLI6Zk7rj518pn5Ccl9kR6QGrB1WxEF1s9e00gzgwrpdM'
+  stripe_api_key:
+    'pk_test_51I0FjpJ65m70MT01jLdRMb5KR6blj6ifmQuK2DvQq8f1SbQOZsKgdRLI6Zk7rj518pn5Ccl9kR6QGrB1WxEF1s9e00gzgwrpdM',
 };

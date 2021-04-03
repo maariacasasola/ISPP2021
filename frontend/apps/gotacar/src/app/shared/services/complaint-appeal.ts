@@ -1,4 +1,4 @@
 export interface ComplaintAppeal {
-    content: string;
-    checked: string;
+  content: string;
+  checked: string;
 }
