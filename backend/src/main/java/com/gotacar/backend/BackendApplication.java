@@ -104,7 +104,7 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver3);
 
                 // Clients
-                User client = new User("Martín", "Romero", "gHiQxzWlXleUoEdQLmosPMlSk8f2", "client@gotacar.es",
+                User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
                                 "89070336D", "http://dniclient.com", fecha3, lista2);
                 User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
                                 "42131220T", "http://dniclient.com", fecha2, lista2);
@@ -120,6 +120,8 @@ public class BackendApplication implements CommandLineRunner {
                                 "80270336K", "http://dniclient.com", fecha3, lista2);
                 User client8 = new User("Pedro", "Serrano", "oQfGQi4xechNkcQEdHg29sM5rP33", "client8@gotacar.com",
                                 "42941220L", "http://dniclient.com", fecha2, lista2);
+                User client9 = new User("Pedro", "Serrano", "2Sg1OCgPB8YoKjxgocXRJDtcvDo2", "client@gotacar.com",
+                                "42941220L", "http://dniclient.com", fecha2, lista2);
 
                 userRepository.save(client);
                 userRepository.save(client2);
@@ -129,6 +131,7 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(client6);
                 userRepository.save(client7);
                 userRepository.save(client8);
+                userRepository.save(client9);
 
                 // MEETING POINTS
                 // -----------------------------------------------------------------------------------------
@@ -312,7 +315,7 @@ public class BackendApplication implements CommandLineRunner {
                 complaintAppealRepository.save(complaintAppeal2);
                 complaintAppealRepository.save(complaintAppeal3);
 
-                // COMPORBACIÓN
+                // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
                 Long users = userRepository.count();
                 Long meetingPoints = meetingPointRepository.count();
