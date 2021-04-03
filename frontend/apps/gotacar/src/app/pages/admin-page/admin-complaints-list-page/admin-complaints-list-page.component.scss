@@ -5,9 +5,10 @@ h1 {
   font-size: 30px;
 }
 
-.trip {
+.complaint {
   border: 1px solid #0e4a6b;
   padding: 30px;
+  margin: 10px;
 }
 
 .card-title {
@@ -20,17 +21,9 @@ h1 {
   font-size: 20px;
 }
 
-.trips-list {
-  width: max-content;
-}
-
 .button {
   background-color: #0e4a6b;
   color: white;
-}
-
-mat-list {
-  width: 90%;
 }
 
 .user-title {
@@ -42,23 +35,6 @@ mat-list {
   font-size: 23px;
   color: #0a1d27;
 }
-
-.complaint-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(min-max(400px), 1fr);
-  gap: 0px 0px;
-  grid-template-areas: '. .';
-  padding: 20px;
-}
-
-.complaint-card {
-  margin: 20px;
-}
-
-@media (max-width: 760px) {
-  .complaint-list {
-    display: flex;
-    flex-direction: column;
-  }
+.content {
+  padding: 16px;
 }

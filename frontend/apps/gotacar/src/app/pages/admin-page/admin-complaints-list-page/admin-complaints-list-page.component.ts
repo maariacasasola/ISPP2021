@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { ComplaintsService } from '../../../services/complaints.service';
 import {
   MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
   MatDialogConfig,
 } from '@angular/material/dialog';
 import { PenaltyDialogComponent } from '../../../components/penalty-dialog/penalty-dialog.component';
@@ -51,31 +49,46 @@ export class AdminComplaintsListPageComponent {
     );
 
     const dialog_response = await dialogRef.afterClosed().toPromise();
-    console.log(dialog_response);
+
     if (!dialog_response) {
       return;
     }
-    await this._complaints_service.penalty_complaint(dialog_response);
-
-    this.openSnackBar(
-      'Se acepta la queja de ' +
-        data?.user?.firstName +
-        ' y se penaliza a su conductor',
-      'Cerrar'
-    );
-
-    await this.load_complaints();
+    try {
+      const response = await this._complaints_service.penalty_complaint(
+        dialog_response
+      );
+      if (response) {
+        console.log(response);
+        this.openSnackBar(
+          'Se acepta la queja de ' +
+            data?.user?.firstName +
+            ' y se penaliza a su conductor ' +
+            response['firstName'] +
+            ' ' +
+            response['lastName'],
+          'Cerrar'
+        );
+      }
+      await this.load_complaints();
+    } catch (error) {
+      this.openSnackBar('No se pudo penalizar, hubo un error', 'Cerrar');
+    }
   }
-
   async rejectComplaint(complaint) {
-    await this._complaints_service.refuse_complain(complaint.id);
-
-    this.openSnackBar(
-      'Se rechaza la queja de ' + complaint?.user?.firstName,
-      'Cerrar'
-    );
-
-    await this.load_complaints();
+    try {
+      const response = await this._complaints_service.refuse_complain(
+        complaint.id
+      );
+      if (response) {
+        this.openSnackBar(
+          'Se rechaza la queja de ' + complaint?.user?.firstName,
+          'Cerrar'
+        );
+        await this.load_complaints();
+      }
+    } catch (error) {
+      this.openSnackBar('No se pudo rechazar, hubo un error', 'Cerrar');
+    }
   }
 
   openSnackBar(message: string, action: string) {
@@ -83,5 +96,10 @@ export class AdminComplaintsListPageComponent {
       duration: 5000,
       panelClass: ['blue-snackbar'],
     });
+  }
+  isPending(data: string): string {
+    if (data === 'PENDING') {
+      return 'Pendiente';
+    }
   }
 }

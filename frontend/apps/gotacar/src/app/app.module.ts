@@ -15,6 +15,8 @@ import localeEs from '@angular/common/locales/es';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
+///FLEX LAYOUT
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 // GOOGLE MAPS
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -156,6 +158,7 @@ registerLocaleData(localeEs, 'es');
     MatSnackBarModule,
     GoogleMapsModule,
     MatMenuModule,
+    FlexLayoutModule,
   ],
   providers: [
     AuthenticatedGuard,
