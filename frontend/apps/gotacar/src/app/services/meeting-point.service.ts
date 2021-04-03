@@ -26,9 +26,9 @@ export class MeetingPointService {
       .toPromise();
   }
 
-  delete_meeting_point(id) {
+  delete_meeting_point(mpId: string) {
     return this._http_client
-      .delete(environment.api_url + '/delete_meeting_point', id)
+      .post(environment.api_url + '/delete_meeting_point/' + mpId, null)
       .toPromise();
   }
 }

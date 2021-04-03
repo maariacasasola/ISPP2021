@@ -69,11 +69,10 @@ public class MeetingPointController {
     //Delete
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete_meeting_point/{mpId}")
-     public String deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
+     public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
         try{
             MeetingPoint mp = pointsRepository.findById(mpId).get();
             pointsRepository.delete(mp);
-            return "meeting point: " + mpId + "deleted";
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
