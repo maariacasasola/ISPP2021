@@ -72,19 +72,14 @@ export class AdminMeetingPointsPageComponent implements OnInit {
   }
 
   async deleteMarker(infoPosition) {
-    console.log(infoPosition);
     try {
       this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
-      console.log(this.meeting_points);
       this.meeting_points_array = Array.from(this.meeting_points);
-      console.log(this.meeting_points_array);
       const meeting_point = this.meeting_points_array.find(
         (x) => x.lat === infoPosition.lat && x.lng === infoPosition.lng
       );
-      console.log(meeting_point);
-      console.log(meeting_point.id);
       this._meeting_point_service.delete_meeting_point(meeting_point.id);
-      this.get_all_meeting_points();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
