@@ -75,5 +75,5 @@ COMPLAINT_APPEAL
 {
         complaint: Complaint,
         content: string,
-        checked: boolean (Default false)
+        checked: boolean (Default FALSE)
 }

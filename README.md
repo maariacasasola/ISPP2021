@@ -1,2 +1,5 @@
 # ISPP2021
 Proyecto para ISPP
+
+ACLARACIÓN DEL PROCESO DE PENALIZACIONES
+![PROCESO_PENALIZACIONES](https://user-images.githubusercontent.com/53447064/112295845-96eb8d00-8c94-11eb-963b-b41d7ac0a93c.png)
