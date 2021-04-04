@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
@@ -54,13 +56,18 @@ public class BackendApplication implements CommandLineRunner {
         @Autowired
         private ComplaintRepository complaintRepository;
 
+        @Autowired
+        Environment environment;
+
         public static void main(String[] args) {
                 SpringApplication.run(BackendApplication.class, args);
         }
 
         @Override
         public void run(String... args) throws Exception {
-                loadSampleDate();
+                if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+                        loadSampleDate();
+                }
         }
 
         private void loadSampleDate() {
