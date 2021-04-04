@@ -16,7 +16,7 @@ jobs:
         - sonar-scanner
       before_deploy:
         - bash ./scripts/deploy-prepro.sh
-        - bash ./scripts/deploy-pro.sh 
+        - bash./scripts/deploy-pro.sh 
       deploy:
         - provider: firebase
           skip_cleanup: true
@@ -45,22 +45,21 @@ jobs:
         - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
         - mv ../client-secret.json ./client-secret.json
       deploy:
-        provider: gae
-        keyfile: client-secret.json
-        project: gotacar
-        config: app.yaml
-        version: produccion
-        on:
-          branch: master
-      deploy:
-        provider: gae
-        keyfile: client-secret.json
-        project: gotacar
-        config: prepro-app.yaml
-        version: preproduccion
-        no_promote: true
-        on:
-          branch: develop
+        - provider: gae
+          keyfile: client-secret.json
+          project: gotacar
+          config: app.yaml
+          version: produccion
+          on:
+            branch: master
+        - provider: gae
+          keyfile: client-secret.json
+          project: gotacar
+          config: prepro-app.yaml
+          version: preproduccion
+          no_promote: true
+          on:
+            branch: develop
 before_install:
   - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
     -in client-secret.json.enc -out client-secret.json -d
