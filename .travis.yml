@@ -14,21 +14,20 @@ jobs:
         - npm ci
         - npx jest --coverage
         - sonar-scanner
+      before_deploy:
+        - ./scripts/deploy-prepro.sh
+        - ./scripts/deploy-pro.sh 
       deploy:
         - provider: firebase
           skip_cleanup: true
           token: "$FB_DEPLOY"
           project: gotacar
-          script:
-            - ng build --prod
           on:
             branch: master
         - provider: firebase
           token: "$FB_DEPLOY"
           skip_cleanup: true
           project: gotacar-prepro
-          script:
-            - ng build --configuration=preproduction
           on:
             branch: develop
     - dist: trusty
