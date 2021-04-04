@@ -14,8 +14,6 @@ jobs:
         - npm ci
         - npx jest --coverage
         - sonar-scanner
-      after_success:
-        - ng build --prod
       deploy:
         - provider: firebase
           skip_cleanup: true
