@@ -3,4 +3,4 @@ instance_class: F2
 health_check:
   enable_health_check: False
 env_variables:
-    JAVA_USER_OPTS: '-Pprepro'
+  SPRING_PROFILES_ACTIVE: "prepro"
