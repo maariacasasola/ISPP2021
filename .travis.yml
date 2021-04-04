@@ -15,8 +15,8 @@ jobs:
         - npx jest --coverage
         - sonar-scanner
       before_deploy:
-        - ./scripts/deploy-prepro.sh
-        - ./scripts/deploy-pro.sh 
+        - bash ./scripts/deploy-prepro.sh
+        - bash ./scripts/deploy-pro.sh 
       deploy:
         - provider: firebase
           skip_cleanup: true
