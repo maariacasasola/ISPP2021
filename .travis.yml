@@ -48,6 +48,7 @@ jobs:
         provider: gae
         keyfile: client-secret.json
         project: gotacar
+        version: produccion
         on:
           branch: master
       deploy:
@@ -56,6 +57,7 @@ jobs:
         project: gotacar
         config: prepro-app.yaml
         version: preproduccion
+        no_promote: true
         on:
           branch: develop
 before_install:
