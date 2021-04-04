@@ -2,3 +2,9 @@ runtime: java11
 instance_class: F2
 health_check:
   enable_health_check: False
+
+env_variables:
+  SPRING_PROFILES_ACTIVE: "prod"
+handlers:
+  - url: /.*
+    script: this field is required, but ignored
