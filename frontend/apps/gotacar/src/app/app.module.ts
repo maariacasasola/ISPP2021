@@ -83,6 +83,8 @@ import { DriverTripListPageComponent } from './pages/authenticated-page/driver-t
 import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { ComplaintAppealsService } from './services/complaint-appeals.service';
+import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
+import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -121,6 +123,8 @@ registerLocaleData(localeEs, 'es');
     TripMapComponent,
     TripOrderFormDialogComponent,
     AdminComplaintAppealsListPageComponent,
+    PaymentSuccessComponent,
+    PaymentFailedComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

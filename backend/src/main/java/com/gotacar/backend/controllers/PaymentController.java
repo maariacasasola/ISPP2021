@@ -83,8 +83,8 @@ public class PaymentController {
             lineItem1.put("name", description);
             lineItems.add(lineItem1);
             Map<String, Object> params = new HashMap<>();
-            params.put("success_url", "http://localhost:4200");
-            params.put("cancel_url", "http://localhost:4200");
+            params.put("success_url", "https://gotacar.es/payment-success");
+            params.put("cancel_url", "https://gotacar.es/payment-failed");
             params.put("payment_method_types", paymentMethodTypes);
             params.put("line_items", lineItems);
             params.put("mode", "payment");
