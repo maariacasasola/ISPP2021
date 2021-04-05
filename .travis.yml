@@ -36,7 +36,7 @@ jobs:
           skip_cleanup: true
           project: gotacar-v1
           on:
-            branch: develop
+            branch: sprint1
     - dist: trusty
       language: java
       jdk: oraclejdk11
