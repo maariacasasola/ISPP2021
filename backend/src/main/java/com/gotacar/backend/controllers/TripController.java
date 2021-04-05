@@ -92,15 +92,15 @@ public class TripController {
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 
-			Location startingPoint = new Location(startingPointJson.get("name").toString(),
-					startingPointJson.get("address").toString(), startingPointJson.get("lng").asDouble(),
-					startingPointJson.get("lat").asDouble());
+			Location startingPoint = new Location(startingPointJson.get("name").asText(),
+					startingPointJson.get("address").asText(), startingPointJson.get("lat").asDouble(),
+					startingPointJson.get("lng").asDouble());
 
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 
-			Location endingPoint = new Location(endingPointJson.get("name").toString(),
-					endingPointJson.get("address").toString(), endingPointJson.get("lng").asDouble(),
-					endingPointJson.get("lat").asDouble());
+			Location endingPoint = new Location(endingPointJson.get("name").asText(),
+					endingPointJson.get("address").asText(), endingPointJson.get("lat").asDouble(),
+					endingPointJson.get("lng").asDouble());
 
 			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
 
