@@ -106,4 +106,8 @@ export class TripDetailsPageComponent {
       console.log('JEJEEEE');
     }
   }
+
+  show_buy_button() {
+    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date();
+  }
 }

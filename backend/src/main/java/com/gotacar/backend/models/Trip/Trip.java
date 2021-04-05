@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.gotacar.backend.models.Location;
@@ -45,6 +46,7 @@ public class Trip {
 
     public LocalDateTime cancelationDateLimit;
 
+    @NotBlank
     public String comments;
 
     @NotNull

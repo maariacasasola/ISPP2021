@@ -16,17 +16,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import net.minidev.json.JSONObject;
+
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 
 import com.gotacar.backend.BackendApplication;
 import com.gotacar.backend.models.Location;
@@ -40,11 +41,9 @@ import com.gotacar.backend.controllers.TripControllerTest.TestConfig;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
 public class TripControllerTest {
 
-	@Profile("test")
 	@Configuration
 	static class TestConfig {
 		@Bean
@@ -141,6 +140,50 @@ public class TripControllerTest {
 
 		assertThat(contador).isEqualTo(1);
 
+	}
+
+	@Test
+	void testCreateTrip() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+
+		JSONObject starting_poinJsonObject = new JSONObject();
+		starting_poinJsonObject.appendField("lat", 37.355465467940405);
+        starting_poinJsonObject.appendField("lng", -5.982498103652494);
+        starting_poinJsonObject.appendField("name", "Heliopolis");
+        starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+		JSONObject ending_poinJsonObject = new JSONObject();
+        ending_poinJsonObject.appendField("lat", 37.355465467940405);
+        ending_poinJsonObject.appendField("lng", -5.982498103652494);
+        ending_poinJsonObject.appendField("name", "Reina Mercedes");
+        ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
+		// Construcción del json para el body
+        JSONObject sampleObject = new JSONObject();
+        sampleObject.appendField("start_date", "2021-06-04T13:30:00.000+00");
+        sampleObject.appendField("end_date", "2021-06-04T13:50:00.000+00");
+        sampleObject.appendField("places", 2);
+		sampleObject.appendField("price", 220);
+		sampleObject.appendField("comments", "Viaje para el test");
+        sampleObject.appendField("starting_point", starting_poinJsonObject);
+        sampleObject.appendField("ending_point", ending_poinJsonObject);
+
+        // Login como administrador
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        // Obtengo el token
+        String token = json.getString("token");
+
+        // Petición post al controlador
+        ResultActions result = mockMvc.perform(
+                post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(tripRepository.findAll().size()).isEqualTo(1);
+		assertThat(trip.getDriver().getId()).isEqualTo(driver.getId());
 	}
 
 	@Test

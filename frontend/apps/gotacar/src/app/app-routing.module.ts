@@ -19,6 +19,8 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
+import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
+import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,14 @@ const routes: Routes = [
   {
     path: 'trip-search-result',
     component: TripSearchResultPageComponent,
+  },
+  {
+    path: 'payment-success',
+    component: PaymentSuccessComponent,
+  },
+  {
+    path: 'payment-failed',
+    component: PaymentFailedComponent,
   },
   {
     path: 'trip/:trip_id',
@@ -98,8 +108,8 @@ const routes: Routes = [
       },
       {
         path: 'complaint-appeals',
-        component: AdminComplaintAppealsListPageComponent
-      }
+        component: AdminComplaintAppealsListPageComponent,
+      },
     ],
   },
 ]; // sets up routes constant where you define your routes

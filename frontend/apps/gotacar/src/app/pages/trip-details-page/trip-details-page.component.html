@@ -17,7 +17,7 @@
     <div class="driver-status" matTooltip="Conductor verificado por GotACar">
       <img src="assets/logos_conductores/conductor_verificado.svg" />
     </div>
-    <button mat-flat-button class="buy-button" (click)="order_trip()">
+    <button mat-flat-button class="buy-button" (click)="order_trip()" *ngIf="show_buy_button()">
       Reservar viaje
     </button>
   </div>

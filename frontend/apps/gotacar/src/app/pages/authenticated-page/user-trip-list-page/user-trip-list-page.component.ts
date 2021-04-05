@@ -13,7 +13,8 @@ export class UserTripListPageComponent {
 
   constructor(
     private _trips_service: TripsService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) {
     this.load_trips_by_user();
   }
@@ -42,5 +43,32 @@ export class UserTripListPageComponent {
       duration: 5000,
       panelClass: ['blue-snackbar'],
     });
+  }
+
+  get_trip_status(status) {
+    switch (status) {
+      case 'PROCCESSING':
+        return 'Procesando pago';
+      case 'REFUNDED_PENDING':
+        return 'Devolución pendiente';
+      case 'REFUNDED':
+        return 'Devolución completada';
+      case 'PAID':
+        return 'Pago realizado';
+      default:
+        break;
+    }
+  }
+
+  show_complaint_button(trip) {
+    return new Date(trip.startDate) < new Date();
+  }
+
+  go_to_trip(trip_id) {
+    this._router.navigate(['/', 'trip', trip_id]);
+  }
+
+  create_complaint(trip_id) {
+    this._router.navigate(['/', 'authenticated', 'trips', trip_id, 'create-complaint']);
   }
 }
