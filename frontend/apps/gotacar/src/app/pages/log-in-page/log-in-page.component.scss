@@ -68,3 +68,12 @@
     color: #538994;
   }
 }
+
+
+@media(max-width: 760px) {
+  .form-fields {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

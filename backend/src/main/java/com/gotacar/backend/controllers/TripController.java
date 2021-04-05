@@ -113,7 +113,7 @@ public class TripController {
 			LocalDateTime dateStartJson = dateStartZone.toLocalDateTime();
 
 			ZonedDateTime dateEndZone = ZonedDateTime
-					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
+					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText());
 			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
 			LocalDateTime dateEndJson = dateEndZone.toLocalDateTime();
