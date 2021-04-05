@@ -13,9 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -44,11 +42,9 @@ import com.gotacar.backend.models.MeetingPoint;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
 public class MeetingPointControllerTest {
 
-    @Profile("test")
     @Configuration
     static class TestConfig {
         @Bean
