@@ -6,6 +6,9 @@ import { GeocoderServiceService } from '../../services/geocoder-service.service'
 import { Trip } from '../../shared/services/trip';
 import { Location } from '../../shared/services/location-model';
 import { Router } from '@angular/router';
+import { MatStepper } from '@angular/material/stepper';
+import { MeetingPointService } from '../../services/meeting-point.service';
+import { levenshtein } from 'string-comparison';
 
 @Component({
   selector: 'frontend-create-trip-form',
@@ -25,60 +28,44 @@ export class CreateTripFormComponent {
     price: ['', Validators.required],
   });
 
+  location_origin: Location;
+  location_target: Location;
+  searchbar_meeting_points = [];
+  meeting_points;
+
   constructor(
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
     private tripService: TripsService,
     private geoService: GeocoderServiceService,
+    private _meeting_points_service: MeetingPointService,
     public router: Router
   ) {
     this.minDate = new Date().toISOString().slice(0, 16);
+    this.get_all_meeting_points();
   }
 
-  async onSubmit() {
+  async submit() {
     if (this.createTripForm.invalid) {
       this.createTripForm.markAllAsTouched();
       return;
     }
 
-    const dateIsValid = this.checkDates();
-    if (!dateIsValid) {
+    if (!this.checkDates()) {
       this.openSnackBar(
-        'La fecha de inicio debe ser anterior a la fecha de finalización ',
-        'Cerrar'
+        'La fecha de inicio debe ser anterior a la fecha de finalización'
       );
       return;
     }
 
-    const origin_and_target_valids = this.checkOrigen();
-    if (!origin_and_target_valids) {
-      this.openSnackBar(
-        'El origen y el destino del viaje no pueden coincidir',
-        'Cerrar'
-      );
+    if (!this.checkOrigen()) {
+      this.openSnackBar('El origen y el destino del viaje no pueden coincidir');
       return;
     }
-
-    const coordinatesOrigin = await this.get_origin();
-    const coordinatesTarget = await this.get_target();
-
-    const LocationOrigen: Location = {
-      name: '',
-      lat: coordinatesOrigin.lat,
-      lng: coordinatesOrigin.lng,
-      address: coordinatesOrigin.address,
-    };
-
-    const LocationDestino: Location = {
-      name: '',
-      lat: coordinatesTarget.lat,
-      lng: coordinatesTarget.lng,
-      address: coordinatesTarget.address,
-    };
 
     const trip: Trip = {
-      starting_point: LocationOrigen,
-      ending_point: LocationDestino,
+      starting_point: this.location_origin,
+      ending_point: this.location_target,
       price: Number(this.createTripForm.value.price) * 100,
       start_date: new Date(this.createTripForm.value.fechaHoraInicio),
       end_date: new Date(this.createTripForm.value.fechaHoraFin),
@@ -89,7 +76,9 @@ export class CreateTripFormComponent {
 
     try {
       const response = this.tripService.create_trip(trip);
-      this.router.navigate(['home']);
+      if (response) {
+        this.router.navigate(['home']);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -114,26 +103,23 @@ export class CreateTripFormComponent {
         this.createTripForm.value.origen
       );
 
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
+      const search_result = results.filter((result) =>
+        JSON.stringify(result).includes('Sevilla')
+      );
 
-      if (cond1 || cond2 || cond3) {
-        const coordinates = {
-          name: this.createTripForm.value.origen,
+      if (search_result.length > 0) {
+        this.location_origin = {
+          name: '',
           address:
-            results[0].address_components[1].long_name +
-            ',' +
-            results[0].address_components[0].long_name,
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
+            search_result[0].address_components[1].long_name +
+            ', ' +
+            search_result[0].address_components[0].long_name,
+          lat: search_result[0]?.geometry?.location?.lat,
+          lng: search_result[0]?.geometry?.location?.lng,
         };
-        return coordinates;
+        this.searchbar_meeting_points = [];
       } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el origen'
-        );
+        this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
       console.error(error);
@@ -146,36 +132,101 @@ export class CreateTripFormComponent {
         this.createTripForm.value.destino
       );
 
-      const cond1 = results[0].address_components[1].long_name == 'Sevilla';
-      const cond2 = results[0].address_components[2].long_name == 'Sevilla';
-      const cond3 = results[0].address_components[3].long_name == 'Sevilla';
+      const search_result = results.filter((result) =>
+        JSON.stringify(result).includes('Sevilla')
+      );
 
-      if (cond1 || cond2 || cond3) {
-        const coordinates = {
-          name: this.createTripForm.value.origen,
+      if (search_result.length > 0) {
+        this.location_target = {
+          name: '',
           address:
-            results[0].address_components[1].long_name +
-            ',' +
-            results[0].address_components[0].long_name,
-          lat: results[0]?.geometry?.location?.lat,
-          lng: results[0]?.geometry?.location?.lng,
+            search_result[0].address_components[1].long_name +
+            ', ' +
+            search_result[0].address_components[0].long_name,
+          lat: search_result[0]?.geometry?.location?.lat,
+          lng: search_result[0]?.geometry?.location?.lng,
         };
-        return coordinates;
+        this.searchbar_meeting_points = [];
       } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el destino'
-        );
+        this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-      panelClass: ['blue-snackbar'],
+  async go_to_step_2(stepper: MatStepper) {
+    if (this.location_origin?.lat && this.location_origin?.lng) {
+      this.searchbar_meeting_points = [];
+      stepper.selected.completed = true;
+      stepper.next();
+    } else {
+      this.openSnackBar('Selecciona el punto de partida');
+    }
+  }
+
+  async go_to_step_3(stepper: MatStepper) {
+    if (this.location_target?.lat && this.location_target?.lng) {
+      stepper.selected.completed = true;
+      stepper.next();
+    } else {
+      this.openSnackBar('Selecciona el punto de destino');
+    }
+  }
+
+  async get_all_meeting_points() {
+    try {
+      this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  selected_meeting_point_origin(meeting_point) {
+    this.location_origin = {
+      name: meeting_point?.name,
+      address: meeting_point?.address,
+      lat: meeting_point?.lat,
+      lng: meeting_point?.lng,
+    };
+    this.createTripForm.get('origen').setValue(meeting_point.name);
+    this.searchbar_meeting_points = [];
+  }
+
+  selected_meeting_point_target(meeting_point) {
+    this.location_target = {
+      name: meeting_point?.name,
+      address: meeting_point?.address,
+      lat: meeting_point?.lat,
+      lng: meeting_point?.lng,
+    };
+    this.createTripForm.get('destino').setValue(meeting_point.name);
+    this.searchbar_meeting_points = [];
+  }
+
+  search_meeting_points(text) {
+    if (!text) {
+      this.searchbar_meeting_points = null;
+      return;
+    }
+    const meeting_points_name = this.meeting_points.map(
+      (meeting_point) => meeting_point.name
+    );
+    const search_results: any[] = levenshtein.sortMatch(
+      text,
+      meeting_points_name
+    );
+    const best_results = search_results
+      .slice(search_results.length - 3, search_results.length)
+      .map((result) => result.member);
+    this.searchbar_meeting_points = this.meeting_points.filter(
+      (meeting_point) => best_results.includes(meeting_point.name)
+    );
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
+      duration: 3000,
     });
   }
 }

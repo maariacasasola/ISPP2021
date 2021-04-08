@@ -280,3 +280,19 @@ button:hover {
 .cdk-overlay-pane.login-dialog {
   position: relative !important;
 }
+
+.mat-drawer-content {
+  overflow: unset !important;
+}
+
+.mat-simple-snackbar {
+  justify-content: center !important;
+}
+
+.mat-step-text-label {
+  white-space: pre-wrap;
+}
+
+.mat-drawer-container {
+  background-color: white;
+}

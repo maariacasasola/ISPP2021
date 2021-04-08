@@ -45,7 +45,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatListModule } from '@angular/material/list';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -85,6 +85,7 @@ import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin
 import { ComplaintAppealsService } from './services/complaint-appeals.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -125,6 +126,7 @@ registerLocaleData(localeEs, 'es');
     AdminComplaintAppealsListPageComponent,
     PaymentSuccessComponent,
     PaymentFailedComponent,
+    MeetingPointSearchbarResultComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -141,6 +143,7 @@ registerLocaleData(localeEs, 'es');
     MatSidenavModule,
     MatFormFieldModule,
     MatIconModule,
+    MatStepperModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,

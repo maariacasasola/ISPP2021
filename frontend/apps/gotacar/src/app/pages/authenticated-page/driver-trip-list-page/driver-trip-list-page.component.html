@@ -1,38 +1,38 @@
-<section>
-  <h1>VIAJES REGISTRADOS</h1>
-  <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile *ngFor="let trip of trips" class="trips-list">
-      <mat-list role="list">
-        <mat-card class="trip">
-          <mat-card-content>
-            <p><strong>Hora de salida:</strong> {{ trip?.startDate }}</p>
-            <p><strong>Hora de llegada:</strong> {{ trip?.endingDate }}</p>
-            <p>
-              <strong>Punto de salida:</strong>
-              {{ trip?.startingPoint?.address }}
-            </p>
-            <p>
-              <strong>Punto de llegada:</strong>
-              {{ trip?.endingPoint?.address }}
-            </p>
-            <p><strong>Precio:</strong> {{ trip?.price | convertCentToEur }}</p>
-            <p>
-              <strong *ngIf="trip?.canceled">Cancelado</strong>
-            </p>
-          </mat-card-content>
-          <mat-card-actions align="end">
-            <button
-              mat-raised-button
-              class="button"
-              *ngIf="!trip?.canceled && can_cancel(trip?.startDate)"
-              (click)="cancel(trip?.id, trip?.cancelationDateLimit)"
-            >
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-        <br />
-      </mat-list>
-    </mat-grid-tile>
-  </mat-grid-list>
-</section>
+<h1>VIAJES REGISTRADOS</h1>
+<div class="trips-grid">
+  <mat-card class="trip" *ngFor="let trip of trips">
+    <mat-card-content>
+      <p>
+        <strong>Hora de salida:</strong>
+        {{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}
+      </p>
+      <p>
+        <strong>Hora de llegada:</strong>
+        {{ trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}
+      </p>
+      <p>
+        <strong>Punto de salida:</strong>
+        {{ trip?.startingPoint?.address }}
+      </p>
+      <p>
+        <strong>Punto de llegada:</strong>
+        {{ trip?.endingPoint?.address }}
+      </p>
+      <p><strong>Precio:</strong> {{ trip?.price | convertCentToEur }}</p>
+      <p>
+        <strong *ngIf="trip?.canceled">Cancelado</strong>
+      </p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button
+        mat-stroked-button
+        class="button"
+        *ngIf="!trip?.canceled && can_cancel(trip?.startDate)"
+        (click)="cancel(trip?.id, trip?.cancelationDateLimit)"
+      >
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <br />
+</div>

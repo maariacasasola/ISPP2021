@@ -97,13 +97,10 @@ export class TripDetailsPageComponent {
     const response = await stripe.redirectToCheckout({
       sessionId: session_id,
     });
-    console.log(response);
     if (response.error) {
       this._snackbar.open('Ha ocurrido un error al procesar el pago', null, {
         duration: 3000,
       });
-    } else {
-      console.log('JEJEEEE');
     }
   }
 

@@ -1,81 +1,162 @@
-<div class="container">
+<div class="container" [formGroup]="createTripForm">
   <h1>Crea tu propio viaje</h1>
 
-  <div class="form-container">
-    <form ngNativeValidate [formGroup]="createTripForm" (ngSubmit)="onSubmit()">
-      <div>
-        <mat-form-field appearance="outline">
-          <mat-label>Origen</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="origen"
-            placeholder="Los Bermejales"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Destino</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="destino"
-            placeholder="Nervión"
-            required
-          />
-        </mat-form-field>
+  <mat-horizontal-stepper [linear]="true" labelPosition="bottom" #stepper>
+    <!-- ORIGEN -->
+    <mat-step completed="false">
+      <ng-template matStepLabel>Lugar de salida</ng-template>
+      <div class="location-form">
+        <div class="location-search">
+          <div class="search-form-with-recommendations">
+            <mat-form-field appearance="outline">
+              <mat-label>Origen</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="origen"
+                placeholder="Los Bermejales"
+                required
+                autocomplete="off"
+                (input)="search_meeting_points($event.target.value)"
+              />
+            </mat-form-field>
+            <frontend-meeting-point-searchbar-result
+              [searchbar_meeting_points]="searchbar_meeting_points"
+              (meeting_point_selected)="selected_meeting_point_origin($event)"
+            ></frontend-meeting-point-searchbar-result>
+          </div>
+          <button
+            mat-flat-button
+            class="submit-search-button"
+            (click)="get_origin()"
+          >
+            Obtener origen
+          </button>
+        </div>
+        <frontend-meeting-point-map
+          [location]="location_origin"
+          class="map"
+        ></frontend-meeting-point-map>
       </div>
-      <div>
-        <mat-form-field appearance="outline">
-          <mat-label>Hora inicio</mat-label>
-          <input
-            matInput
-            [min]="minDate"
-            required
-            type="datetime-local"
-            formControlName="fechaHoraInicio"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Hora Fin</mat-label>
-          <input
-            matInput
-            [min]="minDate"
-            required
-            type="datetime-local"
-            formControlName="fechaHoraFin"
-          />
-        </mat-form-field>
+      <div class="stepper-actions">
+        <button mat-button (click)="go_to_step_2(stepper)">Continuar</button>
       </div>
-      <div>
-        <mat-form-field appearance="outline">
-          <mat-label>Precio</mat-label>
-          <input
-            matInput
-            type="number"
-            step="0.01"
-            formControlName="price"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Pasajeros</mat-label>
-          <input
-            min="1"
-            max="4"
-            matInput
-            type="number"
-            formControlName="numeroPasajero"
-            required
-          />
-        </mat-form-field>
+    </mat-step>
+    <!-- DESTINO -->
+    <mat-step completed="false">
+      <ng-template matStepLabel>Destino del trayecto</ng-template>
+      <div class="location-form">
+        <div class="location-search">
+          <div class="search-form-with-recommendations">
+            <mat-form-field appearance="outline">
+              <mat-label>Destino</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="destino"
+                placeholder="Nervión"
+                required
+                autocomplete="off"
+                (input)="search_meeting_points($event.target.value)"
+              />
+            </mat-form-field>
+            <frontend-meeting-point-searchbar-result
+              [searchbar_meeting_points]="searchbar_meeting_points"
+              (meeting_point_selected)="selected_meeting_point_target($event)"
+            ></frontend-meeting-point-searchbar-result>
+          </div>
+          <button
+            mat-flat-button
+            class="submit-search-button"
+            (click)="get_target()"
+          >
+            Obtener destino
+          </button>
+        </div>
       </div>
-      <mat-form-field appearance="outline">
-        <mat-label>Comentarios</mat-label>
-        <textarea matInput formControlName="comentarios" required></textarea>
-      </mat-form-field>
-      <br />
-      <button mat-raised-button type="submit">Crear</button>
-    </form>
-  </div>
+
+      <frontend-meeting-point-map
+        [location]="location_target"
+      ></frontend-meeting-point-map>
+      <div class="stepper-actions">
+        <button mat-button matStepperPrevious>Cambiar origen</button>
+        <button mat-button (click)="go_to_step_3(stepper)">
+          Confirmar trayecto
+        </button>
+      </div>
+    </mat-step>
+    <!-- INFO DEL VIAJE -->
+    <mat-step>
+      <ng-template matStepLabel>Detalles del viaje</ng-template>
+      <p>Completa los detalles de tu trayecto.</p>
+      <div class="grid-container">
+        <div class="trip-comments">
+          <mat-form-field appearance="outline">
+            <mat-label>Comentarios</mat-label>
+            <textarea
+              matInput
+              formControlName="comentarios"
+              required
+              cdkTextareaAutosize
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <div class="start-date">
+          <mat-form-field appearance="outline">
+            <mat-label>Hora inicio</mat-label>
+            <input
+              matInput
+              [min]="minDate"
+              required
+              type="datetime-local"
+              formControlName="fechaHoraInicio"
+            />
+          </mat-form-field>
+        </div>
+        <div class="end-date">
+          <mat-form-field appearance="outline">
+            <mat-label>Hora Fin</mat-label>
+            <input
+              matInput
+              [min]="minDate"
+              required
+              type="datetime-local"
+              formControlName="fechaHoraFin"
+            />
+          </mat-form-field>
+        </div>
+        <div class="price">
+          <mat-form-field appearance="outline">
+            <mat-label>Precio</mat-label>
+            <input
+              matInput
+              type="number"
+              step="0.01"
+              formControlName="price"
+              required
+            />
+            <mat-icon matSuffix>euro</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="places">
+          <mat-form-field appearance="outline">
+            <mat-label>Pasajeros</mat-label>
+            <input
+              min="1"
+              max="4"
+              matInput
+              type="number"
+              formControlName="numeroPasajero"
+              required
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="stepper-actions">
+        <button mat-button matStepperPrevious>Cambiar destino</button>
+        <button mat-button (click)="submit()">Crear viaje</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
 </div>
