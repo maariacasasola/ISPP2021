@@ -6,7 +6,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 import com.gotacar.backend.models.User;
 
@@ -23,12 +22,12 @@ public class Rating {
     @Id
     public String id;
 
-    @NotNull
     @DBRef
+    @NotNull
     public User from;
 
-    @NotNull
     @DBRef
+    @NotNull
     public User to;
 
     @NotBlank
@@ -38,8 +37,6 @@ public class Rating {
     @Max(5)
     public Integer points;
 
-    @Past
-    @NotNull
     public LocalDateTime created_at;
 
     public Rating() {
@@ -50,6 +47,7 @@ public class Rating {
         this.from = from;
         this.to = to;
         this.points = points;
+        this.content = content;
         this.created_at = LocalDateTime.now();
     }
 
