@@ -61,7 +61,8 @@ public class Complaint {
 
 	@Override
 	public String toString() {
-		return String.format("Complaint[id=%s, title=%s, user=%s, trip:%s]", id, title, user.toString(), trip.toString());
+		return String.format("Complaint[id=%s, title=%s, user=%s, trip:%s]", id, title, user.toString(),
+				trip.toString());
 	}
 
 }
