@@ -7,10 +7,44 @@ USUARIO
         surnames: string,
         email: string,
         dni: string,
-        profile_photo: string,
+        profile_photo: url,
         birthdate: string,
         roles: [string] : ['admin', 'client', 'driver'],
         banned_until: date
+        driver_status: DEFAULT NULL -> ['PENDING', 'ACCEPTED'],
+        phone: string,
+        IBAN: string,
+        times_banned: integer,
+        car_data: {
+                plate_number: string,
+                enrollment_date: date,
+                model: string,
+                color: string
+        },
+        driving_license: url
+        experience (años de experiencia): integer,
+
+        RATING -> Propiedad derivada, puntuación media del usuario
+}
+
+RATING
+----------------------------
+{
+        from: ObjectId() USUARIO,
+        to: ObjectId() USUARIO,
+        content: string,
+        points: number (1-5),
+        created_at: date
+}
+
+PAYMENT_RETURN
+----------------------------
+{
+        user: ObjectId() USUARIO,
+        amount: integer
+        status: ['DONE', 'PENDING'],
+        created_at: date,
+        accepted_at: date
 }
 
 MEETING_POINT

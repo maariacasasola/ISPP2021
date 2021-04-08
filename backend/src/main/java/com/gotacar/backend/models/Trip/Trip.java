@@ -31,7 +31,6 @@ public class Trip {
     @BsonProperty("ending_pont")
     public Location endingPoint;
 
-    @Max(400)
     @NotNull
     public Integer price;
 
