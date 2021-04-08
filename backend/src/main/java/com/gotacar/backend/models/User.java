@@ -62,7 +62,7 @@ public class User {
 
   public Integer times_banned;
 
-  @URL
+  @URL(message = "Driving license must be an url")
   public String driving_license;
 
   public Integer experience;
@@ -102,7 +102,7 @@ public class User {
 
   public User( String firstName, String lastName,  String uid,
       String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil,
-      String driver_status, String phone, String iban, Integer times_banned,  String driving_license,
+      String phone, String iban, Integer times_banned,  String driving_license,
       Integer experience, CarData carData) {
 
     this.firstName = firstName;
