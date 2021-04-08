@@ -1,0 +1,48 @@
+<section class="trip-details-container">
+  <div class="trip">
+    <div class="trip-info">
+      <h2>Fecha y hora: <i>{{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</i></h2>
+      <div class="price-and-places">
+        <h2><span>Plazas disponibles: {{ trip?.places }}</span></h2>
+        <span class="price">{{ trip?.price | convertCentToEur }}</span>
+      </div>
+    </div>
+    <div class="map">
+      <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>
+    </div>
+  </div>
+  <div class="clients">
+    <h2>Reservas</h2>
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div
+        fxFlex="25%"
+        fxFlex.xs="100%"
+        fxFlex.sm="33%"
+        *ngFor="let num of [1, 2, 3, 4]"
+      >
+        <div class="content">
+          <mat-card class="mat-elevation-z4">
+            <mat-card-header>
+              <mat-card-title>Juan Pérez</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./../assets/img/generic-user.jpg" />
+            <mat-card-content>
+              <p>
+                The Himalayas is a mountain range in Asia.The Himalayas is a
+                mountain range in Asia.The Himalayas is a mountain range in Asia
+              </p>
+              <p>
+                4.5 <mat-icon>star</mat-icon>
+              </p>  
+            </mat-card-content>
+            <mat-card-actions>
+              <br>
+              <button mat-raised-button color="primary">RECHAZAR</button>
+              <button mat-raised-button color="primary">MÁS INFORMACIÓN</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
