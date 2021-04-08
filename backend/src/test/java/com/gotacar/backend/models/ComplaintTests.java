@@ -39,8 +39,8 @@ public class ComplaintTests {
                 authorities);
 
         List<String> authoritiesDriver = new ArrayList<String>();
-        authorities.add("ROLE_CLIENT");
-        authorities.add("ROLE_DRIVER");
+        authoritiesDriver.add("ROLE_CLIENT");
+        authoritiesDriver.add("ROLE_DRIVER");
         LocalDate birthdate2 = LocalDate.of(1999, 10, 10);
         driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
                 "http://dnidriver.com", birthdate2, authoritiesDriver);
