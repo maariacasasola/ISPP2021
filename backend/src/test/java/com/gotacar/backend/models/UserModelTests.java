@@ -98,4 +98,21 @@ public class UserModelTests {
 		assertThat(violation.getMessage()).isEqualTo("must not be blank");
 
 	}
+
+	@Test
+	public void setDriverStatus() {
+		LocalDate date = LocalDate.parse("1999-01-08");
+		List<String> lista = new ArrayList<>();
+		lista.add("ROLE_ADMIN");
+		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com",date,
+			lista,null, "asasa",null, null, null, null, null, null);
+
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
+
+		ConstraintViolation<User> violation = constraintViolations.iterator().next();
+		assertThat(violation.getMessage()).isEqualTo("El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)");
+
+	}
+
+	
 }
