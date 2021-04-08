@@ -40,21 +40,4 @@ public class TripModelTests {
         user = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com", fecha,
                 authorities);
     }
-
-    @Test
-    public void setMaxDirectionLength() {
-        LocaleContextHolder.setLocale(Locale.ENGLISH);
-
-        Location location1 = new Location("Bami", "Calle Teba 1", 2.333, -2.111);
-        Location location2 = new Location("Lipa", "Calle Teba 1", 2.333, -2.111);
-
-		LocalDateTime date = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
-
-        Trip trip1 = new Trip(location1, location2, 500, date, date, "Cometario", 3, user);
-
-        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip1);
-
-        ConstraintViolation<Trip> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("must be less than or equal to 400");
-    }
 }
