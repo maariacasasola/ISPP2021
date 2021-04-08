@@ -131,8 +131,5 @@ public class UserModelTests {
 		assertThat(violation.getMessage()).isEqualTo("Driving license must be an url");
 
 	}
-
-
-
 	
 }

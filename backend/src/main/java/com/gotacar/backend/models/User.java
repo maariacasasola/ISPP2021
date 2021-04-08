@@ -11,18 +11,24 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import com.gotacar.backend.models.Rating.Rating;
+import com.gotacar.backend.models.Rating.RatingRepository;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Builder.Default;
 
 @Getter
 @Setter
-
 public class User {
+	
+	@Autowired
+	private RatingRepository ratingRepository;
+	
   @Id
   public String id;
 
@@ -123,6 +129,15 @@ public class User {
     this.carData = carData;
   }
 
+  public Integer getRatingAvg() {
+	  Integer res = 0;
+	  List<Rating> lista = ratingRepository.findByTo(this);
+	  for(Rating r : lista) {
+		  res += r.getPoints();
+	  }
+	  res = res / lista.size();
+	  return res;
+  }
   
   @Override
   public String toString() {
