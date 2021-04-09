@@ -27,6 +27,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -46,14 +47,20 @@ class UserControllerTest {
 	static class TestConfig {
 		@Bean
 		@Primary
-		public TripRepository mockB() {
-			TripRepository mockService = Mockito.mock(TripRepository.class);
+		public UserRepository mockB() {
+			UserRepository mockService = Mockito.mock(UserRepository.class);
 			return mockService;
 		}
 	}
 
 	@Autowired
 	private UserController controller;
+
+	@MockBean
+	private UserRepository userRepository;
+
+	@MockBean
+	private TripRepository tripRepository;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -105,6 +112,8 @@ class UserControllerTest {
 
 	@Test
 	public void testUserController() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
 		mockMvc.perform(post("/user").param("uid", admin.getUid())).andExpect(status().isOk());
 		assertThat(controller).isNotNull();
 	}
@@ -112,7 +121,10 @@ class UserControllerTest {
 	@Test
 	@WithMockUser(value = "spring")
 	public void testCurrentUser() throws Exception {
-		String response = mockMvc.perform(post("/user").param("uid", driver.getUid()))
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByEmail(admin.getEmail())).thenReturn(admin);
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid()))
         .andReturn().getResponse().getContentAsString();
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
                 // Obtengo el token
@@ -129,6 +141,9 @@ class UserControllerTest {
 	@Test
 	@WithMockUser(value = "spring")
 	public void testFindUsersByTrip() throws Exception{
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid()))
         .andReturn().getResponse().getContentAsString();
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
