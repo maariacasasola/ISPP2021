@@ -142,7 +142,7 @@ class UserControllerTest {
 	@WithMockUser(value = "spring")
 	public void testFindUsersByTrip() throws Exception{
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
-		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+		// Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid()))
         .andReturn().getResponse().getContentAsString();
