@@ -75,4 +75,26 @@ public class TripOrderController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("trip_order/list")
+    public List<TripOrder> listTripOrdersAdmin() {
+        try {
+            return tripOrderRepository.findAll();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("trip_order/show/{id}")
+    public TripOrder showTripOrdersAdmin(@PathVariable(value = "id") String id) {
+        try {
+            ObjectId objectId = new ObjectId(id);
+            TripOrder order = tripOrderRepository.findById(objectId);
+            return order;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
 }
