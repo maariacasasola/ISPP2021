@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { CancelTripDialogComponent } from '../../../components/cancel-trip-dialog/cancel-trip-dialog.component';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { TripsService } from '../../../services/trips.service';
@@ -18,7 +19,8 @@ export class DriverTripListPageComponent {
     private _trips_service: TripsService,
     private _snackbar: MatSnackBar,
     private _auth_service: AuthServiceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _router: Router
   ) {
     this.load_trips_by_driver();
   }
@@ -33,6 +35,11 @@ export class DriverTripListPageComponent {
 
   can_cancel(start_date: string) {
     return new Date(start_date) > new Date();
+  }
+
+
+  go_to_trip(trip_id) {
+    this._router.navigate(['/', 'authenticated', 'driver-trips', trip_id]);
   }
 
   async cancel(trip_id, cancelationDateLimit: string) {
