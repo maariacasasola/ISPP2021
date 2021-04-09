@@ -181,8 +181,8 @@ public class BackendApplication implements CommandLineRunner {
                 Location location8 = new Location("Lagoh", "Av. de Palmas Altas, 1, 41012 Sevilla", 37.34260576245235,
                                 -5.987332644990308);
 
-                LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
-                LocalDateTime fecha5 = LocalDateTime.of(2021, 06, 04, 13, 36, 24);
+                LocalDateTime fecha4 = LocalDateTime.of(2024, 02, 28, 13, 30, 24);
+                LocalDateTime fecha5 = LocalDateTime.of(2024, 02, 28, 13, 36, 24);
                 LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
                 LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
                 LocalDateTime fecha8 = LocalDateTime.of(2021, 03, 20, 17, 00, 00);
