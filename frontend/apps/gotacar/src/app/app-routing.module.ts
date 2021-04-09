@@ -21,6 +21,7 @@ import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'log-in',
     component: LogInPageComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent,
   },
   {
     path: 'error',

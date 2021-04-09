@@ -1,0 +1,30 @@
+.page-content {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    margin: 80px;
+    min-height: 100vh;
+    color: #0e4a6b;
+   
+}
+.signup-card {
+    min-width: 20vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #538994;
+    border: 2px solid #0e4a6b;
+}
+.spacing{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+    padding: 2px;
+}
+.signup-button {
+    color: white;
+    background-color: #538994;
+    margin: 20px;
+    width: 100%;
+  }

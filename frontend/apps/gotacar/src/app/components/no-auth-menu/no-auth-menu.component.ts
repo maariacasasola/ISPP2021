@@ -15,4 +15,7 @@ export class NoAuthMenuComponent implements OnInit {
   redirect() {
     this.router.navigate(['log-in']);
   }
+  gotoSignup(){
+    this.router.navigate(['sign-up'])
+  }
 }

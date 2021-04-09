@@ -86,6 +86,7 @@ import { ComplaintAppealsService } from './services/complaint-appeals.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -127,6 +128,7 @@ registerLocaleData(localeEs, 'es');
     PaymentSuccessComponent,
     PaymentFailedComponent,
     MeetingPointSearchbarResultComponent,
+    SignUpComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

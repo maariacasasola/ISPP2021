@@ -1,0 +1,35 @@
+<frontend-main-header></frontend-main-header>
+<section class="page-content">
+  <h1>Regístrate en GotACar</h1>
+  <mat-card class="signup-card">
+   
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>Nombre usuario</mat-label>
+        <input matInput type="text" #userName required />
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>attach_email</mat-icon>
+        <mat-label>Email</mat-label>
+        <input matInput type="text" #userName required />
+      </mat-form-field>
+
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>vpn_key</mat-icon>
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" #userPassword required />
+      </mat-form-field>
+      <button
+      mat-flat-button
+      color="primary"
+      class="signup-button"
+      (click)="None()"
+    >
+      Crear cuenta 
+      <mat-icon matSuffix><span class="material-icons">
+        arrow_forward_ios
+        </span></mat-icon>
+    </button>
+  </mat-card>
+</section>
+<frontend-main-footer></frontend-main-footer>
