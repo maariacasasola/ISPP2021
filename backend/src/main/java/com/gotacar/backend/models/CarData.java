@@ -3,7 +3,6 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Builder.Default;
 
 
 @Getter
