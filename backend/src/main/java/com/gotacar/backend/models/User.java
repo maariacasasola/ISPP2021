@@ -17,7 +17,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Builder.Default;
 
 @Getter
 @Setter
@@ -69,7 +68,6 @@ public class User {
 
   @DBRef
   public CarData carData;
-
 
   public User() {
   }
@@ -123,7 +121,6 @@ public class User {
     this.carData = carData;
   }
 
-  
   @Override
   public String toString() {
     return String.format("Customer[id=%s]", id);
