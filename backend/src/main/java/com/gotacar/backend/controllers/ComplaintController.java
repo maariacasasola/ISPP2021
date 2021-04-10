@@ -111,8 +111,8 @@ public class ComplaintController {
             userBanned = tripComplaint.getDriver();
             String userDni = userBanned.getDni();
 
-            List<String> trips = tripRepository.findAll().stream().filter(a -> a.driver.dni.equals(userDni))
-                    .map(x -> x.getId()).collect(Collectors.toList());
+            List<String> trips = tripRepository.findByDriverDni(userDni).stream()
+                .map(x -> x.getId()).collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
             int j = 0;
 

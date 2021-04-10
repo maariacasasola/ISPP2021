@@ -23,4 +23,6 @@ public interface TripRepository extends MongoRepository<Trip, String>, TripRepos
     public List<Trip> findByDriver(User driver);
 
     List<Trip> findByDriverAndCanceled(User driver, Boolean canceled);
+
+    public List<Trip> findByDriverDni(String dni);
 }
