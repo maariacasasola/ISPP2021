@@ -189,7 +189,7 @@ public class UserController {
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
 			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if(trips.size()==0 && tripOrders.size()==0){
+			if(trips.isEmpty() && tripOrders.isEmpty()){
 				userRepository.delete(user);
 			}
 			return user;
@@ -206,7 +206,7 @@ public class UserController {
 			for (User user : users){
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-				if(trips.size()==0 && tripOrders.size()==0){
+				if(trips.isEmpty() && tripOrders.isEmpty()){
 					userRepository.delete(user);
 				}
 			}
