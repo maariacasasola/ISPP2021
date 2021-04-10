@@ -1,7 +1,6 @@
 package com.gotacar.backend.controllers;
 
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,19 +79,10 @@ public class UserController {
 	@GetMapping("/list_enrolled_users")
 	public List<User> listEnrrolledUsers(){
 		try {
-			List<User> res = new ArrayList<>();
-			for(User u : userRepository.findAll()) {
-				if(u.getRoles().contains("ROLE_CLIENT")) {
-					res.add(u);
-				}
-			}
-			return res;
-			
+			return userRepository.findByRolesContaining("ROLE_CLIENT");
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-		
-		
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
