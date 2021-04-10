@@ -60,6 +60,10 @@ export class TripsService {
       .toPromise();
   }
 
+  async get_users_by_trip(trip_id: string): Promise<any>{
+    return this._http_client.get(environment.api_url + '/list_users_trip/' + trip_id).toPromise();
+  }
+
   async create_stripe_session(trip_id, quantity, description): Promise<any> {
     const body = {
       quantity: quantity,

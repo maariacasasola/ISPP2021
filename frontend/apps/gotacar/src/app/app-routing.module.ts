@@ -21,6 +21,7 @@ import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
 
 const routes: Routes = [
   {
@@ -77,6 +78,11 @@ const routes: Routes = [
       {
         path: 'driver-trips',
         component: DriverTripListPageComponent,
+        canActivate: [DriverGuard],
+      },
+      {
+        path: 'driver-trips/:trip_id',
+        component: DriverTripDetailsPageComponent,
         canActivate: [DriverGuard],
       },
       {
