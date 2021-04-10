@@ -501,4 +501,30 @@ class UserControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 	}
+
+	@Test
+	@WithMockUser(value = "spring")
+	public void testDeletePenalizedAccount() throws Exception {
+		user.setTimesBanned(4);
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByTimesBannedGreaterThan(4)).thenReturn(java.util.Arrays.asList(user));
+		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
+						.thenReturn(new ArrayList<TripOrder>());;
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		String token = json2.getString("token");
+
+		Integer usersPreDelete = userRepository.findAll().size();
+
+		ResultActions resultInDelete = mockMvc
+				.perform(post("/delete-penalized-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		Integer usersPostDelete = userRepository.findAll().size();
+		assertThat(usersPreDelete == usersPostDelete-1);
+	}
 }
