@@ -5,6 +5,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   CommonModule,
   CurrencyPipe,
@@ -63,6 +64,7 @@ import { AuthenticatedPageComponent } from './pages/authenticated-page/authentic
 import { MainHeaderComponent } from './components/main-header/main-header.component';
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
+import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
 import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
@@ -98,6 +100,7 @@ registerLocaleData(localeEs, 'es');
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    ClientContactPageComponent,
     LogInPageComponent,
     ErrorPageComponent,
     SearchFormComponent,
@@ -135,15 +138,12 @@ registerLocaleData(localeEs, 'es');
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatInputModule,
+    ReactiveFormsModule,
+    NoopAnimationsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule,
     MatDialogModule,
     MatSidenavModule,
-    MatFormFieldModule,
     MatIconModule,
     MatStepperModule,
     MatCardModule,

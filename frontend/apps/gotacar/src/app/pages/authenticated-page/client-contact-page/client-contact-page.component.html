@@ -1,0 +1,46 @@
+<div class="Title">
+<h1>¿Podemos ayudarte en algo?</h1>
+</div>
+
+<form class="contact" [formGroup]="form" method="post" (ngSubmit)="onSubmit()">
+  
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input 
+    matInput 
+    [formControl]="name" 
+    required>
+    <mat-error *ngIf="name.invalid">Introduce tu nombre</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input 
+    matInput 
+    [formControl]="email" 
+    placeholder="email@ejemplo.com" 
+    required>
+    <mat-error *ngIf="email.invalid">Introduce un email válido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Mensaje</mat-label>
+    <textarea 
+    matInput 
+    [formControl]="message"
+    maxlength="256" 
+    placeholder="Mi duda es..." 
+    required></textarea>
+    <mat-hint align="end"> {{message.value?.length || 0}}/256</mat-hint>
+    <mat-error *ngIf="message.invalid">Introduce tu mensaje</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button [disabled]="isLoading" type="submit">Enviar</button>
+  <input [formControl]="honeypot" class="hidden" type="text" />
+  <div class="Warning">
+  <h5>Sé paciente al enviar tu consulta, puede tardar unos segundos. Espera hasta que apareza el mensaje de que se ha enviado correcatmente</h5>
+  </div>
+  <div [ngClass]="!submitted? 'hidden' : 'visible'" class="center-text">
+    <span>{{responseMessage}}</span>
+  </div>
+</form>
