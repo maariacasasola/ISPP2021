@@ -80,4 +80,17 @@ public class UserController {
 		
 		
 	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/driver-request/list")
+	public List<User> findAllResquestDriver(){
+		try {
+			List<User> listUser = new ArrayList<>();
+			listUser = userRepository.findByDriverStatus("PENDING");
+            return listUser;
+		} catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
+        }	
+		
+	}
 }
