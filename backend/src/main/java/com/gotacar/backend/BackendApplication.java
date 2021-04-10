@@ -349,6 +349,8 @@ public class BackendApplication implements CommandLineRunner {
                                         .addFilterAfter(new JWTAuthorizationFilter(),
                                                         UsernamePasswordAuthenticationFilter.class)
                                         .authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
+                                        .antMatchers(HttpMethod.POST, "/register").permitAll()
+                                        .antMatchers(HttpMethod.POST, "/registerGoogle").permitAll()
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
                                         .antMatchers(HttpMethod.GET, "/trip/{tripId}").permitAll()
