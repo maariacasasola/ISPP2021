@@ -162,6 +162,7 @@ class UserControllerTest {
 		List<User> lista = new ArrayList<User>();
 		lista.add(driver);
 		lista.add(driver2);
+		lista.add(user);
 		lista.add(user1);
 		Mockito.when(userRepository.findByRolesContaining("ROLE_CLIENT")).thenReturn(lista);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
@@ -195,10 +196,14 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions result = mockMvc
-				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		Integer usersPreDelete = userRepository.findAll().size();
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		ResultActions resultInDelete = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		Integer usersPostDelete = userRepository.findAll().size();
+		assertThat(usersPreDelete == usersPostDelete);
 	}
 
 	@Test
@@ -215,10 +220,14 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions result = mockMvc
-				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		Integer usersPreDelete = userRepository.findAll().size();
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		ResultActions resultInDelete = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		Integer usersPostDelete = userRepository.findAll().size();
+		assertThat(usersPreDelete == usersPostDelete);
 	}
 
 	@Test
@@ -235,10 +244,14 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions result = mockMvc
-				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		Integer usersPreDelete = userRepository.findAll().size();
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		ResultActions resultInDelete = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		Integer usersPostDelete = userRepository.findAll().size();
+		assertThat(usersPreDelete == usersPostDelete);
 	}
 
 	@Test
@@ -255,10 +268,14 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions result = mockMvc
-				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		Integer usersPreDelete = userRepository.findAll().size();
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		ResultActions resultInDelete = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		Integer usersPostDelete = userRepository.findAll().size();
+		assertThat(usersPreDelete == usersPostDelete + 1);
 	}
 
 	@Test
@@ -483,6 +500,5 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
-
 	}
 }

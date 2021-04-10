@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -185,7 +184,7 @@ public class UserController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
-	@RequestMapping("/delete-account")
+	@PostMapping("/delete-account")
     public User deleteAccount() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -196,6 +195,24 @@ public class UserController {
 				userRepository.delete(user);
 			}
 			return user;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/delete-penalized-account")
+    public List<User> deletePenalizedAccount() {
+        try {
+			List<User> users = userRepository.findByTimesBannedGreaterThan(3);
+			for (User user : users){
+				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+				List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+				if(trips.size()==0 && tripOrders.size()==0){
+					userRepository.delete(user);
+				}
+			}
+			return users;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
