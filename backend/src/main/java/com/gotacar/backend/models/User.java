@@ -10,10 +10,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -66,7 +66,7 @@ public class User {
 
   public Integer experience;
 
-  @DBRef
+  @BsonProperty("car_data")
   public CarData carData;
 
   public User() {
@@ -82,7 +82,7 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
-    this.bannedUntil=null;
+    this.bannedUntil = null;
   }
 
   public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
@@ -95,13 +95,12 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
-    this.bannedUntil=bannedUntil;
+    this.bannedUntil = bannedUntil;
   }
 
-  public User( String firstName, String lastName,  String uid,
-      String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil,
-      String phone, String iban, Integer times_banned,  String driving_license,
-      Integer experience, CarData carData) {
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil, String phone, String iban,
+      Integer times_banned, String driving_license, Integer experience, CarData carData) {
 
     this.firstName = firstName;
     this.lastName = lastName;
@@ -125,6 +124,5 @@ public class User {
   public String toString() {
     return String.format("Customer[id=%s]", id);
   }
-
 
 }

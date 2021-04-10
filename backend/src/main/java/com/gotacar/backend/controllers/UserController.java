@@ -71,7 +71,7 @@ public class UserController {
 		return "Bearer " + token;
 	}
 
-	@PreAuthorize("hasRole('ROLE_CLIENT') AND NOT hasRole('ROLE_DRIVER')")
+	@PreAuthorize("hasRole('ROLE_CLIENT') AND !hasRole('ROLE_DRIVER')")
 	@PostMapping("/driver/create")
 	public User requestConversionToDriver(@RequestBody() String body) {
 		try {
@@ -100,7 +100,7 @@ public class UserController {
 				u.setCarData(carData);
 				u.setDriver_status("PENDING");
 
-				this.userRepository.save(u);
+				userRepository.save(u);
 			} else {
 				throw new Exception("Ahora mismo su cuenta se encuentra baneada");
 			}
@@ -112,9 +112,11 @@ public class UserController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/driver/update")
-	public User convertToDriver(@RequestParam("uid") String userId) {
+	public User convertToDriver(@RequestBody() String body) {
 		try {
-			User u = this.userRepository.findByUid(userId);
+			JsonNode jsonNode = objectMapper.readTree(body);
+			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
+			User u = this.userRepository.findByUid(uid);
 			u.setDriver_status("ACCEPTED");
 			u.getRoles().add("ROLE_DRIVER");
 			this.userRepository.save(u);
