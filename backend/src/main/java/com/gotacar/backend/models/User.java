@@ -52,7 +52,7 @@ public class User {
   public LocalDateTime bannedUntil;
 
   @Pattern(regexp = "PENDING|ACCEPTED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)")
-  public String driver_status;
+  public String driverStatus;
 
   public String phone;
 
@@ -110,7 +110,7 @@ public class User {
     this.birthdate = birthdate;
     this.roles = roles;
     this.bannedUntil = bannedUntil;
-    this.driver_status = null;
+    this.driverStatus = null;
     this.phone = phone;
     this.iban = iban;
     this.times_banned = times_banned;

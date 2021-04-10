@@ -106,7 +106,7 @@ public class UserModelTests {
 		lista.add("ROLE_ADMIN");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com",date,
 			lista,null, null,null, null, null, null, null);
-		user1.setDriver_status("edqwdq");
+		user1.setDriverStatus("edqwdq");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 

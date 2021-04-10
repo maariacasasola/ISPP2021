@@ -99,7 +99,7 @@ public class UserController {
 				u.setDriving_license(driving_license);
 				u.setExperience(experience);
 				u.setCarData(carData);
-				u.setDriver_status("PENDING");
+				u.setDriverStatus("PENDING");
 
 				userRepository.save(u);
 			} else {
@@ -118,7 +118,7 @@ public class UserController {
 			JsonNode jsonNode = objectMapper.readTree(body);
 			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
 			User u = this.userRepository.findByUid(uid);
-			u.setDriver_status("ACCEPTED");
+			u.setDriverStatus("ACCEPTED");
 			u.getRoles().add("ROLE_DRIVER");
 			this.userRepository.save(u);
 
@@ -129,7 +129,7 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/enrolled_users/list")
+	@GetMapping("/enrolled-user/list")
 	public List<User> listEnrrolledUsers() {
 		try {
 			List<User> res = new ArrayList<>();
