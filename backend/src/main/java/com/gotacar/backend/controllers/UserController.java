@@ -1,6 +1,7 @@
 package com.gotacar.backend.controllers;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import com.gotacar.backend.utils.TokenResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -58,5 +60,24 @@ public class UserController {
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 3600000)).signWith(key).compact();
 		return "Bearer " + token;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/list_enrolled_users")
+	public List<User> listEnrrolledUsers(){
+		try {
+			List<User> res = new ArrayList<>();
+			for(User u : userRepository.findAll()) {
+				if(u.getRoles().contains("ROLE_CLIENT")) {
+					res.add(u);
+				}
+			}
+			return res;
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+		
+		
 	}
 }
