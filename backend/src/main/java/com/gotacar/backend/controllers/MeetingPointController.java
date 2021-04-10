@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,7 +72,7 @@ public class MeetingPointController {
     @PostMapping("/delete_meeting_point/{mpId}")
      public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
         try{
-            MeetingPoint mp = pointsRepository.findById(mpId).get();
+            MeetingPoint mp = pointsRepository.findById(new ObjectId(mpId));
             pointsRepository.delete(mp);
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
