@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.security.test.context.support.WithMockUser;
+
+import net.minidev.json.JSONObject;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
 class UserControllerTest {
-	
+
 	@Configuration
 	static class TestConfig {
 		@Bean
@@ -48,6 +51,7 @@ class UserControllerTest {
 			return mockService;
 		}
 	}
+
 	@Autowired
 	private UserController controller;
 
@@ -56,13 +60,12 @@ class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	private User user;
 	private User admin;
 	private User driver;
 	private User driver2;
-	
-	
+
 	@BeforeEach
 	void setUp() {
 		List<String> lista1 = new ArrayList<String>();
@@ -87,24 +90,24 @@ class UserControllerTest {
 				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
 		ObjectId userObjectId = new ObjectId();
 		user.setId(userObjectId.toString());
-		
+
 		admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "89070360G",
 				"http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1);
 		ObjectId adminObjectId = new ObjectId();
 		admin.setId(adminObjectId.toString());
-		
+
 	}
 
 	@Test
 	public void testUserController() throws Exception {
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
-		
+
 		mockMvc.perform(post("/user").param("uid", admin.getUid())).andExpect(status().isOk());
 		assertThat(controller).isNotNull();
 	}
 
 	@Test
-	public void testListEnrolledUsers() throws Exception{
+	public void testListEnrolledUsers() throws Exception {
 		List<User> lista = new ArrayList<User>();
 		lista.add(admin);
 		lista.add(driver);
@@ -112,39 +115,179 @@ class UserControllerTest {
 		lista.add(user);
 		Mockito.when(userRepository.findAll()).thenReturn(lista);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
-		
+
 		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
-		
-		ResultActions result = mockMvc
-				.perform(get("/list_enrolled_users").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
-		
+
+		ResultActions result = mockMvc.perform(
+				get("/enrolled-user/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		String res = result.andReturn().getResponse().getContentAsString();
 		assertThat(res.contains("ROLE_ADMIN")).isEqualTo(false);
-		
+
 	}
-	
+
 	@Test
-	@WithMockUser(value = "spring")
 	public void testCurrentUser() throws Exception {
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByEmail(admin.getEmail())).thenReturn(admin);
-		
-		String response = mockMvc.perform(post("/user").param("uid", admin.getUid()))
-        .andReturn().getResponse().getContentAsString();
-		org.json.JSONObject json2 = new org.json.JSONObject(response);
-                // Obtengo el token
-        String token = json2.getString("token");
 
-                // Petición post al controlador
-        ResultActions result = mockMvc.perform(get("/current_user").header("Authorization", token)
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaType.APPLICATION_JSON));
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+
+		// Petición post al controlador
+		ResultActions result = mockMvc.perform(get("/current_user").header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
+	}
+
+	@Test
+	public void testConvertToDriver() throws Exception {
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+		JSONObject car_data = new JSONObject();
+		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("car_plate", "4041 ATO");
+		car_data.appendField("model", "Opel");
+		car_data.appendField("color", "azul marino");
+		// Construcción del json para el body
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("iban", "ES2121001859436727673434");
+		sampleObject.appendField("driving_license",
+				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
+		sampleObject.appendField("experience", 9);
+		sampleObject.appendField("car_data", car_data);
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
+		assertThat(user.getDriverStatus()).isEqualTo("PENDING");
+	}
+
+	@Test
+	public void testConvertToDriverFailed() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+
+		JSONObject car_data = new JSONObject();
+		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("car_plate", "4041 ATO");
+		car_data.appendField("model", "Opel");
+		car_data.appendField("color", "azul marino");
+		// Construcción del json para el body
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("iban", "ES2121001859436727673434");
+		sampleObject.appendField("driving_license",
+				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
+		sampleObject.appendField("experience", 9);
+		sampleObject.appendField("car_data", car_data);
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+	}
+
+	@Test
+	public void testConvertToDriverBanned() throws Exception {
+		user.setBannedUntil(LocalDateTime.of(2021, 10, 10,13,30,00));
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+		JSONObject car_data = new JSONObject();
+		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("car_plate", "4041 ATO");
+		car_data.appendField("model", "Opel");
+		car_data.appendField("color", "azul marino");
+		// Construcción del json para el body
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("iban", "ES2121001859436727673434");
+		sampleObject.appendField("driving_license",
+				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
+		sampleObject.appendField("experience", 9);
+		sampleObject.appendField("car_data", car_data);
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(409);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("Ahora mismo su cuenta se encuentra baneada");
+	}
+
+	@Test
+	public void testAcceptRequestToDriver() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(user.getDriverStatus()).isEqualTo("ACCEPTED");
+	}
+
+	@Test
+	public void testAcceptRequestToDriverFailed() throws Exception {
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 }

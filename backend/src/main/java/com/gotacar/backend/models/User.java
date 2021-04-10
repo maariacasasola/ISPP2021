@@ -10,16 +10,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
-
 public class User {
   @Id
   public String id;
@@ -52,7 +52,7 @@ public class User {
   public LocalDateTime bannedUntil;
 
   @Pattern(regexp = "PENDING|ACCEPTED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)")
-  public String driver_status;
+  public String driverStatus;
 
   public String phone;
 
@@ -65,9 +65,8 @@ public class User {
 
   public Integer experience;
 
-  @DBRef
+  @BsonProperty("car_data")
   public CarData carData;
-
 
   public User() {
   }
@@ -82,7 +81,7 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
-    this.bannedUntil=null;
+    this.bannedUntil = null;
   }
 
   public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
@@ -95,13 +94,12 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
-    this.bannedUntil=bannedUntil;
+    this.bannedUntil = bannedUntil;
   }
 
-  public User( String firstName, String lastName,  String uid,
-      String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil,
-      String phone, String iban, Integer times_banned,  String driving_license,
-      Integer experience, CarData carData) {
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil, String phone, String iban,
+      Integer times_banned, String driving_license, Integer experience, CarData carData) {
 
     this.firstName = firstName;
     this.lastName = lastName;
@@ -112,7 +110,7 @@ public class User {
     this.birthdate = birthdate;
     this.roles = roles;
     this.bannedUntil = bannedUntil;
-    this.driver_status = null;
+    this.driverStatus = null;
     this.phone = phone;
     this.iban = iban;
     this.times_banned = times_banned;
@@ -121,11 +119,9 @@ public class User {
     this.carData = carData;
   }
 
-  
   @Override
   public String toString() {
     return String.format("Customer[id=%s]", id);
   }
-
 
 }
