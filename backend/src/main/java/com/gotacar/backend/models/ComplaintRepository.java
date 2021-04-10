@@ -1,5 +1,6 @@
 package com.gotacar.backend.models;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
@@ -10,4 +11,5 @@ public interface ComplaintRepository extends MongoRepository<Complaint, String> 
 
     public Complaint findById(ObjectId id);
 
+    public List<Complaint> findByStatus(String status);
 }
