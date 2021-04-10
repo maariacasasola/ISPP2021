@@ -3,6 +3,7 @@ package com.gotacar.backend.models.TripOrder;
 import java.util.List;
 import java.util.Optional;
 
+import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.Trip.Trip;
 
 import org.bson.types.ObjectId;
@@ -18,4 +19,5 @@ public interface TripOrderRepository extends MongoRepository<TripOrder, String>,
 
     public Optional<List<TripOrder>> findAllByTrip(Trip trip);
 
+    List<TripOrder> findByUserAndStatus(User user, String Status);
 }

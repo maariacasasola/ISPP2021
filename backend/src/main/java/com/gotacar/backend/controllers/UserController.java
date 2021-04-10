@@ -28,10 +28,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +43,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 @RestController
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
 
 	@Autowired
@@ -144,14 +148,7 @@ public class UserController {
 	@GetMapping("/enrolled-user/list")
 	public List<User> listEnrrolledUsers() {
 		try {
-			List<User> res = new ArrayList<>();
-			for (User u : userRepository.findAll()) {
-				if (u.getRoles().contains("ROLE_CLIENT")) {
-					res.add(u);
-				}
-			}
-			return res;
-
+			return userRepository.findByRolesContaining("ROLE_CLIENT");
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
@@ -182,9 +179,25 @@ public class UserController {
                 lista.add(to.getUser());
             }
             return lista;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@RequestMapping("/delete-account")
+    public User deleteAccount() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if(trips.size()==0 && tripOrders.size()==0){
+				userRepository.delete(user);
+			}
+			return user;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
-
 }

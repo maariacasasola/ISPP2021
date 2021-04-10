@@ -16,13 +16,13 @@ import org.bson.types.ObjectId;
 
 import com.gotacar.backend.BackendApplication;
 import com.gotacar.backend.controllers.TripControllerTest.TestConfig;
+import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-
-import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.Trip.TripRepository;
 import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,6 +58,9 @@ class UserControllerTest {
 	}
 
 	@Autowired
+	private MockMvc mockMvc;
+
+	@Autowired
 	private UserController controller;
 
 	@MockBean
@@ -66,8 +69,8 @@ class UserControllerTest {
 	@MockBean
 	private TripRepository tripRepository;
 
-	@Autowired
-	private MockMvc mockMvc;
+	@MockBean
+	private TripOrderRepository tripOrderRepository;
 
 	private User user;
 	private User user1;
@@ -75,7 +78,11 @@ class UserControllerTest {
 	private User driver;
 	private User driver2;
 	private Trip trip;
+	private Trip trip1;
+	private Trip trip2;
 	private TripOrder order;
+	private TripOrder tripOrder1;
+	private TripOrder tripOrder2;
 
 	@BeforeEach
 	void setUp() {
@@ -87,24 +94,23 @@ class UserControllerTest {
 		lista3.add("ROLE_CLIENT");
 		lista3.add("ROLE_DRIVER");
 
-		driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
+		driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver1@gotacar.es", "89070310K",
 				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
-		ObjectId driverObjectId = new ObjectId();
-		driver.setId(driverObjectId.toString());
+		ObjectId driverObjectId1 = new ObjectId();
+		driver.setId(driverObjectId1.toString());
 
 		driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com", "312312312R",
 				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
 		ObjectId driverObjectId2 = new ObjectId();
 		driver2.setId(driverObjectId2.toString());
 
-		user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es", "89070336D",
+		user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client1@gotacar.es", "89070336D",
 				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
 		ObjectId userObjectId = new ObjectId();
 		user.setId(userObjectId.toString());
 
 		user1 = new User("Manolo", "Escibar", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client1@gotacar.es", "89070338D",
 				"http://dniclient.com", LocalDate.of(1999, 11, 10), lista2);
-		user1.setDriverStatus("PENDING");
 		ObjectId user1ObjectId = new ObjectId();
 		user1.setId(user1ObjectId.toString());
 
@@ -123,6 +129,24 @@ class UserControllerTest {
 		order = new TripOrder(trip, user, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
 		ObjectId orderObjectId = new ObjectId();
 		order.setId(orderObjectId.toString());
+
+		trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
+				LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+		ObjectId tripObjectId1 = new ObjectId();
+		trip1.setId(tripObjectId1.toString());
+
+		trip2 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
+				LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver2);
+		ObjectId tripObjectId2 = new ObjectId();
+		trip2.setId(tripObjectId2.toString());
+
+		tripOrder1 = new TripOrder(trip1, user1, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
+		ObjectId orderObjectId1 = new ObjectId();
+		tripOrder1.setId(orderObjectId1.toString());
+
+		tripOrder2 = new TripOrder(trip2, driver, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
+		ObjectId orderObjectId2 = new ObjectId();
+		tripOrder2.setId(orderObjectId2.toString());
 	}
 
 	@Test
@@ -136,11 +160,10 @@ class UserControllerTest {
 	@Test
 	public void testListEnrolledUsers() throws Exception {
 		List<User> lista = new ArrayList<User>();
-		lista.add(admin);
 		lista.add(driver);
 		lista.add(driver2);
-		lista.add(user);
-		Mockito.when(userRepository.findAll()).thenReturn(lista);
+		lista.add(user1);
+		Mockito.when(userRepository.findByRolesContaining("ROLE_CLIENT")).thenReturn(lista);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
 		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
@@ -156,6 +179,86 @@ class UserControllerTest {
 		String res = result.andReturn().getResponse().getContentAsString();
 		assertThat(res.contains("ROLE_ADMIN")).isEqualTo(false);
 
+	}
+
+	@Test
+	public void deleteAccountWithTripAndTripOrder() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(java.util.Arrays.asList(trip1));
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PROCCESSING"))
+				.thenReturn(java.util.Arrays.asList(tripOrder2));
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	@Test
+	public void deleteAccountWithTrip() throws Exception {
+		Mockito.when(userRepository.findByUid(driver2.getUid())).thenReturn(driver2);
+		Mockito.when(userRepository.findByEmail(driver2.getEmail())).thenReturn(driver2);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver2, false)).thenReturn(java.util.Arrays.asList(trip2));
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver2, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+
+		String response = mockMvc.perform(post("/user").param("uid", driver2.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	@Test
+	public void deleteAccountWithTripOrder() throws Exception {
+		Mockito.when(userRepository.findByUid(user1.getUid())).thenReturn(user1);
+		Mockito.when(userRepository.findByEmail(user1.getEmail())).thenReturn(user1);
+		Mockito.when(tripRepository.findByDriverAndCanceled(user1, false)).thenReturn(new ArrayList<Trip>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user1, "PROCCESSING"))
+				.thenReturn(java.util.Arrays.asList(tripOrder1));
+
+		String response = mockMvc.perform(post("/user").param("uid", user1.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	@Test
+	public void deleteAccountNothing() throws Exception {
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<Trip>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(get("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
 	@Test
@@ -321,6 +424,7 @@ class UserControllerTest {
 	}
 
 	public void testFindAllPending() throws Exception {
+		user.setDriverStatus("PENDING");
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
 
@@ -341,9 +445,7 @@ class UserControllerTest {
 			res = res.substring(res.indexOf("driverStatus") + "driverStatus".length(), res.length());
 			contador++;
 		}
-
 		assertThat(contador).isEqualTo(1);
-
 	}
 
 	@Test
@@ -365,19 +467,19 @@ class UserControllerTest {
 
 	@Test
 	@WithMockUser(value = "spring")
-	public void testFindUsersByTrip() throws Exception{
+	public void testFindUsersByTrip() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 
-		String response = mockMvc.perform(post("/user").param("uid", driver.getUid()))
-        .andReturn().getResponse().getContentAsString();
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
-                // Obtengo el token
-        String token = json2.getString("token");
+		// Obtengo el token
+		String token = json2.getString("token");
 		String tripId = trip.getId();
 
 		ResultActions result = mockMvc.perform(get("/list_users_trip/{tripId}", tripId).header("Authorization", token)
-        .contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
