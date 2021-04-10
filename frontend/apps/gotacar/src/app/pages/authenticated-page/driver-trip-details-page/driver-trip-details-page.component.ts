@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { AuthServiceService } from '../../../services/auth-service.service';
 import { TripsService } from '../../../services/trips.service';
 
 @Component({
@@ -18,9 +15,6 @@ export class DriverTripDetailsPageComponent {
   constructor(
     private _route: ActivatedRoute,
     private _trip_service: TripsService,
-    private _snackbar: MatSnackBar,
-    private _auth_service: AuthServiceService,
-    private _dialog: MatDialog
   ) { 
     this.load_trip();
     this.load_users();
@@ -37,9 +31,11 @@ export class DriverTripDetailsPageComponent {
   private async load_users(){
     try{
       this.users = await this._trip_service.get_users_by_trip(this._route.snapshot.params['trip_id']);
+      console.log(this.users);
     }catch(error){
       console.log(error);
     }
   }
+
 
 }
