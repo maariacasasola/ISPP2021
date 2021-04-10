@@ -440,6 +440,7 @@ class UserControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
+	@Test
 	public void testFindAllPending() throws Exception {
 		user.setDriverStatus("PENDING");
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
@@ -507,7 +508,7 @@ class UserControllerTest {
 	public void testDeletePenalizedAccount() throws Exception {
 		user.setTimesBanned(4);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
-		Mockito.when(userRepository.findByTimesBannedGreaterThan(4)).thenReturn(java.util.Arrays.asList(user));
+		Mockito.when(userRepository.findByTimesBannedGreaterThan(3)).thenReturn(java.util.Arrays.asList(user));
 		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<>());
 		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
 						.thenReturn(new ArrayList<TripOrder>());;

@@ -158,9 +158,7 @@ public class UserController {
 	@GetMapping("/driver-request/list")
 	public List<User> findAllResquestDriver(){
 		try {
-			List<User> listUser = new ArrayList<>();
-			listUser = userRepository.findByDriverStatus("PENDING");
-            return listUser;
+            return userRepository.findByDriverStatus("PENDING");
 		} catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
         }	
