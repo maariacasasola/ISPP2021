@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.Trip.TripRepository;
+import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.TripOrder.TripOrderRepository;
 import com.gotacar.backend.utils.TokenResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +21,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,10 +34,17 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 @RestController
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private TripRepository tripRepository;
+
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
 
 	@PostMapping("user")
 	public TokenResponse login(@RequestParam("uid") String userId) {
@@ -80,4 +94,21 @@ public class UserController {
 		
 		
 	}
+	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@RequestMapping("/delete-account")
+    public User deleteAccount() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if(trips.size()==0 && tripOrders.size()==0){
+				userRepository.delete(user);
+			}
+			return user;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
 }
