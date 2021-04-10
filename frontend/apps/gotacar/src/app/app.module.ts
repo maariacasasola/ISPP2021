@@ -54,6 +54,7 @@ import { SearchFormComponent } from './components/search-form/search-form.compon
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
 import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
@@ -111,6 +112,7 @@ registerLocaleData(localeEs, 'es');
     AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
+    AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
     CreateTripFormComponent,

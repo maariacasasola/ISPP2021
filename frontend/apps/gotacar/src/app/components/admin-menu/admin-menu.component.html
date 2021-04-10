@@ -18,6 +18,10 @@
     <mat-icon>question_answer</mat-icon>
     <span>Apelaciones</span>
   </button>
+  <button mat-menu-item routerLink="/admin/users">
+    <mat-icon>supervised_user_circle</mat-icon>
+    <span>Usuarios registrados</span>
+  </button>
   <hr />
   <button mat-menu-item (click)="authService.sign_out()">
     <mat-icon>logout</mat-icon>
