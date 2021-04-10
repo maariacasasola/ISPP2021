@@ -163,4 +163,69 @@ public class TripOrderControllerTest {
         assertThat(order.status).isEqualTo("REFUNDED");
     }
 
+    @Test
+    public void testListTripOrderAdmin() throws Exception {
+        Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn()
+                .getResponse().getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/list").header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(tripOrderRepository.findAll().size()).isEqualTo(1);
+    } 
+
+    @Test
+    public void testShowTripOrderAdmin() throws Exception {
+        Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn()
+                .getResponse().getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/show/" + order.getId()).header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+    } 
+
+    @Test
+    public void testListTripOrderUser() throws Exception {
+        Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn()
+                .getResponse().getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/list").header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+    } 
+
+    @Test
+    public void testShowTripOrderUser() throws Exception {
+        Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn()
+                .getResponse().getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/show/" + order.getId()).header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+    } 
+
 }

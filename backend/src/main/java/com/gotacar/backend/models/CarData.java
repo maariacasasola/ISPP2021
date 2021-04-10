@@ -25,7 +25,4 @@ public class CarData {
     public CarData() {
     }
     
-
-
-    
 }

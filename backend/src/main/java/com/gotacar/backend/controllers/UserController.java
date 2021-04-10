@@ -4,6 +4,7 @@ import java.security.Key;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,5 +126,23 @@ public class UserController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/enrolled_users/list")
+	public List<User> listEnrrolledUsers() {
+		try {
+			List<User> res = new ArrayList<>();
+			for (User u : userRepository.findAll()) {
+				if (u.getRoles().contains("ROLE_CLIENT")) {
+					res.add(u);
+				}
+			}
+			return res;
+
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
 	}
 }

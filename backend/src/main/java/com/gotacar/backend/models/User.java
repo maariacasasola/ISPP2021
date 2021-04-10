@@ -20,7 +20,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class User {
   @Id
   public String id;
