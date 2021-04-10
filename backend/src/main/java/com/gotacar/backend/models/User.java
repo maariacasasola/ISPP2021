@@ -58,10 +58,10 @@ public class User {
 
   public String iban;
 
-  public Integer times_banned;
+  public Integer timesBanned;
 
   @URL(message = "Driving license must be an url")
-  public String driving_license;
+  public String drivingLicense;
 
   public Integer experience;
 
@@ -97,9 +97,10 @@ public class User {
     this.bannedUntil = bannedUntil;
   }
 
-  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
-      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil, String phone, String iban,
-      Integer times_banned, String driving_license, Integer experience, CarData carData) {
+  public User( String firstName, String lastName,  String uid,
+      String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil,
+      String phone, String iban, Integer timesBanned,  String drivingLicense,
+      Integer experience, CarData carData) {
 
     this.firstName = firstName;
     this.lastName = lastName;
@@ -113,8 +114,8 @@ public class User {
     this.driverStatus = null;
     this.phone = phone;
     this.iban = iban;
-    this.times_banned = times_banned;
-    this.driving_license = driving_license;
+    this.timesBanned = timesBanned;
+    this.drivingLicense = drivingLicense;
     this.experience = experience;
     this.carData = carData;
   }

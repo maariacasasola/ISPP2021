@@ -96,7 +96,7 @@ public class UserController {
 
 				u.setPhone(phone);
 				u.setIban(iban);
-				u.setDriving_license(driving_license);
+				u.setDrivingLicense(driving_license);
 				u.setExperience(experience);
 				u.setCarData(carData);
 				u.setDriverStatus("PENDING");
@@ -144,5 +144,18 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/driver-request/list")
+	public List<User> findAllResquestDriver(){
+		try {
+			List<User> listUser = new ArrayList<>();
+			listUser = userRepository.findByDriverStatus("PENDING");
+            return listUser;
+		} catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
+        }	
+		
 	}
 }

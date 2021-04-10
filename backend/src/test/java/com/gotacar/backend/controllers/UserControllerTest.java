@@ -36,7 +36,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import net.minidev.json.JSONObject;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
@@ -62,6 +61,7 @@ class UserControllerTest {
 	private MockMvc mockMvc;
 
 	private User user;
+	private User user1;
 	private User admin;
 	private User driver;
 	private User driver2;
@@ -90,6 +90,12 @@ class UserControllerTest {
 				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
 		ObjectId userObjectId = new ObjectId();
 		user.setId(userObjectId.toString());
+
+		user1 = new User("Manolo", "Escibar", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client1@gotacar.es", "89070338D",
+				"http://dniclient.com", LocalDate.of(1999, 11, 10), lista2);
+		user1.setDriverStatus("PENDING");
+		ObjectId user1ObjectId = new ObjectId();
+		user1.setId(user1ObjectId.toString());
 
 		admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "89070360G",
 				"http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1);
@@ -176,7 +182,7 @@ class UserControllerTest {
 
 		ResultActions result = mockMvc
 				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
@@ -210,14 +216,14 @@ class UserControllerTest {
 
 		ResultActions result = mockMvc
 				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
 	@Test
 	public void testConvertToDriverBanned() throws Exception {
-		user.setBannedUntil(LocalDateTime.of(2021, 10, 10,13,30,00));
+		user.setBannedUntil(LocalDateTime.of(2021, 10, 10, 13, 30, 00));
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
 		JSONObject car_data = new JSONObject();
@@ -243,10 +249,11 @@ class UserControllerTest {
 
 		ResultActions result = mockMvc
 				.perform(post("/driver/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(409);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("Ahora mismo su cuenta se encuentra baneada");
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("Ahora mismo su cuenta se encuentra baneada");
 	}
 
 	@Test
@@ -265,7 +272,7 @@ class UserControllerTest {
 
 		ResultActions result = mockMvc
 				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(user.getDriverStatus()).isEqualTo("ACCEPTED");
@@ -286,8 +293,52 @@ class UserControllerTest {
 
 		ResultActions result = mockMvc
 				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+	}
+
+	public void testFindAllPending() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				get("/driver-request/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+		String res = result.andReturn().getResponse().getContentAsString();
+		int contador = 0;
+		while (res.contains("driverStatus")) {
+			res = res.substring(res.indexOf("driverStatus") + "driverStatus".length(), res.length());
+			contador++;
+		}
+
+		assertThat(contador).isEqualTo(1);
+
+	}
+
+	@Test
+	public void testFindAllPendingFail() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				get("/driver-request/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+
 	}
 }
