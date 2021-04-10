@@ -10,6 +10,7 @@ import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-p
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
+import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
@@ -69,6 +70,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ClientProfilePageComponent,
+      },
+      {
+        path: 'contact',
+        component: ClientContactPageComponent,
       },
       {
         path: 'create-trips',
