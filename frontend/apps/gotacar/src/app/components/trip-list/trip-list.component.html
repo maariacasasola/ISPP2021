@@ -18,16 +18,17 @@
       >
     </mat-card-header>
     <mat-card-content>
-      <p>
+      <p class="trip-comments">
         {{ trip?.comments }}
       </p>
       <div class="places-and-price">
         <h3>Plazas disponibles: {{ trip?.places }}</h3>
         <h3>Precio: {{ trip?.price | convertCentToEur }}</h3>
       </div>
+      <p>Hora de salida: {{trip?.startDate | date: 'HH:mm dd/MM/yyyy'}}</p>
     </mat-card-content>
     <mat-card-actions class="card-actions">
-      <button (click)="see_trip_details(trip?.id)" mat-flat-button>
+      <button (click)="see_trip_details(trip?.id)" mat-flat-button class="see-more">
         Ver más
       </button>
     </mat-card-actions>

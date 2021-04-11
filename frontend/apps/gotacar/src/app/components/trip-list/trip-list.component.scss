@@ -1,3 +1,5 @@
+@import '~colors.scss';
+
 .trips-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -24,4 +26,13 @@
   flex-direction: row;
   justify-content: space-between;
   color: #0e4a6b;
+}
+
+.see-more {
+  color: white;
+  background-color: $primary;
+}
+
+.trip-comments {
+  margin-top: 10px !important;
 }

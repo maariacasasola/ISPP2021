@@ -2,7 +2,7 @@
 * Generated theme by Material Theme Generator
 * https://materialtheme.arcsine.dev
 */
-
+@import 'colors.scss';
 @import '~@angular/material/theming';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -295,4 +295,23 @@ button:hover {
 
 .mat-drawer-container {
   background-color: white;
+}
+
+.filter-accordion .mat-expansion-panel-header-title {
+  align-items: center;
+}
+
+.ngx-slider {
+  .ngx-slider-pointer {
+    background-color: $warn !important;
+  }
+  .ngx-slider-pointer:focus {
+    outline: none !important;
+  }
+  .ngx-slider-selection {
+    background-color: $warn !important;
+  }
+  .ngx-slider-active:after {
+    background-color: $primary !important;
+  }
 }
