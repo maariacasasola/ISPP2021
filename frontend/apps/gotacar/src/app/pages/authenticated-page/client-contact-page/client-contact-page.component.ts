@@ -37,7 +37,7 @@ export class ClientContactPageComponent implements OnInit {
       formData.append("message", this.form.get("message").value);
       this.isLoading = true; // sending the post request async so it's in progress
       this.submitted = false; // hide the response message on multiple submits
-      this.http.post("https://script.google.com/macros/s/AKfycbybRFGYXaLkLKPSA4fPAZq_PzCZJwp3I4q9SgG7/exec", formData).subscribe(
+      this.http.post("https://script.google.com/macros/s/AKfycbwwr5N0tI0DxqCZqflFDt4kXfOxdo0npQW7Lq6z2FbDeauMRds/exec", formData).subscribe(
         (response) => {
           // choose the response message
           if (response["result"] == "success") {
