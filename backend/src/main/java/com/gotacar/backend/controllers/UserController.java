@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.stream.Collectors;
 
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.CarData;
 import com.gotacar.backend.utils.TokenResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +76,6 @@ public class UserController {
 		   String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 		   String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
 		   LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-		   String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
-		   String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 		   List<String> roles = new ArrayList<>();
 		   roles.add("ROLE_CLIENT");
 
@@ -88,8 +88,6 @@ public class UserController {
 		   user.setProfilePhoto(profilePhoto);
 		   user.setBirthdate(birthdate);
 		   user.setRoles(roles);
-		   user.setPhone(phone);
-		   user.setIban(iban);
 		   user.setTimes_banned(0);
 		   ObjectId userObjectId = new ObjectId();
 		   user.setId(userObjectId.toString());
@@ -118,8 +116,6 @@ public class UserController {
 		   		String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 		   		String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
 		   		LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
-		   		String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 		   		List<String> roles = new ArrayList<>();
 		   		roles.add("ROLE_CLIENT");
 
@@ -132,8 +128,6 @@ public class UserController {
 		   		user.setProfilePhoto(profilePhoto);
 		   		user.setBirthdate(birthdate);
 		   		user.setRoles(roles);
-				user.setPhone(phone);
-		   		user.setIban(iban);
 		   		user.setTimes_banned(0);
 		   		ObjectId userObjectId = new ObjectId();
 		   		user.setId(userObjectId.toString());
@@ -149,16 +143,12 @@ public class UserController {
 				String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 		   		String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
 		   		LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
-		   		String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 				
 		   		user.setFirstName(firstName);
 		   		user.setLastName(lastName);
 		   		user.setDni(dni);
 		   		user.setProfilePhoto(profilePhoto);
 		   		user.setBirthdate(birthdate);
-				user.setPhone(phone);
-		   		user.setIban(iban);
 		   		userRepository.save(user);
 				
 		   		return user;
@@ -181,25 +171,42 @@ public class UserController {
 
 			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
 			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
-			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
-			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
 			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
-			String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 		   
 
 		  
 		   user.setFirstName(firstName);
 		   user.setLastName(lastName);
-		   user.setUid(uid);
 		   user.setEmail(email);
-		   user.setDni(dni);
 		   user.setProfilePhoto(profilePhoto);
 		   user.setBirthdate(birthdate);
-		   user.setPhone(phone);
-		   user.setIban(iban);
+		   //editar los datos del coche si es un conductor
+		   if(user.getRoles().contains("ROLE_DRIVER")){
+				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
+				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
+
+			  	JsonNode carDataJson = objectMapper.readTree(jsonNode.get("carData").toString());
+			
+			  /* String plate = carDataJson.get("car_plate").asText();
+			   LocalDate localDate = LocalDate.parse(carDataJson.get("enrollment_date").toString());
+			   ZoneId zoneId = ZoneId.of("Europe/Madrid");
+			   Date date = Date.from(localDate.atStartOfDay(zoneId).toInstant());
+			   String model = carDataJson.get("model").asText();
+			   String color = carDataJson.get("color").asText();
+			   CarData carData = new CarData();
+			   carData.setCar_plate(plate);
+			   carData.setEnrollment_date(date);
+			   carData.setModel(model);
+			   carData.setColor(color);*/
+			   
+			
+			   user.setCarData(new CarData());
+			   user.setPhone(phone);
+			   user.setIban(iban);
+
+		   }
 
 		   userRepository.save(user);
 
