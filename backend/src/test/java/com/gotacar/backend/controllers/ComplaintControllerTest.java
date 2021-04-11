@@ -118,7 +118,7 @@ public class ComplaintControllerTest {
 
         @Test
         public void ListComplaintsTest() throws Exception {
-                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
+                Mockito.when(complaintRepository.findByStatus(complaint.getStatus())).thenReturn(Arrays.asList(complaint));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
                 String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
@@ -133,15 +133,15 @@ public class ComplaintControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(result.andReturn().getResponse().getContentType().equals(Complaint.class.toString()));
 
                 String res = result.andReturn().getResponse().getContentAsString();
                 int contador = 0;
-                while (res.contains("trip")) {
-                        res = res.substring(res.indexOf("trip") + "trip".length(), res.length());
+                while (res.contains("PENDING")) {
+                        res = res.substring(res.indexOf("PENDING") + "PENDING".length(), res.length());
                         contador++;
                 }
-
-                assertThat(contador).isEqualTo(2);
+                assertThat(contador).isEqualTo(1);
         }
 
         @Test

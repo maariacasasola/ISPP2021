@@ -13,6 +13,19 @@
   grid-area: map;
 }
 
+.driver{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'driver-info driver-status';
+  flex-direction: column;
+  margin: 20px 0px 20px 0px;
+}
+
+.driver-info{
+  grid-area: driver-info;
+}
+
 .trip {
   grid-area: trip;
   padding: 40px 20px 20px 20px;
@@ -43,6 +56,8 @@
   padding: 10px;
   align-self: center;
   border-radius: 50%;
+  grid-area: driver-status;
+  justify-self: center;
 }
 
 .driver-status img {

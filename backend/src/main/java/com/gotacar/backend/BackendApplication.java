@@ -201,7 +201,7 @@ public class BackendApplication implements CommandLineRunner {
                 Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2,
                                 driver2);
                 Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Lagoh",
-                                2, driver);
+                                5, driver);
                 Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9,
                                 "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
                 Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,

@@ -7,6 +7,7 @@ import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-compl
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
@@ -21,6 +22,9 @@ import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
+import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
+import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 
 const routes: Routes = [
   {
@@ -80,6 +84,11 @@ const routes: Routes = [
         canActivate: [DriverGuard],
       },
       {
+        path: 'driver-trips/:trip_id',
+        component: DriverTripDetailsPageComponent,
+        canActivate: [DriverGuard],
+      },
+      {
         path: 'trips',
         component: UserTripListPageComponent,
       },
@@ -103,12 +112,24 @@ const routes: Routes = [
         component: AdminTripListPageComponent,
       },
       {
+        path: 'users',
+        component: AdminUserListPageComponent,
+      },
+      {
         path: 'complaints',
         component: AdminComplaintsListPageComponent,
       },
       {
         path: 'complaint-appeals',
         component: AdminComplaintAppealsListPageComponent,
+      },
+      {
+        path: 'trip-orders',
+        component: AdminTripOrdersListPageComponent,
+      },
+      {
+        path: 'trip-orders/:trip_order_id',
+        component: AdminTripOrderDetailsPageComponent,
       },
     ],
   },

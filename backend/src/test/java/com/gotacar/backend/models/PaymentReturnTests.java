@@ -69,7 +69,7 @@ public class PaymentReturnTests {
         Set<ConstraintViolation<PaymentReturn>> constraintViolations = validator.validate(paymentReturn);
 
         ConstraintViolation<PaymentReturn> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("El estado de la queja solo puede ser: (PENDING|DONE)");
+        assertThat(violation.getMessage()).isEqualTo("El estado de la devolución solo puede ser: (PENDING|DONE)");
     }
 
     @Test

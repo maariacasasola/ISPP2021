@@ -142,7 +142,7 @@ public class TripOrderControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         String token = json.getString("token");
 
-        mockMvc.perform(get("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
+        mockMvc.perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
 
         assertThat(order.status).isEqualTo("REFUNDED_PENDING");
     }
@@ -158,7 +158,7 @@ public class TripOrderControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         String token = json.getString("token");
 
-        mockMvc.perform(get("/cancel_trip_order/" + order.getId()).header("Authorization", token));
+        mockMvc.perform(post("/cancel_trip_order/" + order.getId()).header("Authorization", token));
 
         assertThat(order.status).isEqualTo("REFUNDED");
     }

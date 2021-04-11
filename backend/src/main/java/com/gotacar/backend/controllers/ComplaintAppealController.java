@@ -1,6 +1,5 @@
 package com.gotacar.backend.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +47,7 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ComplaintAppeal> listComplaintAppeals() {
         try {
-            List<ComplaintAppeal> complaintAppeals = new ArrayList<>();
-            complaintAppeals = complaintAppealRepository.findByChecked(false);
-            return complaintAppeals;
+            return complaintAppealRepository.findByChecked(false);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
@@ -60,8 +57,7 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ComplaintAppeal acceptComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
-            ObjectId complaintAppealObjectId = new ObjectId(complaintAppealId);
-            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(complaintAppealObjectId);
+            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
             if (complaintAppeal.getChecked() == false) {
                 User u = userRepository.findByUid(complaintAppeal.getComplaint().getTrip().getDriver().getUid());
                 complaintAppeal.getComplaint().getTrip().setDriver(u);
@@ -83,8 +79,7 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ComplaintAppeal rejectComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
-            ObjectId complaintAppealObjectId = new ObjectId(complaintAppealId);
-            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(complaintAppealObjectId);
+            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
             if (complaintAppeal.getChecked() == false) {
                 complaintAppeal.setChecked(true);
                 complaintAppealRepository.save(complaintAppeal);

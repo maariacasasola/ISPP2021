@@ -30,7 +30,7 @@ public class PaymentReturn {
     @NotNull
     public Integer amount;
 
-    @Pattern(regexp = "PENDING|DONE", message = "El estado de la queja solo puede ser: (PENDING|DONE)")
+    @Pattern(regexp = "PENDING|DONE", message = "El estado de la devolución solo puede ser: (PENDING|DONE)")
     public String status;
 
     @NotNull

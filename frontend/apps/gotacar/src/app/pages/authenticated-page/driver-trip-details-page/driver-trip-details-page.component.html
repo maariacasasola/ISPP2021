@@ -1,0 +1,61 @@
+<section class="trip-details-container">
+  <div class="trip">
+    <h1>DETALLES DEL VIAJE</h1>
+    <div class="map">
+      <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>
+    </div>
+    <div class="trip-info">
+      <h2>
+        Fecha y hora de inicio:
+        <i>{{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+      </h2>
+      <h2>
+        Fecha y hora de finalización:
+        <i>{{ trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+      </h2>
+
+      <div class="price-and-places">
+        <h2>
+          <span>Plazas disponibles: {{ trip?.places }}</span>
+        </h2>
+        <span class="price">{{ trip?.price | convertCentToEur }}</span>
+      </div>
+      <h2>Comentarios del Viaje:</h2>
+      <p>{{ trip?.comments }}</p>
+    </div>
+  </div>
+  <div class="clients">
+    <h2>Reservas</h2>
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex="33%" fxFlex.xs="100%" *ngFor="let user of users">
+        <div class="content">
+          <mat-card class="mat-elevation-z4">
+            <mat-card-header>
+              <mat-card-title>{{
+                user?.firstName + ' ' + user?.lastName
+              }}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./../assets/img/generic-user.jpg" />
+            <mat-card-content>
+              <div>
+                <b>{{ user?.email }}</b>
+                <p>{{ user?.phone }}</p>
+              </div>
+              <div>
+                <b *ngIf="!user.times_banned">Veces baneado : 0</b>
+                <b *ngIf="user.times_banned"
+                  >Veces baneado : {{ user.times_banned }}</b
+                >
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <br />
+              <button mat-raised-button color="primary">RECHAZAR</button>
+              <button mat-raised-button color="primary">MÁS INFORMACIÓN</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

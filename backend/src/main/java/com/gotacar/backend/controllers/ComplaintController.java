@@ -50,9 +50,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            List<Complaint> complaints = complaintRepository.findAll().stream()
-                    .filter(x -> x.getStatus().equals("PENDING")).collect(Collectors.toList());
-            return complaints;
+            return complaintRepository.findByStatus("PENDING");
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
@@ -99,7 +97,6 @@ public class ComplaintController {
     public User penalize(@RequestBody String body) {
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
-            User userBanned = new User();
 
             LocalDateTime dateBanned = OffsetDateTime
                     .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
@@ -108,11 +105,10 @@ public class ComplaintController {
 
             Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
             Trip tripComplaint = complaintFinal.getTrip();
-            userBanned = tripComplaint.getDriver();
-            String userDni = userBanned.getDni();
+            User userBanned = tripComplaint.getDriver();
 
-            List<String> trips = tripRepository.findAll().stream().filter(a -> a.driver.dni.equals(userDni))
-                    .map(x -> x.getId()).collect(Collectors.toList());
+            List<String> trips = tripRepository.findByDriverDni(userBanned.getDni()).stream()
+                .map(x -> x.getId()).collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
             int j = 0;
 
@@ -145,9 +141,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId) {
         try {
-            String idComplaint = complaintId;
-
-            Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
+            Complaint complaintFinal = complaintRepository.findById(new ObjectId(complaintId));
 
             complaintFinal.setStatus("REFUSED");
             complaintRepository.save(complaintFinal);
