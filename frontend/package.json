@@ -32,6 +32,7 @@
   "dependencies": {
     "-": "0.0.1",
     "@angular-devkit/architect": "^0.1102.4",
+    "@angular-slider/ngx-slider": "^2.0.3",
     "@angular/animations": "^11.2.5",
     "@angular/cdk": "^11.2.4",
     "@angular/common": "^11.2.0",
@@ -50,6 +51,7 @@
     "@nrwl/angular": "^11.5.1",
     "@stripe/stripe-js": "^1.13.2",
     "firebase": "^8.3.0",
+    "moment": "^2.29.1",
     "postcss": "^8.2.8",
     "request": "^2.88.2",
     "rxjs": "~6.6.3",

@@ -48,6 +48,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -90,6 +92,7 @@ import { MeetingPointSearchbarResultComponent } from './components/meeting-point
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
+import { OrderTripsPipe } from './pipes/order-trips.pipe';
 
 registerLocaleData(localeEs, 'es');
 
@@ -135,6 +138,7 @@ registerLocaleData(localeEs, 'es');
     PaymentFailedComponent,
     MeetingPointSearchbarResultComponent,
     DriverTripDetailsPageComponent,
+    OrderTripsPipe,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -152,6 +156,7 @@ registerLocaleData(localeEs, 'es');
     MatFormFieldModule,
     MatIconModule,
     MatStepperModule,
+    MatExpansionModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -178,6 +183,7 @@ registerLocaleData(localeEs, 'es');
     GoogleMapsModule,
     MatMenuModule,
     FlexLayoutModule,
+    NgxSliderModule,
   ],
   providers: [
     AuthenticatedGuard,

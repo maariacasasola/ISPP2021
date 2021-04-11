@@ -1,8 +1,10 @@
+import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { TripsService } from '../../services/trips.service';
+import { convert_cent_to_eur } from '../../shared/utils/functions';
 
 @Component({
   selector: 'frontend-trip-search-result-page',
@@ -16,6 +18,16 @@ export class TripSearchResultPageComponent implements OnInit {
   date;
 
   trips;
+  filter_opened;
+  filter = {
+    order_by: null,
+    max_price: 10000,
+    min_price: 0,
+  };
+
+  min_price_range;
+  max_price_range;
+  price_range_options;
 
   constructor(
     private _route: ActivatedRoute,
@@ -47,6 +59,7 @@ export class TripSearchResultPageComponent implements OnInit {
         this.places,
         new Date(this.date)
       );
+      this.set_filters();
     } catch (error) {
       console.error(error);
     }
@@ -84,5 +97,40 @@ export class TripSearchResultPageComponent implements OnInit {
       duration: 2000,
       panelClass: ['blue-snackbar'],
     });
+  }
+
+  order_by_changed(value) {
+    this.filter = { ...this.filter, order_by: value };
+  }
+
+  change_filter_min_price(value) {
+    this.filter = { ...this.filter, min_price: value };
+  }
+
+  change_filter_max_price(value) {
+    this.filter = { ...this.filter, max_price: value };
+  }
+
+  set_filters() {
+    const max_price = Math.max(...this.trips.map((o) => o.price), 0);
+    const min_price = Math.min(...this.trips.map((o) => o.price), 0);
+    this.min_price_range = min_price;
+    this.max_price_range = max_price;
+    this.price_range_options = {};
+    this.price_range_options.translate = (
+      value: number,
+      label: LabelType
+    ): string => {
+      switch (label) {
+        case LabelType.Low:
+          return convert_cent_to_eur(value) + ' €';
+        case LabelType.High:
+          return convert_cent_to_eur(value) + ' €';
+        default:
+          return convert_cent_to_eur(value) + ' €';
+      }
+    };
+    this.price_range_options.floor = min_price;
+    this.price_range_options.ceil = max_price;
   }
 }
