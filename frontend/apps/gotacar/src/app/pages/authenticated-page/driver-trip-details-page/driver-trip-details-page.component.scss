@@ -3,18 +3,16 @@
 .trip-details-container {
   padding: 20px;
   display: grid;
-  grid-template-columns: 0.5fr 1fr;
+  grid-template-columns: 0.65fr 1fr;
   grid-template-rows: 1fr;
   gap: 20px 20px;
   grid-template-areas: 'trip map map';
 }
 
-
 .map {
   grid-area: map;
   border: 3px solid #0e4a6b;
   margin-bottom: 40px;
-
 }
 
 .trip {
@@ -22,7 +20,6 @@
   padding: 40px 20px 20px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .trip-info {
@@ -59,25 +56,34 @@
   width: 100px;
 }
 
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px 15px;
+  grid-template-areas:
+    ". . .";
+}
+
+.mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mat-card-actions button {
+  margin: 10px 0;
+}
+
 .clients h2{
   margin-top: 30px;
   text-align: center;
   color: #0e4a6b;
 }
 
-.content {
-  padding: 16px;
-}
-
-.content > mat-card {
-  width: 300px;
-}
-
 .button {
   background-color: #0e4a6b;
   color: white;
 }
-
 
 @media (max-width: 760px) {
   .trip-details-container {
