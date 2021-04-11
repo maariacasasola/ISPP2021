@@ -15,6 +15,14 @@ export class TripsService {
       .toPromise();
   }
 
+  get_all_trip_orders(): Promise<any> {
+    return this._http_client.get(environment.api_url + '/trip_order/list').toPromise();
+  }
+
+  get_trip_order(trip_order_id: string): Promise<any> {
+    return this._http_client.get(environment.api_url + '/trip_order/show/' + trip_order_id).toPromise();
+  }
+
   get_trips(): Promise<any> {
     return this._http_client
       .get(environment.api_url + '/list_trip_orders')
