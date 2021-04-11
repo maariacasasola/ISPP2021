@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -53,7 +51,6 @@ public class TripController {
 	@PostMapping(path = "/search_trips", consumes = "application/json")
 	public List<Trip> searchTrip(@RequestBody() String body) {
 		try {
-			List<Trip> response = new ArrayList<>();
 			JsonNode jsonNode = objectMapper.readTree(body);
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
@@ -63,8 +60,7 @@ public class TripController {
 			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
 					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
-			response = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
-			return response;
+			return tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
@@ -72,12 +68,10 @@ public class TripController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping("/list_trips")
+	@GetMapping("/list_trips")
 	public List<Trip> listTrips() {
 		try {
-			List<Trip> lista = new ArrayList<>();
-			lista = tripRepository.findAll();
-			return lista;
+			return tripRepository.findAll();
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
@@ -146,8 +140,7 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
-			Trip trip1 = new Trip();
-			trip1 = tripRepository.findById(new ObjectId(tripId));
+			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
 
@@ -193,11 +186,9 @@ public class TripController {
 	@GetMapping("/list_trips_driver")
 	public List<Trip> listTripsDriver() {
 		try {
-			List<Trip> lista = new ArrayList<>();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
-			lista = tripRepository.findByDriver(currentUser);
-			return lista;
+			return tripRepository.findByDriver(currentUser);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}

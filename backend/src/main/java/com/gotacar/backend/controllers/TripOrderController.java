@@ -13,8 +13,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ public class TripOrderController {
     private UserRepository userRepository;
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    @RequestMapping("/list_trip_orders")
+    @GetMapping("/list_trip_orders")
     public List<TripOrder> listTripOrders() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,7 +46,7 @@ public class TripOrderController {
     }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    @RequestMapping("/cancel_trip_order_request/{id}")
+    @PostMapping("/cancel_trip_order_request/{id}")
     public TripOrder cancelTripOrderRequest(@PathVariable(value = "id") String id) {
         try {
             ObjectId tripOrderObjectId = new ObjectId(id);
@@ -62,7 +63,7 @@ public class TripOrderController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/cancel_trip_order/{id}")
+    @PostMapping("/cancel_trip_order/{id}")
     public TripOrder cancelTripOrder(@PathVariable(value = "id") String id) {
         try {
             ObjectId tripOrderObjectId = new ObjectId(id);
@@ -76,7 +77,7 @@ public class TripOrderController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("trip_order/list")
+    @GetMapping("trip_order/list")
     public List<TripOrder> listTripOrdersAdmin() {
         try {
             return tripOrderRepository.findAll();
@@ -86,12 +87,10 @@ public class TripOrderController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("trip_order/show/{id}")
+    @GetMapping("trip_order/show/{id}")
     public TripOrder showTripOrdersAdmin(@PathVariable(value = "id") String id) {
         try {
-            ObjectId objectId = new ObjectId(id);
-            TripOrder order = tripOrderRepository.findById(objectId);
-            return order;
+            return tripOrderRepository.findById(new ObjectId(id));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,16 +57,13 @@ public class MeetingPointController {
 	@GetMapping("/search_meeting_points")
 	public List<MeetingPoint> findAllMeetingPoints(){
 		try {
-            List<MeetingPoint> response = new ArrayList<>();
-			response = pointsRepository.findAll();
-            return response;
+            return pointsRepository.findAll();
 		} catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
         }	
 		
 	}
 
-    //Delete
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete_meeting_point/{mpId}")
      public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
