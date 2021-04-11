@@ -1,0 +1,37 @@
+h1 {
+  text-align: center;
+  color: #0e4a6b;
+  margin: 20px;
+  font-size: 30px;
+}
+
+.trip {
+  border: 1px solid #0e4a6b;
+  padding: 30px;
+}
+
+.card-title {
+  text-align: right;
+  color: #0e4a6b;
+  font-size: 30px;
+}
+
+.trips-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 20px;
+  grid-template-areas: '. .';
+  padding: 20px;
+}
+
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
+@media (max-width: 760px) {
+  .trips-list {
+    display: flex;
+    flex-direction: column;
+  }
+}

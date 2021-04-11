@@ -88,6 +88,8 @@ import { PaymentSuccessComponent } from './pages/payment-success/payment-success
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
+import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
+import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -107,6 +109,7 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    AdminTripOrderDetailsPageComponent,
     DriverTripListPageComponent,
     CancelTripDialogComponent,
     AdminMenuComponent,
@@ -115,6 +118,7 @@ registerLocaleData(localeEs, 'es');
     AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
+    AdminTripOrdersListPageComponent,
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
