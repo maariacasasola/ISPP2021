@@ -1,0 +1,119 @@
+<section class="page-content">
+    <h1>Actualiza tu perfil de GotACar</h1>
+  
+    <form [formGroup]="update_form">
+      <mat-card class="login-card">
+        <div class="form-fields">
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix>account_circle</mat-icon>
+            <mat-label>Nombre </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="firstName"
+              required
+              value="{{ data?.firstName }}"
+            />
+            <mat-error *ngIf="update_form?.get('firstName')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix>account_circle</mat-icon>
+            <mat-label>Apellido </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="lastName"
+              required
+              value="{{ data?.lastName }}"
+            />
+            <mat-error *ngIf="update_form?.get('lastName')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix>attach_email</mat-icon>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              required
+              value="{{ data?.email }}"
+            />
+            <mat-error *ngIf="update_form?.get('email')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+            <mat-error *ngIf="update_form?.get('email')?.errors?.email"
+              >Email inválido</mat-error
+            >
+          </mat-form-field>
+  
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix>account_circle</mat-icon>
+            <mat-label>DNI</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="dni"
+              required
+              value="{{ data?.dni }}"
+            />
+            <mat-error *ngIf="update_form?.get('dni')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+            <mat-error *ngIf="update_form?.get('dni')?.errors?.pattern"
+              >DNI inválido</mat-error
+            >
+          </mat-form-field>
+  
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix> calendar_today </mat-icon>
+            <mat-label>Fecha nacimiento </mat-label>
+            <input
+              matInput
+              type="date"
+              formControlName="birthdate"
+              required
+              value="{{ data?.birthdate }}"
+            />
+            <mat-error *ngIf="update_form?.get('birthdate')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+          </mat-form-field>
+  
+          <mat-form-field class="spacing" appearance="outline">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-label>Teléfono</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="phone"
+              required
+              value="{{ data?.phone }}"
+            />
+            <mat-error *ngIf="update_form?.get('phone')?.errors?.required"
+              >Campo obligatorio</mat-error
+            >
+            <mat-error *ngIf="update_form?.get('phone')?.errors?.pattern"
+              >Teléfono inválido</mat-error
+            >
+          </mat-form-field>
+          
+         
+         
+        </div>
+  
+        <button
+          class="login-button"
+          mat-flat-button
+          type="submit"
+          (click)="onSubmit()"
+          [disabled]="!update_form.valid"
+        >
+          Actualizar
+        </button>
+      </mat-card>
+    </form>
+  </section>

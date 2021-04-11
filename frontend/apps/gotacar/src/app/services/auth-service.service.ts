@@ -61,6 +61,9 @@ export class AuthServiceService {
         window.alert(error.message);
       });
   }
+  async register(user){
+    //TODO acabar
+  }
 
   async send_verification_mail() {
     return this.afAuth.currentUser.then((u) =>

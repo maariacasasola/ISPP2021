@@ -4,24 +4,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
-  selector: 'frontend-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss'],
+  selector: 'frontend-register-user-google',
+  templateUrl: './register-user-google.component.html',
+  styleUrls: ['./register-user-google.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class RegisterUserGoogleComponent implements OnInit {
   register_form = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
-        ),
-      ],
-    ],
     dni: [
       '',
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
@@ -56,14 +46,12 @@ export class SignUpComponent implements OnInit {
     } catch (error) {}
     //authService.sign_in(userName.value, userPassword.value)
   }
-
   checkDate() {
     const date: Date = new Date(this.register_form.value.birthdate);
     let timeDiff = Math.abs(Date.now() - date.getTime());
     let age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
     return age > 17;
   }
-
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
       duration: 3000,

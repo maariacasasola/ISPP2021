@@ -1,11 +1,43 @@
-<section class="page-content">
-  <mat-card> 
-    <mat-card-title>Perfil {{name}}</mat-card-title>
-    <mat-card-content>
-        <p>Datos aqui</p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button>Editar perfil</button>
-    </mat-card-actions>
-  </mat-card>
-</section>
+<div class="grid-container">
+  <div class="Perfil">
+    <img
+      class="round"
+      src="https://randomuser.me/api/portraits/men/79.jpg"
+      alt="user"
+    />
+    <h3>{{ data?.firstName }} {{ data?.lastName }}</h3>
+    <h6>Sevilla</h6>
+    <div class="buttons">
+      <div *ngIf="isDriver()">
+        <button class="primary" (click)="goToEditDriver()">Editar</button>
+      </div>
+      <div *ngIf="!isDriver()">
+        <button class="primary" (click)="goToEditClient()">Editar</button>
+      </div>
+    </div>
+    <div class="skills">
+      <h6>Datos Personales</h6>
+      <ul>
+        <li>Fecha nacimiento: {{ data?.birthdate }}</li>
+        <li>Email: {{ data?.email }}</li>
+        <li>DNI: {{ data?.dni }}</li>
+      </ul>
+      <div *ngIf="isDriver()">
+        <h6>Datos del Conductor</h6>
+        <ul>
+          <li>Teléfono: {{ data?.phone }}</li>
+          <li>IBAN: {{ data?.iban }}</li>
+          <li>Licencia: {{ data?.driving_license }}</li>
+          <li>Experiencia: {{ data?.experience }}</li>
+        </ul>
+        <h6>Datos del vehículo</h6>
+        <ul>
+          <li>Matrícula: {{ data?.carData?.car_plate }}</li>
+          <li>Alta: {{ data?.carData?.enrollment_date }}</li>
+          <li>Modelo: {{ data?.carData?.model }}</li>
+          <li>Color: {{ data?.carData?.color }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

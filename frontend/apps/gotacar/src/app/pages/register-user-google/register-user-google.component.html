@@ -22,30 +22,6 @@
             >Campo obligatorio</mat-error
           >
         </mat-form-field>
-        <mat-form-field class="spacing" appearance="outline">
-          <mat-icon matSuffix>attach_email</mat-icon>
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required />
-          <mat-error *ngIf="register_form?.get('email')?.errors?.required"
-            >Campo obligatorio</mat-error
-          >
-          <mat-error *ngIf="register_form?.get('email')?.errors?.email"
-            >Email inválido</mat-error
-          >
-        </mat-form-field>
-
-        <mat-form-field class="spacing" appearance="outline">
-          <mat-icon matSuffix>vpn_key</mat-icon>
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" formControlName="password" required />
-          <mat-error *ngIf="register_form?.get('password')?.errors?.required"
-            >Campo obligatorio</mat-error
-          >
-          <mat-error *ngIf="register_form?.get('password')?.errors?.pattern"
-            >Contraseña 8 caracteres mínimo, mayúsculas, minúsculas, números y
-            caracteres especiales</mat-error
-          >
-        </mat-form-field>
 
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>account_circle</mat-icon>

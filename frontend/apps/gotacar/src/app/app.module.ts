@@ -87,6 +87,11 @@ import { PaymentSuccessComponent } from './pages/payment-success/payment-success
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
+import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
+import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+
+
 
 registerLocaleData(localeEs, 'es');
 
@@ -129,6 +134,9 @@ registerLocaleData(localeEs, 'es');
     PaymentFailedComponent,
     MeetingPointSearchbarResultComponent,
     SignUpComponent,
+    RegisterUserGoogleComponent,
+    EditProfileComponent,
+    EditProfileClientComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

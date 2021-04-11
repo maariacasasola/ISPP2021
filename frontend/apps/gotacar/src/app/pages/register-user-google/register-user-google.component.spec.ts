@@ -4,16 +4,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthServiceService } from '../../../services/auth-service.service';
-import { SignUpComponent } from '../../sign-up/sign-up.component';
+import { AuthServiceService } from '../../services/auth-service.service';
+import { SignUpComponent } from '../sign-up/sign-up.component';
 
-import { ClientProfilePageComponent } from './client-profile-page.component';
+import { RegisterUserGoogleComponent } from './register-user-google.component';
 class mockTripService{
   
 }
-describe('ClientProfilePageComponent', () => {
-  let component: ClientProfilePageComponent;
-  let fixture: ComponentFixture<ClientProfilePageComponent>;
+describe('RegisterUserGoogleComponent', () => {
+  let component: RegisterUserGoogleComponent;
+  let fixture: ComponentFixture<RegisterUserGoogleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,11 +25,12 @@ describe('ClientProfilePageComponent', () => {
         declarations: [ SignUpComponent ],
         providers:[{ provide: AuthServiceService, useClass: mockTripService }],
         schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientProfilePageComponent);
+    fixture = TestBed.createComponent(RegisterUserGoogleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

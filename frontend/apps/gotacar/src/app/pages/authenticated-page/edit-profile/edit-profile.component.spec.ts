@@ -7,13 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { SignUpComponent } from '../../sign-up/sign-up.component';
 
-import { ClientProfilePageComponent } from './client-profile-page.component';
+import { EditProfileComponent } from './edit-profile.component';
+
+
 class mockTripService{
   
 }
-describe('ClientProfilePageComponent', () => {
-  let component: ClientProfilePageComponent;
-  let fixture: ComponentFixture<ClientProfilePageComponent>;
+describe('EditProfileComponent', () => {
+  let component: EditProfileComponent;
+  let fixture: ComponentFixture<EditProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,11 +27,12 @@ describe('ClientProfilePageComponent', () => {
         declarations: [ SignUpComponent ],
         providers:[{ provide: AuthServiceService, useClass: mockTripService }],
         schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientProfilePageComponent);
+    fixture = TestBed.createComponent(EditProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

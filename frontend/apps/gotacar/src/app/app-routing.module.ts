@@ -22,6 +22,10 @@ import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
+import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
+
 
 const routes: Routes = [
   {
@@ -44,6 +48,10 @@ const routes: Routes = [
   {
     path: 'sign-up',
     component: SignUpComponent,
+  },
+  {
+    path: 'google-register',
+    component:RegisterUserGoogleComponent,
   },
   {
     path: 'error',
@@ -74,6 +82,15 @@ const routes: Routes = [
         path: 'profile',
         component: ClientProfilePageComponent,
       },
+      {
+        path:'edit-profile',
+        component: EditProfileComponent,
+      },
+      {
+        path:'edit-profile-client',
+        component:EditProfileClientComponent,
+      },
+      
       {
         path: 'create-trips',
         component: DriverCreateTripPageComponent,
