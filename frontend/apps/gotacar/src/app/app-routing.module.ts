@@ -7,6 +7,7 @@ import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-compl
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
@@ -107,6 +108,10 @@ const routes: Routes = [
       {
         path: 'trips',
         component: AdminTripListPageComponent,
+      },
+      {
+        path: 'users',
+        component: AdminUserListPageComponent,
       },
       {
         path: 'complaints',
