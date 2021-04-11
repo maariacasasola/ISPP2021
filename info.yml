@@ -1,0 +1,58 @@
+project:
+  name: "GotACar"
+  owner: "maariacasasola"
+  teamId: "10"
+  identities:
+    github:
+      url: "https://github.com/maariacasasola/ISPP2021"
+    travis:
+      url: "https://travis-ci.org/github/maariacasasola/ISPP2021"
+  members:
+    member1:
+      name: 'María'
+      surname: 'Casasola' 
+      githubUsername: 'maariacasasola'
+    member2:
+      name: 'Moisés'
+      surname: 'Calzado' 
+      githubUsername: 'moicalcob'
+    member3:
+      name: 'Javier'
+      surname: 'Ruiz' 
+      githubUsername: 'javruimun'
+    member4:
+      name: 'Fernando'
+      surname: 'Angulo' 
+      githubUsername: 'ferangmor'
+    member5:
+      name: 'Antonio Germán'
+      surname: 'Márquez' 
+      githubUsername: 'GermanMT'
+    member6:
+      name: 'Jose'
+      surname: 'Delgado' 
+      githubUsername: 'Josdelser'
+    member7:
+      name: 'Emilia'
+      surname: 'Coleto' 
+      githubUsername: 'emicolalc'
+    member8:
+      name: 'Chao'
+      surname: 'Hu' 
+      githubUsername: 'ChaoHu99'
+    member9:
+      name: 'Antonio'
+      surname: 'Fernández' 
+      githubUsername: 'antferman'
+    member10:
+      name: 'José'
+      surname: 'Martín' 
+      githubUsername: 'josmarsan24'
+    member11:
+      name: 'Alejandro'
+      surname: 'Carrillo' 
+      githubUsername: 'alecarmar3'
+    member12:
+      name: 'Mickael'
+      surname: 'Ben' 
+      githubUsername: 'micben1'
