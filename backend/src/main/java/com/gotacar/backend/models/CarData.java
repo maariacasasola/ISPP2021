@@ -7,17 +7,17 @@ import lombok.Setter;
 @Setter
 public class CarData {
 
-    public String car_plate;
+    private String carPlate;
 
-    public LocalDate enrollment_date;
+    private LocalDate enrollmentDate;
 
-    public String model;
+    private String model;
 
-    public String color;
+    private String color;
 
-    public CarData(String car_plate, LocalDate enrollment_date, String model, String color) {
-        this.car_plate = car_plate;
-        this.enrollment_date = enrollment_date;
+    public CarData(String carPlate, LocalDate enrollmentDate, String model, String color) {
+        this.carPlate = carPlate;
+        this.enrollmentDate = enrollmentDate;
         this.model = model;
         this.color = color;
     }

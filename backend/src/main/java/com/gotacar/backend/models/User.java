@@ -46,7 +46,7 @@ public class User {
   @Past(message = "Invalid birthdate")
   public LocalDate birthdate;
 
-  public List<String> roles;
+  private List<String> roles;
 
   @Future
   public LocalDateTime bannedUntil;
@@ -54,16 +54,16 @@ public class User {
   @Pattern(regexp = "PENDING|ACCEPTED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)")
   public String driverStatus;
 
-  public String phone;
+  private String phone;
 
-  public String iban;
+  private String iban;
 
-  public Integer timesBanned;
+  private Integer timesBanned;
 
   @URL(message = "Driving license must be an url")
   public String drivingLicense;
 
-  public Integer experience;
+  private Integer experience;
 
   @BsonProperty("car_data")
   public CarData carData;

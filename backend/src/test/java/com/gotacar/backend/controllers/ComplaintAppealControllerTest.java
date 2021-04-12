@@ -33,8 +33,8 @@ import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.BackendApplication;
 import com.gotacar.backend.controllers.ComplaintAppealControllerTest.TestConfig;
 
@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
-public class ComplaintAppealControllerTest {
+class ComplaintAppealControllerTest {
 
         @Configuration
         static class TestConfig {
@@ -118,7 +118,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void listComplaintAppealsUncheckedTest() throws Exception {
+        void listComplaintAppealsUncheckedTest() throws Exception {
                 Mockito.when(complaintAppealRepository.findByChecked(false)).thenReturn(Arrays.asList(appeal));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
@@ -147,7 +147,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void listComplaintAppealsUncheckedTestFailed() throws Exception {
+        void listComplaintAppealsUncheckedTestFailed() throws Exception {
                 Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
                 String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
@@ -166,7 +166,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void acceptComplaintAppealTest() throws Exception {
+        void acceptComplaintAppealTest() throws Exception {
                 Mockito.when(complaintAppealRepository.findById(new ObjectId(appeal.getId()))).thenReturn(appeal);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
                 Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
@@ -179,7 +179,7 @@ public class ComplaintAppealControllerTest {
                 // Obtengo el token
                 String token = json.getString("token");
 
-                assertThat(appeal.getChecked()).isEqualTo(false);
+                assertThat(appeal.getChecked()).isFalse();
 
                 // Petición post al controlador
                 ResultActions result = mockMvc
@@ -188,11 +188,11 @@ public class ComplaintAppealControllerTest {
                                                 .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                assertThat(appeal.getChecked()).isEqualTo(true);
+                assertThat(appeal.getChecked()).isTrue();
         }
 
         @Test
-        public void acceptComplaintAppealTestFailed() throws Exception {
+        void acceptComplaintAppealTestFailed() throws Exception {
                 appeal.setChecked(true);
                 Mockito.when(complaintAppealRepository.findById(new ObjectId(appeal.getId()))).thenReturn(appeal);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
@@ -217,7 +217,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void acceptComplaintAppealTestUser() throws Exception {
+        void acceptComplaintAppealTestUser() throws Exception {
                 Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
                 String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
@@ -238,7 +238,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void rejectComplaintAppealTest() throws Exception {
+        void rejectComplaintAppealTest() throws Exception {
                 Mockito.when(complaintAppealRepository.findById(new ObjectId(appeal.getId()))).thenReturn(appeal);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
@@ -250,7 +250,7 @@ public class ComplaintAppealControllerTest {
                 // Obtengo el token
                 String token = json.getString("token");
 
-                assertThat(appeal.getChecked()).isEqualTo(false);
+                assertThat(appeal.getChecked()).isFalse();
 
                 // Petición post al controlador
                 ResultActions result = mockMvc
@@ -259,12 +259,12 @@ public class ComplaintAppealControllerTest {
                                                 .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                assertThat(appeal.getChecked()).isEqualTo(true);
+                assertThat(appeal.getChecked()).isTrue();
 
         }
 
         @Test
-        public void rejectComplaintAppealTestFailed() throws Exception {
+        void rejectComplaintAppealTestFailed() throws Exception {
                 appeal.setChecked(true);
                 Mockito.when(complaintAppealRepository.findById(new ObjectId(appeal.getId()))).thenReturn(appeal);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
@@ -278,7 +278,9 @@ public class ComplaintAppealControllerTest {
                 String token = json.getString("token");
 
                 // Petición post al controlador
-                ResultActions result = mockMvc.perform(post("/complaint_appeals/{complaintAppealId}/reject",appeal.getId()).header("Authorization", token)
+                ResultActions result = mockMvc
+                                .perform(post("/complaint_appeals/{complaintAppealId}/reject", appeal.getId())
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
@@ -287,7 +289,7 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void rejectComplaintAppealTestUser() throws Exception {
+        void rejectComplaintAppealTestUser() throws Exception {
                 Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
                 String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
@@ -308,12 +310,12 @@ public class ComplaintAppealControllerTest {
         }
 
         @Test
-        public void testCreateComplaintAppealDriver() throws Exception {
+        void testCreateComplaintAppealDriver() throws Exception {
                 Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
                 Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
                 Mockito.when(complaintAppealRepository.findAll()).thenReturn(Arrays.asList(appeal));
-                
+
                 JSONObject sampleObject = new JSONObject();
                 sampleObject.appendField("content", "soy tonto");
                 sampleObject.appendField("checked", false);
@@ -332,7 +334,7 @@ public class ComplaintAppealControllerTest {
                                 .accept(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                assertThat(result.andReturn().getResponse().getContentType().equals(ComplaintAppeal.class.toString()));
+                
         }
 
 }

@@ -1,12 +1,13 @@
 package com.gotacar.backend.models;
 
-import com.gotacar.backend.models.Trip.Trip;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
+import com.gotacar.backend.models.trip.Trip;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class ComplaintAppealTests {
+class ComplaintAppealTests {
 
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
@@ -61,7 +62,7 @@ public class ComplaintAppealTests {
     }
 
     @Test
-    public void contentCantBeBlank() {
+    void contentCantBeBlank() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         ComplaintAppeal complaintAppeal = new ComplaintAppeal("", false, complaint);
@@ -73,7 +74,7 @@ public class ComplaintAppealTests {
     }
 
     @Test
-    public void contentLength() {
+    void contentLength() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         ComplaintAppeal complaintAppeal = new ComplaintAppeal(
@@ -87,7 +88,7 @@ public class ComplaintAppealTests {
     }
 
     @Test
-    public void complaintCantBeNull() {
+    void complaintCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", false, null);
@@ -99,7 +100,7 @@ public class ComplaintAppealTests {
     }
 
     @Test
-    public void checkedCantBeNull() {
+    void checkedCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", null, complaint);

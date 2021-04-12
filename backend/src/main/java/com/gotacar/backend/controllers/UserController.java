@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import com.gotacar.backend.models.CarData;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.utils.TokenResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,8 +70,7 @@ public class UserController {
 	@GetMapping("current_user")
 	public User currentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-		return user;
+		return userRepository.findByEmail(authentication.getPrincipal().toString());
 	}
 
 	private String getJWTToken(User user) {
@@ -134,7 +133,7 @@ public class UserController {
 			if (u.getBannedUntil() == null) {
 				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
-				String driving_license = objectMapper.readTree(jsonNode.get("driving_license").toString()).asText();
+				String drivingLicense = objectMapper.readTree(jsonNode.get("driving_license").toString()).asText();
 				Integer experience = objectMapper.readTree(jsonNode.get("experience").toString()).asInt();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
 
@@ -148,7 +147,7 @@ public class UserController {
 
 				u.setPhone(phone);
 				u.setIban(iban);
-				u.setDrivingLicense(driving_license);
+				u.setDrivingLicense(drivingLicense);
 				u.setExperience(experience);
 				u.setCarData(carData);
 				u.setDriverStatus("PENDING");

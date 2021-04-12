@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Trip;
+package com.gotacar.backend.models.trip;
 
 import java.util.List;
 import java.util.Optional;

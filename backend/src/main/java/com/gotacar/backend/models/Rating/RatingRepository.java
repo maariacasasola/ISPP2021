@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Rating;
+package com.gotacar.backend.models.rating;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;

@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Trip;
+package com.gotacar.backend.models.trip;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
-import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrder;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
