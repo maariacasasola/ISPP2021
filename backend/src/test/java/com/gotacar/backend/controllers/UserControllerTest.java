@@ -196,9 +196,9 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions result = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
-		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
 	@Test
@@ -356,7 +356,6 @@ class UserControllerTest {
 		//comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
-
 
 	@Test
 	public void testUpdateDataNoAuth() throws Exception {
@@ -578,5 +577,88 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
+	}
+
+	@Test
+	void deleteAccountWithTripAndTripOrder() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(java.util.Arrays.asList(trip1));
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PROCCESSING"))
+				.thenReturn(java.util.Arrays.asList(tripOrder2));
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+
+	@Test
+	void deleteAccountWithTrip() throws Exception {
+		Mockito.when(userRepository.findByUid(driver2.getUid())).thenReturn(driver2);
+		Mockito.when(userRepository.findByEmail(driver2.getEmail())).thenReturn(driver2);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver2, false)).thenReturn(java.util.Arrays.asList(trip2));
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver2, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+
+		String response = mockMvc.perform(post("/user").param("uid", driver2.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+
+	@Test
+	void deleteAccountWithTripOrder() throws Exception {
+		Mockito.when(userRepository.findByUid(user1.getUid())).thenReturn(user1);
+		Mockito.when(userRepository.findByEmail(user1.getEmail())).thenReturn(user1);
+		Mockito.when(tripRepository.findByDriverAndCanceled(user1, false)).thenReturn(new ArrayList<Trip>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user1, "PROCCESSING"))
+				.thenReturn(java.util.Arrays.asList(tripOrder1));
+
+		String response = mockMvc.perform(post("/user").param("uid", user1.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+		
+    ResultActions result = mockMvc
+				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+
+	@Test
+	@WithMockUser(value = "spring")
+	void testDeletePenalizedAccount() throws Exception {
+		user.setTimesBanned(4);
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findById(new ObjectId(user.getId()))).thenReturn(user);
+		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+		;
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc.perform(post("/delete-penalized-account").header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
 }
