@@ -18,7 +18,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PaymentReturnTests {
+class PaymentReturnTests {
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.afterPropertiesSet();
@@ -39,7 +39,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void defaultStatusMustBePending() {
+    void defaultStatusMustBePending() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 300);
@@ -48,7 +48,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void userCantBeNull() {
+    void userCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(null, 200);
@@ -60,7 +60,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void statusMustMatchPattern() {
+    void statusMustMatchPattern() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 200);
@@ -73,7 +73,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void createdAtMustBeAuto() {
+    void createdAtMustBeAuto() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 299);

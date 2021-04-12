@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-public class TripModelTests {
+class TripModelTests {
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.afterPropertiesSet();
@@ -42,7 +42,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void contentCantBeNull() {
+    void contentCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -50,7 +50,8 @@ public class TripModelTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, null, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        Trip trip = new Trip(location1, location3, null, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
@@ -59,16 +60,17 @@ public class TripModelTests {
     }
 
     @Test
-    public void startDateCantBeNull() {
+    void startDateCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
         Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635,
                 -5.999724275498323);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, 220, date7, date7, "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        Trip trip = new Trip(location1, location3, 220, date7, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
         trip.setStartDate(null);
-        
+
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
         ConstraintViolation<Trip> violation = constraintViolations.iterator().next();
@@ -76,7 +78,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void startDateCantBePast() {
+    void startDateCantBePast() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -84,7 +86,8 @@ public class TripModelTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 03, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
@@ -93,7 +96,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void endDateCantBePast() {
+    void endDateCantBePast() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -101,7 +104,8 @@ public class TripModelTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 03, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, 220, date7, date6, "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        Trip trip = new Trip(location1, location3, 220, date7, date6, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
@@ -110,7 +114,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void contentCantBeBlank() {
+    void contentCantBeBlank() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -127,7 +131,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void placesCantBeNull() {
+    void placesCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -135,7 +139,8 @@ public class TripModelTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", null, driver);
+        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", null,
+                driver);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
@@ -144,7 +149,7 @@ public class TripModelTests {
     }
 
     @Test
-    public void placesMustBeLowerThan() {
+    void placesMustBeLowerThan() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
@@ -152,7 +157,8 @@ public class TripModelTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 5, driver);
+        Trip trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 5,
+                driver);
 
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 

@@ -17,7 +17,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RatingTests {
+class RatingTests {
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.afterPropertiesSet();
@@ -34,8 +34,8 @@ public class RatingTests {
         List<String> authorities = new ArrayList<String>();
         authorities.add("ROLE_CLIENT");
         LocalDate birthdate1 = LocalDate.of(1999, 10, 10);
-        client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com", birthdate1,
-                authorities);
+        client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com",
+                birthdate1, authorities);
 
         List<String> authoritiesDriver = new ArrayList<String>();
         authorities.add("ROLE_CLIENT");
@@ -46,16 +46,16 @@ public class RatingTests {
     }
 
     @Test
-    public void ratingCreateSuccess(){
+    void ratingCreateSuccess() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(client, driver, "Mala conducción", 1);
-        
+
         assertThat(rating.getCreatedAt()).isNotNull();
     }
 
     @Test
-    public void userFromCantBeNull(){
+    void userFromCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(null, driver, "Buena compañía", 4);
@@ -67,7 +67,7 @@ public class RatingTests {
     }
 
     @Test
-    public void userToCantBeNull(){
+    void userToCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(client, null, "Mala conducción", 2);
@@ -79,7 +79,7 @@ public class RatingTests {
     }
 
     @Test
-    public void contentCantBeBlank(){
+    void contentCantBeBlank() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(client, driver, "", 3);
@@ -91,7 +91,7 @@ public class RatingTests {
     }
 
     @Test
-    public void pointsMinTest(){
+    void pointsMinTest() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(client, driver, "Mala conducción", -3);
@@ -103,7 +103,7 @@ public class RatingTests {
     }
 
     @Test
-    public void pointsMaxTest(){
+    void pointsMaxTest() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         Rating rating = new Rating(client, driver, "Buena conducción", 6);

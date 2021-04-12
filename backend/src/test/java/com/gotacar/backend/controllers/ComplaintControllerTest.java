@@ -43,7 +43,7 @@ import net.minidev.json.JSONObject;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
-public class ComplaintControllerTest {
+class ComplaintControllerTest {
 
         @Configuration
         static class TestConfig {
@@ -117,8 +117,9 @@ public class ComplaintControllerTest {
         }
 
         @Test
-        public void ListComplaintsTest() throws Exception {
-                Mockito.when(complaintRepository.findByStatus(complaint.getStatus())).thenReturn(Arrays.asList(complaint));
+        void ListComplaintsTest() throws Exception {
+                Mockito.when(complaintRepository.findByStatus(complaint.getStatus()))
+                                .thenReturn(Arrays.asList(complaint));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
                 String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
@@ -133,7 +134,6 @@ public class ComplaintControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                assertThat(result.andReturn().getResponse().getContentType().equals(Complaint.class.toString()));
 
                 String res = result.andReturn().getResponse().getContentAsString();
                 int contador = 0;
@@ -145,7 +145,7 @@ public class ComplaintControllerTest {
         }
 
         @Test
-        public void penalizeTest() throws Exception {
+        void penalizeTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
@@ -167,13 +167,12 @@ public class ComplaintControllerTest {
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
-                assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
                 assertThat(trip.getDriver().getBannedUntil()).isNotNull();
 
         }
 
         @Test
-        public void refuseTest() throws Exception {
+        void refuseTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 

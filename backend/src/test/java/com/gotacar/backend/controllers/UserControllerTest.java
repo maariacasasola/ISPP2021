@@ -150,7 +150,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUserController() throws Exception {
+	void testUserController() throws Exception {
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
 		mockMvc.perform(post("/user").param("uid", admin.getUid())).andExpect(status().isOk());
@@ -158,7 +158,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testListEnrolledUsers() throws Exception {
+	void testListEnrolledUsers() throws Exception {
 		List<User> lista = new ArrayList<User>();
 		lista.add(driver);
 		lista.add(driver2);
@@ -178,12 +178,12 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		String res = result.andReturn().getResponse().getContentAsString();
-		assertThat(res.contains("ROLE_ADMIN")).isEqualTo(false);
+		assertThat(res.contains("ROLE_ADMIN")).isFalse();
 
 	}
 
 	@Test
-	public void deleteAccountWithTripAndTripOrder() throws Exception {
+	void deleteAccountWithTripAndTripOrder() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
 		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(java.util.Arrays.asList(trip1));
@@ -197,15 +197,16 @@ class UserControllerTest {
 		String token = json.getString("token");
 
 		Integer usersPreDelete = userRepository.findAll().size();
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 		Integer usersPostDelete = userRepository.findAll().size();
-		assertThat(usersPreDelete == usersPostDelete);
+		assertThat(usersPreDelete).isEqualTo(usersPostDelete);
 	}
 
 	@Test
-	public void deleteAccountWithTrip() throws Exception {
+	void deleteAccountWithTrip() throws Exception {
 		Mockito.when(userRepository.findByUid(driver2.getUid())).thenReturn(driver2);
 		Mockito.when(userRepository.findByEmail(driver2.getEmail())).thenReturn(driver2);
 		Mockito.when(tripRepository.findByDriverAndCanceled(driver2, false)).thenReturn(java.util.Arrays.asList(trip2));
@@ -219,7 +220,8 @@ class UserControllerTest {
 		String token = json.getString("token");
 
 		Integer usersPreDelete = userRepository.findAll().size();
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 		Integer usersPostDelete = userRepository.findAll().size();
@@ -227,7 +229,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void deleteAccountWithTripOrder() throws Exception {
+	void deleteAccountWithTripOrder() throws Exception {
 		Mockito.when(userRepository.findByUid(user1.getUid())).thenReturn(user1);
 		Mockito.when(userRepository.findByEmail(user1.getEmail())).thenReturn(user1);
 		Mockito.when(tripRepository.findByDriverAndCanceled(user1, false)).thenReturn(new ArrayList<Trip>());
@@ -241,7 +243,8 @@ class UserControllerTest {
 		String token = json.getString("token");
 
 		Integer usersPreDelete = userRepository.findAll().size();
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 		Integer usersPostDelete = userRepository.findAll().size();
@@ -249,7 +252,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void deleteAccountNothing() throws Exception {
+	void deleteAccountNothing() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
 		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<Trip>());
@@ -263,34 +266,36 @@ class UserControllerTest {
 		String token = json.getString("token");
 
 		Integer usersPreDelete = userRepository.findAll().size();
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 		Integer usersPostDelete = userRepository.findAll().size();
 		assertThat(usersPreDelete == usersPostDelete + 1);
 	}
+
 	@Test
-	public void testRegister() throws Exception {
-		//creamos el Json
+	void testRegister() throws Exception {
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Nombre");
-        sampleObject.appendField("lastName", "Apellido");
-        sampleObject.appendField("uid", "Ej7NpmWydJOS3g28mIypzsI4BgE8");
-        sampleObject.appendField("email", "test1234@gmail.com");
+		sampleObject.appendField("firstName", "Nombre");
+		sampleObject.appendField("lastName", "Apellido");
+		sampleObject.appendField("uid", "Ej7NpmWydJOS3g28mIypzsI4BgE8");
+		sampleObject.appendField("email", "test1234@gmail.com");
 		sampleObject.appendField("dni", "87654321E");
 		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
 		sampleObject.appendField("birthdate", "1990-11-11");
 
-		//hacemos el post
+		// hacemos el post
 		ResultActions result = mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
-        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos el resultado
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos el resultado
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
 	@Test
-	public void testRegisterAsClient() throws Exception {
-		//Obtenemos el rol de usuario
+	void testRegisterAsClient() throws Exception {
+		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
 		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
@@ -299,26 +304,27 @@ class UserControllerTest {
 		// Obtengo el token
 		String token = json2.getString("token");
 
-		//creamos el Json
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Usuario");
-        sampleObject.appendField("lastName", "Ejemplo");
-        sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIyrbbI4BgA2");
-        sampleObject.appendField("email", "test15678@gmail.com");
+		sampleObject.appendField("firstName", "Usuario");
+		sampleObject.appendField("lastName", "Ejemplo");
+		sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIyrbbI4BgA2");
+		sampleObject.appendField("email", "test15678@gmail.com");
 		sampleObject.appendField("dni", "55444321E");
 		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
 		sampleObject.appendField("birthdate", "1990-11-11");
 
-		//hacemos el post
-		ResultActions result = mockMvc.perform(post("/user/register").header("Authorization", token).
-		contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos que no nos deja registrarnos
+		// hacemos el post
+		ResultActions result = mockMvc
+				.perform(post("/user/register").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos que no nos deja registrarnos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
 	@Test
-	public void testRegisterAsDriver() throws Exception {
-		//Obtenemos el rol de conductor
+	void testRegisterAsDriver() throws Exception {
+		// Obtenemos el rol de conductor
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(user);
 
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
@@ -327,25 +333,26 @@ class UserControllerTest {
 		// Obtengo el token
 		String token = json2.getString("token");
 
-		//creamos el Json
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Usuario");
-        sampleObject.appendField("lastName", "Ejemplo");
-        sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIysfcI4BgX9");
-        sampleObject.appendField("email", "test1907@gmail.com");
+		sampleObject.appendField("firstName", "Usuario");
+		sampleObject.appendField("lastName", "Ejemplo");
+		sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIysfcI4BgX9");
+		sampleObject.appendField("email", "test1907@gmail.com");
 		sampleObject.appendField("dni", "55444321E");
 		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
 		sampleObject.appendField("birthdate", "1990-11-11");
 
-		//hacemos el post
-		ResultActions result = mockMvc.perform(post("/user/register").header("Authorization", token).
-		contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos que no nos deja registrarnos
+		// hacemos el post
+		ResultActions result = mockMvc
+				.perform(post("/user/register").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos que no nos deja registrarnos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
 	@Test
-	public void testCurrentUser() throws Exception {
+	void testCurrentUser() throws Exception {
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByEmail(admin.getEmail())).thenReturn(admin);
 
@@ -360,11 +367,10 @@ class UserControllerTest {
 		ResultActions result = mockMvc.perform(get("/current_user").header("Authorization", token)
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-		assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
 	}
 
 	@Test
-	public void testConvertToDriver() throws Exception {
+	void testConvertToDriver() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
 		JSONObject car_data = new JSONObject();
@@ -393,12 +399,11 @@ class UserControllerTest {
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-		assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
 		assertThat(user.getDriverStatus()).isEqualTo("PENDING");
 	}
 
 	@Test
-	public void testConvertToDriverFailed() throws Exception {
+	void testConvertToDriverFailed() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 
 		JSONObject car_data = new JSONObject();
@@ -430,7 +435,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testConvertToDriverBanned() throws Exception {
+	void testConvertToDriverBanned() throws Exception {
 		user.setBannedUntil(LocalDateTime.of(2021, 10, 10, 13, 30, 00));
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
@@ -465,7 +470,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testAcceptRequestToDriver() throws Exception {
+	void testAcceptRequestToDriver() throws Exception {
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
@@ -487,7 +492,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testAcceptRequestToDriverFailed() throws Exception {
+	void testAcceptRequestToDriverFailed() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 
 		JSONObject sampleObject = new JSONObject();
@@ -507,7 +512,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testFindAllPending() throws Exception {
+	void testFindAllPending() throws Exception {
 		user.setDriverStatus("PENDING");
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
@@ -533,7 +538,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testFindAllPendingFail() throws Exception {
+	void testFindAllPendingFail() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
 
@@ -551,7 +556,7 @@ class UserControllerTest {
 
 	@Test
 	@WithMockUser(value = "spring")
-	public void testFindUsersByTrip() throws Exception {
+	void testFindUsersByTrip() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 
@@ -571,13 +576,14 @@ class UserControllerTest {
 
 	@Test
 	@WithMockUser(value = "spring")
-	public void testDeletePenalizedAccount() throws Exception {
+	void testDeletePenalizedAccount() throws Exception {
 		user.setTimesBanned(4);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByTimesBannedGreaterThan(3)).thenReturn(java.util.Arrays.asList(user));
 		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<>());
 		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
-						.thenReturn(new ArrayList<TripOrder>());;
+				.thenReturn(new ArrayList<TripOrder>());
+		;
 
 		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
 				.getContentAsString();
@@ -587,11 +593,11 @@ class UserControllerTest {
 
 		Integer usersPreDelete = userRepository.findAll().size();
 
-		ResultActions resultInDelete = mockMvc
-				.perform(post("/delete-penalized-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(post("/delete-penalized-account").header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 		Integer usersPostDelete = userRepository.findAll().size();
-		assertThat(usersPreDelete == usersPostDelete-1);
+		assertThat(usersPreDelete == usersPostDelete - 1);
 	}
 }
