@@ -268,53 +268,50 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
-	@PostMapping("/delete-account")
-	public User deleteAccount() {
-		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if (trips.isEmpty() && tripOrders.isEmpty()) {
-				userRepository.delete(user);
-			}
-			return user;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-		}
-	}
-
+    @PostMapping("/delete-account")
+    public void deleteAccount() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+            if(user.getRoles().contains("ROLE_CLIENT")){
+                if(!tripOrders.isEmpty()){
+                    throw new Exception("El usuario tiene reservas pendientes");
+                }
+            }
+            if(user.getRoles().contains("ROLE_DRIVER")){
+                List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+                if(!trips.isEmpty()){
+                    throw new Exception("El usuario tiene viajes pendientes");
+                }
+            }
+            userRepository.delete(user);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/delete-penalized-account/{userId}")
-	public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
-		try {
-			User user = userRepository.findById(new ObjectId(userId));
-			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if (trips.isEmpty() && tripOrders.isEmpty()) {
-				userRepository.delete(user);
-			}
-			return user;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-		}
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/delete-penalized-account")
-	public List<User> deletePenalizedAccount() {
-		try {
-			List<User> users = userRepository.findByTimesBannedGreaterThan(3);
-			for (User user : users) {
-				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-				List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-				if (trips.isEmpty() && tripOrders.isEmpty()) {
-					userRepository.delete(user);
-				}
-			}
-			return users;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-		}
-	}
+    @PostMapping("/delete-penalized-account/{userId}")
+    public void deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
+        try {
+            System.out.println(userId);
+            User user = userRepository.findById(new ObjectId(userId));
+            System.out.println(user);
+            List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+            if(user.getRoles().contains("ROLE_CLIENT")){
+                if(!tripOrders.isEmpty()){
+                    throw new Exception("El usuario tiene reservas pendientes");
+                }
+            }
+            if(user.getRoles().contains("ROLE_DRIVER")){
+                List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+                if(!trips.isEmpty()){
+                    throw new Exception("El usuario tiene viajes pendientes");
+                }
+            }
+            userRepository.delete(user);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
 }
