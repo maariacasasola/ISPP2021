@@ -1,0 +1,55 @@
+.hidden {
+	display: none
+}
+.visible {
+	display: block
+}
+.center-text {
+	text-align: center
+}
+div.Title{
+	flex-direction: column;
+  	display: flex;
+  	align-items: center;
+  	margin: 80px;
+  	color: #0e4a6b;
+}
+div.Warning{
+	flex-direction: column;
+	align-self: center;
+	text-align: center;
+  	align-items: center;
+	width: 200%;
+	margin-left: 6%;
+  	color: #0e4a6b;
+}
+form.contact {
+	display: flex;
+	flex-direction: column;
+	max-width: 200px;
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 30px;
+}
+input,
+button {
+	margin-bottom: 10px;
+}
+button {
+	background-color: #0e4a6b;
+	color: white;
+  }
+button {
+	margin-top: 10px;
+	background-color: #0e4a6b;
+	color: white;
+	padding: 4px 16px;
+	transition: 0.4s;
+	width: 100%;
+	margin-top: 10px;
+}
+button:hover:enabled{
+	color: white;
+	background-color: #979797;
+}
