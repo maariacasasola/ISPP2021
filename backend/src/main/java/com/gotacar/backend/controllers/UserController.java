@@ -87,6 +87,43 @@ public class UserController {
 		return "Bearer " + token;
 	}
 
+	@PostMapping("/user/register")
+	@PreAuthorize("!hasRole('ROLE_ADMIN') && !hasRole('ROLE_CLIENT')")
+	public User register(@RequestBody String body){
+           try {
+			JsonNode jsonNode = objectMapper.readTree(body);
+			User user = new User();
+
+		   String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
+		   String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
+		   String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
+		   String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
+		   String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
+		   String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
+		   LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+		   List<String> roles = new ArrayList<>();
+		   roles.add("ROLE_CLIENT");
+
+		  
+		   user.setFirstName(firstName);
+		   user.setLastName(lastName);
+		   user.setUid(uid);
+		   user.setEmail(email);
+		   user.setDni(dni);
+		   user.setProfilePhoto(profilePhoto);
+		   user.setBirthdate(birthdate);
+		   user.setRoles(roles);
+		   user.setTimesBanned(0);
+		   ObjectId userObjectId = new ObjectId();
+		   user.setId(userObjectId.toString());
+		   userRepository.save(user);
+		   
+			return user;
+		}  catch (Exception e){
+			throw (new IllegalArgumentException(e.getMessage()));
+		}
+	}
+
 	@PreAuthorize("hasRole('ROLE_CLIENT') AND !hasRole('ROLE_DRIVER')")
 	@PostMapping("/driver/create")
 	public User requestConversionToDriver(@RequestBody() String body) {
