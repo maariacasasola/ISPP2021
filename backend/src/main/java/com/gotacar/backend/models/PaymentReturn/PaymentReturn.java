@@ -1,11 +1,9 @@
-package com.gotacar.backend.models.PaymentReturn;
+package com.gotacar.backend.models.paymentReturn;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
