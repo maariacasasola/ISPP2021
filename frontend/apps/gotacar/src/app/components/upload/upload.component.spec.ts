@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'apps/gotacar/src/environments/environment';
 
 import { UploadComponent } from './upload.component';
 
@@ -8,15 +10,14 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UploadComponent ]
-    })
-    .compileComponents();
+      declarations: [UploadComponent],
+      imports: [AngularFireModule.initializeApp(environment.firebaseConfig)],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
