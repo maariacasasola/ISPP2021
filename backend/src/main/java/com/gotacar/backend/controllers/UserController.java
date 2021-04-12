@@ -49,7 +49,7 @@ public class UserController {
 	private UserRepository userRepository;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	@Autowired
 	private TripRepository tripRepository;
 
@@ -88,37 +88,86 @@ public class UserController {
 
 	@PostMapping("/user/register")
 	@PreAuthorize("!hasRole('ROLE_ADMIN') && !hasRole('ROLE_CLIENT')")
-	public User register(@RequestBody String body){
-           try {
+	public User register(@RequestBody String body) {
+		try {
 			JsonNode jsonNode = objectMapper.readTree(body);
 			User user = new User();
 
-		   String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
-		   String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
-		   String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
-		   String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
-		   String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
-		   String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
-		   LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-		   List<String> roles = new ArrayList<>();
-		   roles.add("ROLE_CLIENT");
+			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
+			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
+			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
+			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
+			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
+			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
+			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+			List<String> roles = new ArrayList<>();
+			roles.add("ROLE_CLIENT");
 
-		  
-		   user.setFirstName(firstName);
-		   user.setLastName(lastName);
-		   user.setUid(uid);
-		   user.setEmail(email);
-		   user.setDni(dni);
-		   user.setProfilePhoto(profilePhoto);
-		   user.setBirthdate(birthdate);
-		   user.setRoles(roles);
-		   user.setTimesBanned(0);
-		   ObjectId userObjectId = new ObjectId();
-		   user.setId(userObjectId.toString());
-		   userRepository.save(user);
-		   
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setUid(uid);
+			user.setEmail(email);
+			user.setDni(dni);
+			user.setProfilePhoto(profilePhoto);
+			user.setBirthdate(birthdate);
+			user.setRoles(roles);
+			user.setTimesBanned(0);
+			ObjectId userObjectId = new ObjectId();
+			user.setId(userObjectId.toString());
+			userRepository.save(user);
+
 			return user;
-		}  catch (Exception e){
+		} catch (Exception e) {
+			throw (new IllegalArgumentException(e.getMessage()));
+		}
+	}
+
+	@PostMapping("/user/update")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	public User editUser(@RequestBody String body) {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+
+			JsonNode jsonNode = objectMapper.readTree(body);
+
+			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
+			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
+			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
+			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
+			ZonedDateTime birthdateDateZone = ZonedDateTime
+					.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+			birthdateDateZone = birthdateDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			LocalDate birthdate = birthdateDateZone.toLocalDate();
+
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setEmail(email);
+			user.setProfilePhoto(profilePhoto);
+			user.setBirthdate(birthdate);
+			// editar los datos del coche si es un conductor
+			if (user.getRoles().contains("ROLE_DRIVER")) {
+				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
+				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
+				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
+				ZonedDateTime enrollmentDateZone = ZonedDateTime
+						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
+				enrollmentDateZone = enrollmentDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+				LocalDate enrollmentDate = enrollmentDateZone.toLocalDate();
+
+				CarData carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
+						carDataJson.get("model").asText(), carDataJson.get("color").asText());
+
+				user.setCarData(carData);
+				user.setPhone(phone);
+				user.setIban(iban);
+
+			}
+
+			userRepository.save(user);
+
+			return user;
+		} catch (Exception e) {
 			throw (new IllegalArgumentException(e.getMessage()));
 		}
 	}
@@ -192,79 +241,80 @@ public class UserController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/driver-request/list")
-	public List<User> findAllResquestDriver(){
+	public List<User> findAllResquestDriver() {
 		try {
-            return userRepository.findByDriverStatus("PENDING");
+			return userRepository.findByDriverStatus("PENDING");
 		} catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
-        }	
-		
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
 	}
+
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
-    @GetMapping("/list_users_trip/{tripId}")
-    public List<User> listUsersTrip(@PathVariable(value = "tripId") String tripId) {
-        try {
-            List<User> lista = new ArrayList<>();
-            Trip trip = tripRepository.findById(new ObjectId(tripId));
+	@GetMapping("/list_users_trip/{tripId}")
+	public List<User> listUsersTrip(@PathVariable(value = "tripId") String tripId) {
+		try {
+			List<User> lista = new ArrayList<>();
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
 			List<TripOrder> tripOrders = tripOrderRepository.findByTrip(trip);
 
-            for (TripOrder to: tripOrders){
-                lista.add(to.getUser());
-            }
-            return lista;
+			for (TripOrder to : tripOrders) {
+				lista.add(to.getUser());
+			}
+			return lista;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
-	
+
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/delete-account")
-    public User deleteAccount() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+	public User deleteAccount() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
 			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if(trips.isEmpty() && tripOrders.isEmpty()){
+			if (trips.isEmpty() && tripOrders.isEmpty()) {
 				userRepository.delete(user);
 			}
 			return user;
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/delete-penalized-account/{userId}")
-    public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
-        try {
+	public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
+		try {
 			User user = userRepository.findById(new ObjectId(userId));
 			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if(trips.isEmpty() && tripOrders.isEmpty()){
+			if (trips.isEmpty() && tripOrders.isEmpty()) {
 				userRepository.delete(user);
 			}
 			return user;
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/delete-penalized-account")
-    public List<User> deletePenalizedAccount() {
-        try {
+	public List<User> deletePenalizedAccount() {
+		try {
 			List<User> users = userRepository.findByTimesBannedGreaterThan(3);
-			for (User user : users){
+			for (User user : users) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-				if(trips.isEmpty() && tripOrders.isEmpty()){
+				if (trips.isEmpty() && tripOrders.isEmpty()) {
 					userRepository.delete(user);
 				}
 			}
 			return users;
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 }
