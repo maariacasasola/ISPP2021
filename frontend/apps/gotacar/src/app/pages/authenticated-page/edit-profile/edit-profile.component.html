@@ -117,21 +117,6 @@
             >IBAN inválido</mat-error
           >
         </mat-form-field>
-        <mat-form-field class="spacing" appearance="outline">
-          <mat-icon matSuffix> gpp_good </mat-icon>
-          <mat-label>Licencia </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="driving_license"
-            required
-            value="{{ data?.driving_license }}"
-          />
-          <mat-error
-            *ngIf="update_form?.get('driving_license')?.errors?.required"
-            >Campo obligatorio</mat-error
-          >
-        </mat-form-field>
         <h2>Datos del vehículo</h2>
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix> drive_eta </mat-icon>

@@ -90,6 +90,9 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
 import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
 import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+import { DropzoneDirective } from './directives/dropzone.directive';
+import { UploadComponent } from './components/upload/upload.component';
+import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
 
 
 
@@ -137,6 +140,9 @@ registerLocaleData(localeEs, 'es');
     RegisterUserGoogleComponent,
     EditProfileComponent,
     EditProfileClientComponent,
+    DropzoneDirective,
+    UploadComponent,
+    ImageUploadDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

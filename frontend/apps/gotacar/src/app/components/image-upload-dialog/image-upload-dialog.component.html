@@ -1,0 +1,27 @@
+<h2>Foto de perfil</h2>
+        <div
+        id="file_input"
+          class="dropzone"
+          dropzone
+          (hovered)="toggleHover($event)"
+          (dropped)="onDrop($event)"
+          [class.hovering]="isHovering"
+        >
+          
+          <p >Arrastra tu imagen   <a href="javascript:void(0)" (click)="file.click()">
+            o haz click para abrir
+        </a></p>
+          <input type="file"
+                   #file
+                   [multiple]="false"
+                   (change)="onClick()"
+                   accept="image/png, image/jpeg"
+                   style="display:none" />
+
+        
+        </div>
+        <h3>Archivos cargados</h3>
+
+        <div *ngFor="let file of files">
+          <frontend-upload [file]="file"></frontend-upload>
+        </div>

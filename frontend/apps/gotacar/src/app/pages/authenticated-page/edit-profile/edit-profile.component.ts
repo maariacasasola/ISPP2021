@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { AuthServiceService } from '../../../services/auth-service.service';
 
 @Component({
@@ -31,11 +33,11 @@ export class EditProfileComponent implements OnInit {
         ),
       ],
     ],
-    driving_license: ['', Validators.required],
     car_plate: ['', Validators.required],
     enrollment_date: ['', Validators.required],
     model: ['', Validators.required],
     color: ['', Validators.required],
+    profilePhoto: ['', Validators.required],
   });
   data;
   constructor(
@@ -49,6 +51,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
   onSubmit() {
     console.log(this.update_form.value);
     if (this.update_form.invalid) {
@@ -69,7 +72,7 @@ export class EditProfileComponent implements OnInit {
     let age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
     return age > 17;
   }
-  
+
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
       duration: 3000,

@@ -5,8 +5,17 @@
       src="https://randomuser.me/api/portraits/men/79.jpg"
       alt="user"
     />
+    <div class="image-upload">
+      <button mat-mini-fab color="primary" (click)="openDialog()" >
+        <mat-icon>
+          add_circle_outline
+          </mat-icon>
+      </button>
+    </div>
+    
     <h3>{{ data?.firstName }} {{ data?.lastName }}</h3>
     <h6>Sevilla</h6>
+    
     <div class="buttons">
       <div *ngIf="isDriver()">
         <button class="primary" (click)="goToEditDriver()">Editar</button>
