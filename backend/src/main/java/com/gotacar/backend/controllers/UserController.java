@@ -195,9 +195,7 @@ public class UserController {
 	@GetMapping("/driver-request/list")
 	public List<User> findAllResquestDriver(){
 		try {
-			List<User> listUser = new ArrayList<>();
-			listUser = userRepository.findByDriverStatus("PENDING");
-            return listUser;
+            return userRepository.findByDriverStatus("PENDING");
 		} catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
         }	
@@ -226,6 +224,22 @@ public class UserController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if(trips.isEmpty() && tripOrders.isEmpty()){
+				userRepository.delete(user);
+			}
+			return user;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/delete-penalized-account/{userId}")
+    public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
+        try {
+			User user = userRepository.findById(new ObjectId(userId));
 			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
 			if(trips.isEmpty() && tripOrders.isEmpty()){
