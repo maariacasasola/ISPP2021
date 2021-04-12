@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
+import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-sign-up',
@@ -35,11 +37,13 @@ export class SignUpComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {}
-  onSubmit() {
+
+  async onSubmit() {
     console.log(this.register_form.value);
     if (this.register_form.invalid) {
       this.register_form.markAllAsTouched();
@@ -50,18 +54,34 @@ export class SignUpComponent implements OnInit {
       return;
     }
     try {
-      const email = this.register_form.value.email;
-      const password = this.register_form.value.password;
-      //const uid = this._authService.sign_up(email, password);
-    } catch (error) {}
-    //authService.sign_in(userName.value, userPassword.value)
+      const { email, password } = this.register_form.value;
+      await this._authService
+        .sign_up(email, password)
+        .then(async (response) => {
+          if (response.user.uid) {
+            const {
+              firstName,
+              lastName,
+              birthdate,
+              dni,
+              phone,
+            } = this.register_form.value;
+            await this._router.navigate(['/', 'log-in']);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   checkDate() {
-    const date: Date = new Date(this.register_form.value.birthdate);
-    let timeDiff = Math.abs(Date.now() - date.getTime());
-    let age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
-    return age > 17;
+    const birthdate = moment(this.register_form.value.birthdate);
+    const years = moment().diff(birthdate, 'years');
+    return years > 16;
   }
 
   openSnackBar(message: string) {

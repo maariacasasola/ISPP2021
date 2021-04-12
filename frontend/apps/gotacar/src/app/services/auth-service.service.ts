@@ -51,17 +51,10 @@ export class AuthServiceService {
   }
 
   sign_up(email, password) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.send_verification_mail();
-        this.set_user_data(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
-  async register(user){
+
+  async register(user) {
     //TODO acabar
   }
 
