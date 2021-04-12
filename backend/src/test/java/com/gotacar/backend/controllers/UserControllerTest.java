@@ -269,6 +269,80 @@ class UserControllerTest {
 		Integer usersPostDelete = userRepository.findAll().size();
 		assertThat(usersPreDelete == usersPostDelete + 1);
 	}
+	@Test
+	public void testRegister() throws Exception {
+		//creamos el Json
+		JSONObject sampleObject = new JSONObject();
+        sampleObject.appendField("firstName", "Nombre");
+        sampleObject.appendField("lastName", "Apellido");
+        sampleObject.appendField("uid", "Ej7NpmWydJOS3g28mIypzsI4BgE8");
+        sampleObject.appendField("email", "test1234@gmail.com");
+		sampleObject.appendField("dni", "87654321E");
+		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
+		sampleObject.appendField("birthdate", "1990-11-11");
+
+		//hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
+        .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		//comprobamos el resultado
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	@Test
+	public void testRegisterAsClient() throws Exception {
+		//Obtenemos el rol de usuario
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+
+		//creamos el Json
+		JSONObject sampleObject = new JSONObject();
+        sampleObject.appendField("firstName", "Usuario");
+        sampleObject.appendField("lastName", "Ejemplo");
+        sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIyrbbI4BgA2");
+        sampleObject.appendField("email", "test15678@gmail.com");
+		sampleObject.appendField("dni", "55444321E");
+		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
+		sampleObject.appendField("birthdate", "1990-11-11");
+
+		//hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/register").header("Authorization", token).
+		contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		//comprobamos que no nos deja registrarnos
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+	}
+
+	@Test
+	public void testRegisterAsDriver() throws Exception {
+		//Obtenemos el rol de conductor
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(user);
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+
+		//creamos el Json
+		JSONObject sampleObject = new JSONObject();
+        sampleObject.appendField("firstName", "Usuario");
+        sampleObject.appendField("lastName", "Ejemplo");
+        sampleObject.appendField("uid", "Ej9NpmWydJOS3g28mIysfcI4BgX9");
+        sampleObject.appendField("email", "test1907@gmail.com");
+		sampleObject.appendField("dni", "55444321E");
+		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
+		sampleObject.appendField("birthdate", "1990-11-11");
+
+		//hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/register").header("Authorization", token).
+		contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		//comprobamos que no nos deja registrarnos
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+	}
 
 	@Test
 	public void testCurrentUser() throws Exception {
