@@ -57,6 +57,7 @@ describe('AdminTripOrdersListPageComponent', () => {
         roles: ["ROLE_CLIENT"],
         token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
         emailVerified: true,
+        timesBanned: null,
     }
 
     const TRIP_ORDER_OBJECTS: TripOrder[] = [{

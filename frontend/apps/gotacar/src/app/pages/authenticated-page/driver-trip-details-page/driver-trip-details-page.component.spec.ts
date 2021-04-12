@@ -8,7 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
-import { HttpClient } from '@angular/common/http';
+import { User } from '../../../shared/services/user';
 
 const location1 = {
     name: 'Sevilla',
@@ -36,11 +36,31 @@ const TRIP_OBJECT: Trip = {
     price: 200,
 }
 
+const USER_OBJECTS: User[] = [
+    {
+        id: "6072f5bfff1aa84599c35742",
+        firstName: "Juan",
+        lastName: "Perez",
+        uid: "Ej7NpmWydRWMIg28mIypzsI4Bgm2",
+        email: "client@gotacar.es",
+        dni: "80808080R",
+        profilePhoto: null,
+        birthdate: new Date(2021, 6, 4, 13, 30, 24),
+        roles: ["ROLE_CLIENT"],
+        token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
+        emailVerified: true,
+        timesBanned: 3,
+    },
+]
 
 class mockTripService {
 
     public get_trip(): Observable<Trip> {
         return of(TRIP_OBJECT);
+    }
+
+    public get_users_by_trip(): Observable<User[]>{
+        return of(USER_OBJECTS);
     }
 }
 
@@ -90,11 +110,6 @@ describe('DriverTripDetailsPageComponent', () => {
     });
 
     it('should return users information', () => {
-        expect(service.get_users_by_trip).toBeCalled;
-
-
-
+        spyOn(service, 'get_users_by_trip').and.returnValue(of(USER_OBJECTS));
     });
-
-
 });

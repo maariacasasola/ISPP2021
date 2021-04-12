@@ -14,7 +14,16 @@
       <p><b>Profile photo:</b> {{ user?.profilePhoto}}</p>
       <p><b>Birthdate:</b> {{ user?.birthdate | date: 'medium' }}</p>
       <p><b>Roles:</b> {{ user?.roles}}</p>
-      <p><b>Banned until:</b> {{ user?.bannedUntil | date: 'medium' }}</p>
+      <p *ngIf="user?.bannedUntil"><b>Banned until:</b> {{ user?.bannedUntil | date: 'medium' }}</p>
     </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-stroked-button
+        class="button" *ngIf="user?.timesBanned >= 3"
+        (click)="delete_account(user?.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>

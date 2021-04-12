@@ -21,7 +21,7 @@ describe('AdminTripOrderDetailsPageComponent', () => {
         lat: 37.3747084,
         lng: -5.9649715,
     };
-    
+
     const location2 = {
         name: 'Sevilla',
         address: 'Av. Diego Martínez Barrio',
@@ -52,16 +52,17 @@ describe('AdminTripOrderDetailsPageComponent', () => {
         roles: ["ROLE_CLIENT"],
         token: "er2",
         emailVerified: true,
+        timesBanned: null,
     }
 
-    const TRIP_ORDER_OBJECT: TripOrder={
+    const TRIP_ORDER_OBJECT: TripOrder = {
         trip: TRIP_OBJECT,
         user: USER_OBJECT,
         date: new Date(2021, 6, 4, 13, 30, 24),
         price: 300,
-        paymentIntent:null,
-        places:2,
-        status:"PROCCESSING",
+        paymentIntent: null,
+        places: 2,
+        status: "PROCCESSING",
     }
 
     class mockTripService {
@@ -76,7 +77,7 @@ describe('AdminTripOrderDetailsPageComponent', () => {
             declarations: [AdminTripOrderDetailsPageComponent, ConvertCentToEurPipe],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule],
-            providers: [CurrencyPipe,{ provide: TripsService, useClass: mockTripService }],
+            providers: [CurrencyPipe, { provide: TripsService, useClass: mockTripService }],
         }).compileComponents();
     });
 
