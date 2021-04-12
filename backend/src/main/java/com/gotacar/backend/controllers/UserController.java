@@ -235,6 +235,22 @@ public class UserController {
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/delete-penalized-account/{userId}")
+    public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
+        try {
+			User user = userRepository.findById(new ObjectId(userId));
+			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if(trips.isEmpty() && tripOrders.isEmpty()){
+				userRepository.delete(user);
+			}
+			return user;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/delete-penalized-account")
     public List<User> deletePenalizedAccount() {
         try {
