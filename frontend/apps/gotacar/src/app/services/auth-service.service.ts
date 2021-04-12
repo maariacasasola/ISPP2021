@@ -55,7 +55,9 @@ export class AuthServiceService {
   }
 
   async register(user) {
-    //TODO acabar
+    return this._http_client
+      .post(environment.api_url + '/user/register', user)
+      .toPromise();
   }
 
   async send_verification_mail() {
@@ -132,11 +134,34 @@ export class AuthServiceService {
   auth_login(provider) {
     return this.afAuth
       .signInWithPopup(provider)
-      .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['home']);
-        });
-        this.set_user_data(result.user);
+      .then(async (result) => {
+        if (result.additionalUserInfo.isNewUser) {
+          this.ngZone.run(() => {
+            this.router.navigate(['/', 'google-register'], {
+              queryParams: {
+                uid: result.user.uid,
+                email: result.user.email,
+              },
+            });
+          });
+        } else {
+          try {
+            await this.set_user_data(result.user);
+            this.ngZone.run(() => {
+              this.router.navigate(['home']);
+            });
+          } catch (error) {
+            localStorage.removeItem('user');
+            this.ngZone.run(() => {
+              this.router.navigate(['/', 'google-register'], {
+                queryParams: {
+                  uid: result.user.uid,
+                  email: result.user.email,
+                },
+              });
+            });
+          }
+        }
       })
       .catch((error) => {
         window.alert(error);
@@ -171,5 +196,11 @@ export class AuthServiceService {
 
   get_user() {
     return JSON.parse(localStorage.getItem('user'));
+  }
+
+  async update_user_profile(data) {
+    return this._http_client
+      .post(environment.api_url + '/user/update', data)
+      .toPromise();
   }
 }

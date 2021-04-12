@@ -196,8 +196,8 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions resultInDelete = mockMvc
-				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
@@ -216,8 +216,8 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions resultInDelete = mockMvc
-				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
@@ -235,9 +235,9 @@ class UserControllerTest {
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
-		
-    ResultActions resultInDelete = mockMvc
-				.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
@@ -256,7 +256,8 @@ class UserControllerTest {
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
 
-		ResultActions resultInDelete = mockMvc.perform(post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultInDelete = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(resultInDelete.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
@@ -272,6 +273,7 @@ class UserControllerTest {
 		sampleObject.appendField("dni", "87654321E");
 		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
 		sampleObject.appendField("birthdate", "1990-11-11");
+		sampleObject.appendField("phone", "655656565");
 
 		// hacemos el post
 		ResultActions result = mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
@@ -300,6 +302,7 @@ class UserControllerTest {
 		sampleObject.appendField("dni", "55444321E");
 		sampleObject.appendField("profilePhoto", "htpps://photoDni.com");
 		sampleObject.appendField("birthdate", "1990-11-11");
+		sampleObject.appendField("phone", "655656565");
 
 		// hacemos el post
 		ResultActions result = mockMvc
@@ -355,10 +358,10 @@ class UserControllerTest {
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
-	
+
 	@Test
 	public void testUpdateDataClient() throws Exception {
-		//Obtenemos el rol de usuario
+		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
 
@@ -367,24 +370,27 @@ class UserControllerTest {
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
 		// Obtengo el token
 		String token = json2.getString("token");
-		//creamos el Json
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Martín");
-        sampleObject.appendField("lastName", "Romero");
-        sampleObject.appendField("email", "client1@gotacar.es");
+		sampleObject.appendField("firstName", "Martín");
+		sampleObject.appendField("lastName", "Romero");
+		sampleObject.appendField("email", "client1@gotacar.es");
 		sampleObject.appendField("profilePhoto", "ejemploFoto.com");
-		sampleObject.appendField("birthdate","2000-06-04T13:30:00.000+00");
+		sampleObject.appendField("birthdate", "2000-06-04");
+		sampleObject.appendField("phone", "655656565");
+		sampleObject.appendField("dni", "54545454N");
 
-		//hacemos el post
-		ResultActions result = mockMvc.perform(post("/user/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+		// hacemos el post
+		ResultActions result = mockMvc
+				.perform(post("/user/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos los datos
+		// comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
 	@Test
 	public void testUpdateDataDriver() throws Exception {
-		//Obtenemos el rol de usuario
+		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
 
@@ -393,45 +399,46 @@ class UserControllerTest {
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
 		// Obtengo el token
 		String token = json2.getString("token");
-		//creamos el Json
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Jesús");
-        sampleObject.appendField("lastName", "Márquez");
-        sampleObject.appendField("email", "driver1@gotacar.es");
+		sampleObject.appendField("firstName", "Martín");
+		sampleObject.appendField("lastName", "Romero");
+		sampleObject.appendField("email", "driver@gotacar.es");
 		sampleObject.appendField("profilePhoto", "ejemploFoto.com");
-		sampleObject.appendField("birthdate","2000-06-04T13:30:00.000+00");
-		sampleObject.appendField("phone", "621456789");
-		sampleObject.appendField("iban","ES2121001859436727673434");
+		sampleObject.appendField("birthdate", "2000-06-04");
+		sampleObject.appendField("phone", "655656565");
+		sampleObject.appendField("dni", "54545454N");
+		sampleObject.appendField("iban", "ES343434343434343433");
 
 		JSONObject car_data = new JSONObject();
 		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
 		car_data.appendField("car_plate", "4020 GTE");
 		car_data.appendField("model", "Ford");
 		car_data.appendField("color", "Blanco");
-		sampleObject.appendField("car_data",car_data);
+		sampleObject.appendField("car_data", car_data);
 
-		//hacemos el post
-		ResultActions result = mockMvc.perform(post("/user/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+		// hacemos el post
+		ResultActions result = mockMvc
+				.perform(post("/user/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos los datos
+		// comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
-
 	@Test
 	public void testUpdateDataNoAuth() throws Exception {
-		//creamos el Json
+		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
-        sampleObject.appendField("firstName", "Martín");
-        sampleObject.appendField("lastName", "Romero");
-        sampleObject.appendField("email", "client1@gotacar.es");
+		sampleObject.appendField("firstName", "Martín");
+		sampleObject.appendField("lastName", "Romero");
+		sampleObject.appendField("email", "client1@gotacar.es");
 		sampleObject.appendField("profilePhoto", "http://dniclient.com");
 		sampleObject.appendField("birthdate", "2000-06-04T13:30:00.000+00");
 
-		//hacemos el post
-		ResultActions result = mockMvc.perform(post("/user/update")
-		.contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-		//comprobamos los datos
+		// hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/update").contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 

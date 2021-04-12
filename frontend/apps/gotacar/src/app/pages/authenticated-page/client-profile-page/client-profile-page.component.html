@@ -1,21 +1,15 @@
 <div class="grid-container">
-  <div class="Perfil">
-    <img
-      class="round"
-      src="https://randomuser.me/api/portraits/men/79.jpg"
-      alt="user"
-    />
+  <div class="perfil" *ngIf="user">
+    <img class="profile-photo" [src]="get_profile_photo()" alt="user" />
     <div class="image-upload">
-      <button mat-mini-fab color="primary" (click)="openDialog()" >
-        <mat-icon>
-          add_circle_outline
-          </mat-icon>
+      <button mat-mini-fab color="primary" (click)="update_profile_photo()">
+        <mat-icon> add_circle_outline </mat-icon>
       </button>
     </div>
-    
-    <h3>{{ data?.firstName }} {{ data?.lastName }}</h3>
+
+    <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
     <h6>Sevilla</h6>
-    
+
     <div class="buttons">
       <div *ngIf="isDriver()">
         <button class="primary" (click)="goToEditDriver()">Editar</button>
@@ -27,24 +21,24 @@
     <div class="skills">
       <h6>Datos Personales</h6>
       <ul>
-        <li>Fecha nacimiento: {{ data?.birthdate }}</li>
-        <li>Email: {{ data?.email }}</li>
-        <li>DNI: {{ data?.dni }}</li>
+        <li>Fecha nacimiento: {{ user?.birthdate | date: 'dd-MM-yyyy'}}</li>
+        <li>Email: {{ user?.email }}</li>
+        <li>DNI: {{ user?.dni }}</li>
+        <li>Teléfono: {{ user?.phone }}</li>
       </ul>
       <div *ngIf="isDriver()">
         <h6>Datos del Conductor</h6>
         <ul>
-          <li>Teléfono: {{ data?.phone }}</li>
-          <li>IBAN: {{ data?.iban }}</li>
-          <li>Licencia: {{ data?.driving_license }}</li>
-          <li>Experiencia: {{ data?.experience }}</li>
+          <li>IBAN: {{ user?.iban }}</li>
+          <li>Licencia: {{ user?.driving_license }}</li>
+          <li>Experiencia: {{ user?.experience }}</li>
         </ul>
         <h6>Datos del vehículo</h6>
         <ul>
-          <li>Matrícula: {{ data?.carData?.car_plate }}</li>
-          <li>Alta: {{ data?.carData?.enrollment_date }}</li>
-          <li>Modelo: {{ data?.carData?.model }}</li>
-          <li>Color: {{ data?.carData?.color }}</li>
+          <li>Matrícula: {{ user?.carData?.car_plate }}</li>
+          <li>Alta: {{ user?.carData?.enrollment_date }}</li>
+          <li>Modelo: {{ user?.carData?.model }}</li>
+          <li>Color: {{ user?.carData?.color }}</li>
         </ul>
       </div>
     </div>

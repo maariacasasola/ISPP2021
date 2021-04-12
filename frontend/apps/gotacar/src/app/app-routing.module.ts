@@ -54,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'google-register',
-    component:RegisterUserGoogleComponent,
+    component: RegisterUserGoogleComponent,
   },
   {
     path: 'error',

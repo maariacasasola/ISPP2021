@@ -1,35 +1,41 @@
 .page-content {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    margin: 80px;
-    min-height: 100vh;
-    color: #0e4a6b;
-   
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin: 80px;
+  min-height: 100vh;
+  color: #0e4a6b;
 }
+
 .column {
-    float: left;
-    width: 50%;
-  }
-  
-  /* Clear floats after the columns */
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
 .row:after {
-    content: "";
-    display: table;
-    clear: both;
+  content: '';
+  display: table;
+  clear: both;
 }
 .form-fields {
-    display: block;
-  }
-  .login-card mat-form-field {
-    width: 90%;
-    color: #538994;
-    margin: 20px;
-  }
+  display: block;
+  text-align: center;
+}
 
-  .login-button {
-    color: white;
-    background-color: #538994;
-    margin: 20px;
-    width: 90%;
-  }
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-card mat-form-field {
+  width: 90%;
+  color: #538994;
+  margin: 20px;
+}
+
+.login-button {
+  color: white;
+  background-color: #538994;
+}

@@ -10,26 +10,36 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './client-profile-page.component.html',
   styleUrls: ['./client-profile-page.component.scss'],
 })
-export class ClientProfilePageComponent implements OnInit {
-  data;
+export class ClientProfilePageComponent {
+  user;
+
   constructor(
     private _userService: AuthServiceService,
     public router: Router,
     private _my_dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {
-    const name = _userService
-      .get_user_data()
-      .then((data) => (this.data = data));
+    this.load_user_data();
   }
 
-  ngOnInit(): void {}
+  async load_user_data() {
+    try {
+      this.user = await this._userService.get_user_data();
+    } catch (error) {
+      this.openSnackBar(
+        'Ha ocurrido un error al recuperar tu perfil de usuario'
+      );
+    }
+  }
+
   goToEditDriver() {
     this.router.navigate(['authenticated/edit-profile']);
   }
+
   goToEditClient() {
     this.router.navigate(['authenticated/edit-profile-client']);
   }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
       duration: 3000,
@@ -39,9 +49,14 @@ export class ClientProfilePageComponent implements OnInit {
   isDriver() {
     return this._userService.is_driver();
   }
-  async openDialog() {
+
+  async update_profile_photo() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'login-dialog';
+    dialogConfig.data = {
+      user_id: this.user.id,
+    };
 
     const dialogRef = this._my_dialog.open(
       ImageUploadDialogComponent,
@@ -54,11 +69,25 @@ export class ClientProfilePageComponent implements OnInit {
       return;
     }
     try {
-      // const response = await this._complaints_service.penalty_complaint(
-      //   dialog_response
-      // );
+      const user_data = {
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        email: this.user.email,
+        profilePhoto: dialog_response,
+        birthdate: this.user.birthdate,
+        phone: this.user.phone,
+        dni: this.user.dni,
+      };
+      const response = await this._userService.update_user_profile(user_data);
+      if (response) {
+        await this.load_user_data();
+      }
     } catch (error) {
       this.openSnackBar('No se pudo subir la imagen');
     }
+  }
+
+  get_profile_photo() {
+    return this.user?.profilePhoto || 'assets/img/generic-user.jpg';
   }
 }

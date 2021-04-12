@@ -44,7 +44,6 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {}
 
   async onSubmit() {
-    console.log(this.register_form.value);
     if (this.register_form.invalid) {
       this.register_form.markAllAsTouched();
       return;
@@ -53,29 +52,44 @@ export class SignUpComponent implements OnInit {
       this.openSnackBar('Debes ser mayor de edad para poder registrarte');
       return;
     }
-    try {
-      const { email, password } = this.register_form.value;
-      await this._authService
-        .sign_up(email, password)
-        .then(async (response) => {
-          if (response.user.uid) {
-            const {
-              firstName,
-              lastName,
-              birthdate,
-              dni,
-              phone,
-            } = this.register_form.value;
+    const { email, password } = this.register_form.value;
+    this.register_user(email, password);
+  }
+
+  async register_user(email, password) {
+    await this._authService
+      .sign_up(email, password)
+      .then(async (response) => {
+        if (response.user.uid) {
+          const {
+            firstName,
+            lastName,
+            birthdate,
+            dni,
+            phone,
+          } = this.register_form.value;
+          const user = {
+            firstName: firstName,
+            lastName: lastName,
+            uid: response.user.uid,
+            email: email,
+            dni: dni,
+            birthdate: moment(birthdate).format('yyyy-MM-DD'),
+            phone: phone,
+          };
+          const register_response = await this._authService.register(user);
+          if (register_response) {
+            this.openSnackBar(
+              '¡Bienvenido a GotACar! Inicie sesión con su nueva cuenta'
+            );
             await this._router.navigate(['/', 'log-in']);
           }
-        })
-        .catch((error) => {
-          console.error(error);
-          this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
-        });
-    } catch (error) {
-      console.error(error);
-    }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+      });
   }
 
   checkDate() {

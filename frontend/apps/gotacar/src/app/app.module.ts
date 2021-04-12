@@ -94,7 +94,6 @@ import { RegisterUserGoogleComponent } from './pages/register-user-google/regist
 import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
 import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { UploadComponent } from './components/upload/upload.component';
 import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
@@ -149,7 +148,6 @@ registerLocaleData(localeEs, 'es');
     EditProfileComponent,
     EditProfileClientComponent,
     DropzoneDirective,
-    UploadComponent,
     ImageUploadDialogComponent,
     DriverTripDetailsPageComponent,
     OrderTripsPipe,

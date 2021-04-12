@@ -98,7 +98,7 @@ public class UserController {
 			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
 			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
-			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
+			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
 			List<String> roles = new ArrayList<>();
 			roles.add("ROLE_CLIENT");
@@ -108,12 +108,10 @@ public class UserController {
 			user.setUid(uid);
 			user.setEmail(email);
 			user.setDni(dni);
-			user.setProfilePhoto(profilePhoto);
 			user.setBirthdate(birthdate);
 			user.setRoles(roles);
 			user.setTimesBanned(0);
-			ObjectId userObjectId = new ObjectId();
-			user.setId(userObjectId.toString());
+			user.setPhone(phone);
 			userRepository.save(user);
 
 			return user;
@@ -135,33 +133,29 @@ public class UserController {
 			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
 			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
-			ZonedDateTime birthdateDateZone = ZonedDateTime
-					.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-			birthdateDateZone = birthdateDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-			LocalDate birthdate = birthdateDateZone.toLocalDate();
+			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
+			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setEmail(email);
 			user.setProfilePhoto(profilePhoto);
 			user.setBirthdate(birthdate);
+			user.setDni(dni);
+			user.setPhone(phone);
 			// editar los datos del coche si es un conductor
 			if (user.getRoles().contains("ROLE_DRIVER")) {
-				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
 				ZonedDateTime enrollmentDateZone = ZonedDateTime
 						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
 				enrollmentDateZone = enrollmentDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 				LocalDate enrollmentDate = enrollmentDateZone.toLocalDate();
-
 				CarData carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
 						carDataJson.get("model").asText(), carDataJson.get("color").asText());
-
 				user.setCarData(carData);
-				user.setPhone(phone);
 				user.setIban(iban);
-
 			}
 
 			userRepository.save(user);

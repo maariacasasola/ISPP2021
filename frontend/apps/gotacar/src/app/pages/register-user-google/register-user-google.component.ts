@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
+import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-register-user-google',
@@ -9,6 +11,9 @@ import { AuthServiceService } from '../../services/auth-service.service';
   styleUrls: ['./register-user-google.component.scss'],
 })
 export class RegisterUserGoogleComponent implements OnInit {
+  firebase_uid;
+  firebase_email;
+
   register_form = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -22,36 +27,65 @@ export class RegisterUserGoogleComponent implements OnInit {
       [Validators.required, Validators.pattern('^(?:6[0-9]|7[1-9])[0-9]{7}$')],
     ],
   });
+
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar
-  ) {}
+    private _snackBar: MatSnackBar,
+    private _route: ActivatedRoute,
+    private _router: Router
+  ) {
+    this.firebase_email = this._route.snapshot.queryParams['email'];
+    this.firebase_uid = this._route.snapshot.queryParams['uid'];
+  }
 
   ngOnInit(): void {}
-  onSubmit() {
-    console.log(this.register_form.value);
+
+  async onSubmit() {
     if (this.register_form.invalid) {
       this.register_form.markAllAsTouched();
       return;
     }
+
     if (!this.checkDate()) {
       this.openSnackBar('Debes ser mayor de edad para poder registrarte');
       return;
     }
+
     try {
-      const email = this.register_form.value.email;
-      const password = this.register_form.value.password;
-      //const uid = this._authService.sign_up(email, password);
-    } catch (error) {}
-    //authService.sign_in(userName.value, userPassword.value)
+      const {
+        firstName,
+        lastName,
+        birthdate,
+        dni,
+        phone,
+      } = this.register_form.value;
+      const user = {
+        firstName: firstName,
+        lastName: lastName,
+        uid: this.firebase_uid,
+        email: this.firebase_email,
+        dni: dni,
+        birthdate: moment(birthdate).format('yyyy-MM-DD'),
+        phone: phone,
+      };
+      const register_response = await this._authService.register(user);
+      if (register_response) {
+        this.openSnackBar('¡Bienvenido a GotACar! Inicie sesión con su nueva cuenta')
+        await this._router.navigate(['/', 'log-in']);
+      }
+    } catch (error) {
+      console.error(error);
+      this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+    }
   }
+
   checkDate() {
-    const date: Date = new Date(this.register_form.value.birthdate);
-    let timeDiff = Math.abs(Date.now() - date.getTime());
-    let age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
-    return age > 17;
+    const birthdate = moment(this.register_form.value.birthdate);
+    const years = moment().diff(birthdate, 'years');
+    return years > 16;
   }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
       duration: 3000,
