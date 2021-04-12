@@ -5,7 +5,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   CommonModule,
   CurrencyPipe,
@@ -139,7 +138,6 @@ registerLocaleData(localeEs, 'es');
     AngularFirestoreModule,
     BrowserModule,
     ReactiveFormsModule,
-    NoopAnimationsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatDialogModule,
