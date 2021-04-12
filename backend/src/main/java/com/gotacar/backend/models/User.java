@@ -22,51 +22,51 @@ import lombok.Setter;
 @Setter
 public class User {
   @Id
-  private String id;
+  public String id;
 
   @NotBlank
-  private String firstName;
+  public String firstName;
 
   @NotBlank
-  private String lastName;
+  public String lastName;
 
   @NotBlank
   @Indexed(unique = true)
-  private String uid;
+  public String uid;
 
   @Email(message = "Invalid email")
-  private String email;
+  public String email;
 
   @Pattern(regexp = "[0-9]{8,8}[A-Z]", message = "Invalid dni number")
-  private String dni;
+  public String dni;
 
   @URL(message = "Photo must be an url")
-  private String profilePhoto;
+  public String profilePhoto;
 
   @Past(message = "Invalid birthdate")
-  private LocalDate birthdate;
+  public LocalDate birthdate;
 
-  private List<String> roles;
+  public List<String> roles;
 
   @Future
-  private LocalDateTime bannedUntil;
+  public LocalDateTime bannedUntil;
 
   @Pattern(regexp = "PENDING|ACCEPTED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)")
-  private String driverStatus;
+  public String driverStatus;
 
-  private String phone;
+  public String phone;
 
-  private String iban;
+  public String iban;
 
-  private Integer timesBanned;
+  public Integer timesBanned;
 
   @URL(message = "Driving license must be an url")
-  private String drivingLicense;
+  public String drivingLicense;
 
-  private Integer experience;
+  public Integer experience;
 
   @BsonProperty("car_data")
-  private CarData carData;
+  public CarData carData;
 
   public User() {
   }

@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import com.gotacar.backend.models.Rating.Rating;
+import com.gotacar.backend.models.rating.Rating;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class RatingTests {
 
         Rating rating = new Rating(client, driver, "Mala conducción", 1);
         
-        assertThat(rating.getCreated_at()).isNotNull();
+        assertThat(rating.getCreatedAt()).isNotNull();
     }
 
     @Test

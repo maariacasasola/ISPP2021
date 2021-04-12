@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Rating;
+package com.gotacar.backend.models.rating;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +37,7 @@ public class Rating {
     @Max(5)
     public Integer points;
 
-    public LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     public Rating() {
 
@@ -48,7 +48,7 @@ public class Rating {
         this.to = to;
         this.points = points;
         this.content = content;
-        this.created_at = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override

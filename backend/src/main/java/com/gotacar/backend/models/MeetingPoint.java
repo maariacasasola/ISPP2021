@@ -21,7 +21,7 @@ public class MeetingPoint {
     @NotNull
     public Double lat;
     
-    public String name;
+    private String name;
     
     @NotBlank
     @Length(max = 240, message = "La longitud de la dirección no puede ser mayor a 240")

@@ -1,7 +1,8 @@
 package com.gotacar.backend.models;
 
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;

@@ -16,9 +16,9 @@ import java.util.List;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +144,7 @@ public class TripOrderControllerTest {
 
         mockMvc.perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
 
-        assertThat(order.status).isEqualTo("REFUNDED_PENDING");
+        assertThat(order.getStatus()).isEqualTo("REFUNDED_PENDING");
     }
 
     @Test
@@ -160,7 +160,7 @@ public class TripOrderControllerTest {
 
         mockMvc.perform(post("/cancel_trip_order/" + order.getId()).header("Authorization", token));
 
-        assertThat(order.status).isEqualTo("REFUNDED");
+        assertThat(order.getStatus()).isEqualTo("REFUNDED");
     }
 
     @Test

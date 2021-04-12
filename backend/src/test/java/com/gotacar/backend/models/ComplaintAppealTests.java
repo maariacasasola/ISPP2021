@@ -1,12 +1,13 @@
 package com.gotacar.backend.models;
 
-import com.gotacar.backend.models.Trip.Trip;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
+import com.gotacar.backend.models.trip.Trip;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

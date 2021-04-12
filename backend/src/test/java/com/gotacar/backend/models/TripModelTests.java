@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.validation.Validator;
 
-import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.trip.Trip;
 
 import javax.validation.ConstraintViolation;
 

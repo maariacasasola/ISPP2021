@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Trip;
+package com.gotacar.backend.models.trip;
 
 import java.time.LocalDateTime;
 import java.util.List;
