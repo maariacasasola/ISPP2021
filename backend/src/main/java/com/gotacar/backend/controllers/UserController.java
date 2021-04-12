@@ -199,18 +199,16 @@ public class UserController {
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/delete-penalized-account")
-    public List<User> deletePenalizedAccount() {
+	@PostMapping("/delete-penalized-account/{userId}")
+    public User deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
         try {
-			List<User> users = userRepository.findByTimesBannedGreaterThan(3);
-			for (User user : users){
-				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-				List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-				if(trips.isEmpty() && tripOrders.isEmpty()){
-					userRepository.delete(user);
-				}
+			User user = userRepository.findById(new ObjectId(userId));
+			List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if(trips.isEmpty() && tripOrders.isEmpty()){
+				userRepository.delete(user);
 			}
-			return users;
+			return user;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
