@@ -87,6 +87,55 @@ public class UserController {
 		return "Bearer " + token;
 	}
 
+	@PostMapping("/user/update")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	public User editUser(@RequestBody String body){
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+
+			JsonNode jsonNode = objectMapper.readTree(body);
+
+			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
+			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
+			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
+			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
+			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+		   
+
+		  
+		   user.setFirstName(firstName);
+		   user.setLastName(lastName);
+		   user.setEmail(email);
+		   user.setProfilePhoto(profilePhoto);
+		   user.setBirthdate(birthdate);
+		   //editar los datos del coche si es un conductor
+		   if(user.getRoles().contains("ROLE_DRIVER")){
+				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
+				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
+				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
+				ZonedDateTime enrollmentDateZone = ZonedDateTime
+						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
+				enrollmentDateZone = enrollmentDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+				LocalDate enrollmentDate = enrollmentDateZone.toLocalDate();
+
+				CarData carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
+						carDataJson.get("model").asText(), carDataJson.get("color").asText());
+
+			  	user.setCarData(carData);
+			   	user.setPhone(phone);
+			   	user.setIban(iban);
+
+		   }
+
+		   userRepository.save(user);
+
+			return user;
+		} catch(Exception e){
+			throw (new IllegalArgumentException(e.getMessage()));
+		}
+	}
+
 	@PreAuthorize("hasRole('ROLE_CLIENT') AND !hasRole('ROLE_DRIVER')")
 	@PostMapping("/driver/create")
 	public User requestConversionToDriver(@RequestBody() String body) {
