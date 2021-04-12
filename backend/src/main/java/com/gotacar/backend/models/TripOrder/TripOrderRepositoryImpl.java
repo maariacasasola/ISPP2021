@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.TripOrder;
+package com.gotacar.backend.models.tripOrder;
 
 import java.util.ArrayList;
 import java.util.List;

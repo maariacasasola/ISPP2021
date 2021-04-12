@@ -2,7 +2,7 @@
 * Generated theme by Material Theme Generator
 * https://materialtheme.arcsine.dev
 */
-
+@import 'colors.scss';
 @import '~@angular/material/theming';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -306,13 +306,13 @@ button:hover {
   min-width: 50vw;
   font-weight: 200;
   height: 200px;
-  border: 2px dashed #f16624;
+  border: 2px dashed $warn;
   border-radius: 5px;
   background: white;
   margin: 10px 0;
 
   &.hovering {
-      border: 2px solid #f16624;
+      border: 2px solid $warn;
       color: #dadada !important;
   }
 
@@ -323,4 +323,22 @@ button:hover {
 
 progress::-webkit-progress-value {
   transition: width 0.1s ease;
+}
+.filter-accordion .mat-expansion-panel-header-title {
+  align-items: center;
+}
+
+.ngx-slider {
+  .ngx-slider-pointer {
+    background-color: $warn !important;
+  }
+  .ngx-slider-pointer:focus {
+    outline: none !important;
+  }
+  .ngx-slider-selection {
+    background-color: $warn !important;
+  }
+  .ngx-slider-active:after {
+    background-color: $primary !important;
+  }
 }

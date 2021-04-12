@@ -1,11 +1,9 @@
-package com.gotacar.backend.models.PaymentReturn;
+package com.gotacar.backend.models.paymentReturn;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -30,7 +28,7 @@ public class PaymentReturn {
     @NotNull
     public Integer amount;
 
-    @Pattern(regexp = "PENDING|DONE", message = "El estado de la queja solo puede ser: (PENDING|DONE)")
+    @Pattern(regexp = "PENDING|DONE", message = "El estado de la devolución solo puede ser: (PENDING|DONE)")
     public String status;
 
     @NotNull

@@ -5,9 +5,9 @@ import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +43,7 @@ import net.minidev.json.JSONObject;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
-public class ComplaintControllerTest {
+class ComplaintControllerTest {
 
         @Configuration
         static class TestConfig {
@@ -117,8 +117,9 @@ public class ComplaintControllerTest {
         }
 
         @Test
-        public void ListComplaintsTest() throws Exception {
-                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
+        void ListComplaintsTest() throws Exception {
+                Mockito.when(complaintRepository.findByStatus(complaint.getStatus()))
+                                .thenReturn(Arrays.asList(complaint));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
                 String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
@@ -136,16 +137,15 @@ public class ComplaintControllerTest {
 
                 String res = result.andReturn().getResponse().getContentAsString();
                 int contador = 0;
-                while (res.contains("trip")) {
-                        res = res.substring(res.indexOf("trip") + "trip".length(), res.length());
+                while (res.contains("PENDING")) {
+                        res = res.substring(res.indexOf("PENDING") + "PENDING".length(), res.length());
                         contador++;
                 }
-
-                assertThat(contador).isEqualTo(2);
+                assertThat(contador).isEqualTo(1);
         }
 
         @Test
-        public void penalizeTest() throws Exception {
+        void penalizeTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
@@ -167,13 +167,12 @@ public class ComplaintControllerTest {
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
-                assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
                 assertThat(trip.getDriver().getBannedUntil()).isNotNull();
 
         }
 
         @Test
-        public void refuseTest() throws Exception {
+        void refuseTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 

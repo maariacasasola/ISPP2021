@@ -1,7 +1,8 @@
-package com.gotacar.backend.models.TripOrder;
+package com.gotacar.backend.models.tripOrder;
 
-import com.gotacar.backend.models.Trip.Trip;
 import com.gotacar.backend.models.User;
+import com.gotacar.backend.models.trip.Trip;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -40,7 +41,7 @@ public class TripOrder {
     @Max(4)
     public Integer places;
 
-    public String status;
+    private String status;
 
     public TripOrder(Trip trip, User user, LocalDateTime date, Integer price, String paymentIntent, Integer places) {
         this.trip = trip;

@@ -11,6 +11,11 @@ h1 {
   padding: 30px;
 }
 
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
 .trips-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

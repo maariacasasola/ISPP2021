@@ -48,12 +48,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
 import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
@@ -93,8 +96,10 @@ import { EditProfileClientComponent } from './pages/authenticated-page/edit-prof
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { UploadComponent } from './components/upload/upload.component';
 import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
-
-
+import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
+import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
+import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
+import { OrderTripsPipe } from './pipes/order-trips.pipe';
 
 registerLocaleData(localeEs, 'es');
 
@@ -114,13 +119,16 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    AdminTripOrderDetailsPageComponent,
     DriverTripListPageComponent,
     CancelTripDialogComponent,
     AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
+    AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
+    AdminTripOrdersListPageComponent,
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
@@ -143,6 +151,8 @@ registerLocaleData(localeEs, 'es');
     DropzoneDirective,
     UploadComponent,
     ImageUploadDialogComponent,
+    DriverTripDetailsPageComponent,
+    OrderTripsPipe,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -160,6 +170,7 @@ registerLocaleData(localeEs, 'es');
     MatFormFieldModule,
     MatIconModule,
     MatStepperModule,
+    MatExpansionModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -186,6 +197,7 @@ registerLocaleData(localeEs, 'es');
     GoogleMapsModule,
     MatMenuModule,
     FlexLayoutModule,
+    NgxSliderModule,
   ],
   providers: [
     AuthenticatedGuard,

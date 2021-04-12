@@ -1,4 +1,4 @@
-package com.gotacar.backend.models.Trip;
+package com.gotacar.backend.models.trip;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +21,8 @@ public interface TripRepository extends MongoRepository<Trip, String>, TripRepos
     public List<Trip> findByEndingPointWithin(Circle c);
     
     public List<Trip> findByDriver(User driver);
+
+    List<Trip> findByDriverAndCanceled(User driver, Boolean canceled);
+
+    public List<Trip> findByDriverDni(String dni);
 }

@@ -1,34 +1,28 @@
 package com.gotacar.backend.models;
-import java.util.Date;
-
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Builder.Default;
-
 
 @Getter
 @Setter
 public class CarData {
 
-    public String car_plate;
+    private String carPlate;
 
-    public Date enrollment_date;
+    private LocalDate enrollmentDate;
 
-    public String model;
+    private String model;
 
-    public String color;
+    private String color;
 
-    public CarData(String car_plate, Date enrollment_date, String model, String color) {
-        this.car_plate = car_plate;
-        this.enrollment_date = enrollment_date;
+    public CarData(String carPlate, LocalDate enrollmentDate, String model, String color) {
+        this.carPlate = carPlate;
+        this.enrollmentDate = enrollmentDate;
         this.model = model;
         this.color = color;
     }
 
     public CarData() {
     }
-    
-
-
     
 }

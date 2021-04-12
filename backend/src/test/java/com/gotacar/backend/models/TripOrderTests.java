@@ -1,7 +1,8 @@
 package com.gotacar.backend.models;
 
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.TripOrder.TripOrder;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TripOrderTests {
+class TripOrderTests {
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.afterPropertiesSet();
@@ -36,8 +37,8 @@ public class TripOrderTests {
         List<String> authorities = new ArrayList<String>();
         authorities.add("ROLE_CLIENT");
         LocalDate birthdate1 = LocalDate.of(1999, 10, 10);
-        client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com", birthdate1,
-                authorities);
+        client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com",
+                birthdate1, authorities);
 
         List<String> authoritiesDriver = new ArrayList<String>();
         authorities.add("ROLE_CLIENT");
@@ -51,11 +52,12 @@ public class TripOrderTests {
                 -5.999724275498323);
         LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
         LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-        trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        trip = new Trip(location1, location3, 220, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
     }
 
     @Test
-    public void userCantBeNull() {
+    void userCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -68,7 +70,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void clientCantBeNull() {
+    void clientCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -81,7 +83,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void dateCantBeNull() {
+    void dateCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         TripOrder tripOrder1 = new TripOrder(trip, client, null, 30, "pay_2312hhhda", 2);
@@ -93,7 +95,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void priceCantBeNull() {
+    void priceCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -106,7 +108,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void paymentIntentCantBeNull() {
+    void paymentIntentCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -119,7 +121,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void placesCantBeNull() {
+    void placesCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -132,7 +134,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void priceHasMax() {
+    void priceHasMax() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -145,7 +147,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void priceHasMin() {
+    void priceHasMin() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);
@@ -158,7 +160,7 @@ public class TripOrderTests {
     }
 
     @Test
-    public void placesHasMin() {
+    void placesHasMin() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         LocalDateTime date = LocalDateTime.of(2021, 6, 4, 13, 30, 24);

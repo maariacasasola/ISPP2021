@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.trip.Trip;
 
 import org.springframework.data.annotation.Id;
 

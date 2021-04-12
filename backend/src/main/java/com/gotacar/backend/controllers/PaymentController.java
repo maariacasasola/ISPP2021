@@ -2,10 +2,10 @@ package com.gotacar.backend.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.stripe.Stripe;
@@ -13,6 +13,7 @@ import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,7 @@ public class PaymentController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             String idUser = userRepository.findByEmail(authentication.getPrincipal().toString()).getId();
-            Trip trip = tripRepository.findById(idTrip).get();
+            Trip trip = tripRepository.findById(new ObjectId(idTrip));
 
             if (!(trip.getPlaces() >= quantity)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
@@ -165,8 +166,8 @@ public class PaymentController {
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
-            Trip trip = tripRepository.findById(tripId).get();
-            User user = userRepository.findById(userId).get();
+            Trip trip = tripRepository.findById(new ObjectId(tripId));
+            User user = userRepository.findById(new ObjectId(userId));
             Integer places = trip.getPlaces();
 
             if (places >= quantity) {

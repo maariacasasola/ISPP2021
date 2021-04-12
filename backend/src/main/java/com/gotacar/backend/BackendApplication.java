@@ -23,10 +23,10 @@ import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
@@ -81,11 +81,11 @@ public class BackendApplication implements CommandLineRunner {
 
                 // USERS
                 // -----------------------------------------------------------------------------------------
-                List<String> lista1 = new ArrayList<String>();
+                List<String> lista1 = new ArrayList<>();
                 lista1.add("ROLE_ADMIN");
-                List<String> lista2 = new ArrayList<String>();
+                List<String> lista2 = new ArrayList<>();
                 lista2.add("ROLE_CLIENT");
-                List<String> lista3 = new ArrayList<String>();
+                List<String> lista3 = new ArrayList<>();
                 lista3.add("ROLE_CLIENT");
                 lista3.add("ROLE_DRIVER");
                 LocalDate fecha1 = LocalDate.of(1999, 10, 10);
@@ -112,23 +112,23 @@ public class BackendApplication implements CommandLineRunner {
 
                 // Clients
                 User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
-                                "89070336D", "http://dniclient.com", fecha3, lista2);
+                                "89070336D", "http://dniclien1.com", fecha3, lista2);
                 User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
-                                "42131220T", "http://dniclient.com", fecha2, lista2);
+                                "42131220T", "http://dniclient2.com", fecha2, lista2);
                 User client3 = new User("Blanca", "Ruíz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE3", "client3@gotacar.es",
-                                "89070345D", "http://dniclient.com", fecha1, lista2);
+                                "89070345D", "http://dniclient3.com", fecha1, lista2);
                 User client4 = new User("Alberto", "Suárez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE4", "client4@gotacar.com",
-                                "42131225F", "http://dniclient.com", fecha2, lista2);
+                                "42131225F", "http://dniclien4t.com", fecha2, lista2);
                 User client5 = new User("Salvador", "Luque", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE5", "client5@gotacar.es",
-                                "89070678S", "http://dniclient.com", fecha3, lista2);
+                                "89070678S", "http://dniclient5.com", fecha3, lista2);
                 User client6 = new User("María", "Sánchez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE6", "client6@gotacar.com",
-                                "35131220T", "http://dniclient.com", fecha1, lista2);
+                                "35131220T", "http://dniclient6.com", fecha1, lista2);
                 User client7 = new User("Laura", "Muñoz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7", "clien7@gotacar.es",
-                                "80270336K", "http://dniclient.com", fecha3, lista2);
+                                "80270336K", "http://dniclient7.com", fecha3, lista2);
                 User client8 = new User("Pedro", "Serrano", "oQfGQi4xechNkcQEdHg29sM5rP33", "client8@gotacar.com",
-                                "42941220L", "http://dniclient.com", fecha2, lista2);
+                                "42941220L", "http://dniclient8.com", fecha2, lista2);
                 User client9 = new User("Pedro", "Serrano", "2Sg1OCgPB8YoKjxgocXRJDtcvDo2", "client@gotacar.com",
-                                "42941220L", "http://dniclient.com", fecha2, lista2);
+                                "42941220L", "http://dniclient9.com", fecha2, lista2);
 
                 userRepository.save(client);
                 userRepository.save(client2);
@@ -200,15 +200,15 @@ public class BackendApplication implements CommandLineRunner {
                                 driver3);
                 Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2,
                                 driver2);
-                Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Lagoh",
-                                2, driver);
+                Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Reina",
+                                5, driver);
                 Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9,
                                 "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
                 Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
                                 driver);
-                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
+                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Campo del Betis", 3,
                                 driver);
-                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
+                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh Aparcamientos", 3,
                                 driver);
 
                 tripRepository.save(trip1);
@@ -291,13 +291,13 @@ public class BackendApplication implements CommandLineRunner {
                 Complaint complaint4 = new Complaint("Queja por retraso", "El conductor se ha retrasado 5 min", trip8,
                                 client4, LocalDateTime.of(2021, 03, 21, 12, 30, 00), "REFUSED");
                 Complaint complaint5 = new Complaint("Queja por velocidad1",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip6, client,
+                                "El coche olía mal", trip6, client,
                                 LocalDateTime.of(2021, 03, 20, 17, 45, 00));
                 Complaint complaint6 = new Complaint("Queja por velocidad2",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip7, client,
+                                "El coche tenía una rueda pinchada", trip7, client,
                                 LocalDateTime.of(2021, 03, 20, 17, 45, 00));
                 Complaint complaint7 = new Complaint("Queja por velocidad3",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip8, client,
+                                "El conductor escuchaba Bad Gyal", trip8, client,
                                 LocalDateTime.of(2021, 03, 20, 17, 45, 00));
 
                 complaintRepository.save(complaint1);
@@ -349,6 +349,7 @@ public class BackendApplication implements CommandLineRunner {
                                         .addFilterAfter(new JWTAuthorizationFilter(),
                                                         UsernamePasswordAuthenticationFilter.class)
                                         .authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
+                                        .antMatchers(HttpMethod.POST, "/user/register").permitAll()
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
                                         .antMatchers(HttpMethod.GET, "/trip/{tripId}").permitAll()

@@ -1,10 +1,26 @@
+@import '~colors.scss';
+
 .page-container {
+  display: flex;
+  flex-direction: column;
   min-height: 75vh;
 }
 
-.search-info {
-  padding: 20px;
+.filter {
+  width: 100%;
+}
+
+.filter-button {
+  color: white;
+  background-color: $warn;
+}
+
+.filter-content {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.price-range {
+  max-width: 20vw;
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import com.gotacar.backend.models.PaymentReturn.PaymentReturn;
+import com.gotacar.backend.models.paymentReturn.PaymentReturn;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PaymentReturnTests {
+class PaymentReturnTests {
     private Validator createValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.afterPropertiesSet();
@@ -39,7 +39,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void defaultStatusMustBePending() {
+    void defaultStatusMustBePending() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 300);
@@ -48,7 +48,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void userCantBeNull() {
+    void userCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(null, 200);
@@ -60,7 +60,7 @@ public class PaymentReturnTests {
     }
 
     @Test
-    public void statusMustMatchPattern() {
+    void statusMustMatchPattern() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 200);
@@ -69,11 +69,11 @@ public class PaymentReturnTests {
         Set<ConstraintViolation<PaymentReturn>> constraintViolations = validator.validate(paymentReturn);
 
         ConstraintViolation<PaymentReturn> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("El estado de la queja solo puede ser: (PENDING|DONE)");
+        assertThat(violation.getMessage()).isEqualTo("El estado de la devolución solo puede ser: (PENDING|DONE)");
     }
 
     @Test
-    public void createdAtMustBeAuto() {
+    void createdAtMustBeAuto() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
         PaymentReturn paymentReturn = new PaymentReturn(client, 299);

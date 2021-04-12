@@ -1,7 +1,6 @@
-package com.gotacar.backend.models.Trip;
+package com.gotacar.backend.models.trip;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,19 +28,8 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
         Query query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 
-        Integer diaActual= date.getDayOfMonth();
-        Integer mesActual = date.getMonthValue();
-        Integer anoActual = date.getYear();
-        Boolean bisiesto = false;
+        LocalDateTime nextDay = date.plusDays(2);
 
-        bisiesto = (anoActual%400 == 0 || anoActual%4 == 0) && !(anoActual%100== 0) ?true:false;
-        diaActual = diaActual+1>Month.of(mesActual).length(bisiesto)?1:diaActual+1;
-        mesActual = diaActual==1?mesActual+1:mesActual;
-		mesActual = mesActual>12?1:mesActual;
-        anoActual=mesActual+1>12?anoActual+1:anoActual;
-
-        LocalDateTime diaSiguiente = LocalDateTime.of(anoActual, Month.of(mesActual), diaActual, 0, 0, 0);
-        
         if (startingPoint != null) {
             criteria.add(Criteria.where("startingPoint").within(circleStart));
         }
@@ -50,17 +38,13 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
             criteria.add(Criteria.where("places").gte(places));
         }
 
-        if (date != null) {
-            criteria.add(Criteria.where("startDate").gte(date).lt(diaSiguiente));
-
-        }
-
         if (!criteria.isEmpty()) {
             query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
         }
 
+        criteria.add(Criteria.where("startDate").gte(date).lte(nextDay));
+
         List<Trip> viajesPuntoEmpezar = mongoTemplate.find(query, Trip.class);
-        
 
         query = new Query();
         criteria = new ArrayList<>();
