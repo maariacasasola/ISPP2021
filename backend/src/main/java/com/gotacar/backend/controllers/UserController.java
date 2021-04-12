@@ -100,8 +100,11 @@ public class UserController {
 			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
 			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
-			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
-		   
+			ZonedDateTime birthdateDateZone = ZonedDateTime
+                        .parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+						birthdateDateZone = birthdateDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+                LocalDate birthdate = birthdateDateZone.toLocalDate();
+			  
 
 		  
 		   user.setFirstName(firstName);
