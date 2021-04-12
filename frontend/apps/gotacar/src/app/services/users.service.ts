@@ -14,4 +14,8 @@ export class UsersService {
       .get(environment.api_url + '/enrolled-user/list')
       .toPromise();
   }
+
+  delete_penalized_account(user_id: string): Promise<any>{
+    return this._http_client.post(environment.api_url+'/delete-penalized-account/'+user_id, null).toPromise();
+  }
 }
