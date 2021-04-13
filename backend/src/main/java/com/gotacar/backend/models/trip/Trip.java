@@ -33,7 +33,7 @@ public class Trip {
     public Location endingPoint;
 
     @NotNull
-    @Min(value=0)
+    @Min(1)
     public Integer price;
 
     @Future
