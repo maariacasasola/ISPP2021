@@ -54,7 +54,6 @@ export class OrderTripsPipe implements PipeTransform {
           });
           break;
         case 'date_desc':
-          console.log('has');
           trips = trips.sort((a, b) => {
             if (a.startDate > b.startDate) {
               return -1;

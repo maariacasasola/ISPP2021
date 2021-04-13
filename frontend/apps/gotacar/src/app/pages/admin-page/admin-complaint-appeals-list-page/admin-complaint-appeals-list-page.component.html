@@ -7,13 +7,13 @@
     <mat-card-title>{{ complaint_appeal?.complaint?.title }}</mat-card-title>
     <mat-card-content>
       <p>
-        <b>Fecha de publicación:</b>
+        <strong>Fecha de publicación:</strong>
         {{
           complaint_appeal?.complaint?.creationDate | date: 'HH:ss dd/MM/yyyy'
         }}
       </p>
-      <p><b>Queja:</b> {{ complaint_appeal?.complaint?.content }}</p>
-      <p><b>Apelación:</b> {{ complaint_appeal?.content }}</p>
+      <p><strong>Queja:</strong> {{ complaint_appeal?.complaint?.content }}</p>
+      <p><strong>Apelación:</strong> {{ complaint_appeal?.content }}</p>
     </mat-card-content>
     <mat-card-actions class="card-actions">
       <button

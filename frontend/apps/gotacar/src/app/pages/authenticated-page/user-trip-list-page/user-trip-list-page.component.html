@@ -7,12 +7,12 @@
     <br /><br />
     <mat-card-content class="card-content">
       <p>
-        <b>Hora de salida:</b>
+        <strong>Hora de salida:</strong>
         {{ trip?.trip?.startDate | date: 'medium' }}
       </p>
       <br />
       <p>
-        <b>Hora de llegada:</b>
+        <strong>Hora de llegada:</strong>
         {{ trip?.trip?.endingDate | date: 'medium' }}
       </p>
       <br />
@@ -21,10 +21,10 @@
           {{ trip?.trip?.startingPoint?.address }} &#8594;
           {{ trip?.trip?.endingPoint?.address }}
         </p>
-        <b>
+        <strong>
           <p>{{ trip?.price | convertCentToEur }}</p>
           <p>{{ get_trip_status(trip?.status) }}</p>
-        </b>
+        </strong>
       </div>
     </mat-card-content>
     <mt-card-content>
