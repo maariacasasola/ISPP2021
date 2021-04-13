@@ -403,16 +403,16 @@ class UserControllerTest {
 	@Test
 	void testConvertToDriver() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+		Mockito.when(userRepository.findById(new ObjectId(user.getId()))).thenReturn(user);
 
 		JSONObject car_data = new JSONObject();
-		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("enrollment_date", "2012-06-04");
 		car_data.appendField("car_plate", "4041 ATO");
 		car_data.appendField("model", "Opel");
 		car_data.appendField("color", "azul marino");
 		// Construcción del json para el body
 		JSONObject sampleObject = new JSONObject();
-		sampleObject.appendField("uid", user.getUid());
-		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("id", user.getId());
 		sampleObject.appendField("iban", "ES2121001859436727673434");
 		sampleObject.appendField("driving_license",
 				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
@@ -438,14 +438,13 @@ class UserControllerTest {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 
 		JSONObject car_data = new JSONObject();
-		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("enrollment_date", "2012-06-04");
 		car_data.appendField("car_plate", "4041 ATO");
 		car_data.appendField("model", "Opel");
 		car_data.appendField("color", "azul marino");
 		// Construcción del json para el body
 		JSONObject sampleObject = new JSONObject();
-		sampleObject.appendField("uid", user.getUid());
-		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("id", user.getId());
 		sampleObject.appendField("iban", "ES2121001859436727673434");
 		sampleObject.appendField("driving_license",
 				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
@@ -469,16 +468,16 @@ class UserControllerTest {
 	void testConvertToDriverBanned() throws Exception {
 		user.setBannedUntil(LocalDateTime.of(2021, 10, 10, 13, 30, 00));
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+		Mockito.when(userRepository.findById(new ObjectId(user.getId()))).thenReturn(user);
 
 		JSONObject car_data = new JSONObject();
-		car_data.appendField("enrollment_date", "2012-06-04T13:30:00.000+00");
+		car_data.appendField("enrollment_date", "2012-06-04");
 		car_data.appendField("car_plate", "4041 ATO");
 		car_data.appendField("model", "Opel");
 		car_data.appendField("color", "azul marino");
 		// Construcción del json para el body
 		JSONObject sampleObject = new JSONObject();
-		sampleObject.appendField("uid", user.getUid());
-		sampleObject.appendField("phone", "678678678");
+		sampleObject.appendField("id", user.getId());
 		sampleObject.appendField("iban", "ES2121001859436727673434");
 		sampleObject.appendField("driving_license",
 				"https://www.google.com/url?sa=i&url=https%3A%2F%2Floentiendo.com%2Frenovar-carnet-de-conducir%2Fcomment-page-4%2F&psig=AOvVaw3QB9z2DMG22U7ygu_nOW0o&ust=1618134528516000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKj5w4Cz8-8CFQAAAAAdAAAAABAD");
