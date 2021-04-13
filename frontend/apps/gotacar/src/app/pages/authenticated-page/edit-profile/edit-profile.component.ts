@@ -4,6 +4,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthServiceService } from '../../../services/auth-service.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'frontend-edit-profile',
@@ -37,40 +38,93 @@ export class EditProfileComponent implements OnInit {
     enrollment_date: ['', Validators.required],
     model: ['', Validators.required],
     color: ['', Validators.required],
-    profilePhoto: ['', Validators.required],
   });
-  data;
+  user;
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
     private _snackBar: MatSnackBar
   ) {
-    const name = _authService
-      .get_user_data()
-      .then((data) => (this.data = data));
+    this.load_user_data();
   }
 
+  async load_user_data() {
+    try {
+      this.user = await this._authService.get_user_data();
+      console.log(this.user);
+      console.log('ENTER')
+      this.update_form.setValue({
+        firstName: this.user?.firstName,
+        lastName: this.user?.lastName,
+        email: this.user?.email,
+        dni: this.user?.dni,
+        birthdate: this.user?.birthdate,
+        phone: this.user?.phone,
+        iban: this.user?.iban,
+        car_plate: this.user?.carData?.carPlate ||'',
+        enrollment_date: this.user?.carDate?.enrollmentDate||'',
+        model:this.user?.carData?.model||'',
+        color:this.user?.carData?.color||'',
+      });
+    } catch (error) {
+      console.error(error)
+      this.openSnackBar(
+        'Ha ocurrido un error al recuperar tu perfil de usuario'
+      );
+    }
+  }
   ngOnInit(): void {}
 
-  onSubmit() {
+  async onSubmit() {
     console.log(this.update_form.value);
     if (this.update_form.invalid) {
       this.update_form.markAllAsTouched();
       return;
     }
     if (!this.checkDate()) {
-      this.openSnackBar('Debes ser mayor de edad');
+      this.openSnackBar('Debes ser mayor de 16');
       return;
     }
     try {
-      //TODO con servicio
-    } catch (error) {}
+      const car_data = {
+        carPlate:this.update_form.value.car_plate,
+        enrollmentDate: moment(this.update_form.value.enrollment_date).format(
+          'yyyy-MM-DD'
+        ),
+        model:this.update_form.value.model,
+        color:this.update_form.value.color,
+      }
+      const user_data = {
+        firstName: this.update_form.value.firstName,
+        lastName: this.update_form.value.lastName,
+        email: this.user.email,
+        profilePhoto: this.user.profilePhoto,
+        birthdate: moment(this.update_form.value.birthdate).format(
+          'yyyy-MM-DD'
+        ),
+        dni: this.update_form.value.dni,
+        phone: this.update_form.value.phone,
+        iban:this.update_form.value.iban,
+        carData: car_data,
+
+      };
+      console.log(user_data)
+      const response = await this._authService.update_user_profile(user_data);
+      if (response) {
+        await this.load_user_data();
+        this.openSnackBar('Perfil actualizado correctamente');
+      }
+    } catch (error) {
+      console.error(error);
+      this.openSnackBar(
+        'Ha ocurrido un error al actualizar tu perfil de usuario'
+      );
+    }
   }
   checkDate() {
-    const date: Date = new Date(this.update_form.value.birthdate);
-    let timeDiff = Math.abs(Date.now() - date.getTime());
-    let age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
-    return age > 17;
+    const birthdate = moment(this.update_form.value.birthdate);
+    const years = moment().diff(birthdate, 'years');
+    return years > 16;
   }
 
   openSnackBar(message: string) {

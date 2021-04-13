@@ -7,13 +7,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>account_circle</mat-icon>
           <mat-label>Nombre </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="firstName"
-            required
-            value="{{ data?.firstName }}"
-          />
+          <input matInput type="text" formControlName="firstName" required />
           <mat-error *ngIf="update_form?.get('firstName')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -21,13 +15,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>account_circle</mat-icon>
           <mat-label>Apellido </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="lastName"
-            required
-            value="{{ data?.lastName }}"
-          />
+          <input matInput type="text" formControlName="lastName" required />
           <mat-error *ngIf="update_form?.get('lastName')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -35,13 +23,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>attach_email</mat-icon>
           <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            required
-            value="{{ data?.email }}"
-          />
+          <input matInput type="email" formControlName="email" required />
           <mat-error *ngIf="update_form?.get('email')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -53,13 +35,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>account_circle</mat-icon>
           <mat-label>DNI</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="dni"
-            required
-            value="{{ data?.dni }}"
-          />
+          <input matInput type="text" formControlName="dni" required />
           <mat-error *ngIf="update_form?.get('dni')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -69,15 +45,20 @@
         </mat-form-field>
 
         <mat-form-field class="spacing" appearance="outline">
-          <mat-icon matSuffix> calendar_today </mat-icon>
           <mat-label>Fecha nacimiento </mat-label>
           <input
             matInput
-            type="date"
+            [matDatepicker]="picker"
             formControlName="birthdate"
             required
-            value="{{ data?.birthdate }}"
+            readonly
+            (click)="picker.open()"
           />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="update_form?.get('birthdate')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -86,13 +67,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>phone</mat-icon>
           <mat-label>Teléfono</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="phone"
-            required
-            value="{{ data?.phone }}"
-          />
+          <input matInput type="text" formControlName="phone" required />
           <mat-error *ngIf="update_form?.get('phone')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -103,13 +78,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix>savings</mat-icon>
           <mat-label>IBAN</mat-label>
-          <input
-            matInput
-            type="email"
-            formControlName="iban"
-            required
-            value="{{ data?.iban }}"
-          />
+          <input matInput type="email" formControlName="iban" required />
           <mat-error *ngIf="update_form?.get('iban')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -121,13 +90,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix> drive_eta </mat-icon>
           <mat-label>Matrícula vehículo </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="car_plate"
-            required
-            value="{{ data?.carData?.car_plate }}"
-          />
+          <input matInput type="text" formControlName="car_plate" required />
           <mat-error *ngIf="update_form?.get('car_plate')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -140,7 +103,6 @@
             type="date"
             formControlName="enrollment_date"
             required
-            value="{{ data?.carData?.enrollment_date }}"
           />
           <mat-error
             *ngIf="update_form?.get('enrollment_date')?.errors?.required"
@@ -150,13 +112,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix> drive_eta </mat-icon>
           <mat-label>Modelo </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="model"
-            required
-            value="{{ data?.carData?.model }}"
-          />
+          <input matInput type="text" formControlName="model" required />
           <mat-error *ngIf="update_form?.get('model')?.errors?.required"
             >Campo obligatorio</mat-error
           >
@@ -164,13 +120,7 @@
         <mat-form-field class="spacing" appearance="outline">
           <mat-icon matSuffix> drive_eta </mat-icon>
           <mat-label>Color </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="color"
-            required
-            value="{{ data?.carData?.color }}"
-          />
+          <input matInput type="text" formControlName="color" required />
           <mat-error *ngIf="update_form?.get('color')?.errors?.required"
             >Campo obligatorio</mat-error
           >

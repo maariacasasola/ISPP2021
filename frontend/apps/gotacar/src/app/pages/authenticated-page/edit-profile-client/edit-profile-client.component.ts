@@ -63,7 +63,7 @@ export class EditProfileClientComponent {
     }
 
     if (!this.checkDate()) {
-      this.openSnackBar('Debes ser mayor de edad');
+      this.openSnackBar('Debes ser mayor de 16');
       return;
     }
 
