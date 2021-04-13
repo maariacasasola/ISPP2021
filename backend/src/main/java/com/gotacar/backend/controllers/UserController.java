@@ -2,8 +2,6 @@ package com.gotacar.backend.controllers;
 
 import java.security.Key;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -183,24 +181,20 @@ public class UserController {
 	public User requestConversionToDriver(@RequestBody() String body) {
 		try {
 			JsonNode jsonNode = objectMapper.readTree(body);
-			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
-			User u = this.userRepository.findByUid(uid);
+			String id = objectMapper.readTree(jsonNode.get("id").toString()).asText();
+			User u = this.userRepository.findById(new ObjectId(id));
 			if (u.getBannedUntil() == null) {
-				String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 				String drivingLicense = objectMapper.readTree(jsonNode.get("driving_license").toString()).asText();
 				Integer experience = objectMapper.readTree(jsonNode.get("experience").toString()).asInt();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
 
-				ZonedDateTime enrollmentDateZone = ZonedDateTime
+				LocalDate enrollmentDate = LocalDate
 						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
-				enrollmentDateZone = enrollmentDateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-				LocalDate enrollmentDate = enrollmentDateZone.toLocalDate();
 
 				CarData carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
 						carDataJson.get("model").asText(), carDataJson.get("color").asText());
 
-				u.setPhone(phone);
 				u.setIban(iban);
 				u.setDrivingLicense(drivingLicense);
 				u.setExperience(experience);
