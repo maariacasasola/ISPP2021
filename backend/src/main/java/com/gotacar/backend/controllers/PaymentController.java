@@ -115,7 +115,6 @@ public class PaymentController {
         Event event = null;
 
         try {
-            // TODO: Configurar secret de stripe webhook
             event = Webhook.constructEvent(body, signHeader, stripeWebhookSecret);
         } catch (Exception e) {
             return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);

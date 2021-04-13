@@ -4,6 +4,7 @@ import { AuthServiceService } from '../../../services/auth-service.service';
 import { ImageUploadDialogComponent } from '../../../components/image-upload-dialog/image-upload-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'frontend-client-profile-page',
@@ -14,7 +15,8 @@ export class ClientProfilePageComponent {
   user;
 
   constructor(
-    private _userService: AuthServiceService,
+    private _authService: AuthServiceService,
+    private _user_service: UsersService,
     public router: Router,
     private _my_dialog: MatDialog,
     private _snackBar: MatSnackBar
@@ -24,7 +26,7 @@ export class ClientProfilePageComponent {
 
   async load_user_data() {
     try {
-      this.user = await this._userService.get_user_data();
+      this.user = await this._authService.get_user_data();
     } catch (error) {
       this.openSnackBar(
         'Ha ocurrido un error al recuperar tu perfil de usuario'
@@ -47,7 +49,7 @@ export class ClientProfilePageComponent {
   }
 
   isDriver() {
-    return this._userService.is_driver();
+    return this._authService.is_driver();
   }
 
   async update_profile_photo() {
@@ -69,16 +71,9 @@ export class ClientProfilePageComponent {
       return;
     }
     try {
-      const user_data = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
-        profilePhoto: dialog_response,
-        birthdate: this.user.birthdate,
-        phone: this.user.phone,
-        dni: this.user.dni,
-      };
-      const response = await this._userService.update_user_profile(user_data);
+      const response = await this._user_service.update_profile_photo(
+        dialog_response
+      );
       if (response) {
         await this.load_user_data();
       }
@@ -88,6 +83,9 @@ export class ClientProfilePageComponent {
   }
 
   get_profile_photo() {
-    return this.user?.profilePhoto || 'assets/img/generic-user.jpg';
+    if (this.user?.profilePhoto) {
+      return this.user?.profilePhoto;
+    }
+    return 'assets/img/generic-user.jpg';
   }
 }

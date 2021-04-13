@@ -21,18 +21,13 @@
     <div class="skills">
       <h6>Datos Personales</h6>
       <ul>
-        <li>Fecha nacimiento: {{ user?.birthdate | date: 'dd-MM-yyyy'}}</li>
+        <li>Fecha nacimiento: {{ user?.birthdate | date: 'dd-MM-yyyy' }}</li>
         <li>Email: {{ user?.email }}</li>
         <li>DNI: {{ user?.dni }}</li>
         <li>Teléfono: {{ user?.phone }}</li>
+        <li *ngIf="isDriver()">IBAN: {{ user?.iban }}</li>
       </ul>
       <div *ngIf="isDriver()">
-        <h6>Datos del Conductor</h6>
-        <ul>
-          <li>IBAN: {{ user?.iban }}</li>
-          <li>Licencia: {{ user?.driving_license }}</li>
-          <li>Experiencia: {{ user?.experience }}</li>
-        </ul>
         <h6>Datos del vehículo</h6>
         <ul>
           <li>Matrícula: {{ user?.carData?.car_plate }}</li>

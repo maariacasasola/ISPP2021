@@ -23,7 +23,7 @@ import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
-import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
+import { EditProfileDriverComponent } from './pages/authenticated-page/edit-profile-driver/edit-profile-driver.component';
 import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
 import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
@@ -87,7 +87,7 @@ const routes: Routes = [
       },
       {
         path:'edit-profile',
-        component: EditProfileComponent,
+        component: EditProfileDriverComponent,
       },
       {
         path:'edit-profile-client',

@@ -15,6 +15,8 @@ public interface TripOrderRepository extends MongoRepository<TripOrder, String>,
 
     List<TripOrder> findByUserUid(String uid);
 
+    List<TripOrder> findByUserId(String id);
+
     List<TripOrder> findByTrip(Trip trip);
 
     public Optional<List<TripOrder>> findAllByTrip(Trip trip);

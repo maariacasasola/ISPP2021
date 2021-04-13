@@ -39,14 +39,14 @@ class ComplaintAppealTests {
         authorities.add("ROLE_CLIENT");
         LocalDate birthdate1 = LocalDate.of(1999, 10, 10);
         client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com",
-                birthdate1, authorities);
+                birthdate1, authorities, "655757575");
 
         List<String> authoritiesDriver = new ArrayList<String>();
         authorities.add("ROLE_CLIENT");
         authorities.add("ROLE_DRIVER");
         LocalDate birthdate2 = LocalDate.of(1999, 10, 10);
         driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
-                "http://dnidriver.com", birthdate2, authoritiesDriver);
+                "http://dnidriver.com", birthdate2, authoritiesDriver, "655756575");
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
         Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635,

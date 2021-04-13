@@ -35,7 +35,7 @@ class PaymentReturnTests {
         authorities.add("ROLE_CLIENT");
         LocalDate birthdate1 = LocalDate.of(1999, 10, 10);
         client = new User("Manuel", "Fernandez", "1", "manan@gmail.com", "312312312", "http://dasdasdas.com",
-                birthdate1, authorities);
+                birthdate1, authorities, "655757575");
     }
 
     @Test

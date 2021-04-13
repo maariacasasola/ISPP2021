@@ -7,8 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { SignUpComponent } from '../../sign-up/sign-up.component';
-
-import { EditProfileComponent } from './edit-profile.component';
+import { EditProfileDriverComponent } from './edit-profile-driver.component';
 
 class mockTripService {
   async get_user_data() {
@@ -23,8 +22,8 @@ class mockTripService {
 }
 
 describe('EditProfileComponent', () => {
-  let component: EditProfileComponent;
-  let fixture: ComponentFixture<EditProfileComponent>;
+  let component: EditProfileDriverComponent;
+  let fixture: ComponentFixture<EditProfileDriverComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,7 +40,7 @@ describe('EditProfileComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditProfileComponent);
+    fixture = TestBed.createComponent(EditProfileDriverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

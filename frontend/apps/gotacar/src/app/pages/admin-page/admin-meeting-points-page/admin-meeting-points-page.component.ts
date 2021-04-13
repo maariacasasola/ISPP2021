@@ -113,7 +113,6 @@ export class AdminMeetingPointsPageComponent implements OnInit {
         );
       }
       this.get_all_meeting_points();
-      console.log(response);
     } catch (error) {
       console.error(error);
     }

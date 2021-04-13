@@ -14,4 +14,12 @@ export class UsersService {
       .get(environment.api_url + '/enrolled-user/list')
       .toPromise();
   }
+
+  update_profile_photo(photo_url) {
+    return this._http_client
+      .post(environment.api_url + '/user/update/profile-photo', {
+        profilePhoto: photo_url,
+      })
+      .toPromise();
+  }
 }

@@ -31,7 +31,7 @@ class UserModelTests {
 		List<String> lista = new ArrayList<>();
 		lista.add("ROLE_ADMIN");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "1234568P", "http://hola.com", date,
-				lista);
+				lista, "655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
@@ -46,7 +46,7 @@ class UserModelTests {
 		List<String> lista = new ArrayList<>();
 		lista.add("ROLE_ADMIN");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsfadsf.com", "12345678P", "http://hola.com", date,
-				lista);
+				lista, "655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
@@ -61,7 +61,7 @@ class UserModelTests {
 		List<String> lista = new ArrayList<>();
 		lista.add("ROLE_ADMIN");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
-				lista);
+				lista, "655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
@@ -75,7 +75,8 @@ class UserModelTests {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
 		lista.add("ROLE_ADMIN");
-		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "unafoto", date, lista);
+		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "unafoto", date, lista,
+				"655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
@@ -90,7 +91,7 @@ class UserModelTests {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
 		lista.add("ROLE_ADMIN");
-		User user1 = new User("", "", "", "fadsf@adsf.com", "12345678P", "http://hola.com", date, lista);
+		User user1 = new User("", "", "", "fadsf@adsf.com", "12345678P", "http://hola.com", date, lista, "655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 

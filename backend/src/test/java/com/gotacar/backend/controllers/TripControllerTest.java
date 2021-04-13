@@ -84,22 +84,22 @@ class TripControllerTest {
 		lista3.add("ROLE_DRIVER");
 
 		driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
-				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
+				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3, "655757575");
 		ObjectId driverObjectId = new ObjectId();
 		driver.setId(driverObjectId.toString());
 
 		driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com", "312312312R",
-				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
+				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista3, "655757575");
 		ObjectId driverObjectId2 = new ObjectId();
 		driver2.setId(driverObjectId2.toString());
 
 		user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es", "89070336D",
-				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
+				"http://dniclient.com", LocalDate.of(1999, 10, 10), lista2, "655757575");
 		ObjectId userObjectId = new ObjectId();
 		user.setId(userObjectId.toString());
 
 		admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "89070360G",
-				"http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1);
+				"http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1, "655757575");
 		ObjectId adminObjectId = new ObjectId();
 		admin.setId(adminObjectId.toString());
 

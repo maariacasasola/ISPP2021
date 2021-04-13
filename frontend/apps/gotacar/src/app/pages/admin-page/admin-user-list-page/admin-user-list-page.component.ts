@@ -16,7 +16,6 @@ export class AdminUserListPageComponent {
   async load_users() {
     try {
       this.users = await this._users_service.get_all_users();
-      console.log(this.users);
     } catch (error) {
       console.error(error);
     }

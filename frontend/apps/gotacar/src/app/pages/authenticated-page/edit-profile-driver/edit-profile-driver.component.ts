@@ -5,13 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthServiceService } from '../../../services/auth-service.service';
 import * as moment from 'moment';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
-  selector: 'frontend-edit-profile',
-  templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.scss'],
+  selector: 'frontend-edit-profile-driver',
+  templateUrl: './edit-profile-driver.component.html',
+  styleUrls: ['./edit-profile-driver.component.scss'],
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileDriverComponent implements OnInit {
   update_form = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -39,7 +40,9 @@ export class EditProfileComponent implements OnInit {
     model: ['', Validators.required],
     color: ['', Validators.required],
   });
+
   user;
+
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
@@ -51,8 +54,6 @@ export class EditProfileComponent implements OnInit {
   async load_user_data() {
     try {
       this.user = await this._authService.get_user_data();
-      console.log(this.user);
-      console.log('ENTER')
       this.update_form.setValue({
         firstName: this.user?.firstName,
         lastName: this.user?.lastName,
@@ -61,39 +62,42 @@ export class EditProfileComponent implements OnInit {
         birthdate: this.user?.birthdate,
         phone: this.user?.phone,
         iban: this.user?.iban,
-        car_plate: this.user?.carData?.carPlate ||'',
-        enrollment_date: this.user?.carDate?.enrollmentDate||'',
-        model:this.user?.carData?.model||'',
-        color:this.user?.carData?.color||'',
+        car_plate: this.user?.carData?.carPlate || '',
+        enrollment_date: this.user?.carData?.enrollmentDate || '',
+        model: this.user?.carData?.model || '',
+        color: this.user?.carData?.color || '',
       });
     } catch (error) {
-      console.error(error)
+      console.error(error);
       this.openSnackBar(
         'Ha ocurrido un error al recuperar tu perfil de usuario'
       );
     }
   }
+
   ngOnInit(): void {}
 
   async onSubmit() {
-    console.log(this.update_form.value);
     if (this.update_form.invalid) {
       this.update_form.markAllAsTouched();
       return;
     }
+
     if (!this.checkDate()) {
       this.openSnackBar('Debes ser mayor de 16');
       return;
     }
+
     try {
       const car_data = {
-        carPlate:this.update_form.value.car_plate,
+        carPlate: this.update_form.value.car_plate,
         enrollmentDate: moment(this.update_form.value.enrollment_date).format(
           'yyyy-MM-DD'
         ),
-        model:this.update_form.value.model,
-        color:this.update_form.value.color,
-      }
+        model: this.update_form.value.model,
+        color: this.update_form.value.color,
+      };
+
       const user_data = {
         firstName: this.update_form.value.firstName,
         lastName: this.update_form.value.lastName,
@@ -104,12 +108,12 @@ export class EditProfileComponent implements OnInit {
         ),
         dni: this.update_form.value.dni,
         phone: this.update_form.value.phone,
-        iban:this.update_form.value.iban,
+        iban: this.update_form.value.iban,
         carData: car_data,
-
       };
-      console.log(user_data)
+
       const response = await this._authService.update_user_profile(user_data);
+
       if (response) {
         await this.load_user_data();
         this.openSnackBar('Perfil actualizado correctamente');
@@ -121,6 +125,7 @@ export class EditProfileComponent implements OnInit {
       );
     }
   }
+
   checkDate() {
     const birthdate = moment(this.update_form.value.birthdate);
     const years = moment().diff(birthdate, 'years');

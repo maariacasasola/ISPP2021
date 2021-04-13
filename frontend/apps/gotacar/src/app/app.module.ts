@@ -91,7 +91,7 @@ import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.co
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
-import { EditProfileComponent } from './pages/authenticated-page/edit-profile/edit-profile.component';
+import { EditProfileDriverComponent } from './pages/authenticated-page/edit-profile-driver/edit-profile-driver.component';
 import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
@@ -145,7 +145,7 @@ registerLocaleData(localeEs, 'es');
     MeetingPointSearchbarResultComponent,
     SignUpComponent,
     RegisterUserGoogleComponent,
-    EditProfileComponent,
+    EditProfileDriverComponent,
     EditProfileClientComponent,
     DropzoneDirective,
     ImageUploadDialogComponent,

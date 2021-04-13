@@ -66,11 +66,11 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        loadSampleDate();
+                        // loadSampleData();
                 }
         }
 
-        private void loadSampleDate() {
+        private void loadSampleData() {
 
                 userRepository.deleteAll();
                 meetingPointRepository.deleteAll();
@@ -94,17 +94,18 @@ public class BackendApplication implements CommandLineRunner {
 
                 // Admin
                 User admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es",
-                                "89070360G", "http://dniadmin.com", fecha3, lista1);
+                                "89070360G", null, fecha3, lista1, "655757566");
 
                 userRepository.save(admin);
 
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
-                                "89070310K", null, fecha3, lista3);
+                                "89070310K", null, fecha3, lista3, "645454514");
                 User driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com",
-                                "312312312R", null, fecha1, lista3, LocalDateTime.of(2021, 06, 04, 13, 30, 24));
+                                "312312312R", null, fecha1, lista3, "645054554",
+                                LocalDateTime.of(2021, 06, 04, 13, 30, 24));
                 User driver3 = new User("Marina", "Chacón", "h9HmVQqlBQXD289O8t8q7aN2Gzg3", "driver3@gmail.com",
-                                "312412412J", null, fecha1, lista3);
+                                "312412412J", null, fecha1, lista3, "645454554");
 
                 userRepository.save(driver);
                 userRepository.save(driver2);
@@ -112,23 +113,23 @@ public class BackendApplication implements CommandLineRunner {
 
                 // Clients
                 User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
-                                "89070336D", "http://dniclien1.com", fecha3, lista2);
+                                "89070336D", null, fecha3, lista2, "656473627");
                 User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
-                                "42131220T", "http://dniclient2.com", fecha2, lista2);
+                                "42131220T", null, fecha2, lista2, "656473147");
                 User client3 = new User("Blanca", "Ruíz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE3", "client3@gotacar.es",
-                                "89070345D", "http://dniclient3.com", fecha1, lista2);
+                                "89070345D", null, fecha1, lista2, "656493647");
                 User client4 = new User("Alberto", "Suárez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE4", "client4@gotacar.com",
-                                "42131225F", "http://dniclien4t.com", fecha2, lista2);
+                                "42131225F", "http://dniclien4t.com", fecha2, lista2, "656473647");
                 User client5 = new User("Salvador", "Luque", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE5", "client5@gotacar.es",
-                                "89070678S", "http://dniclient5.com", fecha3, lista2);
+                                "89070678S", null, fecha3, lista2, "656073647");
                 User client6 = new User("María", "Sánchez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE6", "client6@gotacar.com",
-                                "35131220T", "http://dniclient6.com", fecha1, lista2);
+                                "35131220T", null, fecha1, lista2, "656422647");
                 User client7 = new User("Laura", "Muñoz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7", "clien7@gotacar.es",
-                                "80270336K", "http://dniclient7.com", fecha3, lista2);
+                                "80270336K", null, fecha3, lista2, "656473445");
                 User client8 = new User("Pedro", "Serrano", "oQfGQi4xechNkcQEdHg29sM5rP33", "client8@gotacar.com",
-                                "42941220L", "http://dniclient8.com", fecha2, lista2);
+                                "42941220L", null, fecha2, lista2, "651473647");
                 User client9 = new User("Pedro", "Serrano", "2Sg1OCgPB8YoKjxgocXRJDtcvDo2", "client@gotacar.com",
-                                "42941220L", "http://dniclient9.com", fecha2, lista2);
+                                "42941220L", null, fecha2, lista2, "650473647");
 
                 userRepository.save(client);
                 userRepository.save(client2);
@@ -206,10 +207,10 @@ public class BackendApplication implements CommandLineRunner {
                                 "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
                 Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
                                 driver);
-                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Campo del Betis", 3,
-                                driver);
-                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh Aparcamientos", 3,
-                                driver);
+                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11,
+                                "Viaje desde Torneo hasta Campo del Betis", 3, driver);
+                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11,
+                                "Viaje desde Torneo hasta Lagoh Aparcamientos", 3, driver);
 
                 tripRepository.save(trip1);
                 tripRepository.save(trip2);
@@ -258,6 +259,15 @@ public class BackendApplication implements CommandLineRunner {
                                 "", 2);
                 TripOrder tripOrder17 = new TripOrder(trip10, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500,
                                 "", 2);
+                tripOrder1.setStatus("PAID");
+                tripOrder2.setStatus("PAID");
+                tripOrder3.setStatus("PAID");
+                tripOrder4.setStatus("PAID");
+                tripOrder5.setStatus("PAID");
+                tripOrder6.setStatus("PAID");
+                tripOrder7.setStatus("PAID");
+                tripOrder8.setStatus("PAID");
+                tripOrder9.setStatus("PAID");
 
                 tripOrderRepository.save(tripOrder1);
                 tripOrderRepository.save(tripOrder2);
@@ -290,15 +300,12 @@ public class BackendApplication implements CommandLineRunner {
                                 trip7, client5, LocalDateTime.of(2021, 03, 20, 18, 00, 00), "ALREADY_RESOLVED");
                 Complaint complaint4 = new Complaint("Queja por retraso", "El conductor se ha retrasado 5 min", trip8,
                                 client4, LocalDateTime.of(2021, 03, 21, 12, 30, 00), "REFUSED");
-                Complaint complaint5 = new Complaint("Queja por velocidad1",
-                                "El coche olía mal", trip6, client,
+                Complaint complaint5 = new Complaint("Queja por velocidad1", "El coche olía mal", trip6, client,
                                 LocalDateTime.of(2021, 03, 20, 17, 45, 00));
-                Complaint complaint6 = new Complaint("Queja por velocidad2",
-                                "El coche tenía una rueda pinchada", trip7, client,
-                                LocalDateTime.of(2021, 03, 20, 17, 45, 00));
-                Complaint complaint7 = new Complaint("Queja por velocidad3",
-                                "El conductor escuchaba Bad Gyal", trip8, client,
-                                LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+                Complaint complaint6 = new Complaint("Queja por velocidad2", "El coche tenía una rueda pinchada", trip7,
+                                client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+                Complaint complaint7 = new Complaint("Queja por velocidad3", "El conductor escuchaba Bad Gyal", trip8,
+                                client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
 
                 complaintRepository.save(complaint1);
                 complaintRepository.save(complaint2);
