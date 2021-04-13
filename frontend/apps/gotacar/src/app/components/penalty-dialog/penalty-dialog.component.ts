@@ -22,14 +22,11 @@ export class PenaltyDialogComponent implements OnInit {
   ) {
     this.id_complaint = data.id_complaint;
     this.minDate = new Date().toISOString().slice(0, 16);
-
-    console.log(this.id_complaint);
   }
 
   ngOnInit(): void {}
 
   onSubmit() {
-    console.log(this.penalty_form.value.date_banned);
     const data: Penalty = {
       id_complaint: this.id_complaint,
       date_banned: new Date(this.penalty_form.value.date_banned),

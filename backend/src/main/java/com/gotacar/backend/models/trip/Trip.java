@@ -54,6 +54,7 @@ public class Trip {
 
     public Boolean canceled;
 
+    @DBRef
     public User driver;
 
     @DBRef

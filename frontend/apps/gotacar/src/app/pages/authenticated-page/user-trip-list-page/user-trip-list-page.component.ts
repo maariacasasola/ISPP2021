@@ -22,7 +22,6 @@ export class UserTripListPageComponent {
   async load_trips_by_user() {
     try {
       this.trips = await this._trips_service.get_trips();
-      console.log(this.trips);
     } catch (error) {
       console.error(error);
     }
@@ -30,16 +29,22 @@ export class UserTripListPageComponent {
 
   async cancelTripOrder(id) {
     try {
-      await this._trips_service.cancel_trip(String(id));
-      this.openSnackBar('Se ha cancelado el viaje', 'Cerrar');
-      window.location.reload();
+      const response = await this._trips_service.cancel_trip(String(id));
+      this.openSnackBar('Se ha cancelado el viaje');
+      await this.load_trips_by_user();
     } catch (error) {
+      if (
+        error.error.message ===
+        '400 BAD_REQUEST "La fecha de cancelación ha expirado"'
+      ) {
+        this.openSnackBar('No puedes cancelar este viaje');
+      }
       console.error(error);
     }
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
       duration: 5000,
       panelClass: ['blue-snackbar'],
     });
@@ -64,11 +69,24 @@ export class UserTripListPageComponent {
     return new Date(trip.startDate) < new Date();
   }
 
+  show_cancelation_button(trip) {
+    return (
+      !(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED') &&
+      new Date(trip?.trip?.cancelationDateLimit) > new Date()
+    );
+  }
+
   go_to_trip(trip_id) {
     this._router.navigate(['/', 'trip', trip_id]);
   }
 
   create_complaint(trip_id) {
-    this._router.navigate(['/', 'authenticated', 'trips', trip_id, 'create-complaint']);
+    this._router.navigate([
+      '/',
+      'authenticated',
+      'trips',
+      trip_id,
+      'create-complaint',
+    ]);
   }
 }

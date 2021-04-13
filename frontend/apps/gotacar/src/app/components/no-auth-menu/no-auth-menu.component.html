@@ -2,7 +2,7 @@
   <mat-icon>account_circle</mat-icon>
 </button>
 <mat-menu #aboveMenu="matMenu" yPosition="above">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="gotoSignup()">
     <mat-icon>emoji_people</mat-icon>
     <span>Regístrate</span>
   </button>

@@ -1,0 +1,44 @@
+.page-content {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin: 80px;
+  min-height: 100vh;
+  color: #0e4a6b;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.form-fields {
+  display: block;
+  text-align: center;
+  padding: 20px;
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-card mat-form-field {
+  color: #538994;
+  margin: 20px;
+  width: 90%;
+}
+
+.login-button {
+  color: white;
+  background-color: #538994;
+  margin: 20px;
+}

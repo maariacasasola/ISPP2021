@@ -72,7 +72,7 @@ public class User {
   }
 
   public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
-      LocalDate birthdate, List<String> roles) {
+      LocalDate birthdate, List<String> roles, String phone) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.uid = uid;
@@ -81,11 +81,12 @@ public class User {
     this.profilePhoto = profilePhoto;
     this.birthdate = birthdate;
     this.roles = roles;
+    this.phone = phone;
     this.bannedUntil = null;
   }
 
   public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
-      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil) {
+      LocalDate birthdate, List<String> roles, String phone, LocalDateTime bannedUntil) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.uid = uid;
@@ -95,12 +96,12 @@ public class User {
     this.birthdate = birthdate;
     this.roles = roles;
     this.bannedUntil = bannedUntil;
+    this.phone = phone;
   }
 
-  public User( String firstName, String lastName,  String uid,
-      String email, String dni, String profilePhoto, LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil,
-      String phone, String iban, Integer timesBanned,  String drivingLicense,
-      Integer experience, CarData carData) {
+  public User(String firstName, String lastName, String uid, String email, String dni, String profilePhoto,
+      LocalDate birthdate, List<String> roles, LocalDateTime bannedUntil, String phone, String iban,
+      Integer timesBanned, String drivingLicense, Integer experience, CarData carData) {
 
     this.firstName = firstName;
     this.lastName = lastName;

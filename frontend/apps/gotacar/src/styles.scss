@@ -297,6 +297,33 @@ button:hover {
   background-color: white;
 }
 
+///////////////////////DROPZONE
+.dropzone { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; 
+  min-width: 50vw;
+  font-weight: 200;
+  height: 200px;
+  border: 2px dashed $warn;
+  border-radius: 5px;
+  background: white;
+  margin: 10px 0;
+
+  &.hovering {
+      border: 2px solid $warn;
+      color: #dadada !important;
+  }
+
+  .file-label {
+      font-size: 1.2em;
+  }
+}
+
+progress::-webkit-progress-value {
+  transition: width 0.1s ease;
+}
 .filter-accordion .mat-expansion-panel-header-title {
   align-items: center;
 }

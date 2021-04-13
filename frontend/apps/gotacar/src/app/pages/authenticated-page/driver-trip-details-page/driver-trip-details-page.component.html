@@ -1,6 +1,6 @@
 <section class="trip-details-container">
   <div class="trip">
-    <h1>{{page_title}}</h1>
+    <h1>{{ page_title }}</h1>
     <div class="map">
       <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>
     </div>
@@ -27,29 +27,30 @@
   <div class="clients">
     <h2>Reservas</h2>
     <div class="clients-grid">
-          <mat-card *ngFor="let user of users" class="mat-elevation-z4">
-            <mat-card-header>
-              <mat-card-title>{{
-                user?.firstName + ' ' + user?.lastName
-              }}</mat-card-title>
-            </mat-card-header>
-            <img mat-card-image src="./../assets/img/generic-user.jpg" />
-            <mat-card-content>
-              <div>
-                <strong>{{ user?.email }}</strong>
-                <p>{{ user?.phone }}</p>
-              </div>
-              <div>
-                <strong *ngIf="!user.times_banned">Veces baneado : 0</strong>
-                <strong *ngIf="user.times_banned"
-                  >Veces baneado : {{ user.times_banned }}</strong>
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button color="primary">RECHAZAR</button>
-              <button mat-raised-button color="primary">MÁS INFORMACIÓN</button>
-            </mat-card-actions>
-          </mat-card>
+      <mat-card *ngFor="let user of users" class="mat-elevation-z4">
+        <mat-card-header>
+          <mat-card-title>{{
+            user?.firstName + ' ' + user?.lastName
+          }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="get_user_profile_photo(user)" />
+        <mat-card-content>
+          <div>
+            <b>{{ user?.email }}</b>
+            <p>{{ user?.phone }}</p>
+          </div>
+          <div>
+            <b *ngIf="!user.times_banned">Veces baneado : 0</b>
+            <b *ngIf="user.times_banned"
+              >Veces baneado : {{ user.times_banned }}</b
+            >
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary">RECHAZAR</button>
+          <button mat-raised-button color="primary">MÁS INFORMACIÓN</button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   </div>
 </section>

@@ -90,6 +90,12 @@ import { ComplaintAppealsService } from './services/complaint-appeals.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
+import { EditProfileDriverComponent } from './pages/authenticated-page/edit-profile-driver/edit-profile-driver.component';
+import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+import { DropzoneDirective } from './directives/dropzone.directive';
+import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
@@ -139,6 +145,12 @@ registerLocaleData(localeEs, 'es');
     PaymentSuccessComponent,
     PaymentFailedComponent,
     MeetingPointSearchbarResultComponent,
+    SignUpComponent,
+    RegisterUserGoogleComponent,
+    EditProfileDriverComponent,
+    EditProfileClientComponent,
+    DropzoneDirective,
+    ImageUploadDialogComponent,
     DriverTripDetailsPageComponent,
     OrderTripsPipe,
   ],

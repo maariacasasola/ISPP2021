@@ -6,6 +6,7 @@ import com.gotacar.backend.models.trip.Trip;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -20,9 +21,11 @@ public class TripOrder {
     public String id;
 
     @NotNull
+    @DBRef
     public Trip trip;
 
     @NotNull
+    @DBRef
     public User user;
 
     @NotNull

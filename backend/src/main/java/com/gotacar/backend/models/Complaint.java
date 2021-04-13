@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 import com.gotacar.backend.models.trip.Trip;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +28,11 @@ public class Complaint {
 	public String content;
 
 	@NotNull
+	@DBRef
 	public User user;
 
 	@NotNull
+	@DBRef
 	public Trip trip;
 
 	@NotNull

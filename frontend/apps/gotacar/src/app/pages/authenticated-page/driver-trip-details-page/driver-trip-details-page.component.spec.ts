@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DriverTripDetailsPageComponent } from './driver-trip-details-page.component'
-import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe'
+import { DriverTripDetailsPageComponent } from './driver-trip-details-page.component';
+import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
 import { CurrencyPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
@@ -11,105 +11,77 @@ import { Trip } from '../../../shared/services/trip';
 import { User } from '../../../shared/services/user';
 
 const location1 = {
-    name: 'Sevilla',
-    address: 'Calle Canal 48"',
-    lat: 37.3747084,
-    lng: -5.9649715,
+  name: 'Sevilla',
+  address: 'Calle Canal 48"',
+  lat: 37.3747084,
+  lng: -5.9649715,
 };
 
 const location2 = {
-    name: 'Sevilla',
-    address: 'Av. Diego Martínez Barrio',
-    lat: 37.37625144174958,
-    lng: -5.976345387146261,
+  name: 'Sevilla',
+  address: 'Av. Diego Martínez Barrio',
+  lat: 37.37625144174958,
+  lng: -5.976345387146261,
 };
 
-
 const TRIP_OBJECT: Trip = {
-    cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
-    comments: '',
-    end_date: new Date(2021, 6, 4, 13, 30, 24),
-    start_date: new Date(2021, 6, 4, 13, 30, 24),
-    ending_point: location2,
-    starting_point: location1,
-    places: 3,
-    price: 200,
-}
-
-const USER_OBJECTS: User[] = [
-    {
-        id: "6072f5bfff1aa84599c35742",
-        firstName: "Juan",
-        lastName: "Perez",
-        uid: "Ej7NpmWydRWMIg28mIypzsI4Bgm2",
-        email: "client@gotacar.es",
-        dni: "80808080R",
-        profilePhoto: null,
-        birthdate: new Date(2021, 6, 4, 13, 30, 24),
-        roles: ["ROLE_CLIENT"],
-        token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
-        emailVerified: true,
-        timesBanned: 3,
-    },
-]
+  cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
+  comments: '',
+  end_date: new Date(2021, 6, 4, 13, 30, 24),
+  start_date: new Date(2021, 6, 4, 13, 30, 24),
+  ending_point: location2,
+  starting_point: location1,
+  places: 3,
+  price: 200,
+};
 
 class mockTripService {
-
-    public get_trip(): Observable<Trip> {
-        return of(TRIP_OBJECT);
-    }
-
-    public get_users_by_trip(): Observable<User[]>{
-        return of(USER_OBJECTS);
-    }
+  public get_trip(): Observable<Trip> {
+    return of(TRIP_OBJECT);
+  }
 }
 
 describe('DriverTripDetailsPageComponent', () => {
-    let component: DriverTripDetailsPageComponent;
-    let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
-    let h1: HTMLElement;
-    let service: TripsService;
+  let component: DriverTripDetailsPageComponent;
+  let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
+  let h1: HTMLElement;
+  let service: TripsService;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                HttpClientTestingModule,
-            ],
-            declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
-            providers: [
-                ConvertCentToEurPipe,
-                CurrencyPipe,
-                { provide: TripsService, useClass: mockTripService },
-            ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
+      providers: [
+        ConvertCentToEurPipe,
+        CurrencyPipe,
+        { provide: TripsService, useClass: mockTripService },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  });
 
-        }).compileComponents();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DriverTripDetailsPageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    h1 = fixture.nativeElement.querySelector('h1');
+    fixture.detectChanges();
+    service = TestBed.inject(TripsService);
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(DriverTripDetailsPageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-        h1 = fixture.nativeElement.querySelector('h1');
-        fixture.detectChanges();
-        service = TestBed.inject(TripsService);
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should display a title', () => {
+    expect(h1.textContent).toContain(component.page_title);
+  });
 
-    it('should display a title', () => {
-        expect(h1.textContent).toContain(component.page_title);
-    });
+  it('should return trip information', () => {
+    spyOn(service, 'get_trip').and.returnValue(of(TRIP_OBJECT));
+  });
 
-    it('should return trip information', () => {
-        spyOn(service, 'get_trip').and.returnValue(of(TRIP_OBJECT));
-
-    });
-
-    it('should return users information', () => {
-        spyOn(service, 'get_users_by_trip').and.returnValue(of(USER_OBJECTS));
-    });
+  it('should return users information', () => {
+    expect(service.get_users_by_trip).toBeCalled;
+  });
 });

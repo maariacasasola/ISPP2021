@@ -1,1 +1,41 @@
-<h2>ESTOY EN EL PERFIL</h2>
+<div class="grid-container">
+  <div class="perfil" *ngIf="user">
+    <img class="profile-photo" [src]="get_profile_photo()" alt="user" />
+    <div class="image-upload">
+      <button mat-mini-fab color="primary" (click)="update_profile_photo()">
+        <mat-icon> add_circle_outline </mat-icon>
+      </button>
+    </div>
+
+    <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
+    <h6>Sevilla</h6>
+
+    <div class="buttons">
+      <div *ngIf="isDriver()">
+        <button class="primary" (click)="goToEditDriver()">Editar</button>
+      </div>
+      <div *ngIf="!isDriver()">
+        <button class="primary" (click)="goToEditClient()">Editar</button>
+      </div>
+    </div>
+    <div class="skills">
+      <h6>Datos Personales</h6>
+      <ul>
+        <li>Fecha nacimiento: {{ user?.birthdate | date: 'dd-MM-yyyy' }}</li>
+        <li>Email: {{ user?.email }}</li>
+        <li>DNI: {{ user?.dni }}</li>
+        <li>Teléfono: {{ user?.phone }}</li>
+        <li *ngIf="isDriver()">IBAN: {{ user?.iban }}</li>
+      </ul>
+      <div *ngIf="isDriver()">
+        <h6>Datos del vehículo</h6>
+        <ul>
+          <li>Matrícula: {{ user?.carData?.car_plate }}</li>
+          <li>Alta: {{ user?.carData?.enrollment_date }}</li>
+          <li>Modelo: {{ user?.carData?.model }}</li>
+          <li>Color: {{ user?.carData?.color }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

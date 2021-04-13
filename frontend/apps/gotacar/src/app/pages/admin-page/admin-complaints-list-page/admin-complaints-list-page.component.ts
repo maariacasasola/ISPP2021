@@ -55,7 +55,6 @@ export class AdminComplaintsListPageComponent {
         dialog_response
       );
       if (response) {
-        console.log(response);
         this.openSnackBar(
           'Se acepta la queja de ' +
             data?.user?.firstName +
