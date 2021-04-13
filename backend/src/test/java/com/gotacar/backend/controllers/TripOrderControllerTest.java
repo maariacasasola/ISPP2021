@@ -105,7 +105,7 @@ class TripOrderControllerTest {
     @Test
     void testListTripOrders() throws Exception {
         order = new TripOrder(trip, user, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
-        Mockito.when(tripOrderRepository.findByUserUid(order.getUser().getUid())).thenReturn(Arrays.asList(order));
+        Mockito.when(tripOrderRepository.findByUserId(order.getUser().getId())).thenReturn(Arrays.asList(order));
         Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
         Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
 
