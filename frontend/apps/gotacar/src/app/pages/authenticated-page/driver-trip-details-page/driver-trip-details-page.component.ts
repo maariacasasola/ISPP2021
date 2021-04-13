@@ -31,7 +31,6 @@ export class DriverTripDetailsPageComponent {
   private async load_users(){
     try{
       this.users = await this._trip_service.get_users_by_trip(this._route.snapshot.params['trip_id']);
-      console.log(this.users);
     }catch(error){
       console.log(error);
     }

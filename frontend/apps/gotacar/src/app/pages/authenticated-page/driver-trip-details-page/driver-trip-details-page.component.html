@@ -36,14 +36,13 @@
             <img mat-card-image src="./../assets/img/generic-user.jpg" />
             <mat-card-content>
               <div>
-                <b>{{ user?.email }}</b>
+                <strong>{{ user?.email }}</strong>
                 <p>{{ user?.phone }}</p>
               </div>
               <div>
-                <b *ngIf="!user.times_banned">Veces baneado : 0</b>
-                <b *ngIf="user.times_banned"
-                  >Veces baneado : {{ user.times_banned }}</b
-                >
+                <strong *ngIf="!user.times_banned">Veces baneado : 0</strong>
+                <strong *ngIf="user.times_banned"
+                  >Veces baneado : {{ user.times_banned }}</strong>
               </div>
             </mat-card-content>
             <mat-card-actions>

@@ -6,15 +6,15 @@
     }}</mat-card-title>
 
     <mat-card-content>
-      <p><b>First name:</b> {{ user?.firstName}}</p>
-      <p><b>Last name:</b> {{ user?.lastName}}</p>
-      <p><b>UID:</b> {{ user?.uid}}</p>
-      <p><b>Email:</b> {{ user?.email}}</p>
-      <p><b>DNI:</b> {{ user?.dni}}</p>
-      <p><b>Profile photo:</b> {{ user?.profilePhoto}}</p>
-      <p><b>Birthdate:</b> {{ user?.birthdate | date: 'medium' }}</p>
-      <p><b>Roles:</b> {{ user?.roles}}</p>
-      <p *ngIf="user?.bannedUntil"><b>Banned until:</b> {{ user?.bannedUntil | date: 'medium' }}</p>
+      <p><strong>First name:</strong> {{ user?.firstName}}</p>
+      <p><strong>Last name:</strong> {{ user?.lastName}}</p>
+      <p><strong>UID:</strong> {{ user?.uid}}</p>
+      <p><strong>Email:</strong> {{ user?.email}}</p>
+      <p><strong>DNI:</strong> {{ user?.dni}}</p>
+      <p><strong>Profile photo:</strong> {{ user?.profilePhoto}}</p>
+      <p><strong>Birthdate:</strong> {{ user?.birthdate | date: 'medium' }}</p>
+      <p><strong>Roles:</strong> {{ user?.roles}}</p>
+      <p *ngIf="user?.bannedUntil"><strong>Banned until:</strong> {{ user?.bannedUntil | date: 'medium' }}</p>
     </mat-card-content>
     <mat-card-actions>
       <button
