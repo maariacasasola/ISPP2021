@@ -28,4 +28,9 @@ export class UsersService {
       })
       .toPromise();
   }
+  request_conversion_to_driver(user_data){
+    return this._http_client.post(environment.api_url + '/driver/create',user_data)
+    .toPromise();
+
+  }
 }

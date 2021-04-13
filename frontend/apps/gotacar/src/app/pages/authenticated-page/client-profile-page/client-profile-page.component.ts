@@ -58,6 +58,7 @@ export class ClientProfilePageComponent {
     dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       user_id: this.user.id,
+      is_become_driver:false,
     };
 
     const dialogRef = this._my_dialog.open(
@@ -87,5 +88,9 @@ export class ClientProfilePageComponent {
       return this.user?.profilePhoto;
     }
     return 'assets/img/generic-user.jpg';
+  }
+  becomeDriver(){
+    this.router.navigate(['authenticated/become-driver']);
+    
   }
 }

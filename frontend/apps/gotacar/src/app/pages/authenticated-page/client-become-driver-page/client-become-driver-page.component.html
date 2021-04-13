@@ -1,0 +1,95 @@
+<section class="page-content">
+  <h1>Conviértete en conductor</h1>
+
+  <mat-card [formGroup]="request_form" class="login-card">
+    <div class="form-fields">
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>savings</mat-icon>
+        <mat-label>IBAN</mat-label>
+        <input matInput type="email" formControlName="iban" required />
+        <mat-error *ngIf="request_form?.get('iban')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="request_form?.get('iban')?.errors?.pattern"
+          >IBAN inválido</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Matrícula vehículo </mat-label>
+        <input matInput type="text" formControlName="car_plate" required />
+        <mat-error *ngIf="request_form?.get('car_plate')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-label>Fecha de alta </mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker_enrollment_date"
+          formControlName="enrollment_date"
+          required
+          readonly
+          (click)="picker_enrollment_date.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker_enrollment_date"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker_enrollment_date></mat-datepicker>
+        <mat-error
+          *ngIf="request_form?.get('enrollment_date')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Modelo </mat-label>
+        <input matInput type="text" formControlName="model" required />
+        <mat-error *ngIf="request_form?.get('model')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Color </mat-label>
+        <input matInput type="text" formControlName="color" required />
+        <mat-error *ngIf="request_form?.get('color')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Experiencia años </mat-label>
+        <input matInput type="number" min="0" max="50" formControlName="experience" required />
+        <mat-error *ngIf="request_form?.get('experience')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="request_form?.get('experience')?.errors?.min"
+          >No puedes tener experiencia negativa</mat-error
+        >
+        <mat-error *ngIf="request_form?.get('experience')?.errors?.max"
+          >No puedes tener más de 50 años al volante</mat-error
+        >
+      </mat-form-field>
+
+      <h3>
+        Licencia de conducir * 
+        <button mat-icon-button color="primary" (click)="obtain_driving_license()">
+          <mat-icon> add_circle_outline </mat-icon>
+        </button>
+      </h3>
+    </div>
+
+    <button
+      class="login-button"
+      mat-flat-button
+      type="submit"
+      (click)="onSubmit()"
+      [disabled]="!request_form.valid"
+    >
+      Convertir
+    </button>
+  </mat-card>
+</section>
