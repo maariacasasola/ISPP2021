@@ -118,7 +118,16 @@ public class TripController {
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
-
+			
+			//Lanza error si la fecha de finalizacion es anterior a la de salida
+			if(dateEndJson.isBefore(dateStartJson)) {
+				throw new Exception("La hora de llegada no puede ser anterior a la fecha de salida");
+			}
+			//Lanza error si la fecha de salida es igual a la fecha de finalización
+			if(dateEndJson.isEqual(dateStartJson)) {
+				throw new Exception("La hora de salida no puede ser igual a la hora de llegada");
+			}
+			
 			trip1.setCancelationDateLimit(cancelationDateLimit);
 			trip1.setEndingDate(dateEndJson);
 			trip1.setStartingPoint(startingPoint);
