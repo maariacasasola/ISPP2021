@@ -12,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./client-become-driver-page.component.scss'],
 })
 export class ClientBecomeDriverPageComponent implements OnInit {
+  today:Date = new Date();
   driving_license;
   user_id;
   request_form = this.fb.group({
@@ -27,9 +28,8 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     experience: ['', [Validators.required,Validators.min(0), Validators.max(50),]],
     car_plate: [
       '',
-      Validators.required,
-      Validators.maxLength(8),
-      Validators.minLength(7),
+      [Validators.required,
+      Validators.pattern('^[0-9]{1,4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]
     ],
     enrollment_date: ['', Validators.required],
     model: ['', Validators.required],
@@ -61,6 +61,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     );
 
     const dialog_response = await dialogRef.afterClosed().toPromise();
+    this.driving_license = dialog_response;
   }
   async load_user_data() {
     try {
@@ -84,6 +85,11 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       this.request_form.markAllAsTouched();
       return;
     }
+    console.log(this.driving_license)
+    if(this.driving_license===undefined){
+      this.openSnackBar('Debe proporcionar una imagen de su licencia')
+      return;
+    }
     try {
       const car_data = {
         carPlate: this.request_form.value.car_plate,
@@ -97,15 +103,17 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       const user_data = {
         id:this.user_id,
         iban: this.request_form.value.iban,
-        experience:this.request_form.value.experience,
+        experience:Number(this.request_form.value.experience),
         carData: car_data,
         driving_license:this.driving_license,
       };
+      console.log(user_data);
       const response = await this._userService.request_conversion_to_driver(user_data);
       if (response) {
-        this.openSnackBar('Convertido a conductor satisfactoriamente');
+        this.openSnackBar('Petición de conversión realizada correctamente');
       }
     } catch (error) {
+      console.error(error);
       this.openSnackBar(
         'Ha ocurrido un error al intentar convertirte en conductor'
       );

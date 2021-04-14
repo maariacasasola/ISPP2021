@@ -1,5 +1,6 @@
 <section class="page-content">
-  <h1>Conviértete en conductor</h1>
+  <h1>¿Quieres ser conductor?</h1>
+  <h3>Rellena los datos de tu solicitud</h3>
 
   <mat-card [formGroup]="request_form" class="login-card">
     <div class="form-fields">
@@ -22,6 +23,9 @@
         <mat-error *ngIf="request_form?.get('car_plate')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="request_form?.get('car_plate')?.errors?.pattern"
+          >La matrícula proporcionada no es válida o se corresponde con una matrícula demasiado antigua</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-label>Fecha de alta </mat-label>
@@ -29,6 +33,7 @@
           matInput
           [matDatepicker]="picker_enrollment_date"
           formControlName="enrollment_date"
+          [max]="today"
           required
           readonly
           (click)="picker_enrollment_date.open()"

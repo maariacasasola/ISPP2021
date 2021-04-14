@@ -113,8 +113,7 @@ export class ImageUploadDialogComponent {
 
   submit() {
     if (this.is_become_driver) {
-      //TODO Nuevo path
-      const path = `profile_photos/${this.user_id}.webp`;
+      const path = `driving_license/${this.user_id}.webp`;
       const storageRef = this.storage.ref(path);
       const uploadTask = this.storage.upload(path, this.file);
 
