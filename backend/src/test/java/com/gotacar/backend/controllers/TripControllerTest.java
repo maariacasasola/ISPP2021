@@ -228,7 +228,7 @@ class TripControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de salida no puede ser igual a la hora de llegada");
-		assertThat(tripRepository.findAll().size()).isEqualTo(0);
+		assertThat(tripRepository.findAll().size()).isZero();
 	}
 	
 	//NEGATIVO: Crear un viaje con la hora de finalización anterior a la de inicio
@@ -272,7 +272,7 @@ class TripControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de llegada no puede ser anterior a la hora de salidas");
-		assertThat(tripRepository.findAll().size()).isEqualTo(0);
+		assertThat(tripRepository.findAll().size()).isZero();
 	}
 
 	@Test
