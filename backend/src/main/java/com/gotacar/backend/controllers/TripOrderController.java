@@ -59,6 +59,8 @@ public class TripOrderController {
             if (trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
                 tripOrder.setStatus("REFUNDED_PENDING");
                 tripOrderRepository.save(tripOrder);
+                trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
+                tripRepository.save(trip);
                 return tripOrder;
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de cancelación ha expirado");
@@ -75,12 +77,7 @@ public class TripOrderController {
             ObjectId tripOrderObjectId = new ObjectId(id);
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
             tripOrder.setStatus("REFUNDED");
-            tripOrderRepository.save(tripOrder);
-
-            Trip trip = tripOrder.getTrip();
-            trip.setPlaces(trip.getPlaces() - tripOrder.getPlaces());
-            tripRepository.save(trip);
-            
+            tripOrderRepository.save(tripOrder);         
             return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
