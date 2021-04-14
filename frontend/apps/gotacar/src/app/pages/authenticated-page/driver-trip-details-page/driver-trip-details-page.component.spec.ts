@@ -9,6 +9,7 @@ import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
 import { User } from '../../../shared/services/user';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 const location1 = {
   name: 'Sevilla',
@@ -49,7 +50,7 @@ describe('DriverTripDetailsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatDialogModule],
       declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
       providers: [
         ConvertCentToEurPipe,
@@ -84,4 +85,10 @@ describe('DriverTripDetailsPageComponent', () => {
   it('should return users information', () => {
     expect(service.get_users_by_trip).toBeCalled;
   });
+
+  it('should open confirmation dialog', () => {
+    expect(component.active_cancel_dialog).toBeCalled;
+  });
+
+  
 });
