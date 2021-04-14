@@ -96,6 +96,7 @@ export class TripsService {
   }
 
   cancel_user_from_trip(data){
+    console.log(environment.api_url + '/cancel-user/' + data[1] + '/from-trip/' + data[0]);
     /*return this._http_client
       .post(environment.api_url + '/cancel-user/' + data[1] + '/from-trip/' + data[0], null)
       .toPromise();*/

@@ -50,10 +50,10 @@ export class DriverTripDetailsPageComponent {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
   }
 
-  active_cancel_dialog(trip_id, uid){
+  active_cancel_dialog(trip_id, id){
     try{
       this.dialog.open(RefuseClientTripDriverDialogComponent, {
-        data: [trip_id, uid],
+        data: [trip_id, id],
         disableClose: true,
       });
     }catch(error){
