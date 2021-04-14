@@ -29,6 +29,10 @@ mat-form-field {
     'price places trip-comments trip-comments';
 }
 
+.error-message{
+  text-align: center;
+}
+
 .trip-comments {
   grid-area: trip-comments;
 }

@@ -81,26 +81,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
     expect(result).toBeTruthy();
   });
 
-  it('should be valid price', () => {
-    
-    component.createTripForm.setValue({
-      origen: 'Calle canal',
-      destino: 'Avenida reina mercedes',
-      fechaHoraInicio: new Date(),
-      fechaHoraFin: new Date(),
-      numeroPasajero: 3,
-      comentarios: 'Hola',
-      price: 200,
-    });
-
-    fixture.detectChanges();
-    const result = component.checkPrice();
-    fixture.detectChanges();
-
-    expect(result).toBeTruthy();
-  });
-
-  it('should be valid number of passengers', () => {
+  it('should be valid form', () => {
     
     component.createTripForm.setValue({
       origen: 'Calle canal',
@@ -113,7 +94,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
     });
 
     fixture.detectChanges();
-    const result = component.checkPlaces() && component.checkIntEntry();
+    const result = component;
     fixture.detectChanges();
 
     expect(result).toBeTruthy();
