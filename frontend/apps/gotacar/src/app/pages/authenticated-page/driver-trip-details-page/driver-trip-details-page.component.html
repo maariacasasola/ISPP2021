@@ -44,10 +44,11 @@
             <b *ngIf="user.times_banned"
               >Veces baneado : {{ user.times_banned }}</b
             >
+          
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button (click)="active_cancel_dialog(trip.id, user.id)" color="primary">RECHAZAR</button>
+          <button mat-raised-button *ngIf="checkDate(trip?.endingDate)" (click)="active_cancel_dialog(trip.id, user.id)" color="primary">RECHAZAR</button>
           <button mat-raised-button color="primary">MÁS INFORMACIÓN</button>
         </mat-card-actions>
       </mat-card>

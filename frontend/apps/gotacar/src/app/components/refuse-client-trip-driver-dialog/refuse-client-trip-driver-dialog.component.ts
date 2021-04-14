@@ -18,10 +18,12 @@ export class RefuseClientTripDriverDialogComponent {
   async continue() {
     await this._trips_service.cancel_user_from_trip(this.data);
     this._dialog_ref.close();
+    window.location.reload();
   }
 
   close() {
     this._dialog_ref.close();
+    
   }
 
 }

@@ -66,7 +66,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        loadSampleData();
+                        //loadSampleData();
                 }
         }
 
