@@ -66,20 +66,6 @@ export class CreateTripFormComponent {
       return;
     }
 
-    /*if (!this.checkPrice()) {
-      this.openSnackBar('El precio mínimo debe ser de 1€');
-      return;
-    }*/
-
-    /*if (!this.checkPlaces()) {
-      this.openSnackBar('Solo se permiten 4 plazas como máximo y 1 como mínimo');
-      return;
-    }*/
-
-    /*if (!this.checkIntEntry() && this.checkPlaces()) {
-      this.openSnackBar('Las plazas solo pueden ser números enteros. Ej: 1, 2, 3 ...');
-      return;
-    }*/
 
     const trip: Trip = {
       starting_point: this.location_origin,
@@ -115,20 +101,6 @@ export class CreateTripFormComponent {
     return startDateHour < endingDateHour;
   }
 
-  /*checkPrice() {
-    const price = this.createTripForm.value.price;
-    return price >= 1.;
-  }
-
-  checkPlaces() {
-    const places = this.createTripForm.value.numeroPasajero;
-    return places <= 4 && places >= 1;
-  }
-
-  checkIntEntry() {
-    const places = this.createTripForm.value.numeroPasajero;
-    return places % 1 == 0;
-  }*/
 
   async get_origin() {
     try {
