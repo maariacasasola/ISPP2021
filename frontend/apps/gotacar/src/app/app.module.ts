@@ -100,6 +100,7 @@ import { DriverTripDetailsPageComponent } from './pages/authenticated-page/drive
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { OrderTripsPipe } from './pipes/order-trips.pipe';
+import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -144,6 +145,7 @@ registerLocaleData(localeEs, 'es');
     AdminComplaintAppealsListPageComponent,
     PaymentSuccessComponent,
     PaymentFailedComponent,
+    AdminDriverRequestsPageComponent,
     MeetingPointSearchbarResultComponent,
     SignUpComponent,
     RegisterUserGoogleComponent,

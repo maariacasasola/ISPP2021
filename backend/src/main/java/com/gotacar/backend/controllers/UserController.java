@@ -214,6 +214,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/driver/update")
 	public User convertToDriver(@RequestBody() String body) {
+		System.out.println(body);
 		try {
 			JsonNode jsonNode = objectMapper.readTree(body);
 			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();

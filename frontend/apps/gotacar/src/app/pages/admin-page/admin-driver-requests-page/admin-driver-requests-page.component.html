@@ -1,0 +1,25 @@
+<h1>LISTA DE SOLICITUDES DE CONDUCTORES</h1>
+
+<div class="requests-list">
+    <mat-card class="request" *ngFor="let user of requests">
+        <mat-card-title>
+            {{ user?.title }}
+        </mat-card-title>
+        <mat-card-content>
+            <h3>
+                <strong> Realizada por: </strong>
+                {{ user?.firstName + ' ' + user?.lastName }}
+            </h3>
+            <h3><strong>Matrícula: </strong>{{ user?.carData?.carPlate }}</h3>
+            <h3><strong>Modelo: </strong>{{ user?.carData?.model }}</h3>
+            <h3><strong>Color: </strong>{{ user?.carData?.color }}</h3>
+            <h3><strong>Fecha del carné de conducir: </strong>{{ user?.carData?.enrollmentDate | date: 'dd/MM/yyyy' }}</h3>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button style="background-color: #538994" class="button" (click)="accept_request(user)">
+                <mat-icon> check_circle</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+    <br />
+</div>

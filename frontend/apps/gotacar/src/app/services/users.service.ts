@@ -1,13 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from '../shared/services/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   get_all_users(): Promise<any> {
     return this._http_client
@@ -20,12 +19,23 @@ export class UsersService {
       .post(environment.api_url + '/delete-penalized-account/' + user_id, null)
       .toPromise();
   }
-  
+
   update_profile_photo(photo_url) {
     return this._http_client
       .post(environment.api_url + '/user/update/profile-photo', {
         profilePhoto: photo_url,
       })
       .toPromise();
+  }
+
+  convert_to_driver(uid: string): Promise<any> {
+    const uid_json={
+      uid: uid,
+    }
+    return this._http_client.post(environment.api_url + '/driver/update', uid_json).toPromise();
+  }
+
+  get_all_driver_requests(): Promise<any> {
+    return this._http_client.get(environment.api_url + '/driver-request/list').toPromise();
   }
 }
