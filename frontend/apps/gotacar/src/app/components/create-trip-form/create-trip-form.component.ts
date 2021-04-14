@@ -28,7 +28,7 @@ export class CreateTripFormComponent {
       Validators.pattern('^[1-4]$')]],
     comentarios: ['', Validators.required],
     price: ['',
-     [Validators.required, Validators.min(1)]],
+     [Validators.required, Validators.min(0.1)]],
   });
 
   location_origin: Location;

@@ -136,10 +136,10 @@
               required
             />
             <mat-icon matSuffix>euro</mat-icon>
-            <mat-error *ngIf="createTripForm.get('price')?.errors?.min">
-              El precio mínimo del viaje debe ser de 1€
-            </mat-error>
           </mat-form-field>
+          <mat-error *ngIf="createTripForm.get('price')?.errors?.min">
+            El precio mínimo del viaje debe ser de 0.1€
+          </mat-error>
         </div>
         <div class="places">
           <mat-form-field appearance="outline">
@@ -152,12 +152,12 @@
               formControlName="numeroPasajero"
               required
             />
-          <mat-error
-              *ngIf="
-                createTripForm.get('numeroPasajero')?.errors?.pattern
-              "
-              >El número de plazas solo pueden ser números enteros entre 1 y 4 inclusive</mat-error>
           </mat-form-field>
+          <mat-error
+            *ngIf="createTripForm.get('numeroPasajero')?.errors?.pattern"
+            >El número de plazas solo pueden ser números enteros entre 1 y 4
+            inclusive</mat-error
+          >
         </div>
       </div>
 
