@@ -202,4 +202,43 @@ public class TripController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/cancel-user/{user_id}/from-trip/{trip_id}")
+	public Trip cancelUserFromTrip(@PathVariable(value = "user_id") String userId, @PathVariable(value = "trip_id") String tripId) {
+		try {
+
+			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
+
+			User user1 = userRepository.findById(new ObjectId(userId));
+
+			// if(trip1.getCancelationDate().isBefore(LocalDateTime.now())){
+			// 	throw new Exception("Ya ha pasado la fecha límite, no puedes eliminar el pasajero");
+
+			// } 
+			//Comprobar DEVOLUCION, CHECKEAR FECHA DE CANCELACION Y SUS POLITICAS, LAS PLAZAS Y MIRAR SI ESTÁ PAGADO ANTES DE HACER LA FUNCIONALDIAD
+
+				List<TripOrder> listOrders1 = tripOrderRepository.findByTrip(trip1);
+
+				for (TripOrder order : listOrders1){
+
+				if(order.getUser().getDni().equals(user1.getDni())){
+
+						Integer orderPlaces1 = order.getPlaces();
+						order.setStatus("PROCCESSING");
+						tripOrderRepository.save(order);
+						trip1.setPlaces(trip1.getPlaces()+orderPlaces1);
+						tripRepository.save(trip1);		
+					}
+
+			}
+			return trip1;
+
+			
+
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
+	}
 }
