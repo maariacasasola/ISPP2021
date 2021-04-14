@@ -13,7 +13,7 @@
       <p><strong>DNI:</strong> {{ user?.dni}}</p>
       <p><strong>Profile photo:</strong> {{ user?.profilePhoto}}</p>
       <p><strong>Birthdate:</strong> {{ user?.birthdate | date: 'medium' }}</p>
-      <p><strong>Roles:</strong> {{ user?.roles}}</p>
+      <p><strong>Roles:</strong> {{ user?.roles.toString().replaceAll("ROLE_CLIENT", "Cliente").replaceAll("ROLE_DRIVER", "Conductor").replaceAll(",", ", ")}}</p>
       <p *ngIf="user?.bannedUntil"><strong>Banned until:</strong> {{ user?.bannedUntil | date: 'medium' }}</p>
     </mat-card-content>
     <mat-card-actions>
