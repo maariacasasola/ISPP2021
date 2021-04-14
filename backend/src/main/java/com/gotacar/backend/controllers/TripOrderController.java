@@ -6,6 +6,7 @@ import java.util.List;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
@@ -29,6 +30,9 @@ public class TripOrderController {
 
     @Autowired
     private TripOrderRepository tripOrderRepository;
+
+    @Autowired
+    private TripRepository tripRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -72,6 +76,11 @@ public class TripOrderController {
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
             tripOrder.setStatus("REFUNDED");
             tripOrderRepository.save(tripOrder);
+
+            Trip trip = tripOrder.getTrip();
+            trip.setPlaces(trip.getPlaces() - tripOrder.getPlaces());
+            tripRepository.save(trip);
+            
             return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
