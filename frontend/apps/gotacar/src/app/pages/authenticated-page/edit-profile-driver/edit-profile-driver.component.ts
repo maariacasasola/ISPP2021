@@ -68,7 +68,6 @@ export class EditProfileDriverComponent implements OnInit {
         color: this.user?.carData?.color || '',
       });
     } catch (error) {
-      console.error(error);
       this.openSnackBar(
         'Ha ocurrido un error al recuperar tu perfil de usuario'
       );

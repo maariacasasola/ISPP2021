@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +62,8 @@ public class TripController {
 			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
 					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
-			return tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+			List<Trip> trips = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+			return trips.stream().filter(x->x.getCanceled().equals(false) || x.getCanceled().equals(null)).collect(Collectors.toList());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}

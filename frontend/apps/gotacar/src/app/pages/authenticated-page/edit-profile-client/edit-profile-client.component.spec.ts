@@ -34,7 +34,7 @@ describe('EditProfileClientComponent', () => {
         HttpClientTestingModule,
         BrowserAnimationsModule,
       ],
-      declarations: [SignUpComponent],
+      declarations: [EditProfileClientComponent],
       providers: [{ provide: AuthServiceService, useClass: mockTripService }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

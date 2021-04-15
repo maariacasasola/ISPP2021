@@ -105,6 +105,6 @@ export class TripDetailsPageComponent {
   }
 
   show_buy_button() {
-    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date();
+    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date() && this.trip?.canceled !==true;
   }
 }

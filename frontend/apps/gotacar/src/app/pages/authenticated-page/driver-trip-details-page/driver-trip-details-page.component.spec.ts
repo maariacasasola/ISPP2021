@@ -9,6 +9,7 @@ import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
 import { User } from '../../../shared/services/user';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const location1 = {
   name: 'Sevilla',
@@ -49,7 +50,7 @@ describe('DriverTripDetailsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
       declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
       providers: [
         ConvertCentToEurPipe,
