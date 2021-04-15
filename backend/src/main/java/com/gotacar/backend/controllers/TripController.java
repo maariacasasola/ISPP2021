@@ -63,7 +63,7 @@ public class TripController {
 					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
 			List<Trip> trips = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
-			return trips.stream().filter(x->x.getCanceled().equals(false) || x.getCanceled().equals(null)).collect(Collectors.toList());
+			return trips.stream().filter(x->x.getCanceled().equals(false) || x.getCanceled() == null).collect(Collectors.toList());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
