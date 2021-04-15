@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TripsService } from '../../services/trips.service';
 
 import { CancelTripPlaceDialogComponent } from './cancel-trip-place-dialog.component';
 
@@ -12,7 +11,6 @@ describe('CancelTripPlaceDialogComponent', () => {
   let component: CancelTripPlaceDialogComponent;
   let fixture: ComponentFixture<CancelTripPlaceDialogComponent>;
   let h1: HTMLElement;
-  let service: TripsService;
 
   const mockDialogRef = {
     close: jasmine.createSpy('close')
@@ -47,7 +45,7 @@ describe('CancelTripPlaceDialogComponent', () => {
 
   it('should open snackbar', () => {
     spyOn(component, 'openSnackBar');
-    component.openSnackBar('a,b,c');
+    component.openSnackBar('hola');
     fixture.detectChanges();
     expect(component.openSnackBar).toHaveBeenCalled();
   });
