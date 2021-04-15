@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { RatingUserDialogComponent } from '../../../components/rating-user-dialog/rating-user-dialog.component';
 import { TripsService } from '../../../services/trips.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'frontend-driver-trip-details-page',
@@ -13,6 +17,9 @@ export class DriverTripDetailsPageComponent {
   users;
 
   constructor(
+    private _snackBar: MatSnackBar,
+    private _user_service: UsersService,
+    private _my_dialog: MatDialog,
     private _route: ActivatedRoute,
     private _trip_service: TripsService
   ) {
@@ -42,5 +49,30 @@ export class DriverTripDetailsPageComponent {
 
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
+  }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
+      duration: 3000,
+    });
+  }
+  async openDialog(id) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'login-dialog'
+    dialogConfig.data = {
+      to: id,
+    };
+
+    const dialogRef = this._my_dialog.open(
+      RatingUserDialogComponent,
+      dialogConfig
+    );
+
+    const dialog_response = await dialogRef.afterClosed().toPromise();
+    if (dialog_response!=undefined) {
+      const response = await this._user_service.rate_user(dialog_response);
+      
+    }
+    
   }
 }
