@@ -1,5 +1,7 @@
 package com.gotacar.backend.controllers;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,7 @@ import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 
 import org.bson.types.ObjectId;
@@ -93,10 +96,9 @@ public class ComplaintAppealController {
     }
 
     @PreAuthorize("hasRole('ROLE_DRIVER')")
-    @PostMapping(path = "/complaint_appeal", consumes = "application/json")
-    public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
+    @PostMapping(path = "/complaint-appeal/complaint/create", consumes = "application/json")
+    public ComplaintAppeal complaintAppealByComplaint(@RequestBody() String body) {
         try {
-            ComplaintAppeal appeal = new ComplaintAppeal();
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             List<String> trips = tripRepository.findAll().stream()
@@ -114,20 +116,49 @@ public class ComplaintAppealController {
                 j++;
             }
             JsonNode jsonNode = objectMapper.readTree(body);
-            String content = jsonNode.get("content").toString();
-            Boolean checked = Boolean.parseBoolean(jsonNode.get("checked").toString());
+            String content = jsonNode.get("content").asText();
 
-            appeal.setComplaint(res);
-            appeal.setContent(content);
-            appeal.setChecked(checked);
+            ComplaintAppeal appeal = new ComplaintAppeal(content, false, res);
 
             complaintAppealRepository.save(appeal);
 
             return appeal;
 
         } catch (Exception e) {
-            throw (new IllegalArgumentException(e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
-       
+    }
+
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PostMapping(path = "/complaint-appeal/create", consumes = "application/json")
+    public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            JsonNode jsonNode = objectMapper.readTree(body);
+            String content = jsonNode.get("content").asText();
+            String tripId = jsonNode.get("tripId").asText();
+
+            Trip trip = this.tripRepository.findById(new ObjectId(tripId));
+
+            if (trip.getDriver().getId().equals(user.getId())) {
+                ZonedDateTime dateCreateZone = ZonedDateTime.now();
+                dateCreateZone = dateCreateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
+                Complaint complaint = new Complaint("Baneado por límite de cancelación",
+                        "Usuario baneado por cancelar un viaje una vez se ha superado el límite de cancelación", trip,
+                        user, dateCreateZone.toLocalDateTime(), "ALREADY_RESOLVED");
+                complaintRepository.save(complaint);
+                ComplaintAppeal appeal = new ComplaintAppeal(content, false, complaint);
+
+                complaintAppealRepository.save(appeal);
+
+                return appeal;
+            } else {
+                throw new Exception("El conductor no ha ofertado este viaje");
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+        }
     }
 }

@@ -30,6 +30,7 @@ import java.util.List;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
+import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -67,9 +68,13 @@ class ComplaintAppealControllerTest {
         @MockBean
         private ComplaintAppealRepository complaintAppealRepository;
 
+        @MockBean
+        private ComplaintRepository complaintRepository;
+
         private User user;
         private User admin;
         private User driver;
+        private User driver2;
         private Trip trip;
         private Complaint complaint;
         private ComplaintAppeal appeal;
@@ -87,6 +92,12 @@ class ComplaintAppealControllerTest {
                                 "http://dniclient.com", LocalDate.of(1999, 10, 10), lista3, "655757575");
                 ObjectId driverObjectId = new ObjectId();
                 driver.setId(driverObjectId.toString());
+
+                driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gotacar.es",
+                                "312312312R", null, LocalDate.of(1999, 10, 10), lista3, "645054554",
+                                LocalDateTime.of(2021, 06, 04, 13, 30, 24));
+                ObjectId driver2ObjectId = new ObjectId();
+                driver2.setId(driver2ObjectId.toString());
 
                 user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es", "89070336D",
                                 "http://dniclient.com", LocalDate.of(1999, 10, 10), lista2, "655757575");
@@ -315,10 +326,11 @@ class ComplaintAppealControllerTest {
                 Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
                 Mockito.when(complaintAppealRepository.findAll()).thenReturn(Arrays.asList(appeal));
+                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
 
                 JSONObject sampleObject = new JSONObject();
-                sampleObject.appendField("content", "soy tonto");
-                sampleObject.appendField("checked", false);
+                sampleObject.appendField("content", "No me daba tiempo a llegar");
+                sampleObject.appendField("tripId", trip.getId());
 
                 // Login como driver
                 String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
@@ -329,12 +341,129 @@ class ComplaintAppealControllerTest {
                 String token = json2.getString("token");
 
                 // Petición post al controlador
-                ResultActions result = mockMvc.perform(post("/complaint_appeal").header("Authorization", token)
+                ResultActions result = mockMvc.perform(post("/complaint-appeal/complaint/create")
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                                .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                String res = result.andReturn().getResponse().getContentAsString();
+                int contador = 0;
+                while (res.contains("checked")) {
+                        res = res.substring(res.indexOf("checked") + "checked".length(), res.length());
+                        contador++;
+                }
+
+                assertThat(contador).isEqualTo(1);
+        }
+
+        @Test
+        void testCreateComplaintAppealDriverError() throws Exception {
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("content", "No me daba tiempo a llegar");
+                sampleObject.appendField("tripId", trip.getId());
+
+                // Login como driver
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+                // Obtengo el token
+                String token = json2.getString("token");
+
+                // Petición post al controlador
+                ResultActions result = mockMvc.perform(post("/complaint-appeal/complaint/create")
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                                .content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+        }
+
+        @Test
+        void testCreateComplaintAppealDriverByCancelation() throws Exception {
+                Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+                Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+                Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("content", "No me daba tiempo a llegar");
+                sampleObject.appendField("tripId", trip.getId());
+
+                // Login como driver
+                String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+                // Obtengo el token
+                String token = json2.getString("token");
+
+                // Petición post al controlador
+                ResultActions result = mockMvc.perform(post("/complaint-appeal/create").header("Authorization", token)
                                 .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
                                 .accept(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                
+                String res = result.andReturn().getResponse().getContentAsString();
+                int contador = 0;
+                while (res.contains("checked")) {
+                        res = res.substring(res.indexOf("checked") + "checked".length(), res.length());
+                        contador++;
+                }
+
+                assertThat(contador).isEqualTo(1);
+        }
+
+        @Test
+        void testCreateComplaintAppealDriverByCancelationFailed() throws Exception {
+                Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+                Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+                trip.setDriver(driver2);
+                Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("content", "No me daba tiempo a llegar");
+                sampleObject.appendField("tripId", trip.getId());
+
+                // Login como driver
+                String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+                // Obtengo el token
+                String token = json2.getString("token");
+
+                // Petición post al controlador
+                ResultActions result = mockMvc.perform(post("/complaint-appeal/create").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(409);
+                assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El conductor no ha ofertado este viaje");
+        }
+
+        @Test
+        void testCreateComplaintAppealDriverByCancelationError() throws Exception {
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("content", "No me daba tiempo a llegar");
+                sampleObject.appendField("tripId", trip.getId());
+
+                // Login como driver
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+                // Obtengo el token
+                String token = json2.getString("token");
+
+                // Petición post al controlador
+                ResultActions result = mockMvc.perform(post("/complaint-appeal/create").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
         }
 
 }
