@@ -139,7 +139,6 @@ class TripControllerTest {
 		}
 
 		assertThat(contador).isEqualTo(1);
-
 	}
 
 	@Test
@@ -158,7 +157,7 @@ class TripControllerTest {
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
 		ending_poinJsonObject.appendField("name", "Reina Mercedes");
 		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
-		// Construcción del json para el body
+
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("start_date", "2021-06-04T13:30:00.000+00");
 		sampleObject.appendField("end_date", "2021-06-04T13:50:00.000+00");
@@ -168,15 +167,12 @@ class TripControllerTest {
 		sampleObject.appendField("starting_point", starting_poinJsonObject);
 		sampleObject.appendField("ending_point", ending_poinJsonObject);
 
-		// Login como administrador
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
-		// Petición post al controlador
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
@@ -211,7 +207,6 @@ class TripControllerTest {
 		}
 
 		assertThat(contador).isEqualTo(1);
-
 	}
 
 	@Test
@@ -221,12 +216,10 @@ class TripControllerTest {
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
 
-		// Login como conductor
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
 		String tripId = trip.getId();
@@ -234,7 +227,7 @@ class TripControllerTest {
 		ResultActions result = mockMvc
 				.perform(post("/cancel_trip_driver/{trip_id}", tripId).header("Authorization", token)
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
-		// compruebo que obtengo una respuesta correcta
+
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 	}
@@ -247,12 +240,10 @@ class TripControllerTest {
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
 
-		// Login como conductor
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
 		String tripId = trip.getId();
@@ -261,9 +252,7 @@ class TripControllerTest {
 				.perform(post("/cancel_trip_driver/{trip_id}", tripId).header("Authorization", token)
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 
-		// compruebo que obtengo una respuesta correcta
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El viaje ya está cancelado");
-
 	}
 
 	@Test
@@ -273,12 +262,10 @@ class TripControllerTest {
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
 
-		// Login como conductor
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-
 		String token = json.getString("token");
 
 		String tripId = trip.getId();
@@ -298,12 +285,10 @@ class TripControllerTest {
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
 		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
 
-		// Login como conductor
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-
 		String token = json.getString("token");
 
 		String tripId = trip.getId();
@@ -361,7 +346,6 @@ class TripControllerTest {
 	// }
 
 	// assertThat(contador).isEqualTo(2);
-
 	// }
 
 }
