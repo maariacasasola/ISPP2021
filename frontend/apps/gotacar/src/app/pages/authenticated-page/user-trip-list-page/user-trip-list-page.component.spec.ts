@@ -29,8 +29,8 @@ const location2 = {
 const TRIP_OBJECT: Trip = {
     cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
     comments: '',
-    end_date: new Date(2021, 6, 4, 13, 30, 24),
-    start_date: new Date(2021, 6, 4, 13, 30, 24),
+    end_date: new Date(2021, 3, 4, 13, 30, 24),
+    start_date: new Date(2021, 3, 4, 13, 30, 24),
     ending_point: location2,
     starting_point: location1,
     places: 3,
