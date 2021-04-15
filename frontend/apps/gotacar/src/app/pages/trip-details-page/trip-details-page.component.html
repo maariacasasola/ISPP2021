@@ -23,6 +23,7 @@
         <h3 *ngIf="trip?.driver?.experience">
           {{ trip?.driver?.experience }} años de experiencia
         </h3>
+        <h3 *ngIf="trip?.driver?.averageRatings">{{ trip?.driver?.averageRatings }} <mat-icon>star</mat-icon> estrellas</h3>
         <button mat-flat-button
     *ngIf="show_rating_button()"
     class="rating-button"
