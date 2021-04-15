@@ -11,8 +11,8 @@ import * as moment from 'moment';
 })
 export class EditProfileClientComponent {
   update_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: [
       { value: '', disabled: true },
       [Validators.required, Validators.email],

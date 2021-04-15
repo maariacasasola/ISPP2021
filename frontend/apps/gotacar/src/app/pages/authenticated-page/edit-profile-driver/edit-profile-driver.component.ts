@@ -13,9 +13,10 @@ import { UsersService } from '../../../services/users.service';
   styleUrls: ['./edit-profile-driver.component.scss'],
 })
 export class EditProfileDriverComponent implements OnInit {
+  today = new Date();
   update_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: ['', [Validators.required, Validators.email]],
     dni: [
       '',
@@ -35,10 +36,10 @@ export class EditProfileDriverComponent implements OnInit {
         ),
       ],
     ],
-    car_plate: ['', Validators.required],
+    car_plate: ['', [Validators.required,Validators.pattern('^[0-9]{1,4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
     enrollment_date: ['', Validators.required],
-    model: ['', Validators.required],
-    color: ['', Validators.required],
+    model: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
+    color: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
   });
 
   user;

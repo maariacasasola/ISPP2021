@@ -55,6 +55,9 @@
         <mat-error *ngIf="request_form?.get('model')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="request_form?.get('model')?.errors?.pattern"
+          >Proporcione el modelo con caracteres del alfabeto</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix> drive_eta </mat-icon>
@@ -62,6 +65,9 @@
         <input matInput type="text" formControlName="color" required />
         <mat-error *ngIf="request_form?.get('color')?.errors?.required"
           >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="request_form?.get('color')?.errors?.pattern"
+          >Proporcione el color con caracteres del alfabeto</mat-error
         >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">

@@ -15,8 +15,8 @@ export class RegisterUserGoogleComponent implements OnInit {
   firebase_email;
 
   register_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     dni: [
       '',
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],

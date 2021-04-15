@@ -70,6 +70,9 @@ export class ClientProfilePageComponent {
   isDriver() {
     return this._authService.is_driver();
   }
+  hasCreateRequest(){
+    return !this.user?.driverStatus;
+  }
 
   async update_profile_photo() {
     const dialogConfig = new MatDialogConfig();

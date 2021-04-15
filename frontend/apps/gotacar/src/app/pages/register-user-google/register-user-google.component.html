@@ -12,6 +12,9 @@
         <mat-error *ngIf="register_form?.get('firstName')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="register_form?.get('firstName')?.errors?.pattern"
+          >Proporcione el nombre con caracteres del alfabeto</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>account_circle</mat-icon>
@@ -20,6 +23,9 @@
         <mat-error *ngIf="register_form?.get('lastName')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="register_form?.get('lastName')?.errors?.pattern"
+        >Proporcione el apellido con caracteres del alfabeto</mat-error
+      >
       </mat-form-field>
 
       <mat-form-field class="spacing" appearance="outline">

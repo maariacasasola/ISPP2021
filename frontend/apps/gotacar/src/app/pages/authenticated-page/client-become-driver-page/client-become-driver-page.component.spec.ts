@@ -8,6 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'apps/gotacar/src/environments/environment';
+import { Observable } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { UsersService } from '../../../services/users.service';
 
@@ -19,6 +20,7 @@ describe('ClientBecomeDriverPageComponent', () => {
   let authService: AuthServiceService;
   let userService: UsersService;
 
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -56,4 +58,8 @@ describe('ClientBecomeDriverPageComponent', () => {
     component.request_form.controls['color'].setValue("rojo");
     expect(component).toBeDefined();
   });
+
+//   it('should load user data', () => {
+//     spyOn(tripsService, 'get_all_trip_orders').and.returnValue(of(TRIP_ORDER_OBJECTS));
+// })
 });

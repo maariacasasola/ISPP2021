@@ -6,6 +6,7 @@ import { ImageUploadDialogComponent } from '../../../components/image-upload-dia
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { UsersService } from '../../../services/users.service';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'frontend-client-become-driver-page',
   templateUrl: './client-become-driver-page.component.html',
@@ -32,11 +33,12 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       Validators.pattern('^[0-9]{1,4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]
     ],
     enrollment_date: ['', Validators.required],
-    model: ['', Validators.required],
-    color: ['', Validators.required],
+    model: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    color: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
   });
   constructor(
     private fb: FormBuilder,
+    public router: Router,
     private _authService: AuthServiceService,
     private _userService: UsersService,
     private _my_dialog: MatDialog,
@@ -80,7 +82,6 @@ export class ClientBecomeDriverPageComponent implements OnInit {
   }
 
   async onSubmit() {
-    //TODO Check enrollmentDate if should check PAST
     if (this.request_form.invalid) {
       this.request_form.markAllAsTouched();
       return;
@@ -111,6 +112,8 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       const response = await this._userService.request_conversion_to_driver(user_data);
       if (response) {
         this.openSnackBar('Petición de conversión realizada correctamente');
+        this.router.navigate(['authenticated/profile']);
+
       }
     } catch (error) {
       console.error(error);

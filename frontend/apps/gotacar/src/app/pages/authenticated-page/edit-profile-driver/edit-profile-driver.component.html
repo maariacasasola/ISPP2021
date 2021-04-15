@@ -10,6 +10,9 @@
         <mat-error *ngIf="update_form?.get('firstName')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="update_form?.get('firstName')?.errors?.pattern"
+          >Proporcione el nombre con caracteres del alfabeto</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>account_circle</mat-icon>
@@ -17,6 +20,9 @@
         <input matInput type="text" formControlName="lastName" required />
         <mat-error *ngIf="update_form?.get('lastName')?.errors?.required"
           >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('lastName')?.errors?.pattern"
+          >Proporcione el apellido con caracteres del alfabeto</mat-error
         >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
@@ -87,11 +93,15 @@
         <mat-error *ngIf="update_form?.get('car_plate')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="update_form?.get('car_plate')?.errors?.pattern"
+          >La matrícula proporcionada no es válida o se corresponde con una matrícula demasiado antigua</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-label>Fecha de alta </mat-label>
         <input
           matInput
+          [max]="today"
           [matDatepicker]="picker_enrollment_date"
           formControlName="enrollment_date"
           required
@@ -114,6 +124,9 @@
         <mat-error *ngIf="update_form?.get('model')?.errors?.required"
           >Campo obligatorio</mat-error
         >
+        <mat-error *ngIf="update_form?.get('model')?.errors?.pattern"
+          >Proporcione el modelo con caracteres del alfabeto</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix> drive_eta </mat-icon>
@@ -121,6 +134,9 @@
         <input matInput type="text" formControlName="color" required />
         <mat-error *ngIf="update_form?.get('color')?.errors?.required"
           >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('color')?.errors?.pattern"
+          >Proporcione el modelo con caracteres del alfabeto</mat-error
         >
       </mat-form-field>
     </div>

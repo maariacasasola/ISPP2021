@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
+  today = new Date();
   register_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: ['', [Validators.required, Validators.email]],
     password: [
       '',
@@ -87,8 +88,12 @@ export class SignUpComponent implements OnInit {
         }
       })
       .catch((error) => {
-        console.error(error);
-        this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+        if(error.message==='The email address is badly formatted.'){
+          this.openSnackBar('El email no es válido');
+        }else{
+          this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+        }
+        
       });
   }
 
