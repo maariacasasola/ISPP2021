@@ -39,13 +39,6 @@ describe('TripSearchResultPageComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should open snackbar', () => {
-        spyOn(component, 'openSnackBar');
-        component.openSnackBar('a,b,c', 'Cerrar');
-        fixture.detectChanges();
-        expect(component.openSnackBar).toHaveBeenCalled();
-    });
-
     it('should load search params', () => {
         spyOn(component, 'load_search_params');
         component.load_search_params();
@@ -60,6 +53,13 @@ describe('TripSearchResultPageComponent', () => {
         expect(component.get_search_results).toHaveBeenCalled();
     });
 
+    it('should open snackbar', () => {
+        spyOn(component, 'openSnackBar');
+        component.openSnackBar('a,b,c', 'Cerrar');
+        fixture.detectChanges();
+        expect(component.openSnackBar).toHaveBeenCalled();
+    });
+
     it('should get right coordinates', () => {
         spyOn(component, 'get_coordinates');
         component.get_coordinates('Nervion');
@@ -68,12 +68,43 @@ describe('TripSearchResultPageComponent', () => {
     });
 
     it('should filter by limit date', () => {
-    
+
         component.tipIsInHour('2021-04-15T20:00:00');
         fixture.detectChanges();
         const result = component;
         fixture.detectChanges();
-    
+
         expect(result).toBeTruthy();
-      });
+    });
+
+    it('should order by value', () => {
+
+        component.order_by_changed(2);
+        fixture.detectChanges();
+        const result = component;
+        fixture.detectChanges();
+
+        expect(result).toBeTruthy();
+    });
+
+    it('should filter by min price', () => {
+
+        component.change_filter_min_price(2);
+        fixture.detectChanges();
+        const result = component;
+        fixture.detectChanges();
+
+        expect(result).toBeTruthy();
+    });
+
+    it('should filter by max price', () => {
+
+        component.change_filter_max_price(2);
+        fixture.detectChanges();
+        const result = component;
+        fixture.detectChanges();
+
+        expect(result).toBeTruthy();
+    });
+    
 });
