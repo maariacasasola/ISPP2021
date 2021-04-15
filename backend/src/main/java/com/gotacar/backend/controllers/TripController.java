@@ -121,7 +121,7 @@ public class TripController {
 			
 			//Lanza error si la fecha de finalizacion es anterior a la de salida
 			if(dateEndJson.isBefore(dateStartJson)) {
-				throw new Exception("La hora de llegada no puede ser anterior a la fecha de salida");
+				throw new Exception("La hora de llegada no puede ser anterior a la hora de salida");
 			}
 			//Lanza error si la fecha de salida es igual a la fecha de finalización
 			if(dateEndJson.isEqual(dateStartJson)) {

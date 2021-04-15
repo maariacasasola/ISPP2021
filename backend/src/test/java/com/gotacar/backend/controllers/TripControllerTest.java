@@ -188,6 +188,7 @@ class TripControllerTest {
 	}
 	
 	//NEGATIVO: Crear un viaje con la hora de finalización igual a la de inicio
+	@Test
 	void testCreateTripSameDate() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
@@ -228,10 +229,10 @@ class TripControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de salida no puede ser igual a la hora de llegada");
-		assertThat(tripRepository.findAll().size()).isZero();
 	}
 	
 	//NEGATIVO: Crear un viaje con la hora de finalización anterior a la de inicio
+	@Test
 	void testCreateTripEndBeforeStart() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
@@ -250,7 +251,7 @@ class TripControllerTest {
 		// Construcción del json para el body
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("start_date", "2021-06-04T13:30:00.000+00");
-		sampleObject.appendField("end_date", "2021-06-04T13:30:00.000+00");
+		sampleObject.appendField("end_date", "2021-06-04T13:20:00.000+00");
 		sampleObject.appendField("places", 2);
 		sampleObject.appendField("price", 220);
 		sampleObject.appendField("comments", "Viaje para el test");
@@ -271,8 +272,7 @@ class TripControllerTest {
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de llegada no puede ser anterior a la hora de salidas");
-		assertThat(tripRepository.findAll().size()).isZero();
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de llegada no puede ser anterior a la hora de salida");
 	}
 
 	@Test
