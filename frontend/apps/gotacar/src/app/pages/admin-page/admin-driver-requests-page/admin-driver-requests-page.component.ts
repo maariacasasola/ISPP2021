@@ -24,15 +24,17 @@ export class AdminDriverRequestsPageComponent {
     }
   }
 
-  accept_request(user){
+  async accept_request(user){
     try{
-      this._users_service.convert_to_driver(user?.uid);
+      const message=await this._users_service.convert_to_driver(user?.uid);
+      if(message){
+        await this.load_driver_requests();
+      }
     }catch(error){
       console.log(error)
       this._snackBar.open("Ha ocurrido un error", null, {
         duration: 3000,
       });
     }
-    window.location.reload();
   }
 }
