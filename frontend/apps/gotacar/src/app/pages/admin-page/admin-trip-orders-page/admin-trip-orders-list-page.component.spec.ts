@@ -1,10 +1,7 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppModule } from 'apps/gotacar/src/app/app.module';
 import { TripsService } from 'apps/gotacar/src/app/services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
