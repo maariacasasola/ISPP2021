@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -59,6 +61,10 @@ public class User {
   private String iban;
 
   private Integer timesBanned;
+
+  @Min(1)
+  @Max(5)
+  private Integer averageRatings;
 
   @URL(message = "Driving license must be an url")
   public String drivingLicense;

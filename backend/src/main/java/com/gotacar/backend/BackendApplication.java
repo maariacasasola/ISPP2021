@@ -1,5 +1,6 @@
 package com.gotacar.backend;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,8 @@ import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.rating.Rating;
+import com.gotacar.backend.models.rating.RatingRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
@@ -55,6 +58,8 @@ public class BackendApplication implements CommandLineRunner {
 
         @Autowired
         private ComplaintRepository complaintRepository;
+        @Autowired
+        private RatingRepository ratingRepository;
 
         @Autowired
         Environment environment;
@@ -66,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                         //loadSampleData();
+                        //  loadSampleData();
                 }
         }
 
@@ -78,6 +83,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.deleteAll();
                 complaintRepository.deleteAll();
                 complaintAppealRepository.deleteAll();
+                ratingRepository.deleteAll();
 
                 // USERS
                 // -----------------------------------------------------------------------------------------
@@ -93,7 +99,7 @@ public class BackendApplication implements CommandLineRunner {
                 LocalDate fecha3 = LocalDate.of(2001, 12, 30);
 
                 // Admin
-                User admin = new User("Antonio", "Fernández", "jZ1JViuU0ec4d9nuW7R6d5FGCzw2", "admin@gotacar.es",
+                User admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es",
                                 "89070360G", null, fecha3, lista1, "655757566");
 
                 userRepository.save(admin);
@@ -101,10 +107,10 @@ public class BackendApplication implements CommandLineRunner {
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
                                 "89070310K", null, fecha3, lista3, "645454514");
-                User driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gotacar.es",
+                User driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com",
                                 "312312312R", null, fecha1, lista3, "645054554",
                                 LocalDateTime.of(2021, 06, 04, 13, 30, 24));
-                User driver3 = new User("Marina", "Chacón", "BwhK9BAP8Vb9Sz6YCVbceXRCE713", "driver3@gotacar.es",
+                User driver3 = new User("Marina", "Chacón", "h9HmVQqlBQXD289O8t8q7aN2Gzg3", "driver3@gmail.com",
                                 "312412412J", null, fecha1, lista3, "645454554");
 
                 userRepository.save(driver);
@@ -112,11 +118,11 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver3);
 
                 // Clients
-                User client = new User("Martín", "Romero", "trKzninltQNh75RemITKB8tBIjY2", "client@gotacar.es",
+                User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
                                 "89070336D", null, fecha3, lista2, "656473627");
-                User client2 = new User("Paloma", "Pérez", "UnlwXau8gSWzK8SwGe0zBzX6aSm2", "client2@gotacar.es",
+                User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
                                 "42131220T", null, fecha2, lista2, "656473147");
-                User client3 = new User("Blanca", "Ruíz", "glqfC1lpaBWc7pqFa0lnYb0pQvE2", "client3@gotacar.es",
+                User client3 = new User("Blanca", "Ruíz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE3", "client3@gotacar.es",
                                 "89070345D", null, fecha1, lista2, "656493647");
                 User client4 = new User("Alberto", "Suárez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE4", "client4@gotacar.com",
                                 "42131225F", "http://dniclien4t.com", fecha2, lista2, "656473647");
@@ -329,8 +335,18 @@ public class BackendApplication implements CommandLineRunner {
                 complaintAppealRepository.save(complaintAppeal2);
                 complaintAppealRepository.save(complaintAppeal3);
 
+
+                //RATINGS
+
+                Rating rating1 = new Rating(driver,client2,"Un pasajero maravilloso",4);
+                Rating rating2 = new Rating(driver,client,"Un pasajero con mucha guasa",4);
+                Rating rating3 = new Rating(driver,client2,"Este pasajero ha sido muy simpatico",4);
+                ratingRepository.save(rating1);
+                ratingRepository.save(rating2);
+                ratingRepository.save(rating3);
                 // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
+               
                 Long users = userRepository.count();
                 Long meetingPoints = meetingPointRepository.count();
                 Long trips = tripRepository.count();
@@ -343,6 +359,7 @@ public class BackendApplication implements CommandLineRunner {
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
+                System.out.println(ratingRepository.count()+ " ratings creadas");
 
         }
 
