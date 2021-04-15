@@ -81,7 +81,6 @@ public class TripController {
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
 		try {
-			Trip trip1 = new Trip();
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -119,15 +118,10 @@ public class TripController {
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
 
+			Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, 
+				comments, placesJson, currentUser);
+
 			trip1.setCancelationDateLimit(cancelationDateLimit);
-			trip1.setEndingDate(dateEndJson);
-			trip1.setStartingPoint(startingPoint);
-			trip1.setEndingPoint(endingPoint);
-			trip1.setPrice(price);
-			trip1.setComments(comments);
-			trip1.setStartDate(dateStartJson);
-			trip1.setPlaces(placesJson);
-			trip1.setDriver(currentUser);
 
 			tripRepository.save(trip1);
 			return trip1;
