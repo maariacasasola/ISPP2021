@@ -34,6 +34,8 @@ import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
+import com.gotacar.backend.models.paymentReturn.PaymentReturnRepository;
+import com.gotacar.backend.models.paymentReturn.PaymentReturn;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -57,6 +59,9 @@ public class BackendApplication implements CommandLineRunner {
         private ComplaintRepository complaintRepository;
 
         @Autowired
+        private PaymentReturnRepository paymentReturnRepository;
+
+        @Autowired
         Environment environment;
 
         public static void main(String[] args) {
@@ -78,6 +83,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.deleteAll();
                 complaintRepository.deleteAll();
                 complaintAppealRepository.deleteAll();
+                paymentReturnRepository.deleteAll();
 
                 // USERS
                 // -----------------------------------------------------------------------------------------
@@ -329,6 +335,17 @@ public class BackendApplication implements CommandLineRunner {
                 complaintAppealRepository.save(complaintAppeal2);
                 complaintAppealRepository.save(complaintAppeal3);
 
+                //PAYMENT RETURNS
+                // -----------------------------------------------------------------------------------------
+                
+                PaymentReturn paymentReturn1 = new PaymentReturn(client, 150);
+                PaymentReturn paymentReturn2 = new PaymentReturn(client2, 180);
+                PaymentReturn paymentReturn3 = new PaymentReturn(client3, 200);
+
+                paymentReturnRepository.save(paymentReturn1);
+                paymentReturnRepository.save(paymentReturn2);
+                paymentReturnRepository.save(paymentReturn3);
+
                 // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
                 Long users = userRepository.count();
@@ -337,12 +354,14 @@ public class BackendApplication implements CommandLineRunner {
                 Long tripOrders = tripOrderRepository.count();
                 Long complaints = complaintRepository.count();
                 Long complaintAppeals = complaintAppealRepository.count();
+                Long paymentReturns = paymentReturnRepository.count();
                 System.out.println(users + " usuarios creados");
                 System.out.println(meetingPoints + " puntos de encuentro creados");
                 System.out.println(trips + " viajes creados");
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
+                System.out.println(paymentReturns + " devoluciones de pago creadas");
 
         }
 
