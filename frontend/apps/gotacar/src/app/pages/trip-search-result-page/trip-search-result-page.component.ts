@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
+import { MeetingPointService } from '../../services/meeting-point.service';
 import { TripsService } from '../../services/trips.service';
 import { convert_cent_to_eur } from '../../shared/utils/functions';
 
@@ -30,11 +31,14 @@ export class TripSearchResultPageComponent implements OnInit {
   max_price_range;
   price_range_options;
 
+  meeting_points;
+
   constructor(
     private _route: ActivatedRoute,
     private _trips_service: TripsService,
     private _geocodeService: GeocoderServiceService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _meeting_points_service: MeetingPointService
   ) {
     this.load_search_params();
   }
@@ -42,13 +46,24 @@ export class TripSearchResultPageComponent implements OnInit {
   ngOnInit(): void {}
 
   async load_search_params() {
+    await this.get_all_meeting_points();
+
     const params = this._route.snapshot.queryParams;
     this.places = params?.places;
     this.date = params?.date;
+
     this.coordinatesOrigin = await this.get_coordinates(params?.origin);
     this.coordinatesTarget = await this.get_coordinates(params?.target);
     if (this.coordinatesOrigin && this.coordinatesTarget) {
       this.get_search_results();
+    }
+  }
+
+  async get_all_meeting_points() {
+    try {
+      this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -69,6 +84,19 @@ export class TripSearchResultPageComponent implements OnInit {
 
   async get_coordinates(place_name) {
     try {
+      // Checkeamos por si ha introducido un meeting point
+      const meeting_point_matched = this.meeting_points.filter(
+        (meeting_point) => meeting_point.name === place_name
+      );
+      if (meeting_point_matched.length > 0) {
+        const coordinates = {
+          lat: meeting_point_matched[0].lat,
+          lng: meeting_point_matched[0].lng,
+        };
+        return coordinates;
+      }
+
+      // En caso de que no sea un meeting point, llamamos a geocoding
       const { results } = await this._geocodeService.get_location_from_address(
         place_name
       );
@@ -84,10 +112,7 @@ export class TripSearchResultPageComponent implements OnInit {
         };
         return coordinates;
       } else {
-        this.openSnackBar(
-          'Solo trabajamos con localizaciones de Sevilla',
-          'Introduzca de nuevo el origen'
-        );
+        this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
       console.error(error);
@@ -96,11 +121,10 @@ export class TripSearchResultPageComponent implements OnInit {
 
   tipIsInHour(startDate) {
     return moment(startDate).isAfter(moment().add(10, 'minutes'))
-
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
       duration: 2000,
       panelClass: ['blue-snackbar'],
     });

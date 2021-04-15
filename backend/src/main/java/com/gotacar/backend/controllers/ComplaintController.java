@@ -2,6 +2,8 @@ package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +70,7 @@ public class ComplaintController {
             ObjectId tripObjectId = new ObjectId(tripId);
             Trip trip = tripRepository.findById(tripObjectId);
 
-            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(new ObjectId(user.getId()), tripObjectId);
+            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
             if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
                 if (lto.size() == 1) {
@@ -98,28 +100,25 @@ public class ComplaintController {
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
 
-            LocalDateTime dateBanned = OffsetDateTime
-                    .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
+            ZonedDateTime dateBannedJson = ZonedDateTime
+                    .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText());
+            dateBannedJson = dateBannedJson.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            LocalDateTime dateBanned = dateBannedJson.toLocalDateTime();
 
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-
             Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
             Trip tripComplaint = complaintFinal.getTrip();
             User userBanned = tripComplaint.getDriver();
 
-            List<String> trips = tripRepository.findByDriverDni(userBanned.getDni()).stream()
-                .map(x -> x.getId()).collect(Collectors.toList());
+            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(x -> x.getId())
+                    .collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
+
             int j = 0;
-
             while (j < complaintAll.size()) {
-
-                if (trips.contains(complaintAll.get(j).getTrip().getId())) {
-
+                if (tripsIds.contains(complaintAll.get(j).getTrip().getId())) {
                     complaintAll.get(j).setStatus("ALREADY_RESOLVED");
-
                     complaintRepository.save(complaintAll.get(j));
-
                 }
                 j++;
             }
@@ -128,13 +127,10 @@ public class ComplaintController {
             complaintRepository.save(complaintFinal);
             userBanned.setBannedUntil(dateBanned);
             userRepository.save(userBanned);
-
             return userBanned;
-
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
-
     }
 
     @PostMapping("/refuse/{complaintId}")

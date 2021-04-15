@@ -203,4 +203,12 @@ export class AuthServiceService {
       .post(environment.api_url + '/user/update', data)
       .toPromise();
   }
+
+  delete_account() {
+    this.afAuth.currentUser.then((u) =>
+      u.delete().then(() => {
+        this.router.navigate(['home']);
+      })
+    );
+  }
 }
