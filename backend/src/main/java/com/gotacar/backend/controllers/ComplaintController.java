@@ -72,6 +72,12 @@ public class ComplaintController {
 
             List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
+
+            if(!(complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0)){
+                throw new Exception("Ya te has quejado de este viaje");
+
+               }
+
             if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
                 if (lto.size() == 1) {
                     String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
