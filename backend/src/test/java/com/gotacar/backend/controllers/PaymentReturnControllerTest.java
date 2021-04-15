@@ -110,8 +110,8 @@ class PaymentReturnControllerTest {
 		//Comprobamos el resultado
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		String res = result.andReturn().getResponse().getContentAsString();
-		assertThat(res.equals(java.util.Arrays.asList(paymentReturn1).toString()));
-		assertThat(res.contains("DONE")).isFalse();
+		assertThat(res).isEqualTo(java.util.Arrays.asList(paymentReturn1).toString());
+		assertThat(res).doesNotContain("DONE");
 
     }
 
