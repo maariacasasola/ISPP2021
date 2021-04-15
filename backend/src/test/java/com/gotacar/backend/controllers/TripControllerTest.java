@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -141,8 +143,8 @@ class TripControllerTest {
 		assertThat(contador).isEqualTo(1);
 
 	}
-	
-	//POSITIVO: Creación de un viaje correctamente
+
+	// POSITIVO: Creación de un viaje correctamente
 	@Test
 	void testCreateTrip() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
@@ -186,8 +188,8 @@ class TripControllerTest {
 		assertThat(tripRepository.findAll().size()).isEqualTo(1);
 		assertThat(trip.getDriver().getId()).isEqualTo(driver.getId());
 	}
-	
-	//NEGATIVO: Crear un viaje con la hora de finalización igual a la de inicio
+
+	// NEGATIVO: Crear un viaje con la hora de finalización igual a la de inicio
 	@Test
 	void testCreateTripSameDate() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
@@ -228,10 +230,11 @@ class TripControllerTest {
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de salida no puede ser igual a la hora de llegada");
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("La hora de salida no puede ser igual a la hora de llegada");
 	}
-	
-	//NEGATIVO: Crear un viaje con la hora de finalización anterior a la de inicio
+
+	// NEGATIVO: Crear un viaje con la hora de finalización anterior a la de inicio
 	@Test
 	void testCreateTripEndBeforeStart() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
@@ -272,7 +275,103 @@ class TripControllerTest {
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
-		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("La hora de llegada no puede ser anterior a la hora de salida");
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("La hora de llegada no puede ser anterior a la hora de salida");
+	}
+
+	@Test
+	void testCreateTripEndClosedStart() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+
+		JSONObject starting_poinJsonObject = new JSONObject();
+		starting_poinJsonObject.appendField("lat", 37.355465467940405);
+		starting_poinJsonObject.appendField("lng", -5.982498103652494);
+		starting_poinJsonObject.appendField("name", "Heliopolis");
+		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+		JSONObject ending_poinJsonObject = new JSONObject();
+		ending_poinJsonObject.appendField("lat", 37.355465467940405);
+		ending_poinJsonObject.appendField("lng", -5.982498103652494);
+		ending_poinJsonObject.appendField("name", "Reina Mercedes");
+		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
+		// Construcción del json para el body
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("start_date", "2021-06-04T13:20:00.000+00");
+		sampleObject.appendField("end_date", "2021-06-04T13:24:00.000+00");
+		sampleObject.appendField("places", 2);
+		sampleObject.appendField("price", 220);
+		sampleObject.appendField("comments", "Viaje para el test");
+		sampleObject.appendField("starting_point", starting_poinJsonObject);
+		sampleObject.appendField("ending_point", ending_poinJsonObject);
+
+		// Login como administrador
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json.getString("token");
+
+		// Petición post al controlador
+		ResultActions result = mockMvc
+				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("La hora de salida no puede ser tan cercana a la hora de llegada");
+	}
+
+	@Test
+	void testCreateTripMinStart() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+
+		JSONObject starting_poinJsonObject = new JSONObject();
+		starting_poinJsonObject.appendField("lat", 37.355465467940405);
+		starting_poinJsonObject.appendField("lng", -5.982498103652494);
+		starting_poinJsonObject.appendField("name", "Heliopolis");
+		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+		JSONObject ending_poinJsonObject = new JSONObject();
+		ending_poinJsonObject.appendField("lat", 37.355465467940405);
+		ending_poinJsonObject.appendField("lng", -5.982498103652494);
+		ending_poinJsonObject.appendField("name", "Reina Mercedes");
+		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
+		// Construcción del json para el body
+
+		ZonedDateTime dateStartZone = ZonedDateTime.now();
+		dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
+		ZonedDateTime dateEndZone = ZonedDateTime.now().plusMinutes(25);
+		dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("start_date", dateStartZone.toString());
+		sampleObject.appendField("end_date", dateEndZone.toString());
+		sampleObject.appendField("places", 2);
+		sampleObject.appendField("price", 220);
+		sampleObject.appendField("comments", "Viaje para el test");
+		sampleObject.appendField("starting_point", starting_poinJsonObject);
+		sampleObject.appendField("ending_point", ending_poinJsonObject);
+
+		// Login como administrador
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json.getString("token");
+
+		// Petición post al controlador
+		ResultActions result = mockMvc
+				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("El viaje debe ser publicado, al menos, con una hora de antelación");
 	}
 
 	@Test

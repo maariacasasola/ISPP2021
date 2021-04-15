@@ -127,7 +127,17 @@ public class TripController {
 			if(dateEndJson.isEqual(dateStartJson)) {
 				throw new Exception("La hora de salida no puede ser igual a la hora de llegada");
 			}
+
+			//Lanza error si la fecha de salida es cercana a la fecha de finalización
+			if(dateStartJson.plusMinutes(5).isAfter(dateEndJson)) {
+				throw new Exception("La hora de salida no puede ser tan cercana a la hora de llegada");
+			}
 			
+			//Lanza error si la fecha de salida no dista una hora de la fecha actual
+			if(dateStartJson.isBefore(LocalDateTime.now().plusHours(1))) {
+				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
+			}
+
 			trip1.setCancelationDateLimit(cancelationDateLimit);
 			trip1.setEndingDate(dateEndJson);
 			trip1.setStartingPoint(startingPoint);
