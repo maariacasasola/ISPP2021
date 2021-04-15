@@ -29,6 +29,9 @@ export class AdminDriverRequestsPageComponent {
       const message=await this._users_service.convert_to_driver(user?.uid);
       if(message){
         await this.load_driver_requests();
+        this._snackBar.open("Conductor creado correctamente", null, {
+          duration: 3000,
+        });
       }
     }catch(error){
       console.log(error)

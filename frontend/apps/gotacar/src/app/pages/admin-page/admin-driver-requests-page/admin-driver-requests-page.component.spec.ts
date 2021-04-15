@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { UsersService } from '../../../services/users.service';
@@ -72,7 +73,7 @@ describe('AdminDriverRequestsPageComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [AdminDriverRequestsPageComponent],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, MatSnackBarModule],
+            imports: [RouterTestingModule, MatSnackBarModule, BrowserAnimationsModule],
             providers: [{ provide: UsersService, useClass: mockUsersService },],
         }).compileComponents();
     });
@@ -94,6 +95,7 @@ describe('AdminDriverRequestsPageComponent', () => {
     });
 
     it('#accept_request() should accept request', () => {
-
+        component.accept_request(USER_OBJECT);
+        spyOn(usersService, 'convert_to_driver').and.returnValue(of(DRIVER_OBJECT));
     });
 });
