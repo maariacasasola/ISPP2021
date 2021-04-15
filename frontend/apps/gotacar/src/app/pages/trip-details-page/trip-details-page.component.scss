@@ -69,6 +69,10 @@
   color: white;
   background-color: $secondary;
 }
+.rating-button {
+  color: white;
+  background-color: $primary;
+}
 
 @media (max-width: 760px) {
   .trip-details-container {

@@ -29,6 +29,6 @@ export class UsersService {
       .toPromise();
   }
   rate_user(data){
-    return this._http_client.post(environment.api_url + '/',data).toPromise();
+    return this._http_client.post(environment.api_url + '/rate',data).toPromise();
   }
 }

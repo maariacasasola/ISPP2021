@@ -14,6 +14,7 @@
     <div class="driver">
       <div class="driver-info">
         <h2>Datos del conductor</h2>
+        
         <h3>{{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}</h3>
         <h3 *ngIf="trip?.driver?.carData">
           {{ trip?.driver?.carData?.model }}
@@ -22,11 +23,16 @@
         <h3 *ngIf="trip?.driver?.experience">
           {{ trip?.driver?.experience }} años de experiencia
         </h3>
+        <button mat-flat-button
+    *ngIf="show_rating_button()"
+    class="rating-button"
+     (click)="openDialogRating(trip?.driver?.id)">Valorar conductor</button>
       </div>
       <div class="driver-status" matTooltip="Conductor verificado por GotACar">
         <img src="assets/logos_conductores/conductor_verificado.svg" />
       </div>
     </div>
+    
     <button
       mat-flat-button
       class="buy-button"

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'apps/gotacar/src/environments/environment';
+import { RatingUserDialogComponent } from '../../components/rating-user-dialog/rating-user-dialog.component';
 import { TripOrderFormDialogComponent } from '../../components/trip-order-form-dialog/trip-order-form-dialog.component';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { TripsService } from '../../services/trips.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'frontend-trip-details-page',
@@ -19,6 +21,8 @@ export class TripDetailsPageComponent {
   stripePromise = loadStripe(environment.stripe_api_key);
 
   constructor(
+    private _my_dialog: MatDialog,
+    private _user_service: UsersService,
     private _route: ActivatedRoute,
     private _trip_service: TripsService,
     private _snackbar: MatSnackBar,
@@ -106,5 +110,28 @@ export class TripDetailsPageComponent {
 
   show_buy_button() {
     return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date();
+  }
+  show_rating_button() {
+    return new Date(this.trip?.startDate) < new Date();
+  }
+  async openDialogRating(id) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'login-dialog'
+    dialogConfig.data = {
+      to: id,
+    };
+
+    const dialogRef = this._my_dialog.open(
+      RatingUserDialogComponent,
+      dialogConfig
+    );
+
+    const dialog_response = await dialogRef.afterClosed().toPromise();
+    if (dialog_response!=undefined) {
+      const response = await this._user_service.rate_user(dialog_response);
+      
+    }
+    
   }
 }
