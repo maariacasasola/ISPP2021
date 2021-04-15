@@ -114,10 +114,11 @@ export class TripDetailsPageComponent {
   show_rating_button() {
     return new Date(this.trip?.startDate) < new Date();
   }
+
   async openDialogRating(id) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'login-dialog'
+    dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       to: id,
     };
@@ -128,10 +129,21 @@ export class TripDetailsPageComponent {
     );
 
     const dialog_response = await dialogRef.afterClosed().toPromise();
-    if (dialog_response!=undefined) {
+    if (dialog_response) {
       const response = await this._user_service.rate_user(dialog_response);
-      
+
+      try {
+        const response = await this._user_service.rate_user(dialog_response);
+        if (response) {
+          this._snackbar.open('Tu valoración ha sido exitosa', null, {
+            duration: 3000,
+          });
+        }
+      } catch (error) {
+        this._snackbar.open('Tu valoración no se ha podido realizar', null, {
+          duration: 3000,
+        });
+      }
     }
-    
   }
 }

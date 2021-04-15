@@ -11,10 +11,35 @@
       <p><strong>UID:</strong> {{ user?.uid}}</p>
       <p><strong>Email:</strong> {{ user?.email}}</p>
       <p><strong>DNI:</strong> {{ user?.dni}}</p>
-      <p><strong>Profile photo:</strong> {{ user?.profilePhoto}}</p>
       <p><strong>Birthdate:</strong> {{ user?.birthdate | date: 'medium' }}</p>
       <p><strong>Roles:</strong> {{ user?.roles.toString().replaceAll("ROLE_CLIENT", "Cliente").replaceAll("ROLE_DRIVER", "Conductor").replaceAll(",", ", ")}}</p>
-      <p *ngIf="user?.bannedUntil"><strong>Banned until:</strong> {{ user?.bannedUntil | date: 'medium' }}</p>
+      <p *ngIf="user?.bannedUntil"><strong>Fecha de sanción:</strong> {{ user?.bannedUntil | date: 'medium' }}</p>
+      
+      <div *ngIf="user.averageRatings">
+        <p *ngIf="user?.averageRatings"><strong>Valoración media:</strong></p>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': user.averageRatings > 0 }"
+        >{{user.averageRatings > 0 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': user.averageRatings > 1 }"
+        >{{user.averageRatings > 1 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+         
+          [ngClass]="{ 'orange': user.averageRatings > 2 }"
+        >{{user.averageRatings > 2 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': user.averageRatings > 3 }"
+        >{{user.averageRatings > 3 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': user.averageRatings > 4 }"
+        >{{user.averageRatings > 4 ? 'star' :'star_border'}}</mat-icon
+      >
+    </div>
+  
     </mat-card-content>
     <mat-card-actions>
       <button

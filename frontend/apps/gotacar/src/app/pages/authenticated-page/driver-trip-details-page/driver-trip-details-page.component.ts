@@ -55,10 +55,10 @@ export class DriverTripDetailsPageComponent {
       duration: 3000,
     });
   }
-  async openDialog(id) {
+  async addValoracionDialog(id) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'login-dialog'
+    dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       to: id,
     };
@@ -69,10 +69,17 @@ export class DriverTripDetailsPageComponent {
     );
 
     const dialog_response = await dialogRef.afterClosed().toPromise();
-    if (dialog_response!=undefined) {
-      const response = await this._user_service.rate_user(dialog_response);
-      
+
+    if (dialog_response) {
+      try {
+        const response = await this._user_service.rate_user(dialog_response);
+        if (response) {
+          this.openSnackBar('Tu valoración ha sido exitosa');
+          await this.load_users();
+        }
+      } catch (error) {
+        this.openSnackBar('Tu valoración no se ha podido realizar');
+      }
     }
-    
   }
 }
