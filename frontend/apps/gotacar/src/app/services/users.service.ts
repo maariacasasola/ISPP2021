@@ -7,7 +7,7 @@ import { User } from '../shared/services/user';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   get_all_users(): Promise<any> {
     return this._http_client
@@ -20,7 +20,11 @@ export class UsersService {
       .post(environment.api_url + '/delete-penalized-account/' + user_id, null)
       .toPromise();
   }
-  
+
+  delete_account(): Promise<any> {
+    return this._http_client.post(environment.api_url + '/delete-account', null).toPromise();
+  }
+
   update_profile_photo(photo_url) {
     return this._http_client
       .post(environment.api_url + '/user/update/profile-photo', {

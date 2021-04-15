@@ -61,7 +61,7 @@ describe('AdminUserListPageComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should list trip orders', () => {
+    it('should list users', () => {
         spyOn(usersService, 'get_all_users').and.returnValue(of(USER_OBJECTS));
     });
 

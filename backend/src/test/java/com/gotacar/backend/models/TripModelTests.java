@@ -17,6 +17,8 @@ import javax.validation.ConstraintViolation;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -164,5 +166,42 @@ class TripModelTests {
 
         ConstraintViolation<Trip> violation = constraintViolations.iterator().next();
         assertThat(violation.getMessage()).isEqualTo("must be less than or equal to 4");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {50, 100, 1000})
+    void priceWithPositiveValues(Integer price) {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+
+        Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
+        Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635,
+                -5.999724275498323);
+        LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
+        LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+        Trip trip = new Trip(location1, location3, price, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
+
+        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
+
+        assertThat(constraintViolations.isEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1000, -100 , 0, 49})
+    void priceWithNegativeValues(Integer price) {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+
+        Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
+        Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla", 37.38919329738635,
+                -5.999724275498323);
+        LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
+        LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+        Trip trip = new Trip(location1, location3, price, date6, date7, "Viaje desde Cerro del Águila hasta Triana", 3,
+                driver);
+
+        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
+
+        ConstraintViolation<Trip> violation = constraintViolations.iterator().next();
+        assertThat(violation.getMessage()).isEqualTo("must be greater than or equal to 50");
     }
 }

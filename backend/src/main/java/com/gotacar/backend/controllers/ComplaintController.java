@@ -68,7 +68,7 @@ public class ComplaintController {
             ObjectId tripObjectId = new ObjectId(tripId);
             Trip trip = tripRepository.findById(tripObjectId);
 
-            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(new ObjectId(user.getId()), tripObjectId);
+            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
             if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
                 if (lto.size() == 1) {
@@ -107,8 +107,8 @@ public class ComplaintController {
             Trip tripComplaint = complaintFinal.getTrip();
             User userBanned = tripComplaint.getDriver();
 
-            List<String> trips = tripRepository.findByDriverDni(userBanned.getDni()).stream()
-                .map(x -> x.getId()).collect(Collectors.toList());
+            List<String> trips = tripRepository.findByDriverDni(userBanned.getDni()).stream().map(x -> x.getId())
+                    .collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
             int j = 0;
 
