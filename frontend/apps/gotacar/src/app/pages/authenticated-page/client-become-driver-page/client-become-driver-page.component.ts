@@ -92,8 +92,8 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     }
     try {
       const car_data = {
-        carPlate: this.request_form.value.car_plate,
-        enrollmentDate: moment(this.request_form.value.enrollment_date).format(
+        car_plate: this.request_form.value.car_plate,
+        enrollment_date: moment(this.request_form.value.enrollment_date).format(
           'yyyy-MM-DD'
         ),
         model: this.request_form.value.model,
@@ -104,7 +104,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
         id:this.user_id,
         iban: this.request_form.value.iban,
         experience:Number(this.request_form.value.experience),
-        carData: car_data,
+        car_data: car_data,
         driving_license:this.driving_license,
       };
       console.log(user_data);
