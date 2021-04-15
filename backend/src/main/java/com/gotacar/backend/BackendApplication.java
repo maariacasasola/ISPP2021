@@ -71,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                         loadSampleData();
+                        //  loadSampleData();
                 }
         }
 
@@ -83,6 +83,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.deleteAll();
                 complaintRepository.deleteAll();
                 complaintAppealRepository.deleteAll();
+                ratingRepository.deleteAll();
 
                 // USERS
                 // -----------------------------------------------------------------------------------------
@@ -337,16 +338,15 @@ public class BackendApplication implements CommandLineRunner {
 
                 //RATINGS
 
-                Rating rating1 = new Rating(driver,client2,"pene",4);
-                Rating rating2 = new Rating(driver,client2,"pene",4);
-                Rating rating3 = new Rating(driver,client2,"pene",4);
+                Rating rating1 = new Rating(driver,client2,"Un pasajero maravilloso",4);
+                Rating rating2 = new Rating(driver,client,"Un pasajero con mucha guasa",4);
+                Rating rating3 = new Rating(driver,client2,"Este pasajero ha sido muy simpatico",4);
                 ratingRepository.save(rating1);
                 ratingRepository.save(rating2);
                 ratingRepository.save(rating3);
                 // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
-                Integer rates = ratingRepository.findAverageById(new ObjectId(client2.getId()));
-                System.out.println("Rating"+rates);
+               
                 Long users = userRepository.count();
                 Long meetingPoints = meetingPointRepository.count();
                 Long trips = tripRepository.count();
@@ -359,7 +359,7 @@ public class BackendApplication implements CommandLineRunner {
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
-                System.out.println(client6.getId());
+                System.out.println(ratingRepository.count()+ " ratings creadas");
 
         }
 

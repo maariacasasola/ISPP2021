@@ -4,5 +4,6 @@ import org.bson.types.ObjectId;
 
 
 public interface RatingRepositoryCustom {
-    public Integer findAverageById(ObjectId id);
+    public Rating findAverageById(ObjectId id);
+    
 }

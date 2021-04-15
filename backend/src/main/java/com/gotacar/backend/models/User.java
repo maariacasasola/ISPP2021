@@ -62,9 +62,9 @@ public class User {
 
   private Integer timesBanned;
 
-  // @Min(1)
-  // @Max(5)
-  // private Integer averageRatings;
+  @Min(1)
+  @Max(5)
+  private Integer averageRatings;
 
   @URL(message = "Driving license must be an url")
   public String drivingLicense;

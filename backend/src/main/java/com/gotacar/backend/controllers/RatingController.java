@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -34,6 +33,7 @@ public class RatingController {
 	private static ObjectMapper objectMapper = new ObjectMapper();
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private RatingRepository ratingRepository;
 	
@@ -70,12 +70,21 @@ public class RatingController {
 			rate.setCreatedAt(date);
 			rate.setPoints(points);
 			ratingRepository.save(rate);
+	
+			List<Rating> lsRating = ratingRepository.findByTo(to);
+			Integer total =0;
+			for (Rating r:lsRating){
+				total+=r.getPoints();
+			}
+			Integer avg = total/lsRating.size();
+			System.out.println("avg"+avg);
+			to.setAverageRatings(avg);
+			userRepository.save(to);
+			System.out.println(to.getAverageRatings());
 			return rate;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 	}
 
-
-	
 }
