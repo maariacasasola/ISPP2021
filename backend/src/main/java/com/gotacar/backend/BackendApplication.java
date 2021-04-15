@@ -341,7 +341,6 @@ public class BackendApplication implements CommandLineRunner {
                 PaymentReturn paymentReturn1 = new PaymentReturn(client, 150);
                 PaymentReturn paymentReturn2 = new PaymentReturn(client2, 180);
                 PaymentReturn paymentReturn3 = new PaymentReturn(client3, 200);
-                paymentReturn3.setStatus("DONE");
 
                 paymentReturnRepository.save(paymentReturn1);
                 paymentReturnRepository.save(paymentReturn2);

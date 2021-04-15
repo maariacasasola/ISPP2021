@@ -39,15 +39,6 @@ class PaymentReturnTests {
     }
 
     @Test
-    void defaultStatusMustBePending() {
-        LocaleContextHolder.setLocale(Locale.ENGLISH);
-
-        PaymentReturn paymentReturn = new PaymentReturn(client, 300);
-
-        assertThat(paymentReturn.status).isEqualTo("PENDING");
-    }
-
-    @Test
     void userCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
@@ -57,19 +48,6 @@ class PaymentReturnTests {
 
         ConstraintViolation<PaymentReturn> violation = constraintViolations.iterator().next();
         assertThat(violation.getMessage()).isEqualTo("must not be null");
-    }
-
-    @Test
-    void statusMustMatchPattern() {
-        LocaleContextHolder.setLocale(Locale.ENGLISH);
-
-        PaymentReturn paymentReturn = new PaymentReturn(client, 200);
-        paymentReturn.setStatus("OTHER");
-
-        Set<ConstraintViolation<PaymentReturn>> constraintViolations = validator.validate(paymentReturn);
-
-        ConstraintViolation<PaymentReturn> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("El estado de la devolución solo puede ser: (PENDING|DONE)");
     }
 
     @Test

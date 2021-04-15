@@ -6,8 +6,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import com.gotacar.backend.models.User;
 
 import org.springframework.data.annotation.Id;
@@ -29,13 +27,8 @@ public class PaymentReturn {
     @NotNull
     public Integer amount;
 
-    @Pattern(regexp = "PENDING|DONE", message = "El estado de la devolución solo puede ser: (PENDING|DONE)")
-    public String status;
-
     @NotNull
     public LocalDateTime createdAt;
-
-    public LocalDateTime acceptedAt;
 
     public PaymentReturn(User user, Integer amount) {
         this.user = user;
@@ -43,6 +36,10 @@ public class PaymentReturn {
         ZonedDateTime dateStartZone = ZonedDateTime.now();
         dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         this.createdAt = dateStartZone.toLocalDateTime();
-        this.status = "PENDING";
     }
+
+    @Override
+	public String toString() {
+		return String.format("Complaint[id=%s, amount=%s, user=%s]", id, amount, user.toString());
+	}
 }

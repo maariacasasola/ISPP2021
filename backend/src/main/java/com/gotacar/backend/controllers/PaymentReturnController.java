@@ -22,11 +22,12 @@ public class PaymentReturnController {
 @Autowired
 PaymentReturnRepository paymentReturnRepository;
 
-@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/paymentReturn/listPending")
-	public List<PaymentReturn> listPendingPaymentReturns() {
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/payment-return/list")
+	public List<PaymentReturn> listPaymentReturns() {
 		try {
-			return paymentReturnRepository.findByStatus("PENDING");
+			List<PaymentReturn> res = paymentReturnRepository.findAll();
+			return res;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
