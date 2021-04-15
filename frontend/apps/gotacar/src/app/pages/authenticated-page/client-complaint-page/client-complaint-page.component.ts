@@ -50,7 +50,7 @@ export class ClientComplaintPageComponent implements OnInit {
           duration: 3000,
         });
       }
-      if (error.error.message === 'Usted ya ha realizado una queja') {
+      if (error.error.message === 'Ya te has quejado de este viaje') {
         this._snackbar.open('Usted ya ha realizado una queja', null, {
           duration: 3000,
         });
