@@ -169,7 +169,7 @@ class TripModelTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {100, 20000, 200000})
+    @ValueSource(ints = {50, 100, 1000})
     void priceWithPositiveValues(Integer price) {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
@@ -187,7 +187,7 @@ class TripModelTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-200000,-2000, -100 , 0})
+    @ValueSource(ints = {-1000, -100 , 0, 49})
     void priceWithNegativeValues(Integer price) {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
@@ -202,6 +202,6 @@ class TripModelTests {
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
         ConstraintViolation<Trip> violation = constraintViolations.iterator().next();
-        assertThat(violation.getMessage()).isEqualTo("must be greater than or equal to 100");
+        assertThat(violation.getMessage()).isEqualTo("must be greater than or equal to 50");
     }
 }
