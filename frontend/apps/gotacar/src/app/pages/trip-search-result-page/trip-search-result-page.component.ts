@@ -95,7 +95,7 @@ export class TripSearchResultPageComponent implements OnInit {
   }
 
   tipIsInHour(startDate) {
-    return moment(startDate).isAfter(moment().add(1, 'hours'))
+    return moment(startDate).isAfter(moment().add(10, 'minutes'))
 
   }
 
