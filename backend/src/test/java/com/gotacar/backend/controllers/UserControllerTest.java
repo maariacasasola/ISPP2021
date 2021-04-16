@@ -686,4 +686,50 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
+	
+	//TEst positivo ciando el usuario no esta baneado
+	@Test
+	void testLoginBannedNull() throws Exception {
+		driver.setBannedUntil(null);
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		
+		ResultActions result = mockMvc.perform(post("/user").param("uid", driver.getUid()).contentType(MediaType.APPLICATION_JSON));
+		String response = result.andReturn().getResponse().getContentAsString();
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String dateS = json.getString("bannedUntil");
+		
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(dateS).isEqualTo("null");
+	}
+	
+	//Test positivo cuando el ususario esta baneado con una fecha posterior a la actual
+	@Test
+	void testLoginBannedFuture() throws Exception {
+		driver.setBannedUntil(LocalDateTime.of(2030, 05, 24, 16, 15, 00));
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		
+		ResultActions result = mockMvc.perform(post("/user").param("uid", driver.getUid()).contentType(MediaType.APPLICATION_JSON));
+		String response = result.andReturn().getResponse().getContentAsString();
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String dateS = json.getString("bannedUntil");
+		LocalDateTime date = LocalDateTime.parse(dateS);
+		
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(date).isEqualTo(driver.getBannedUntil());
+	}
+	
+	//Test positivo cuando el ususario esta baneado con una fecha antigua
+		@Test
+		void testLoginBannedPast() throws Exception {
+			driver.setBannedUntil(LocalDateTime.of(2000, 05, 24, 16, 15, 00));
+			Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+			
+			ResultActions result = mockMvc.perform(post("/user").param("uid", driver.getUid()).contentType(MediaType.APPLICATION_JSON));
+			String response = result.andReturn().getResponse().getContentAsString();
+			org.json.JSONObject json = new org.json.JSONObject(response);
+			String dateS = json.getString("bannedUntil");
+			
+			assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+			assertThat(dateS).isEqualTo("null");
+		}
 }
