@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,9 +74,11 @@ class TripControllerTest {
 	private User driver2;
 	private Trip trip;
 	private TripOrder order;
+	private ZonedDateTime actualDate = ZonedDateTime.now();
 
 	@BeforeEach
 	void setUp() {
+		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 		List<String> lista1 = new ArrayList<String>();
 		lista1.add("ROLE_ADMIN");
 		List<String> lista2 = new ArrayList<String>();
@@ -279,7 +283,7 @@ class TripControllerTest {
 
 	@Test
 	void testCancelTripDriverDateExpired() throws Exception {
-		trip.setCancelationDateLimit(LocalDateTime.now().minusMinutes(20));
+		trip.setCancelationDateLimit(actualDate.toLocalDateTime().minusMinutes(20));
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);

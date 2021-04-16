@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -159,9 +161,11 @@ public class PaymentController {
 
     public void createTripOrder(Session session) {
         try {
+        	ZonedDateTime actualDate = ZonedDateTime.now();
+    		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             String tripId = session.getMetadata().values().toArray()[3].toString();
             String userId = session.getMetadata().values().toArray()[5].toString();
-            LocalDateTime date = LocalDateTime.now();
+            LocalDateTime date = actualDate.toLocalDateTime();
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
