@@ -162,8 +162,8 @@ class UserModelTests {
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
 		ConstraintViolation<User> violation = constraintViolations.iterator().next();
-		assertThat(violation.getMessage()).isEqualTo("Iban incorrecto, debe seguir el formato ES1111111111111111111111");
+		assertThat(violation.getMessage())
+				.isEqualTo("Iban incorrecto, debe seguir el formato ES1111111111111111111111");
 	}
-
 
 }

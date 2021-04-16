@@ -69,10 +69,9 @@ class TripOrderControllerTest {
     private TripOrder order;
     ZonedDateTime actualDate = ZonedDateTime.now();
 
-
     @BeforeEach
     void setUp() {
-    	actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+        actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         List<String> lista1 = new ArrayList<String>();
         lista1.add("ROLE_ADMIN");
         List<String> lista2 = new ArrayList<String>();
@@ -148,7 +147,8 @@ class TripOrderControllerTest {
         String token = json.getString("token");
 
         Integer beforePlaces = order.getTrip().getPlaces();
-        ResultActions result = mockMvc.perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
+        ResultActions result = mockMvc
+                .perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
 
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
         assertThat(order.getStatus()).isEqualTo("REFUNDED_PENDING");
@@ -166,7 +166,8 @@ class TripOrderControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         String token = json.getString("token");
 
-        ResultActions result = mockMvc.perform(post("/cancel_trip_order/" + order.getId()).header("Authorization", token));
+        ResultActions result = mockMvc
+                .perform(post("/cancel_trip_order/" + order.getId()).header("Authorization", token));
 
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
         assertThat(order.getStatus()).isEqualTo("REFUNDED");

@@ -90,7 +90,8 @@ class PaymentReturnControllerTest {
 
 	@Test
 	void testListAllPendingReturns() throws Exception {
-		Mockito.when(paymentReturnRepository.findAll()).thenReturn(java.util.Arrays.asList(paymentReturn1, paymentReturn2));
+		Mockito.when(paymentReturnRepository.findAll())
+				.thenReturn(java.util.Arrays.asList(paymentReturn1, paymentReturn2));
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
 		// Obtenemos el token

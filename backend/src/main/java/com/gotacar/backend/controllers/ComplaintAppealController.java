@@ -100,8 +100,8 @@ public class ComplaintAppealController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             List<String> trips = tripRepository.findAll().stream()
-                    .filter(a -> a.getDriver().getDni().equals(user.getDni()) && a.getDriver().getBannedUntil()!= null).map(x -> x.getId())
-                    .collect(Collectors.toList());
+                    .filter(a -> a.getDriver().getDni().equals(user.getDni()) && a.getDriver().getBannedUntil() != null)
+                    .map(x -> x.getId()).collect(Collectors.toList());
             int j = 0;
             List<Complaint> complaint = complaintRepository.findAll();
             Complaint res = new Complaint();
@@ -128,6 +128,6 @@ public class ComplaintAppealController {
         } catch (Exception e) {
             throw (new IllegalArgumentException(e.getMessage()));
         }
-       
+
     }
 }

@@ -1,6 +1,5 @@
 package com.gotacar.backend.models.paymentReturn;
 
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -39,7 +38,7 @@ public class PaymentReturn {
     }
 
     @Override
-	public String toString() {
-		return String.format("Complaint[id=%s, amount=%s, user=%s]", id, amount, user.toString());
-	}
+    public String toString() {
+        return String.format("Complaint[id=%s, amount=%s, user=%s]", id, amount, user.toString());
+    }
 }

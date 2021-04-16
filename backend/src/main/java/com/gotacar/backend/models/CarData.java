@@ -1,4 +1,5 @@
 package com.gotacar.backend.models;
+
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,5 @@ public class CarData {
 
     public CarData() {
     }
-    
+
 }

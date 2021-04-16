@@ -19,10 +19,9 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @RestController
 public class MeetingPointController {
-    
+
     @Autowired
     private MeetingPointRepository pointsRepository;
 
@@ -30,7 +29,7 @@ public class MeetingPointController {
 
     @PostMapping("/create_meeting_point")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public MeetingPoint createMeetingPoint(@RequestBody String body){
+    public MeetingPoint createMeetingPoint(@RequestBody String body) {
         try {
             MeetingPoint mp = new MeetingPoint();
             JsonNode jsonNode = objectMapper.readTree(body);
@@ -50,27 +49,26 @@ public class MeetingPointController {
         } catch (Exception e) {
             throw (new IllegalArgumentException(e.getMessage()));
         }
-        
-        
+
     }
 
-	@GetMapping("/search_meeting_points")
-	public List<MeetingPoint> findAllMeetingPoints(){
-		try {
+    @GetMapping("/search_meeting_points")
+    public List<MeetingPoint> findAllMeetingPoints() {
+        try {
             return pointsRepository.findAll();
-		} catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
-        }	
-		
-	}
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete_meeting_point/{mpId}")
-     public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
-        try{
+    public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId) {
+        try {
             MeetingPoint mp = pointsRepository.findById(new ObjectId(mpId));
             pointsRepository.delete(mp);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }

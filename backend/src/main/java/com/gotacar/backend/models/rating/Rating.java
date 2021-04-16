@@ -46,8 +46,8 @@ public class Rating {
     }
 
     public Rating(User from, User to, String content, Integer points) {
-    	ZonedDateTime actualDate = ZonedDateTime.now();
-		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+        ZonedDateTime actualDate = ZonedDateTime.now();
+        actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         this.from = from;
         this.to = to;
         this.points = points;

@@ -19,7 +19,7 @@ public interface TripRepository extends MongoRepository<Trip, String>, TripRepos
     public List<Trip> findByStartingPointWithin(Circle c);
 
     public List<Trip> findByEndingPointWithin(Circle c);
-    
+
     public List<Trip> findByDriver(User driver);
 
     List<Trip> findByDriverAndCanceled(User driver, Boolean canceled);
