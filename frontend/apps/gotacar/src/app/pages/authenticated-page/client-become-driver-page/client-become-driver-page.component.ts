@@ -30,7 +30,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     car_plate: [
       '',
       [Validators.required,
-      Validators.pattern('^[0-9]{1,4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]
+      Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]
     ],
     enrollment_date: ['', Validators.required],
     model: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],

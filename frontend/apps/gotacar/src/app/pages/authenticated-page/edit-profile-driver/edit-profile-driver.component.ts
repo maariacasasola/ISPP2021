@@ -36,7 +36,7 @@ export class EditProfileDriverComponent implements OnInit {
         ),
       ],
     ],
-    car_plate: ['', [Validators.required,Validators.pattern('^[0-9]{1,4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
+    car_plate: ['', [Validators.required,Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
     enrollment_date: ['', Validators.required],
     model: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
     color: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
