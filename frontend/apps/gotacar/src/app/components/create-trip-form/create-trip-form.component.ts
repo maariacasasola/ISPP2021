@@ -94,6 +94,12 @@ export class CreateTripFormComponent {
     const startDateHour = this.createTripForm.value.fechaHoraInicio;
     const endingDateHour = this.createTripForm.value.fechaHoraFin;
 
+    // Check de que se crea con un margen con al menos 1h de antelación
+
+    // Check de que se crea y la fecha de llegada no es más de dos horas mayor que la de salida
+
+    // Check de que se crea con un mínimo de 5 min de margen de llegada
+
     return startDateHour < endingDateHour;
   }
 
