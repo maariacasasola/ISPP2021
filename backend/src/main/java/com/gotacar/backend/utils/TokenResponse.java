@@ -13,7 +13,7 @@ public class TokenResponse {
 
     public List<String> roles;
     
-    public LocalDateTime bannedUntil;
+    private LocalDateTime bannedUntil;
 
     public TokenResponse(String token, List<String> roles, LocalDateTime bannedUntil) {
         this.token = token; this.roles = roles; this.bannedUntil=bannedUntil;
