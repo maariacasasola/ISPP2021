@@ -38,6 +38,8 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
             criteria.add(Criteria.where("places").gte(places));
         }
 
+        criteria.add(Criteria.where("canceled").is(false));
+
         if (!criteria.isEmpty()) {
             query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
         }
