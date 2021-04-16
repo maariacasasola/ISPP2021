@@ -80,13 +80,21 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       duration: 3000,
     });
   }
-
+  checkExperienciaWithEnrollment():boolean{
+    const enrollment_date = moment(this.request_form.value.enrollment_date);
+    const years = moment().diff(enrollment_date, 'years');
+    const exp = this.request_form.value.experience;
+    return exp>=years;
+  }
   async onSubmit() {
     if (this.request_form.invalid) {
       this.request_form.markAllAsTouched();
       return;
     }
-    console.log(this.driving_license)
+    if(!this.checkExperienciaWithEnrollment()){
+      this.openSnackBar('La fecha de alta no corresponde con tu experiencia')
+      return;
+    }
     if(this.driving_license===undefined){
       this.openSnackBar('Debe proporcionar una imagen de su licencia')
       return;
