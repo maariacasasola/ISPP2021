@@ -71,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                         //loadSampleData();
+                        loadSampleData();
                 }
         }
 
@@ -192,8 +192,8 @@ public class BackendApplication implements CommandLineRunner {
                 LocalDateTime fecha5 = LocalDateTime.of(2024, 02, 28, 13, 36, 24);
                 LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
                 LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-                LocalDateTime fecha8 = LocalDateTime.of(2021, 03, 20, 17, 00, 00);
-                LocalDateTime fecha9 = LocalDateTime.of(2021, 03, 20, 17, 21, 00);
+                LocalDateTime fecha8 = LocalDateTime.of(2021, 05, 20, 17, 00, 00);
+                LocalDateTime fecha9 = LocalDateTime.of(2021, 05, 20, 17, 21, 00);
                 LocalDateTime fecha10 = LocalDateTime.of(2021, 03, 21, 12, 00, 00);
                 LocalDateTime fecha11 = LocalDateTime.of(2021, 03, 21, 12, 40, 00);
 
@@ -207,7 +207,7 @@ public class BackendApplication implements CommandLineRunner {
                                 driver3);
                 Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2,
                                 driver2);
-                Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Reina",
+                Trip trip6 = new Trip(location7, location8, 400, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Reina",
                                 5, driver);
                 Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9,
                                 "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
@@ -231,7 +231,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 // TRIP ORDERS
                 // -----------------------------------------------------------------------------------------
-                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "",
+                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 400, "pi_1IgqIeJ65m70MT01EagW1XF9",
                                 1);
                 TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700,
                                 "", 2);

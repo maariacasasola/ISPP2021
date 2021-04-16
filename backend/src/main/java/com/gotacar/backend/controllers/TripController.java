@@ -13,6 +13,8 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class TripController {
 
 	@Autowired
 	private RefundController refundController;
+
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
 
 	@Autowired
 	private TripRepository tripRepository;
@@ -187,5 +192,36 @@ public class TripController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/cancel-user/{user_id}/from-trip/{trip_id}")
+	public Trip cancelUserFromTrip(@PathVariable(value = "user_id") String userId, @PathVariable(value = "trip_id") String tripId) {
+		try {
+
+			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
+
+			User user1 = userRepository.findById(new ObjectId(userId));
+
+				List<TripOrder> listOrders1 = tripOrderRepository.findByTrip(trip1);
+
+				for (TripOrder order : listOrders1){
+
+				if(order.getUser().getDni().equals(user1.getDni())){
+						Integer orderPlaces1 = order.getPlaces();
+						trip1.setPlaces(trip1.getPlaces()+orderPlaces1);
+						tripRepository.save(trip1);	
+						refundController.createRefundDriverRejection(order);	
+					}
+
+			}
+			return trip1;
+
+
+
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
 	}
 }
