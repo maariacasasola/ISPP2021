@@ -134,7 +134,7 @@ public class TripController {
 			}
 			
 			//Lanza error si la fecha de salida no dista una hora de la fecha actual
-			if(dateStartJson.isBefore(LocalDateTime.now().plusHours(1))) {
+			if(dateStartJson.isBefore(LocalDateTime.now().plusMinutes(50))) {
 				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
 			}
 
