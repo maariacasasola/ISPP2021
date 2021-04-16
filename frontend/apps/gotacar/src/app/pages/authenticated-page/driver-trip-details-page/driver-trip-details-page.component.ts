@@ -59,7 +59,9 @@ export class DriverTripDetailsPageComponent {
     }
     const data = {
       id_users: idUsers,
+      trip_id: this._route.snapshot.params['trip_id'],
     };
+    console.log(data)
 
     try {
       const response = await this._user_service.check_users_rated(data);
@@ -88,6 +90,7 @@ export class DriverTripDetailsPageComponent {
     dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       to: id,
+      trip_id: this._route.snapshot.params['trip_id'],
     };
 
     const dialogRef = this._my_dialog.open(

@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RatingUserDialogComponent implements OnInit {
   rating;
   to;
+  idTrip;
   rating_form = this._form_builder.group({
     content:['', Validators.required],
   });
@@ -19,6 +20,7 @@ export class RatingUserDialogComponent implements OnInit {
   private _dialogRef: MatDialogRef<RatingUserDialogComponent>,
   private _snackBar: MatSnackBar,private _form_builder: FormBuilder,) {
     this.to = data.to;
+    this.idTrip=data.trip_id;
    }
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class RatingUserDialogComponent implements OnInit {
         to: this.to,
         content : this.rating_form.value.content,
         points : this.rating,
+        trip_id: this.idTrip,
       }
       
       this._dialogRef.close(data);

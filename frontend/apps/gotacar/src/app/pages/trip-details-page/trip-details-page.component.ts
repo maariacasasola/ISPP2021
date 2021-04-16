@@ -112,7 +112,11 @@ export class TripDetailsPageComponent {
     return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date();
   }
   show_rating_button() {
-    return new Date(this.trip?.startDate) < new Date();
+    const data = {
+      id_users: this.trip?.driver?.id,
+      trip_id: this.get_trip_id(),
+    }
+    return new Date(this.trip?.startDate) < new Date() && this._user_service.check_users_rated(data);
   }
 
   async openDialogRating(id) {
@@ -121,6 +125,7 @@ export class TripDetailsPageComponent {
     dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       to: id,
+      trip_id: this._route.snapshot.params['trip_id'],
     };
 
     const dialogRef = this._my_dialog.open(
@@ -130,7 +135,6 @@ export class TripDetailsPageComponent {
 
     const dialog_response = await dialogRef.afterClosed().toPromise();
     if (dialog_response) {
-      const response = await this._user_service.rate_user(dialog_response);
 
       try {
         const response = await this._user_service.rate_user(dialog_response);
