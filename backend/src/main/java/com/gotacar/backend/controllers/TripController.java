@@ -119,6 +119,25 @@ public class TripController {
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
+			
+			//Lanza error si la fecha de finalizacion es anterior a la de salida
+			if(dateEndJson.isBefore(dateStartJson)) {
+				throw new Exception("La hora de llegada no puede ser anterior a la hora de salida");
+			}
+			//Lanza error si la fecha de salida es igual a la fecha de finalización
+			if(dateEndJson.isEqual(dateStartJson)) {
+				throw new Exception("La hora de salida no puede ser igual a la hora de llegada");
+			}
+
+			//Lanza error si la fecha de salida es cercana a la fecha de finalización
+			if(dateStartJson.plusMinutes(5).isAfter(dateEndJson)) {
+				throw new Exception("La hora de salida no puede ser tan cercana a la hora de llegada");
+			}
+			
+			//Lanza error si la fecha de salida no dista una hora de la fecha actual
+			if(dateStartJson.isBefore(LocalDateTime.now().plusMinutes(50))) {
+				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
+			}
 
 			Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, 
 				comments, placesJson, currentUser);
