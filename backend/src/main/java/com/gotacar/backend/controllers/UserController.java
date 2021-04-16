@@ -2,6 +2,8 @@ package com.gotacar.backend.controllers;
 
 import java.security.Key;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +61,18 @@ public class UserController {
 		try {
 			User user = userRepository.findByUid(userId);
 			String token = getJWTToken(user);
-			return new TokenResponse(token, user.getRoles());
+			//Si la fecha de baneo es posterior a la actual entonces se establece en el Token
+			if(user.getBannedUntil() != null) {
+				ZonedDateTime actualDate = ZonedDateTime.now();
+				actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+				if(user.getBannedUntil().isBefore(actualDate.toLocalDateTime())) {
+					user.setBannedUntil(null);
+					userRepository.save(user);
+				} else {
+					return new TokenResponse(token, user.getRoles(), user.getBannedUntil());
+				}				
+			}
+			return new TokenResponse(token, user.getRoles(), null);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
