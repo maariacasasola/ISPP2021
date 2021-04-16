@@ -30,6 +30,7 @@ import java.util.List;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
+import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -66,6 +67,9 @@ class ComplaintAppealControllerTest {
 
         @MockBean
         private ComplaintAppealRepository complaintAppealRepository;
+
+        @MockBean
+        private ComplaintRepository complaintRepository;
 
         private User user;
         private User admin;
@@ -315,6 +319,7 @@ class ComplaintAppealControllerTest {
                 Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
                 Mockito.when(complaintAppealRepository.findAll()).thenReturn(Arrays.asList(appeal));
+                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
 
                 JSONObject sampleObject = new JSONObject();
                 sampleObject.appendField("content", "soy tonto");
