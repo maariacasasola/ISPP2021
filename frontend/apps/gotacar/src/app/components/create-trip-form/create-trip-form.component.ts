@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MatStepper } from '@angular/material/stepper';
 import { MeetingPointService } from '../../services/meeting-point.service';
 import { levenshtein } from 'string-comparison';
+import * as moment from 'moment';
 
 @Component({
   selector: 'frontend-create-trip-form',
@@ -54,10 +55,10 @@ export class CreateTripFormComponent {
       return;
     }
 
-    if (!this.checkDates()) {
-      this.openSnackBar(
-        'La fecha de inicio debe ser anterior a la fecha de finalización'
-      );
+    const dates_error = this.checkDates();
+
+    if (dates_error) {
+      this.openSnackBar(dates_error);
       return;
     }
 
@@ -95,10 +96,26 @@ export class CreateTripFormComponent {
   }
 
   checkDates() {
-    const startDateHour = this.createTripForm.value.fechaHoraInicio;
-    const endingDateHour = this.createTripForm.value.fechaHoraFin;
+    const startDateHour = moment(this.createTripForm.value.fechaHoraInicio);
+    const endingDateHour = moment(this.createTripForm.value.fechaHoraFin);
 
-    return startDateHour < endingDateHour;
+    if (startDateHour.isAfter(endingDateHour)) {
+      return 'La fecha de llegada tiene que ser posterior a la de salida';
+    }
+    // Check de que se crea con un margen con al menos 1h de antelación
+    if (moment().isAfter(moment(startDateHour).subtract(1, 'hours'))) {
+      return 'Debes crear tu viaje con al menos una hora de antelación';
+    }
+
+    // Fecha de llegada no es más de dos horas mayor que la de salida
+    if (moment(startDateHour).add(2, 'hours').isBefore(endingDateHour)) {
+      return '¿Seguro que tardas tanto en llegar a tu destino? Comprueba bien la hora de llegada';
+    }
+
+    // // Check de que se crea con un mínimo de 5 min de margen de llegada
+    if (moment(startDateHour).add(5, 'minutes').isAfter(endingDateHour)) {
+      return '¡Correr al volante es peligroso! Deberías tardar más en llegar a tu destino';
+    }
   }
 
 
