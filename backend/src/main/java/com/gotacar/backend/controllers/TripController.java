@@ -133,9 +133,12 @@ public class TripController {
 			if(dateStartJson.plusMinutes(5).isAfter(dateEndJson)) {
 				throw new Exception("La hora de salida no puede ser tan cercana a la hora de llegada");
 			}
-			
+
+			ZonedDateTime dateNowZone = ZonedDateTime.now();
+			dateNowZone = dateNowZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
 			//Lanza error si la fecha de salida no dista una hora de la fecha actual
-			if(dateStartJson.isBefore(LocalDateTime.now().plusMinutes(50))) {
+			if(dateStartJson.isBefore(dateNowZone.toLocalDateTime().plusMinutes(50))) {
 				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
 			}
 
