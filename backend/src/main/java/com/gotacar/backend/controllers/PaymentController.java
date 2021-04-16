@@ -74,6 +74,12 @@ public class PaymentController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
 
+
+            if(trip.getDriver().getId().equals(idUser)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes reservar tu propio viaje");
+            }
+
+
             List<Object> paymentMethodTypes = new ArrayList<>();
             paymentMethodTypes.add("card");
             List<Object> lineItems = new ArrayList<>();
@@ -166,13 +172,8 @@ public class PaymentController {
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
             Trip trip = tripRepository.findById(new ObjectId(tripId));
-            User driver = trip.getDriver();
             User user = userRepository.findById(new ObjectId(userId));
             Integer places = trip.getPlaces();
-
-            if(driver.getId().equals(userId)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes reservar tu propio viaje");
-            }
 
             if (places >= quantity) {
                 places = places - quantity;
