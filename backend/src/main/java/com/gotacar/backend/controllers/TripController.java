@@ -158,6 +158,9 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
+			ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			
 			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -178,10 +181,10 @@ public class TripController {
 			}
 
 			trip1.setCanceled(true);
-			trip1.setCancelationDate(LocalDateTime.now());
+			trip1.setCancelationDate(actualDate.toLocalDateTime());
 
-			if (trip1.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
-				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
+			if (trip1.getCancelationDateLimit().isBefore(actualDate.toLocalDateTime())) {
+				driver.setBannedUntil(actualDate.toLocalDateTime().plusDays(14));
 				userRepository.save(driver);
 			}
 

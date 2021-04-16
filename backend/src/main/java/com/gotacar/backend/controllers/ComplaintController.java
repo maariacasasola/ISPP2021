@@ -61,6 +61,8 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Complaint fileComplaint(@RequestBody String body) {
         try {
+            ZonedDateTime actualDate = ZonedDateTime.now();
+            actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             JsonNode jsonNode = objectMapper.readTree(body);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
@@ -71,18 +73,16 @@ public class ComplaintController {
 
             List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
-
-            if(!(complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0)){
+            if (!(complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0)) {
                 throw new Exception("Ya te has quejado de este viaje");
+            }
 
-               }
-
-            if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
+            if (trip.getEndingDate().isBefore(actualDate.toLocalDateTime())) {
                 if (lto.size() == 1) {
                     String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
                     String title = objectMapper.readTree(jsonNode.get("title").toString()).asText();
 
-                    Complaint complaint = new Complaint(title, content, trip, user, LocalDateTime.now());
+                    Complaint complaint = new Complaint(title, content, trip, user, actualDate.toLocalDateTime());
 
                     this.complaintRepository.save(complaint);
 

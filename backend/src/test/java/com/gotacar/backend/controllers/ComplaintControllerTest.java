@@ -7,6 +7,7 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,6 +75,7 @@ class ComplaintControllerTest {
         private User admin;
         private User driver;
         private Trip trip;
+        private TripOrder  tripOrder;
         private Complaint complaint;
 
         @BeforeEach
@@ -113,6 +115,8 @@ class ComplaintControllerTest {
                 complaint = new Complaint("title", "content", trip, user, LocalDateTime.of(2021, 05, 24, 16, 30, 00));
                 ObjectId complaintObjectId = new ObjectId();
                 complaint.setId(complaintObjectId.toString());
+                
+                tripOrder = new TripOrder(trip, user, LocalDateTime.of(2021, 05, 24, 10, 00, 00) , 3, "paymentIntent", 1);
 
         }
 
@@ -189,6 +193,95 @@ class ComplaintControllerTest {
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("REFUSED");
+        }
+      //Positivo crear un complaint con un usuario que no ha realizado el viaje
+        @Test
+        public void CreateComplaintTest() throws Exception {
+        	trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
+        	trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
+        	List<TripOrder> listaTripOrders = new ArrayList<>();
+        	listaTripOrders.add(tripOrder);
+        	Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+    		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+    		Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId())).thenReturn(listaTripOrders);
+    		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+    		
+    		JSONObject complaint = new JSONObject();
+    		complaint.appendField("tripId", trip.getId());
+    		complaint.appendField("title", "Conductor malo");
+    		complaint.appendField("content", "El tio es muy mal conductor");
+    		
+    		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+    				.getContentAsString();
+
+    		org.json.JSONObject json = new org.json.JSONObject(response);
+    		String token = json.getString("token");
+    		
+    		ResultActions result = mockMvc
+    				.perform(post("/complaints/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+    						.content(complaint.toJSONString()).accept(MediaType.APPLICATION_JSON));
+    		
+    		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+    		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
+        }
+        
+        //Negativo crear un complaint con un usuario que no ha realizado el viaje
+        @Test
+        public void CreateComplaintTestWrongUser() throws Exception {
+        	trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
+        	trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
+        	List<TripOrder> listaTripOrders = new ArrayList<>();
+        	Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+    		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+    		Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId())).thenReturn(listaTripOrders);
+    		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+    		
+    		JSONObject complaint = new JSONObject();
+    		complaint.appendField("tripId", trip.getId());
+    		complaint.appendField("title", "Conductor malo");
+    		complaint.appendField("content", "El tio es muy mal conductor");
+    		
+    		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+    				.getContentAsString();
+
+    		org.json.JSONObject json = new org.json.JSONObject(response);
+    		String token = json.getString("token");
+    		
+    		ResultActions result = mockMvc
+    				.perform(post("/complaints/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+    						.content(complaint.toJSONString()).accept(MediaType.APPLICATION_JSON));
+    		
+    		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+    		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("Usted no ha realizado este viaje");
+        }
+        
+        //Negativo crear un complaint con la fecha pasada
+        @Test
+        public void CreateComplaintTestWrongDate() throws Exception {
+        	List<TripOrder> listaTripOrders = new ArrayList<>();
+        	listaTripOrders.add(tripOrder);
+        	Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+    		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+    		Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId())).thenReturn(listaTripOrders);
+    		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+    		
+    		JSONObject complaint = new JSONObject();
+    		complaint.appendField("tripId", trip.getId());
+    		complaint.appendField("title", "Conductor malo");
+    		complaint.appendField("content", "El tio es muy mal conductor");
+    		
+    		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+    				.getContentAsString();
+
+    		org.json.JSONObject json = new org.json.JSONObject(response);
+    		String token = json.getString("token");
+    		
+    		ResultActions result = mockMvc
+    				.perform(post("/complaints/create").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+    						.content(complaint.toJSONString()).accept(MediaType.APPLICATION_JSON));
+    		
+    		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+    		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El viaje aún no se ha realizado");
         }
 
         // @Test
