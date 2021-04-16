@@ -100,30 +100,27 @@ public class RatingController {
 	*/
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping(path = "/rate/check", consumes = "application/json")
-	public String rateCheck(@RequestBody() String body) {
-		try{
-		String res = "";
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User from = userRepository.findByEmail(authentication.getPrincipal().toString());
-		List<String> idsUsersRatedByFrom = ratingRepository.findByFrom(from).stream().map(x->x.getTo().getId()).collect(Collectors.toList());
-		
-		JsonNode jsonNode = objectMapper.readTree(body);
-		String idUsers = objectMapper.readTree(jsonNode.get("id_users").toString()).asText();
-
-		//Si no hay ningún usuario que haya adquirido el viaje, se devuelve la lista vacía
-		if (idUsers.length()<=0){
-			return res;
-		}else{
-			String[] users = idUsers.split(",");
-
-			for (int i =0; i< users.length; i++){
-				res = idsUsersRatedByFrom.contains(users[i].trim())?res+=users[i].trim()+",":res;
-			}
-			return res;
-		}
-		
-		}catch(Exception e){
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+	public List<String> rateCheck(@RequestBody() String body) {
+		try{         
+			List<String> res = new ArrayList<>();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  
+			User from = userRepository.findByEmail(authentication.getPrincipal().toString());
+			List<String> idsUsersRatedByFrom = ratingRepository.findByFrom(from).stream().map(x->x.getTo().getId()).collect(Collectors.toList());
+			JsonNode jsonNode = objectMapper.readTree(body);
+			String idUsers = objectMapper.readTree(jsonNode.get("id_users").toString()).asText();
+			//Si no hay ningún usuario que haya adquirido el viaje, se devuelve la lista vacía
+			if (idUsers.length()<=0){
+				return res;
+			}else{
+				String[] users = idUsers.split(",");
+				for (int i =0; i< users.length; i++){
+					if(idsUsersRatedByFrom.contains(users[i].trim()))
+					res.add(users[i]);
+				}
+					return res;
+				}
+			}catch(Exception e){
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 	}
 	

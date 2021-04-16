@@ -336,14 +336,7 @@ public class BackendApplication implements CommandLineRunner {
                 complaintAppealRepository.save(complaintAppeal3);
 
 
-                //RATINGS
-
-                Rating rating1 = new Rating(driver,client2,"Un pasajero maravilloso",4);
-                Rating rating2 = new Rating(driver,client,"Un pasajero con mucha guasa",4);
-                Rating rating3 = new Rating(driver,client2,"Este pasajero ha sido muy simpatico",4);
-                ratingRepository.save(rating1);
-                ratingRepository.save(rating2);
-                ratingRepository.save(rating3);
+               
                 // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
                
@@ -359,7 +352,7 @@ public class BackendApplication implements CommandLineRunner {
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
-                System.out.println(ratingRepository.count()+ " ratings creadas");
+                
 
         }
 

@@ -44,9 +44,12 @@
             <b *ngIf="user.times_banned"
               >Veces baneado : {{ user.times_banned }}</b
             >
+           
             
-            
-              <div *ngIf="user.averageRatings">
+    
+              <div *ngIf="user?.averageRatings">
+                <div><b>Valoración media: </b></div>
+              
               <mat-icon
                 
                 [ngClass]="{ 'orange': user.averageRatings > 0 }"
@@ -69,13 +72,14 @@
               >{{user.averageRatings > 4 ? 'star' :'star_border'}}</mat-icon
             >
           </div>
+          <p *ngIf="users_already_rated.includes(user.id)">Usuario ya valorado</p>
         </div>
         
         </mat-card-content>
         <mat-card-actions>
           <button mat-raised-button color="primary">RECHAZAR</button>
           <!--<button mat-raised-button color="primary">MÁS INFORMACIÓN</button>-->
-          <button *ngIf="!users_already_rated?.includes(user.id)"
+          <button *ngIf="!users_already_rated.includes(user.id)"
             mat-raised-button
             color="primary"
             (click)="addValoracionDialog(user.id)"
