@@ -15,6 +15,7 @@ export class DriverTripDetailsPageComponent {
   page_title = 'Detalles del viaje';
   trip;
   users;
+  users_already_rated;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -25,6 +26,7 @@ export class DriverTripDetailsPageComponent {
   ) {
     this.load_trip();
     this.load_users();
+    this.get_users_rated();
   }
 
   private async load_trip() {
@@ -46,7 +48,27 @@ export class DriverTripDetailsPageComponent {
       console.error(error);
     }
   }
+  async get_users_rated(){
+    const usersS = await this._trip_service.get_users_by_trip(
+      this._route.snapshot.params['trip_id']);
+    let idUsers = '';
+    for(let user of usersS){
+      idUsers=idUsers+user.id+',';
+    }
+    console.log(idUsers)
+    //const res = idUsers.includes('60785ede740547566625efa4');
+    //console.log(res);
+    try {
+      //const response = await this._user_service.check_users_rated(idUsers);
+      const asgsdgg= '60794e0bf4302861fdce858b,60794e0bf4302861fdce858c,60794e0bf4302861fdce8590,'
+      this.users_already_rated=asgsdgg;
+      await this.load_users();
 
+    } catch (error) {
+      this.openSnackBar("Problema al cargar los usuarios valorados");
+    }
+
+  }
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
   }
@@ -55,6 +77,7 @@ export class DriverTripDetailsPageComponent {
       duration: 3000,
     });
   }
+
   async addValoracionDialog(id) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
