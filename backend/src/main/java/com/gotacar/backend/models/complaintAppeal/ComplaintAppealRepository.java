@@ -1,4 +1,4 @@
-package com.gotacar.backend.models;
+package com.gotacar.backend.models.complaintAppeal;
 
 import java.util.List;
 
@@ -11,4 +11,5 @@ public interface ComplaintAppealRepository extends MongoRepository<ComplaintAppe
 
     List<ComplaintAppeal> findByChecked(boolean b);
 
+    List<ComplaintAppeal> findByDriverId(String id);
 }

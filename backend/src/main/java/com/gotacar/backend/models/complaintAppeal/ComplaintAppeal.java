@@ -1,7 +1,10 @@
-package com.gotacar.backend.models;
+package com.gotacar.backend.models.complaintAppeal;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.gotacar.backend.models.Complaint;
+import com.gotacar.backend.models.User;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -19,6 +22,10 @@ public class ComplaintAppeal {
 
     @DBRef
     @NotNull
+    public User driver;
+
+    @DBRef
+    @NotNull
     public Complaint complaint;
 
     @Length(max = 200)
@@ -31,10 +38,11 @@ public class ComplaintAppeal {
     public ComplaintAppeal() {
     }
 
-    public ComplaintAppeal(String content, Boolean checked, Complaint complaint) {
+    public ComplaintAppeal(String content, Boolean checked, Complaint complaint, User driver) {
         this.complaint = complaint;
         this.content = content;
         this.checked = checked;
+        this.driver = driver;
     }
 
     @Override

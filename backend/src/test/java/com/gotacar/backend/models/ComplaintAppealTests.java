@@ -7,6 +7,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppeal;
 import com.gotacar.backend.models.trip.Trip;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,7 +66,7 @@ class ComplaintAppealTests {
     void contentCantBeBlank() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        ComplaintAppeal complaintAppeal = new ComplaintAppeal("", false, complaint);
+        ComplaintAppeal complaintAppeal = new ComplaintAppeal("", false, complaint, driver);
 
         Set<ConstraintViolation<ComplaintAppeal>> constraintViolations = validator.validate(complaintAppeal);
 
@@ -79,7 +80,7 @@ class ComplaintAppealTests {
 
         ComplaintAppeal complaintAppeal = new ComplaintAppeal(
                 "Y, viéndole don Quijote de aquella manera, con muestras de tanta tristeza, le dijo: Sábete, Sancho, que no es un hombre más que otro si no hace más que otro. Todas estas borrascas que nos suceden son señales de que presto ha de serenar el tiempo y han de sucedernos bien las cosas; porque no es posible que el mal ni el bien sean durables, y de aquí se sigue que, habiendo durado mucho el mal, el bien está ya cerca. Así que, no debes congojarte por las desgracias que a mí me suceden, pues a ti no te cabe parte dellas.Y, viéndole don Quijote de aquella manera, con muestras de tanta tristeza, le dijo: Sábete, Sancho, que no es un hombre más que otro si no hace más que otro. Todas estas borrascas que nos suceden son señales de que presto ha de serenar el tiempo y han de sucedernos bien las cosas; porque no es posible que el mal ni el bien sean durables, y de aquí se sigue que, habiendo durado mucho el mal, el bien está ya cerca. Así que, no debes congojarte por las desgracias que a mí me suceden, pues a ti no te suceden.",
-                false, complaint);
+                false, complaint, driver);
 
         Set<ConstraintViolation<ComplaintAppeal>> constraintViolations = validator.validate(complaintAppeal);
 
@@ -91,7 +92,7 @@ class ComplaintAppealTests {
     void complaintCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", false, null);
+        ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", false, null, driver);
 
         Set<ConstraintViolation<ComplaintAppeal>> constraintViolations = validator.validate(complaintAppeal);
 
@@ -103,7 +104,19 @@ class ComplaintAppealTests {
     void checkedCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", null, complaint);
+        ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", null, complaint, driver);
+
+        Set<ConstraintViolation<ComplaintAppeal>> constraintViolations = validator.validate(complaintAppeal);
+
+        ConstraintViolation<ComplaintAppeal> violation = constraintViolations.iterator().next();
+        assertThat(violation.getMessage()).isEqualTo("must not be null");
+    }
+
+    @Test
+    void driverCantBeNull() {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+
+        ComplaintAppeal complaintAppeal = new ComplaintAppeal("Contenido de la queja", false, complaint, null);
 
         Set<ConstraintViolation<ComplaintAppeal>> constraintViolations = validator.validate(complaintAppeal);
 

@@ -28,12 +28,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintAppeal;
-import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppeal;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppealRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.BackendApplication;
@@ -123,7 +123,7 @@ class ComplaintAppealControllerTest {
                 ObjectId complaintObjectId = new ObjectId();
                 complaint.setId(complaintObjectId.toString());
 
-                appeal = new ComplaintAppeal("content", false, complaint);
+                appeal = new ComplaintAppeal("content", false, complaint, driver);
                 ObjectId complaintAppealObjectId = new ObjectId();
                 appeal.setId(complaintAppealObjectId.toString());
         }

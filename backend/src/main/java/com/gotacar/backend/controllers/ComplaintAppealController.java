@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintAppeal;
-import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppeal;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppealRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 
@@ -62,7 +62,7 @@ public class ComplaintAppealController {
         try {
             ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
             if (complaintAppeal.getChecked() == false) {
-                User u = userRepository.findByUid(complaintAppeal.getComplaint().getTrip().getDriver().getUid());
+                User u = userRepository.findByUid(complaintAppeal.getDriver().getUid());
                 complaintAppeal.getComplaint().getTrip().setDriver(u);
                 u.setBannedUntil(null);
                 userRepository.save(u);
@@ -118,7 +118,7 @@ public class ComplaintAppealController {
             JsonNode jsonNode = objectMapper.readTree(body);
             String content = jsonNode.get("content").asText();
 
-            ComplaintAppeal appeal = new ComplaintAppeal(content, false, res);
+            ComplaintAppeal appeal = new ComplaintAppeal(content, false, res, user);
 
             complaintAppealRepository.save(appeal);
 
@@ -149,13 +149,32 @@ public class ComplaintAppealController {
                         "Usuario baneado por cancelar un viaje una vez se ha superado el límite de cancelación", trip,
                         user, dateCreateZone.toLocalDateTime(), "ALREADY_RESOLVED");
                 complaintRepository.save(complaint);
-                ComplaintAppeal appeal = new ComplaintAppeal(content, false, complaint);
+                ComplaintAppeal appeal = new ComplaintAppeal(content, false, complaint, user);
 
                 complaintAppealRepository.save(appeal);
 
                 return appeal;
             } else {
                 throw new Exception("El conductor no ha ofertado este viaje");
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @GetMapping(path = "/complaint-appeal/driver/check")
+    public Boolean complaintAppealCreated() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+ 
+            List<ComplaintAppeal> appeals = complaintAppealRepository.findByDriverId(user.getId());
+
+            if (appeals.isEmpty()) {
+                return true;
+            } else {
+                return false;
             }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);

@@ -23,13 +23,13 @@ import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppealRepository;
+import com.gotacar.backend.models.complaintAppeal.ComplaintAppeal;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintAppeal;
-import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
@@ -325,11 +325,11 @@ public class BackendApplication implements CommandLineRunner {
                 // -----------------------------------------------------------------------------------------
                 ComplaintAppeal complaintAppeal1 = new ComplaintAppeal(
                                 "El retraso fue causado por necesidades personales, suelo ser puntual", false,
-                                complaint2);
+                                complaint2, driver2);
                 ComplaintAppeal complaintAppeal2 = new ComplaintAppeal(
-                                "El retraso fue causado por necesidades personales", true, complaint2);
+                                "El retraso fue causado por necesidades personales", true, complaint2, driver2);
                 ComplaintAppeal complaintAppeal3 = new ComplaintAppeal("El retraso fue causado por necesidades", false,
-                                complaint3);
+                                complaint3, driver);
 
                 complaintAppealRepository.save(complaintAppeal1);
                 complaintAppealRepository.save(complaintAppeal2);
