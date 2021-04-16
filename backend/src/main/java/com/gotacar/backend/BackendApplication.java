@@ -71,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                          //loadSampleData();
+                          loadSampleData();
                 }
         }
 
@@ -118,11 +118,11 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver3);
 
                 // Clients
-                User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
+                User client = new User("Martín", "Romero", "trKzninltQNh75RemITKB8tBIjY2", "client@gotacar.es",
                                 "89070336D", null, fecha3, lista2, "656473627");
-                User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
+                User client2 = new User("Paloma", "Pérez", "UnlwXau8gSWzK8SwGe0zBzX6aSm2", "client2@gotacar.com",
                                 "42131220T", null, fecha2, lista2, "656473147");
-                User client3 = new User("Blanca", "Ruíz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE3", "client3@gotacar.es",
+                User client3 = new User("Blanca", "Ruíz", "glqfC1lpaBWc7pqFa0lnYb0pQvE2", "client3@gotacar.es",
                                 "89070345D", null, fecha1, lista2, "656493647");
                 User client4 = new User("Alberto", "Suárez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE4", "client4@gotacar.com",
                                 "42131225F", "http://dniclien4t.com", fecha2, lista2, "656473647");
@@ -265,6 +265,8 @@ public class BackendApplication implements CommandLineRunner {
                                 "", 2);
                 TripOrder tripOrder17 = new TripOrder(trip10, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500,
                                 "", 2);
+                TripOrder tripOrder18 = new TripOrder(trip6, client3, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 500,
+                                "", 2);
                 tripOrder1.setStatus("PAID");
                 tripOrder2.setStatus("PAID");
                 tripOrder3.setStatus("PAID");
@@ -274,6 +276,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrder7.setStatus("PAID");
                 tripOrder8.setStatus("PAID");
                 tripOrder9.setStatus("PAID");
+                tripOrder18.setStatus("PAID");
 
                 tripOrderRepository.save(tripOrder1);
                 tripOrderRepository.save(tripOrder2);
@@ -293,6 +296,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.save(tripOrder15);
                 tripOrderRepository.save(tripOrder16);
                 tripOrderRepository.save(tripOrder17);
+                tripOrderRepository.save(tripOrder18);
 
                 // COMPLAINTS
                 // -----------------------------------------------------------------------------------------
@@ -334,6 +338,14 @@ public class BackendApplication implements CommandLineRunner {
                 complaintAppealRepository.save(complaintAppeal1);
                 complaintAppealRepository.save(complaintAppeal2);
                 complaintAppealRepository.save(complaintAppeal3);
+
+                Rating rating = new Rating(driver,client,"gola",4,trip6);
+
+                ratingRepository.save(rating);
+
+                System.out.println(client.getId());
+                System.out.println(client2.getId());
+                System.out.println(trip6.getId());
 
 
                

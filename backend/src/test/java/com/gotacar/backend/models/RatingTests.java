@@ -1,6 +1,7 @@
 package com.gotacar.backend.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +11,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.gotacar.backend.models.rating.Rating;
+import com.gotacar.backend.models.trip.Trip;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ class RatingTests {
 
     private static User client;
     private static User driver;
+    private static Trip trip;
 
     @BeforeAll
     private static void setData() {
@@ -43,13 +46,21 @@ class RatingTests {
         LocalDate birthdate2 = LocalDate.of(1999, 10, 10);
         driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
                 "http://dnidriver.com", birthdate2, authoritiesDriver, "655757575");
+        Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917,
+                -5.96211306033204);
+        Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
+                37.38919329738635, -5.999724275498323); 
+        LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
+        LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+        trip = new Trip(location1, location3, 220, fecha6, fecha7,
+                "Viaje desde Cerro del Águila hasta Triana", 3, driver);
     }
 
     @Test
     void ratingCreateSuccess() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(client, driver, "Mala conducción", 1);
+        Rating rating = new Rating(client, driver, "Mala conducción", 1, trip);
 
         assertThat(rating.getCreatedAt()).isNotNull();
     }
@@ -58,7 +69,7 @@ class RatingTests {
     void userFromCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(null, driver, "Buena compañía", 4);
+        Rating rating = new Rating(null, driver, "Buena compañía", 4,trip);
 
         Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
 
@@ -70,7 +81,7 @@ class RatingTests {
     void userToCantBeNull() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(client, null, "Mala conducción", 2);
+        Rating rating = new Rating(client, null, "Mala conducción", 2,trip);
 
         Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
 
@@ -82,7 +93,7 @@ class RatingTests {
     void contentCantBeBlank() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(client, driver, "", 3);
+        Rating rating = new Rating(client, driver, "", 3,trip);
 
         Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
 
@@ -94,7 +105,7 @@ class RatingTests {
     void pointsMinTest() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(client, driver, "Mala conducción", -3);
+        Rating rating = new Rating(client, driver, "Mala conducción", -3,trip);
 
         Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
 
@@ -106,11 +117,24 @@ class RatingTests {
     void pointsMaxTest() {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
 
-        Rating rating = new Rating(client, driver, "Buena conducción", 6);
+        Rating rating = new Rating(client, driver, "Buena conducción", 6,trip);
 
         Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
 
         ConstraintViolation<Rating> violation = constraintViolations.iterator().next();
         assertThat(violation.getMessage()).isEqualTo("must be less than or equal to 5");
     }
+
+    @Test
+    void tripToCantBeNull() {
+        LocaleContextHolder.setLocale(Locale.ENGLISH);
+
+        Rating rating = new Rating(client, driver, "Mala conducción", 2,null);
+
+        Set<ConstraintViolation<Rating>> constraintViolations = validator.validate(rating);
+
+        ConstraintViolation<Rating> violation = constraintViolations.iterator().next();
+        assertThat(violation.getMessage()).isEqualTo("must not be null");
+    }
+
 }

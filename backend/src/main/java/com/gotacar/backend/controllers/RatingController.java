@@ -10,6 +10,9 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.rating.Rating;
 import com.gotacar.backend.models.rating.RatingRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -37,6 +40,9 @@ public class RatingController {
 	private UserRepository userRepository;
 
 	@Autowired
+	private TripRepository tripRepository;
+
+	@Autowired
 	private RatingRepository ratingRepository;
 	
 	/*
@@ -52,10 +58,10 @@ public class RatingController {
 	@PostMapping(path = "/rate", consumes = "application/json")
 	public Rating rateUser(@RequestBody() String body) {
 		try {
-			Rating rate = new Rating();
 			JsonNode jsonNode = objectMapper.readTree(body);
 			String idUser = objectMapper.readTree(jsonNode.get("to").toString()).asText();
 			String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
+			String tripId = objectMapper.readTree(jsonNode.get("trip_id").toString()).asText();
 			Integer points = objectMapper.readTree(jsonNode.get("points").toString()).asInt();
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,12 +78,8 @@ public class RatingController {
 				throw new IllegalArgumentException("El usuario al que intenta valorar no existe en nuestra base de datos");
 			}
 
-			LocalDateTime date = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Madrid")).toLocalDateTime();
-			rate.setTo(to);
-			rate.setFrom(from);
-			rate.setContent(content);
-			rate.setCreatedAt(date);
-			rate.setPoints(points);
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			Rating rate = new Rating (from, to, content,points, trip);
 			ratingRepository.save(rate);
 	
 			List<Rating> lsRating = ratingRepository.findByTo(to);
@@ -85,9 +87,10 @@ public class RatingController {
 			for (Rating r:lsRating){
 				total+=r.getPoints();
 			}
-			Integer avg = total/lsRating.size();
+			Integer avg = total/lsRating.size(); 
 			to.setAverageRatings(avg);
 			userRepository.save(to);
+			System.out.println(rate);
 			return rate;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -103,11 +106,16 @@ public class RatingController {
 	public List<String> rateCheck(@RequestBody() String body) {
 		try{         
 			List<String> res = new ArrayList<>();
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User from = userRepository.findByEmail(authentication.getPrincipal().toString());
-			List<String> idsUsersRatedByFrom = ratingRepository.findByFrom(from).stream().map(x->x.getTo().getId()).collect(Collectors.toList());
+
 			JsonNode jsonNode = objectMapper.readTree(body);
 			String idUsers = objectMapper.readTree(jsonNode.get("id_users").toString()).asText();
+			String idTrip = objectMapper.readTree(jsonNode.get("trip_id").toString()).asText();
+
+			
+			List<String> idsUsersRatedByFrom = ratingRepository.findByFrom(from).stream().filter(a->a.getTrip().getId().equals(idTrip)).map(x->x.getTo().getId()).collect(Collectors.toList());
 			//Si no hay ningún usuario que haya adquirido el viaje, se devuelve la lista vacía
 			if (idUsers.length()<=0){
 				return res;
@@ -118,7 +126,7 @@ public class RatingController {
 					res.add(users[i]);
 				}
 					return res;
-				}
+			}
 			}catch(Exception e){
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
