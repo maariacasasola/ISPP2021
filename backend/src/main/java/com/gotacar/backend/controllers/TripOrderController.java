@@ -1,6 +1,8 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
@@ -53,10 +55,11 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order_request/{id}")
     public TripOrder cancelTripOrderRequest(@PathVariable(value = "id") String id) {
         try {
-            ObjectId tripOrderObjectId = new ObjectId(id);
-            TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             Trip trip = tripOrder.getTrip();
-            if (trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
+            ZonedDateTime now = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            LocalDateTime dateNow = now.toLocalDateTime();
+            if (trip.getCancelationDateLimit().isAfter(dateNow)) {
                 tripOrder.setStatus("REFUNDED_PENDING");
                 tripOrderRepository.save(tripOrder);
                 trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
@@ -74,8 +77,7 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order/{id}")
     public TripOrder cancelTripOrder(@PathVariable(value = "id") String id) {
         try {
-            ObjectId tripOrderObjectId = new ObjectId(id);
-            TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             tripOrder.setStatus("REFUNDED");
             tripOrderRepository.save(tripOrder);         
             return tripOrder;
