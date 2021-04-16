@@ -2,6 +2,7 @@ import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { MeetingPointService } from '../../services/meeting-point.service';
 import { TripsService } from '../../services/trips.service';
@@ -74,6 +75,7 @@ export class TripSearchResultPageComponent implements OnInit {
         this.places,
         new Date(this.date)
       );
+      this.trips = this.trips.filter(x => this.tipIsInHour(x.startDate));
       this.set_filters();
     } catch (error) {
       console.error(error);
@@ -115,6 +117,10 @@ export class TripSearchResultPageComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  tipIsInHour(startDate) {
+    return moment(startDate).isAfter(moment().add(10, 'minutes'))
   }
 
   openSnackBar(message: string) {
