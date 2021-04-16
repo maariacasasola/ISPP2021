@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { ComplaintsService } from '../../services/complaints.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class ComplaintAppealDialogComponent {
   constructor(
     public router: Router,
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
-    private _complaints_service: ComplaintsService
+    private _complaint_appeals_service: ComplaintAppealsService
   ) {}
 
   close() {
@@ -27,9 +28,8 @@ export class ComplaintAppealDialogComponent {
     try {
       const new_complaint_appeal = {
         content: this.complaintAppealForm.value.content || '',
-        checked: 'false',
       };
-      this._complaints_service.create_complaint_appeal(new_complaint_appeal);
+      this._complaint_appeals_service.create_complaint_appeal_complaint(new_complaint_appeal);
       this._dialog_ref.close();
     } catch (error) {
       console.error(error);
