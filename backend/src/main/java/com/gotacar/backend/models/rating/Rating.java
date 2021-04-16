@@ -1,6 +1,8 @@
 package com.gotacar.backend.models.rating;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -44,11 +46,13 @@ public class Rating {
     }
 
     public Rating(User from, User to, String content, Integer points) {
+    	ZonedDateTime actualDate = ZonedDateTime.now();
+		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         this.from = from;
         this.to = to;
         this.points = points;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = actualDate.toLocalDateTime();
     }
 
     @Override
