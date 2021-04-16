@@ -13,8 +13,6 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
-import com.gotacar.backend.models.tripOrder.TripOrder;
-import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +43,6 @@ public class TripController {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private TripOrderRepository tripOrderRepository;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 

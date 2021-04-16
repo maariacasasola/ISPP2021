@@ -1,6 +1,5 @@
 package com.gotacar.backend.controllers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
