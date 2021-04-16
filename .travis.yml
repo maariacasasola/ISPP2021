@@ -70,7 +70,7 @@ jobs:
         - provider: gae
           keyfile: client-secret.json
           project: gotacar
-          config: app.yaml
+          config: v2-app.yaml
           version: v2
           no_promote: true
           on:
