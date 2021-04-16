@@ -2,21 +2,24 @@
 
 <div class="requests-list">
     <mat-card class="request" *ngFor="let user of requests">
-        <mat-card-title>
-            {{ user?.title }}
-        </mat-card-title>
-        <mat-card-content>
-            <h3>
-                <strong> Realizada por: </strong>
+        <div class="request-header">
+            <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" />
+            <mat-card-title class="username">
                 {{ user?.firstName + ' ' + user?.lastName }}
-            </h3>
-            <h3><strong>Matrícula: </strong>{{ user?.carData?.carPlate }}</h3>
-            <h3><strong>Modelo: </strong>{{ user?.carData?.model }}</h3>
-            <h3><strong>Color: </strong>{{ user?.carData?.color }}</h3>
-            <h3><strong>Fecha del carné de conducir: </strong>{{ user?.carData?.enrollmentDate | date: 'dd/MM/yyyy' }}</h3>
+            </mat-card-title>
+        </div>
+        <mat-card-content>
+            <p><strong> Email: </strong>{{ user?.email }}</p>
+            <p><strong>DNI:</strong>{{ user?.dni }}</p>
+            <p *ngIf="user?.timesBanned"><strong>Baneado {{ user?.timesBanned }} veces</strong></p>
+            <p><strong>Permiso de conducir: </strong>{{ user?.drivingLicense }}</p>
+            <p><strong>Fecha del carné de conducir: </strong>{{ user?.carData?.enrollmentDate | date: 'dd/MM/yyyy' }}
+            </p>
+            <p><strong>Experiencia: </strong>{{user?.experience}} años</p>
+            <p><strong>Matrícula: </strong>{{ user?.carData?.carPlate }}</p>
         </mat-card-content>
         <mat-card-actions align="end">
-            <button mat-raised-button style="background-color: #538994" class="button" (click)="accept_request(user)">
+            <button mat-stroked-button class="button" (click)="accept_request(user)">
                 <mat-icon> check_circle</mat-icon>
             </button>
         </mat-card-actions>

@@ -10,10 +10,19 @@ h1 {
   padding: 30px;
 }
 
-.card-title {
-  text-align: right;
-  color: #0e4a6b;
-  font-size: 30px;
+.request-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.profile-photo {
+  margin-right: 10px;
+}
+
+.username {
+  margin-bottom: 0 !important;
 }
 
 .requests-list {
