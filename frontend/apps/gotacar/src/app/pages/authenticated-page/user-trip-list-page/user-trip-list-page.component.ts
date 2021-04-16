@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
 
 @Component({
   selector: 'frontend-user-trip-list-page',
@@ -14,7 +16,9 @@ export class UserTripListPageComponent {
   constructor(
     private _trips_service: TripsService,
     private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private dialog: MatDialog,
+
   ) {
     this.load_trips_by_user();
   }
@@ -27,28 +31,17 @@ export class UserTripListPageComponent {
     }
   }
 
-  async cancelTripOrder(id) {
-    try {
-      const response = await this._trips_service.cancel_trip(String(id));
-      this.openSnackBar('Se ha cancelado el viaje');
-      await this.load_trips_by_user();
-    } catch (error) {
-      if (
-        error.error.message ===
-        '400 BAD_REQUEST "La fecha de cancelación ha expirado"'
-      ) {
-        this.openSnackBar('No puedes cancelar este viaje');
+  cancel_trip_order_dialog(trip_id){
+      try{
+        this.dialog.open(CancelTripPlaceDialogComponent, {
+          data: [trip_id],
+          disableClose: true,
+        });
+      }catch(error){
+        console.log(error);
       }
-      console.error(error);
-    }
   }
 
-  openSnackBar(message: string) {
-    this._snackBar.open(message, null, {
-      duration: 5000,
-      panelClass: ['blue-snackbar'],
-    });
-  }
 
   get_trip_status(status) {
     switch (status) {

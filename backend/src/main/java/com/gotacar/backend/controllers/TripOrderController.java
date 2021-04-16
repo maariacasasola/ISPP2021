@@ -1,11 +1,14 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
@@ -31,6 +34,9 @@ public class TripOrderController {
     private TripOrderRepository tripOrderRepository;
 
     @Autowired
+    private TripRepository tripRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
@@ -49,12 +55,15 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order_request/{id}")
     public TripOrder cancelTripOrderRequest(@PathVariable(value = "id") String id) {
         try {
-            ObjectId tripOrderObjectId = new ObjectId(id);
-            TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             Trip trip = tripOrder.getTrip();
-            if (trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
+            ZonedDateTime now = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            LocalDateTime dateNow = now.toLocalDateTime();
+            if (trip.getCancelationDateLimit().isAfter(dateNow)) {
                 tripOrder.setStatus("REFUNDED_PENDING");
                 tripOrderRepository.save(tripOrder);
+                trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
+                tripRepository.save(trip);
                 return tripOrder;
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de cancelación ha expirado");
@@ -68,10 +77,9 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order/{id}")
     public TripOrder cancelTripOrder(@PathVariable(value = "id") String id) {
         try {
-            ObjectId tripOrderObjectId = new ObjectId(id);
-            TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
+            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             tripOrder.setStatus("REFUNDED");
-            tripOrderRepository.save(tripOrder);
+            tripOrderRepository.save(tripOrder);         
             return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

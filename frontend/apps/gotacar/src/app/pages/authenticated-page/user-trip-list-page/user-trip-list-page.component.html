@@ -38,7 +38,7 @@
         *ngIf="show_cancelation_button(trip)"
         mat-raised-button
         color="warn"
-        (click)="cancelTripOrder(trip.id)"
+        (click)="cancel_trip_order_dialog(trip.id)"
       >
         <mat-icon>cancel_presentation</mat-icon>
       </button>
