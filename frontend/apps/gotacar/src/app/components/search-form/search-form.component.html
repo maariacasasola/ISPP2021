@@ -5,34 +5,60 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-      <span>
-        <mat-icon>trip_origin</mat-icon>
-      </span>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Origen</mat-label>
-        <input matInput type="text" formControlName="origin" required />
-      </mat-form-field>
-      <mat-icon>trip_origin</mat-icon>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Destino</mat-label>
-        <input matInput type="text" formControlName="target" required />
-      </mat-form-field>
-      <mat-icon>calendar_today</mat-icon>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Seleccione una fecha</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [min]="minDate"
-          formControlName="date"
-          required
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker">
-          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="search-form-with-recommendations">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Origen</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="origin"
+            required
+            autocomplete="off"
+            (input)="search_meeting_points_origin($event.target.value)"
+            (click)="clear_meeting_points()"
+          />
+        </mat-form-field>
+        <frontend-meeting-point-searchbar-result
+          [searchbar_meeting_points]="searchbar_meeting_points_origin"
+          (meeting_point_selected)="selected_meeting_point_origin($event)"
+        ></frontend-meeting-point-searchbar-result>
+      </div>
+      <div class="search-form-with-recommendations">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Destino</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="target"
+            required
+            autocomplete="off"
+            (input)="search_meeting_points_target($event.target.value)"
+            (click)="clear_meeting_points()"
+          />
+        </mat-form-field>
+        <frontend-meeting-point-searchbar-result
+          [searchbar_meeting_points]="searchbar_meeting_points_target"
+          (meeting_point_selected)="selected_meeting_point_target($event)"
+        ></frontend-meeting-point-searchbar-result>
+      </div>
+      <div class="date-selector" (click)="clear_meeting_points()">
+        <mat-icon>calendar_today</mat-icon>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Seleccione una fecha</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [min]="minDate"
+            formControlName="date"
+            required
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
       <button mat-icon-button type="submit" class="search-button">
         <mat-icon class="search">search</mat-icon>
       </button>

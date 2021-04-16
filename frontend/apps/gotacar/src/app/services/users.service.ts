@@ -20,6 +20,10 @@ export class UsersService {
       .toPromise();
   }
 
+  delete_account(): Promise<any> {
+    return this._http_client.post(environment.api_url + '/delete-account', null).toPromise();
+  }
+
   update_profile_photo(photo_url) {
     return this._http_client
       .post(environment.api_url + '/user/update/profile-photo', {

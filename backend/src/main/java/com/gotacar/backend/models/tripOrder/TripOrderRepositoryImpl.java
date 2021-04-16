@@ -3,7 +3,6 @@ package com.gotacar.backend.models.tripOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -19,16 +18,16 @@ public class TripOrderRepositoryImpl implements TripOrderRepositoryCustom {
     }
 
     @Override
-    public List<TripOrder> userHasMadeTrip(ObjectId userId, ObjectId tripId) {
+    public List<TripOrder> userHasMadeTrip(String userId, String tripId) {
         Query query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 
         if (userId != null) {
-            criteria.add(Criteria.where("user.id").is(userId));
+            criteria.add(Criteria.where("user._id").is(userId));
         }
 
         if (tripId != null) {
-            criteria.add(Criteria.where("trip.id").is(tripId));
+            criteria.add(Criteria.where("trip._id").is(tripId));
         }
 
         if (!criteria.isEmpty()) {
