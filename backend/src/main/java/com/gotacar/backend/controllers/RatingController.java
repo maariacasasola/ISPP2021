@@ -22,7 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -37,7 +39,15 @@ public class RatingController {
 	@Autowired
 	private RatingRepository ratingRepository;
 	
-
+	/*
+		@return 
+			rating creada tras valoracion
+			Actualizacion parámetro averageRatings del usuario
+		@param
+			Integer points: puntos de la valoracion
+			String idUserTo: id del usuario al que valora
+			String content: Mensaje de la valoracion	
+	*/
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping(path = "/rate", consumes = "application/json")
 	public Rating rateUser(@RequestBody() String body) {
@@ -62,7 +72,6 @@ public class RatingController {
 				throw new IllegalArgumentException("El usuario al que intenta valorar no existe en nuestra base de datos");
 			}
 
-			
 			LocalDateTime date = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Madrid")).toLocalDateTime();
 			rate.setTo(to);
 			rate.setFrom(from);
@@ -77,14 +86,46 @@ public class RatingController {
 				total+=r.getPoints();
 			}
 			Integer avg = total/lsRating.size();
-			System.out.println("avg"+avg);
 			to.setAverageRatings(avg);
 			userRepository.save(to);
-			System.out.println(to.getAverageRatings());
 			return rate;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 	}
+
+	/*
+		@return usuarios a los que ya ha valorado el usuario actual
+		@param lista de usuarios de un viaje
+	*/
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PostMapping(path = "/rate/check", consumes = "application/json")
+	public String rateCheck(@RequestBody() String body) {
+		try{
+		String res = "";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User from = userRepository.findByEmail(authentication.getPrincipal().toString());
+		List<String> idsUsersRatedByFrom = ratingRepository.findByFrom(from).stream().map(x->x.getTo().getId()).collect(Collectors.toList());
+		
+		JsonNode jsonNode = objectMapper.readTree(body);
+		String idUsers = objectMapper.readTree(jsonNode.get("id_users").toString()).asText();
+
+		//Si no hay ningún usuario que haya adquirido el viaje, se devuelve la lista vacía
+		if (idUsers.length()<=0){
+			return res;
+		}else{
+			String[] users = idUsers.split(",");
+
+			for (int i =0; i< users.length; i++){
+				res = idsUsersRatedByFrom.contains(users[i].trim())?res+=users[i].trim()+",":res;
+			}
+			return res;
+		}
+		
+		}catch(Exception e){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+	}
+	
 
 }
