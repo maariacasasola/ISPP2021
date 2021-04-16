@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TripSearchResultPageComponent } from '../../pages/trip-search-result-page/trip-search-result-page.component';
 import { AuthServiceService } from '../../services/auth-service.service';
+import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { TripsService } from '../../services/trips.service';
 
 @Component({
@@ -10,20 +11,38 @@ import { TripsService } from '../../services/trips.service';
   styleUrls: ['./cancel-trip-dialog.component.scss'],
 })
 export class CancelTripDialogComponent {
+  
+  complaintAppealForm: FormGroup = new FormGroup({
+    content: new FormControl(''),
+  });
+
   constructor(
     private _dialog_ref: MatDialogRef<CancelTripDialogComponent>,
     private _auth_service: AuthServiceService,
     private _trips_service: TripsService,
-    @Inject(MAT_DIALOG_DATA) private data: string
+    private _complaint_appeals_service: ComplaintAppealsService,
+    @Inject(MAT_DIALOG_DATA) private data: string,
   ) {}
 
   async continue() {
     await this._trips_service.cancel_driver_trip(this.data);
-    this._auth_service.is_banned();
+    this._auth_service.is_banned(this.data);
     this._dialog_ref.close();
   }
 
   close() {
     this._dialog_ref.close();
+  }
+
+  create_complaint_appeal() {
+    try {
+      const new_complaint_appeal = {
+        content: this.complaintAppealForm.value.content || '',
+      };
+      this._complaint_appeals_service.create_complaint_appeal_banned(new_complaint_appeal,this.data);
+      this._dialog_ref.close();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

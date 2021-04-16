@@ -42,7 +42,7 @@ export class AuthServiceService {
           this.router.navigate(['home']);
         });
         this.set_user_data(result.user).then(() => {
-          this.is_banned();
+          this.is_banned(null);
         });
       })
       .catch((error) => {
@@ -108,12 +108,13 @@ export class AuthServiceService {
     return this.is_client() && has_driver_role;
   }
 
-  is_banned() {
+  is_banned(trip_id:string) {
     let bool = false;
     this.get_user_data().then((result) => {
       bool = result.bannedUntil !== null;
       if (bool) {
         const t = this.dialog.open(ComplaintAppealDialogComponent, {
+          data: trip_id,
           disableClose: true,
         });
         t.afterClosed().subscribe(() => this.sign_out());

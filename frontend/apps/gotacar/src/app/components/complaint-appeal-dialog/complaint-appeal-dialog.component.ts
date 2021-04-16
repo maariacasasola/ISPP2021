@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { ComplaintsService } from '../../services/complaints.service';
@@ -17,8 +17,9 @@ export class ComplaintAppealDialogComponent {
   constructor(
     public router: Router,
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
-    private _complaint_appeals_service: ComplaintAppealsService
-  ) {}
+    private _complaint_appeals_service: ComplaintAppealsService,
+    @Inject(MAT_DIALOG_DATA) private data: string,
+  ) { }
 
   close() {
     this._dialog_ref.close();
@@ -26,10 +27,18 @@ export class ComplaintAppealDialogComponent {
 
   create_complaint_appeal() {
     try {
-      const new_complaint_appeal = {
-        content: this.complaintAppealForm.value.content || '',
-      };
-      this._complaint_appeals_service.create_complaint_appeal_complaint(new_complaint_appeal);
+      if (this.data == null) {
+        const new_complaint_appeal = {
+          content: this.complaintAppealForm.value.content || '',
+        };
+        this._complaint_appeals_service.create_complaint_appeal_complaint(new_complaint_appeal);
+      } else {
+        const new_complaint_appeal = {
+          content: this.complaintAppealForm.value.content || '',
+        };
+        this._complaint_appeals_service.create_complaint_appeal_banned(new_complaint_appeal, this.data);
+      }
+
       this._dialog_ref.close();
     } catch (error) {
       console.error(error);
