@@ -12,5 +12,7 @@ public interface RatingRepository extends MongoRepository<Rating, String>,Rating
 
     public List<Rating> findByTo(User to);
 
+    public List<Rating> findByFrom(User from);
+
     public List<Rating> findAll();
 }
