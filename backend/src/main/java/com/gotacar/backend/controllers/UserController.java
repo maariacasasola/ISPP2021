@@ -310,9 +310,7 @@ public class UserController {
     @PostMapping("/delete-penalized-account/{userId}")
     public void deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
         try {
-            System.out.println(userId);
             User user = userRepository.findById(new ObjectId(userId));
-            System.out.println(user);
             List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
             if(user.getRoles().contains("ROLE_CLIENT")){
                 if(!tripOrders.isEmpty()){
