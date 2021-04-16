@@ -29,7 +29,7 @@ class UserModelTests {
 	void setWrongUserNif() {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "1234568P", "http://hola.com", date,
 				lista, "655757575");
 
@@ -44,7 +44,7 @@ class UserModelTests {
 	void setWrongUserEmail() {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsfadsf.com", "12345678P", "http://hola.com", date,
 				lista, "655757575");
 
@@ -59,7 +59,7 @@ class UserModelTests {
 	void setWrongUserBirthdate() {
 		LocalDate date = LocalDate.parse("2022-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
 				lista, "655757575");
 
@@ -74,7 +74,7 @@ class UserModelTests {
 	void setWrongUserPhoto() {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "unafoto", date, lista,
 				"655757575");
 
@@ -90,7 +90,7 @@ class UserModelTests {
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("", "", "", "fadsf@adsf.com", "12345678P", "http://hola.com", date, lista, "655757575");
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
@@ -104,7 +104,7 @@ class UserModelTests {
 	void setDriverStatus() {
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
 				lista, null, null, null, null, null, null, null);
 		user1.setDriverStatus("edqwdq");
@@ -122,7 +122,7 @@ class UserModelTests {
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
 		LocalDate date = LocalDate.parse("1999-01-08");
 		List<String> lista = new ArrayList<>();
-		lista.add("ROLE_ADMIN");
+		lista.add("ROLE_CLIENT");
 		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
 				lista, null, null, null, null, null, null, null);
 		user1.setDrivingLicense("f23r3");
@@ -133,5 +133,37 @@ class UserModelTests {
 		assertThat(violation.getMessage()).isEqualTo("Driving license must be an url");
 
 	}
+
+	@Test
+	void setIban() {
+		LocaleContextHolder.setLocale(Locale.ENGLISH);
+		LocalDate date = LocalDate.parse("1999-01-08");
+		List<String> lista = new ArrayList<>();
+		lista.add("ROLE_CLIENT");
+		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
+				lista, null, null, null, null, null, null, null);
+		user1.setIban("ES0690000001210123456789");
+
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
+
+		assertThat(constraintViolations.isEmpty());
+	}
+
+	@Test
+	void setIbanFailed() {
+		LocaleContextHolder.setLocale(Locale.ENGLISH);
+		LocalDate date = LocalDate.parse("1999-01-08");
+		List<String> lista = new ArrayList<>();
+		lista.add("ROLE_CLIENT");
+		User user1 = new User("Fernando", "Angulo", "5678ghjkl", "fadsf@adsf.com", "12345678P", "http://hola.com", date,
+				lista, null, null, null, null, null, null, null);
+		user1.setIban("f23r3");
+
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
+
+		ConstraintViolation<User> violation = constraintViolations.iterator().next();
+		assertThat(violation.getMessage()).isEqualTo("Iban incorrecto, debe seguir el formato ES1111111111111111111111");
+	}
+
 
 }

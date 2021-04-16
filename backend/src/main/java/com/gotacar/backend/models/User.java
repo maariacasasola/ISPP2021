@@ -56,6 +56,7 @@ public class User {
 
   private String phone;
 
+  @Pattern(regexp = "([a-zA-Z]{2}\\d{2})(\\d{4})(\\d{4})(\\d{2})(\\d{10})", message = "Iban incorrecto, debe seguir el formato ES1111111111111111111111")
   private String iban;
 
   private Integer timesBanned;

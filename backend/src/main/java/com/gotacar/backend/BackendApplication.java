@@ -27,6 +27,7 @@ import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
+import com.gotacar.backend.models.CarData;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
@@ -341,6 +342,23 @@ public class BackendApplication implements CommandLineRunner {
                 PaymentReturn paymentReturn1 = new PaymentReturn(client, 150);
                 PaymentReturn paymentReturn2 = new PaymentReturn(client2, 180);
                 PaymentReturn paymentReturn3 = new PaymentReturn(client3, 200);
+
+                paymentReturnRepository.save(paymentReturn1);
+                paymentReturnRepository.save(paymentReturn2);
+                paymentReturnRepository.save(paymentReturn3);
+
+                //CAR DATA
+                // -----------------------------------------------------------------------------------------
+                
+                CarData data = new CarData("carPlate", LocalDate.of(2017, 03, 20), "model", "color");
+                client.setCarData(data);
+                client.setDrivingLicense("http://carnet");
+                client.setDriverStatus("PENDING");
+                client.setIban("ES0690000001210123456789");
+                client.setTimesBanned(1);
+                client.setExperience(4);
+
+                userRepository.save(client);
 
                 paymentReturnRepository.save(paymentReturn1);
                 paymentReturnRepository.save(paymentReturn2);

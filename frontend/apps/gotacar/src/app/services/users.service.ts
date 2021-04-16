@@ -1,7 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from '../shared/services/user';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +30,16 @@ export class UsersService {
         profilePhoto: photo_url,
       })
       .toPromise();
+  }
+
+  convert_to_driver(uid: string): Promise<any> {
+    const uid_json={
+      uid: uid,
+    }
+    return this._http_client.post(environment.api_url + '/driver/update', uid_json).toPromise();
+  }
+
+  get_all_driver_requests(): Promise<any> {
+    return this._http_client.get(environment.api_url + '/driver-request/list').toPromise();
   }
 }

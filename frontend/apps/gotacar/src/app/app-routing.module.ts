@@ -30,6 +30,7 @@ import { RegisterUserGoogleComponent } from './pages/register-user-google/regist
 import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
+import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 
 const routes: Routes = [
   {
@@ -156,6 +157,10 @@ const routes: Routes = [
       {
         path: 'trip-orders/:trip_order_id',
         component: AdminTripOrderDetailsPageComponent,
+      },
+      {
+        path: 'driver-requests',
+        component: AdminDriverRequestsPageComponent,
       },
     ],
   },
