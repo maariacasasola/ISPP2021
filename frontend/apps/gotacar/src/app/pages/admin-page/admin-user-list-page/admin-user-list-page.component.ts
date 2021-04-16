@@ -10,7 +10,10 @@ import { UsersService } from '../../../services/users.service';
 export class AdminUserListPageComponent {
   users = [];
 
-  constructor(private _users_service: UsersService, private _snackbar: MatSnackBar) {
+  constructor(
+    private _users_service: UsersService,
+    private _snackbar: MatSnackBar
+  ) {
     this.load_users();
   }
 
@@ -38,5 +41,11 @@ export class AdminUserListPageComponent {
         });
       }
     }
+  }
+
+  get_profile_photo(user) {
+    return user.profilePhoto
+      ? user.profilePhoto
+      : 'assets/img/default-user.jpg';
   }
 }
