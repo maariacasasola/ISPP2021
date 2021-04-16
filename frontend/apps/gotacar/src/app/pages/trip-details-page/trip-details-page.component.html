@@ -23,9 +23,33 @@
         <h3 *ngIf="trip?.driver?.experience">
           {{ trip?.driver?.experience }} años de experiencia
         </h3>
-        <h3 *ngIf="trip?.driver?.averageRatings">{{ trip?.driver?.averageRatings }} <mat-icon>star</mat-icon> estrellas</h3>
+        <div *ngIf="trip?.driver?.averageRatings">
+          <div><b>Valoración media: </b></div>
+        
+        <mat-icon
+          
+          [ngClass]="{ 'orange': trip?.driver?.averageRatings > 0 }"
+        >{{trip?.driver?.averageRatings > 0 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': trip?.driver?.averageRatings > 1 }"
+        >{{trip?.driver?.averageRatings > 1 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+         
+          [ngClass]="{ 'orange': trip?.driver?.averageRatings > 2 }"
+        >{{trip?.driver?.averageRatings > 2 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': trip?.driver?.averageRatings > 3 }"
+        >{{trip?.driver?.averageRatings > 3 ? 'star' :'star_border'}}</mat-icon>
+        <mat-icon
+          
+          [ngClass]="{ 'orange': trip?.driver?.averageRatings > 4 }"
+        >{{trip?.driver?.averageRatings > 4 ? 'star' :'star_border'}}</mat-icon
+      >
+    </div>
         <button mat-flat-button
-    *ngIf="show_rating_button()"
+    *ngIf="!user_already_rated?.includes(trip?.driver?.id) && (fecha < today)"
     class="rating-button"
      (click)="openDialogRating(trip?.driver?.id)">Valorar conductor</button>
       </div>

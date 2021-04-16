@@ -71,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                          loadSampleData();
+                         // loadSampleData();
                 }
         }
 
@@ -267,6 +267,8 @@ public class BackendApplication implements CommandLineRunner {
                                 "", 2);
                 TripOrder tripOrder18 = new TripOrder(trip6, client3, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 500,
                                 "", 2);
+                TripOrder tripOrder19 = new TripOrder(trip1, client3, LocalDateTime.of(2021, 05, 23, 11, 45, 00), 440,
+                                "", 2);
                 tripOrder1.setStatus("PAID");
                 tripOrder2.setStatus("PAID");
                 tripOrder3.setStatus("PAID");
@@ -277,6 +279,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrder8.setStatus("PAID");
                 tripOrder9.setStatus("PAID");
                 tripOrder18.setStatus("PAID");
+                tripOrder19.setStatus("PAID");
 
                 tripOrderRepository.save(tripOrder1);
                 tripOrderRepository.save(tripOrder2);
@@ -297,6 +300,7 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.save(tripOrder16);
                 tripOrderRepository.save(tripOrder17);
                 tripOrderRepository.save(tripOrder18);
+                tripOrderRepository.save(tripOrder19);
 
                 // COMPLAINTS
                 // -----------------------------------------------------------------------------------------

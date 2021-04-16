@@ -79,7 +79,7 @@
         <mat-card-actions>
           <button mat-raised-button color="primary">RECHAZAR</button>
           <!--<button mat-raised-button color="primary">MÁS INFORMACIÓN</button>-->
-          <button *ngIf="!users_already_rated?.includes(user.id)"
+          <button *ngIf="!users_already_rated?.includes(user.id) && fecha < today"
             mat-raised-button
             color="primary"
             (click)="addValoracionDialog(user.id)"

@@ -13,6 +13,8 @@ import { UsersService } from '../../../services/users.service';
   styleUrls: ['./driver-trip-details-page.component.scss'],
 })
 export class DriverTripDetailsPageComponent {
+  today = new Date();
+  fecha;
   page_title = 'Detalles del viaje';
   trip;
   users;
@@ -35,9 +37,11 @@ export class DriverTripDetailsPageComponent {
       this.trip = await this._trip_service.get_trip(
         this._route.snapshot.params['trip_id']
       );
+      this.fecha = new Date(this.trip.startDate)
     } catch (error) {
       console.error(error);
     }
+
   }
 
   private async load_users() {
@@ -59,21 +63,24 @@ export class DriverTripDetailsPageComponent {
     }
     const data = {
       id_users: idUsers,
-      trip_id: this._route.snapshot.params['trip_id'],
+      trip_id: this.trip.id,
     };
-    console.log(data)
+    
 
     try {
       const response = await this._user_service.check_users_rated(data);
+      console.log(response)
       if (response) {
         this.users_already_rated = response;
-        await this.get_users_rated();
+      
       }
+      
       
     } catch (error) {
       console.error(error);
       this.openSnackBar('Problema al cargar los usuarios valorados');
     }
+
   }
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
@@ -106,6 +113,7 @@ export class DriverTripDetailsPageComponent {
         if (response) {
           this.openSnackBar('Tu valoración ha sido exitosa');
           await this.load_users();
+          await this.get_users_rated();
         }
       } catch (error) {
         this.openSnackBar('Tu valoración no se ha podido realizar');

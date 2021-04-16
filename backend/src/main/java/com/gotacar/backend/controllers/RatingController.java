@@ -67,7 +67,7 @@ public class RatingController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User from = userRepository.findByEmail(authentication.getPrincipal().toString());
 			User to = userRepository.findById(new ObjectId(idUser));
-			
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
 			if (points <1 || points >5){
 				throw new IllegalArgumentException("Las valoraciones no están en el rango 1-5");
 			}
@@ -77,12 +77,24 @@ public class RatingController {
 			if (userRepository.findById(new ObjectId(idUser))==null){
 				throw new IllegalArgumentException("El usuario al que intenta valorar no existe en nuestra base de datos");
 			}
+			if (ratingRepository.findAll().stream().filter(x->x.getTrip().getId().equals(tripId)&&x.getFrom().getId().equals(from.getId())&&x.getTo().getId().equals(idUser)).count()!=0){
+				throw new IllegalArgumentException("El usuario al que intenta valorar ya lo ha valorado previamente");
+			}
 
-			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			
 			Rating rate = new Rating (from, to, content,points, trip);
 			ratingRepository.save(rate);
-	
-			List<Rating> lsRating = ratingRepository.findByTo(to);
+			
+			actualizaUsuario(to);
+			
+			return rate;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+	}
+
+	private void actualizaUsuario(User to) {
+		List<Rating> lsRating = ratingRepository.findByTo(to);
 			Integer total =0;
 			for (Rating r:lsRating){
 				total+=r.getPoints();
@@ -90,11 +102,6 @@ public class RatingController {
 			Integer avg = total/lsRating.size(); 
 			to.setAverageRatings(avg);
 			userRepository.save(to);
-			System.out.println(rate);
-			return rate;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-		}
 	}
 
 	/*
