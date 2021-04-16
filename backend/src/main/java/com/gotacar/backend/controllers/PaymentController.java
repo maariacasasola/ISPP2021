@@ -166,8 +166,13 @@ public class PaymentController {
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
             Trip trip = tripRepository.findById(new ObjectId(tripId));
+            User driver = trip.getDriver();
             User user = userRepository.findById(new ObjectId(userId));
             Integer places = trip.getPlaces();
+
+            if(driver.getId().equals(userId)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes reservar tu propio viaje");
+            }
 
             if (places >= quantity) {
                 places = places - quantity;
