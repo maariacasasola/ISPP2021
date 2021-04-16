@@ -38,6 +38,9 @@ import org.springframework.web.bind.annotation.*;
 public class TripController {
 
 	@Autowired
+	private RefundController refundController;
+
+	@Autowired
 	private TripRepository tripRepository;
 
 	@Autowired
@@ -153,20 +156,14 @@ public class TripController {
 				throw new Exception("El viaje ya está cancelado");
 			}
 
+			ZonedDateTime dateStartZone = ZonedDateTime.now();
+            dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            LocalDateTime now = dateStartZone.toLocalDateTime();
+
 			trip1.setCanceled(true);
-			trip1.setCancelationDate(LocalDateTime.now());
+			trip1.setCancelationDate(now);
 
-			if (trip1.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
-				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
-				userRepository.save(driver);
-			}
-
-			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
-
-			for (TripOrder order : orders) {
-				order.setStatus("REFUNDED_PENDING");
-				tripOrderRepository.save(order);
-			}
+			refundController.createRefundDriverCancelTrip(trip1);
 
 			tripRepository.save(trip1);
 			return trip1;

@@ -6,6 +6,7 @@ import java.util.List;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
@@ -26,6 +27,12 @@ import org.springframework.http.HttpStatus;
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripOrderController {
+
+    @Autowired
+    private RefundController refundController;
+
+    @Autowired
+    private TripRepository tripRepository;
 
     @Autowired
     private TripOrderRepository tripOrderRepository;
@@ -52,13 +59,10 @@ public class TripOrderController {
             ObjectId tripOrderObjectId = new ObjectId(id);
             TripOrder tripOrder = tripOrderRepository.findById(tripOrderObjectId);
             Trip trip = tripOrder.getTrip();
-            if (trip.getCancelationDateLimit().isAfter(LocalDateTime.now())) {
-                tripOrder.setStatus("REFUNDED_PENDING");
-                tripOrderRepository.save(tripOrder);
-                return tripOrder;
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de cancelación ha expirado");
-            }
+            refundController.createRefundClientCancel(tripOrder);
+            trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
+            tripRepository.save(trip);
+            return tripOrder; 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
