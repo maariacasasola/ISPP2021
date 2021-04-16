@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../../../services/trips.service';
 
@@ -14,7 +15,8 @@ export class DriverTripDetailsPageComponent {
 
   constructor(
     private _route: ActivatedRoute,
-    private _trip_service: TripsService
+    private _trip_service: TripsService,
+    private _snackBar: MatSnackBar
   ) {
     this.load_trip();
     this.load_users();
@@ -36,7 +38,9 @@ export class DriverTripDetailsPageComponent {
         this._route.snapshot.params['trip_id']
       );
     } catch (error) {
-      console.error(error);
+      this._snackBar.open("Ha ocurrido un error", null, {
+        duration: 3000,
+      })
     }
   }
 

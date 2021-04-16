@@ -37,7 +37,7 @@ describe('RegisterUserGoogleComponent', () => {
         HttpClientTestingModule,
         BrowserAnimationsModule,
       ],
-      declarations: [SignUpComponent],
+      declarations: [RegisterUserGoogleComponent],
       providers: [
         { provide: AuthServiceService, useClass: mockTripService },
         {
