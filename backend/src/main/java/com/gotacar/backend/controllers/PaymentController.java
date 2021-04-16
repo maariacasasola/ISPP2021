@@ -74,6 +74,12 @@ public class PaymentController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
 
+
+            if(trip.getDriver().getId().equals(idUser)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes reservar tu propio viaje");
+            }
+
+
             List<Object> paymentMethodTypes = new ArrayList<>();
             paymentMethodTypes.add("card");
             List<Object> lineItems = new ArrayList<>();

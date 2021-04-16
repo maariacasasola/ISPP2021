@@ -85,10 +85,16 @@ export class TripDetailsPageComponent {
       // Vamos al checkout para procesar el pago
       await this.go_to_checkout(session_id);
     } catch (error) {
-      console.error(error);
-      this._snackbar.open('Ha ocurrido un error al comprar el viaje', null, {
-        duration: 3000,
-      });
+      if(error.error.message === '400 BAD_REQUEST "No puedes reservar tu propio viaje"'){
+        this._snackbar.open('No puedes reservar tu propio viaje', null, {
+          duration: 3000,
+        });
+      }
+      if(error.error.message === '400 BAD_REQUEST "El viaje no tiene tantas plazas"'){
+        this._snackbar.open('El viaje no tiene tantas plazas', null, {
+          duration: 3000,
+        });
+      }     
     }
   }
 

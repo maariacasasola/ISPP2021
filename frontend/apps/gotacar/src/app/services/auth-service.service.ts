@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import auth from 'firebase/app';
 import { MatDialog } from '@angular/material/dialog';
 import { ComplaintAppealDialogComponent } from '../components/complaint-appeal-dialog/complaint-appeal-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class AuthServiceService {
     public router: Router,
     public ngZone: NgZone,
     private _http_client: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snackbar: MatSnackBar
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -46,7 +48,7 @@ export class AuthServiceService {
         });
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.handle_firebase_auth_error(error);
       });
   }
 
@@ -72,10 +74,16 @@ export class AuthServiceService {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        this._snackbar.open(
+          'Revisa tu buzón de correo para restear tu contraseña',
+          null,
+          {
+            duration: 3000,
+          }
+        );
       })
-      .catch((error) => {
-        window.alert(error);
+      .catch(() => {
+        this._snackbar.open('Ha ocurrido un error');
       });
   }
 
@@ -164,7 +172,7 @@ export class AuthServiceService {
         }
       })
       .catch((error) => {
-        window.alert(error);
+        this.handle_firebase_auth_error(error);
       });
   }
 
@@ -210,5 +218,34 @@ export class AuthServiceService {
         this.router.navigate(['home']);
       })
     );
+  }
+
+  handle_firebase_auth_error(error) {
+    switch (error.code) {
+      case 'auth/wrong-password':
+        this._snackbar.open('Contraseña incorrecta', null, {
+          duration: 3000,
+        });
+        return;
+      case 'auth/invalid-email':
+        this._snackbar.open('Introduce tu email correctamente', null, {
+          duration: 3000,
+        });
+        return;
+      case 'auth/user-not-found':
+        this._snackbar.open(
+          'No hay ningún usuario registrado con este email',
+          null,
+          {
+            duration: 3000,
+          }
+        );
+        return;
+      default:
+        this._snackbar.open('Ha ocurrido un error al iniciar tu sesión', null, {
+          duration: 3000,
+        });
+        return;
+    }
   }
 }
