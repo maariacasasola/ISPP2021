@@ -58,9 +58,9 @@ export class UserTripListPageComponent {
     }
   }
 
-  show_complaint_button(trip){ 
-    //const isComplained = this._trips_service.is_complained(trip.id);
-    return new Date(trip.startDate) < new Date() /*&& isComplained*/;
+  async show_complaint_button(trip){ 
+    const isComplained = await this._trips_service.is_complained(trip.id);
+    return new Date(trip.startDate) < new Date() && isComplained;
   }
 
   show_cancelation_button(trip) {
