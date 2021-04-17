@@ -17,31 +17,35 @@ export class UserTripListPageComponent {
     private _trips_service: TripsService,
     private _snackBar: MatSnackBar,
     private _router: Router,
-    private dialog: MatDialog,
-
+    private dialog: MatDialog
   ) {
     this.load_trips_by_user();
   }
 
   async load_trips_by_user() {
     try {
-      this.trips = await this._trips_service.get_trips();
+      const trips = await this._trips_service.get_trips();
+      trips.forEach(async (trip_order) => {
+        trip_order.can_complain = await this._trips_service.is_complained(
+          trip_order?.trip?.id
+        );
+      });
+      this.trips = trips;
     } catch (error) {
       console.error(error);
     }
   }
 
-  cancel_trip_order_dialog(trip_id){
-      try{
-        this.dialog.open(CancelTripPlaceDialogComponent, {
-          data: [trip_id],
-          disableClose: true,
-        });
-      }catch(error){
-        console.log(error);
-      }
+  cancel_trip_order_dialog(trip_id) {
+    try {
+      this.dialog.open(CancelTripPlaceDialogComponent, {
+        data: [trip_id],
+        disableClose: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-
 
   get_trip_status(status) {
     switch (status) {
@@ -58,9 +62,8 @@ export class UserTripListPageComponent {
     }
   }
 
-  async show_complaint_button(trip){ 
-    const isComplained = await this._trips_service.is_complained(trip.id);
-    return new Date(trip.startDate) < new Date() && isComplained;
+  show_complaint_button(trip) {
+    return new Date(trip.trip.startDate) < new Date() && trip.can_complain;
   }
 
   show_cancelation_button(trip) {

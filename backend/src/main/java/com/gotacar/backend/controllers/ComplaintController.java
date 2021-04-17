@@ -151,20 +151,17 @@ public class ComplaintController {
 
     }
 
-
-    @PostMapping("/complaints/check/{tripId}")
+    @GetMapping("/complaints/check/{tripId}")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    public Boolean checkComplaint(@PathVariable(value = "tripId") String tripId)  {
+    public Boolean checkComplaint(@PathVariable(value = "tripId") String tripId) {
         try {
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-
-            Trip trip = tripRepository.findById(new ObjectId(tripId));
+            Trip trip = tripRepository.findById(tripId).get();
             if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
-            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
+                return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
             } else {
-                throw new Exception("El viaje aún no se ha realizado");
+                return false;
             }
 
         } catch (Exception e) {
