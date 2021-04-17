@@ -87,6 +87,8 @@ import { DriverTripListPageComponent } from './pages/authenticated-page/driver-t
 import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { ComplaintAppealsService } from './services/complaint-appeals.service';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
+import { PaymentReturnsService } from './services/payment-returns.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
@@ -144,6 +146,7 @@ registerLocaleData(localeEs, 'es');
     TripMapComponent,
     TripOrderFormDialogComponent,
     AdminComplaintAppealsListPageComponent,
+    AdminPaymentReturnsListPageComponent,
     PaymentSuccessComponent,
     PaymentFailedComponent,
     AdminDriverRequestsPageComponent,
@@ -205,6 +208,7 @@ registerLocaleData(localeEs, 'es');
     HttpClientModule,
     AuthServiceService,
     ComplaintAppealsService,
+    PaymentReturnsService,
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,
