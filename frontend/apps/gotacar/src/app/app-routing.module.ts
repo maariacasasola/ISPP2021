@@ -21,6 +21,7 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
@@ -149,6 +150,10 @@ const routes: Routes = [
       {
         path: 'complaint-appeals',
         component: AdminComplaintAppealsListPageComponent,
+      },
+      {
+        path: 'payment-returns',
+        component: AdminPaymentReturnsListPageComponent,
       },
       {
         path: 'trip-orders',
