@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RefuseClientTripDriverDialogComponent } from '../../../components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
+import * as moment from 'moment';
+import { RefuseClientTripDriverDialogComponent } from
+ '../../../components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 import { TripsService } from '../../../services/trips.service';
 
 @Component({
@@ -61,8 +63,7 @@ export class DriverTripDetailsPageComponent {
   }
 
   checkDate(endingDate) {
-    console.log(endingDate)
-    return endingDate >= new Date();
+    return moment(endingDate).isAfter(moment());
   }
 
 }
