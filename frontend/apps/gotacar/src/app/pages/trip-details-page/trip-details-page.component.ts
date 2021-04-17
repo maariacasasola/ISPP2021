@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'apps/gotacar/src/environments/environment';
+import { DriverProfileDataDialogComponent } from '../../components/driver-profile-data-dialog/driver-profile-data-dialog.component';
 import { TripOrderFormDialogComponent } from '../../components/trip-order-form-dialog/trip-order-form-dialog.component';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { TripsService } from '../../services/trips.service';
@@ -20,6 +21,7 @@ export class TripDetailsPageComponent {
 
   constructor(
     private _route: ActivatedRoute,
+    private _my_dialog: MatDialog,
     private _trip_service: TripsService,
     private _snackbar: MatSnackBar,
     private _auth_service: AuthServiceService,
@@ -31,7 +33,25 @@ export class TripDetailsPageComponent {
   private get_trip_id(): string {
     return this._route.snapshot.params['trip_id'];
   }
+  open_driver_data_dialog(trip){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'login-dialog';
+    dialogConfig.data = {
+     trip:this.trip,
+    };
 
+    const dialogRef = this._my_dialog.open(
+      DriverProfileDataDialogComponent,
+      dialogConfig
+    );
+  }
+  get_profile_photo() {
+    if (this.trip?.driver?.profilePhoto) {
+      return this.trip?.driver?.profilePhoto;
+    }
+    return 'assets/img/generic-user.jpg';
+  }
   private async load_trip() {
     try {
       this.trip = await this._trip_service.get_trip(this.get_trip_id());

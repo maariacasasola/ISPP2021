@@ -95,7 +95,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       this.openSnackBar('La fecha de alta no corresponde con tu experiencia')
       return;
     }
-    if(this.driving_license===undefined){
+    if(!this.driving_license){
       this.openSnackBar('Debe proporcionar una imagen de su licencia')
       return;
     }

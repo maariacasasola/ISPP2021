@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import * as moment from 'moment';
 import { UsersService } from '../../../services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-edit-profile-driver',
@@ -32,7 +33,7 @@ export class EditProfileDriverComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          '[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}'
+          '([a-zA-Z]{2}\\d{2})(\\d{4})(\\d{4})(\\d{2})(\\d{10})'
         ),
       ],
     ],
@@ -46,6 +47,7 @@ export class EditProfileDriverComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    public router: Router,
     private _authService: AuthServiceService,
     private _snackBar: MatSnackBar
   ) {
@@ -117,6 +119,7 @@ export class EditProfileDriverComponent implements OnInit {
       if (response) {
         await this.load_user_data();
         this.openSnackBar('Perfil actualizado correctamente');
+        this.router.navigate(['authenticated/profile']);
       }
     } catch (error) {
       console.error(error);

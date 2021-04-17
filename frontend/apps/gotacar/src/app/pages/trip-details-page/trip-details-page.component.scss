@@ -52,22 +52,28 @@
 }
 
 .driver-status {
-  background-color: $primary;
+  background-color: white;
   padding: 10px;
   align-self: center;
-  border-radius: 50%;
   grid-area: driver-status;
   justify-self: center;
 }
-
+.verified{
+  color:$secondary;
+}
 .driver-status img {
   height: 100px;
   width: 100px;
+  border-radius: 50%;
 }
 
 .buy-button {
   color: white;
   background-color: $secondary;
+}
+.data-button {
+  color: white;
+  background-color: $primary;
 }
 
 @media (max-width: 760px) {

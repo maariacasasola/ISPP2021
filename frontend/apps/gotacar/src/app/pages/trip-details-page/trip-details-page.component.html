@@ -13,20 +13,20 @@
     </div>
     <div class="driver">
       <div class="driver-info">
-        <h2>Datos del conductor</h2>
-        <h3>{{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}</h3>
-        <h3 *ngIf="trip?.driver?.carData">
-          {{ trip?.driver?.carData?.model }}
-          {{ trip?.driver?.carData?.color }}
-        </h3>
-        <h3 *ngIf="trip?.driver?.experience">
-          {{ trip?.driver?.experience }} años de experiencia
-        </h3>
+        <h3><strong>{{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}</strong></h3>
+    
+        <button mat-flat-button
+        class="data-button"
+        (click)="open_driver_data_dialog(trip)"
+        *ngIf="show_buy_button()">Ver datos conductor</button>
+        
       </div>
       <div class="driver-status" matTooltip="Conductor verificado por GotACar">
-        <img src="assets/logos_conductores/conductor_verificado.svg" />
+        <img [src]="get_profile_photo()"  />
+        <mat-icon class="verified">verified</mat-icon>
       </div>
     </div>
+    
     <button
       mat-flat-button
       class="buy-button"
