@@ -79,6 +79,7 @@ button.primary {
   font-family: Montserrat, sans-serif;
   font-weight: 500;
   padding: 10px 25px;
+  width: 200px;
 }
 
 button.primary.ghost {
@@ -98,6 +99,12 @@ button.primary.ghost {
   margin: 0;
   padding: 0;
 }
+.buttons{
+  display: flex;
+  flex-direction: column;
+
+}
+
 
 .skills ul li {
   border: 1px solid $primary;
@@ -111,5 +118,9 @@ button.primary.ghost {
 @media (max-width: 760px) {
   .grid-container {
     padding: 20px;
+  }
+  .buttons{
+    display: flex;
+    flex-direction: column;
   }
 }

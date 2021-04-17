@@ -33,7 +33,7 @@ export class UsersService {
   }
 
   convert_to_driver(uid: string): Promise<any> {
-    const uid_json={
+    const uid_json = {
       uid: uid,
     }
     return this._http_client.post(environment.api_url + '/driver/update', uid_json).toPromise();
@@ -42,4 +42,10 @@ export class UsersService {
   get_all_driver_requests(): Promise<any> {
     return this._http_client.get(environment.api_url + '/driver-request/list').toPromise();
   }
+  request_conversion_to_driver(user_data) {
+    return this._http_client.post(environment.api_url + '/driver/create', user_data)
+      .toPromise();
+
+  }
+
 }

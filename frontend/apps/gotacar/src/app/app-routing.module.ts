@@ -32,6 +32,7 @@ import { DriverTripDetailsPageComponent } from './pages/authenticated-page/drive
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 
 const routes: Routes = [
   {
@@ -99,6 +100,10 @@ const routes: Routes = [
       {
         path: 'edit-profile-client',
         component: EditProfileClientComponent,
+      },
+      {
+        path: 'become-driver',
+        component: ClientBecomeDriverPageComponent,
       },
 
       {

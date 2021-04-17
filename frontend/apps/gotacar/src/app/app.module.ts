@@ -104,6 +104,7 @@ import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-tri
 import { OrderTripsPipe } from './pipes/order-trips.pipe';
 import { CancelTripPlaceDialogComponent } from './components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -160,6 +161,7 @@ registerLocaleData(localeEs, 'es');
     DriverTripDetailsPageComponent,
     OrderTripsPipe,
     CancelTripPlaceDialogComponent,
+    ClientBecomeDriverPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

@@ -18,6 +18,7 @@ export class ImageUploadDialogComponent {
   file: File;
   img_url;
   user_id;
+  is_become_driver;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
@@ -26,6 +27,7 @@ export class ImageUploadDialogComponent {
     private storage: AngularFireStorage
   ) {
     this.user_id = data.user_id;
+    this.is_become_driver = data.is_become_driver;
   }
 
   toggleHover(event: boolean) {
@@ -110,19 +112,36 @@ export class ImageUploadDialogComponent {
   }
 
   submit() {
-    const path = `profile_photos/${this.user_id}.webp`;
-    const storageRef = this.storage.ref(path);
-    const uploadTask = this.storage.upload(path, this.file);
+    if (this.is_become_driver) {
+      const path = `driving_license/${this.user_id}.webp`;
+      const storageRef = this.storage.ref(path);
+      const uploadTask = this.storage.upload(path, this.file);
 
-    uploadTask
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          storageRef.getDownloadURL().subscribe((downloadURL) => {
-            this._dialogRef.close(downloadURL);
-          });
-        })
-      )
-      .subscribe();
+      uploadTask
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            storageRef.getDownloadURL().subscribe((downloadURL) => {
+              this._dialogRef.close(downloadURL);
+            });
+          })
+        )
+        .subscribe();
+    } else {
+      const path = `profile_photos/${this.user_id}.webp`;
+      const storageRef = this.storage.ref(path);
+      const uploadTask = this.storage.upload(path, this.file);
+
+      uploadTask
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            storageRef.getDownloadURL().subscribe((downloadURL) => {
+              this._dialogRef.close(downloadURL);
+            });
+          })
+        )
+        .subscribe();
+    }
   }
 }
