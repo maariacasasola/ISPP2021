@@ -22,7 +22,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          '[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}'
+          '([a-zA-Z]{2}\\d{2})(\\d{4})(\\d{4})(\\d{2})(\\d{10})'
         ),
       ],
     ],
