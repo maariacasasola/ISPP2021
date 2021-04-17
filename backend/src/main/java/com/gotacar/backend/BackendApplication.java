@@ -71,7 +71,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        loadSampleData();
+                        // loadSampleData();
                 }
         }
 
@@ -231,7 +231,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 // TRIP ORDERS
                 // -----------------------------------------------------------------------------------------
-                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 400, "pi_1IgqIeJ65m70MT01EagW1XF9",
+                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 400, "",
                                 1);
                 TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700,
                                 "", 2);
