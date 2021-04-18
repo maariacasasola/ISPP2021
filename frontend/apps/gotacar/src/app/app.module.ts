@@ -50,6 +50,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -107,6 +109,7 @@ import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-drive
 import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 import { DriverProfileDataDialogComponent } from './components/driver-profile-data-dialog/driver-profile-data-dialog.component';
 import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
+import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 
 registerLocaleData(localeEs, 'es');
 
@@ -162,6 +165,7 @@ registerLocaleData(localeEs, 'es');
     ImageUploadDialogComponent,
     DriverTripDetailsPageComponent,
     OrderTripsPipe,
+    TripOrderTypePipe,
     CancelTripPlaceDialogComponent,
     ClientBecomeDriverPageComponent,
     DriverProfileDataDialogComponent,
@@ -180,6 +184,7 @@ registerLocaleData(localeEs, 'es');
     MatIconModule,
     MatStepperModule,
     MatExpansionModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -218,6 +223,7 @@ registerLocaleData(localeEs, 'es');
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,
+    TripOrderTypePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
@@ -230,4 +236,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

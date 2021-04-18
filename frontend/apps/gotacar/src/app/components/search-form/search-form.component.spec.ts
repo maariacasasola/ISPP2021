@@ -168,5 +168,11 @@ describe('SearchFormComponent', () => {
         }
       );
     });
+    fixture.detectChanges();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/", "trip-search-result"], {
+      "queryParams": { "date": "fecha", "origin": "Origen", "places": 3, "target": "Target" }
+    }
+    );
+
   });
 });

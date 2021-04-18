@@ -1,10 +1,14 @@
 <h1>VIAJES CONTRATADOS</h1>
-<div class="trips-list">
-  <mat-card class="trip" *ngFor="let trip of trips">
+<div class="buttons-group">
+  <button mat-flat-button class="button" (click)="set_type('all')">Todos<mat-icon class="icon">drive_eta</mat-icon></button>
+  <button mat-flat-button class="button" (click)="set_type('pending')">Pendientes<mat-icon class="icon">pending</mat-icon></button>
+  <button mat-flat-button class="button" (click)="set_type('completed')">Completados<mat-icon class="icon">task_alt</mat-icon></button>
+</div>
+<div class="trips-list" >
+  <mat-card class="trip" *ngFor="let trip of trips | tripOrderType: filter">
     <mat-card-title class="card-title">{{
       trip?.user?.firstName + ' ' + trip?.user?.lastName
-    }}</mat-card-title>
-    <br /><br />
+      }}</mat-card-title>
     <mat-card-content class="card-content">
       <p>
         <b>Hora de salida:</b>
@@ -34,27 +38,15 @@
     </p>
 
     <mat-card-actions align="end">
-      <button
-        *ngIf="show_cancelation_button(trip)"
-        mat-raised-button
-        color="warn"
-        (click)="cancel_trip_order_dialog(trip.id)"
-      >
+      <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn"
+        (click)="cancel_trip_order_dialog(trip.id)">
         <mat-icon>cancel_presentation</mat-icon>
       </button>
-      <button
-        mat-raised-button
-        class="button"
-        (click)="go_to_trip(trip.trip.id)"
-      >
+      <button mat-raised-button class="button" (click)="go_to_trip(trip.trip.id)">
         <mat-icon>open_in_new</mat-icon>
       </button>
-      <button
-        mat-raised-button
-        class="button"
-        (click)="create_complaint(trip.trip.id)"
-        *ngIf="show_complaint_button(trip?.trip)"
-      >
+      <button mat-raised-button class="button" (click)="create_complaint(trip.trip.id)"
+        *ngIf="show_complaint_button(trip?.trip)">
         <mat-icon>report</mat-icon>
       </button>
     </mat-card-actions>
