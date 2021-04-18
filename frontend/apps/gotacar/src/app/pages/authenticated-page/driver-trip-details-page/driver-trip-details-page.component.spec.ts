@@ -9,6 +9,7 @@ import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
 import { User } from '../../../shared/services/user';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const location1 = {
   name: 'Sevilla',
@@ -35,9 +36,28 @@ const TRIP_OBJECT: Trip = {
   price: 200,
 };
 
+const USER_OBJECT: User = {
+  id: '2',
+  firstName: 'Manuel',
+  lastName: 'Fernandez',
+  uid: '1',
+  email: 'manan@gmail.com',
+  dni: '312312312',
+  profilePhoto: 'http://dasdasdas.com',
+  birthdate: new Date(1994, 6, 4, 13, 30, 24),
+  roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
+  emailVerified: true,
+  timesBanned: 2,
+  token:'12312ed2',
+};
+
 class mockTripService {
   public get_trip(): Observable<Trip> {
     return of(TRIP_OBJECT);
+  }
+
+  public get_users_by_trip(): Observable<User>{
+    return of(USER_OBJECT);
   }
 }
 
@@ -45,11 +65,10 @@ describe('DriverTripDetailsPageComponent', () => {
   let component: DriverTripDetailsPageComponent;
   let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
   let h1: HTMLElement;
-  let service: TripsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatDialogModule],
       declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
       providers: [
         ConvertCentToEurPipe,
@@ -66,7 +85,6 @@ describe('DriverTripDetailsPageComponent', () => {
     fixture.detectChanges();
     h1 = fixture.nativeElement.querySelector('h1');
     fixture.detectChanges();
-    service = TestBed.inject(TripsService);
   });
 
   it('should create', () => {
@@ -77,11 +95,15 @@ describe('DriverTripDetailsPageComponent', () => {
     expect(h1.textContent).toContain(component.page_title);
   });
 
-  it('should return trip information', () => {
-    spyOn(service, 'get_trip').and.returnValue(of(TRIP_OBJECT));
+  it('should get profile photo without load on database', () => {
+    expect(component.get_user_profile_photo(USER_OBJECT)).toBe('http://dasdasdas.com');
   });
 
-  it('should return users information', () => {
-    expect(service.get_users_by_trip).toBeCalled;
+  it('should check future date', ()=>{
+    expect(component.checkDate(new Date(2020, 12, 3))).toBe(false);
   });
+
+  
+
+
 });
