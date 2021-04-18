@@ -11,4 +11,5 @@ public interface ComplaintAppealRepository extends MongoRepository<ComplaintAppe
 
     List<ComplaintAppeal> findByChecked(boolean b);
 
+    List<ComplaintAppeal> findByDriverId(String id);
 }
