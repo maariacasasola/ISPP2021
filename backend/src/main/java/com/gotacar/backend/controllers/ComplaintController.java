@@ -157,9 +157,7 @@ public class ComplaintController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-            Trip trip = tripRepository.findById(tripId).get();
-            
-            System.out.println("CONTROLADORRRRRR "+complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size());
+            Trip trip = tripRepository.findById(new ObjectId(tripId));
             return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
 
         } catch (Exception e) {

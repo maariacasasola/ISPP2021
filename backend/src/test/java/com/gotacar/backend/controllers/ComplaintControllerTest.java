@@ -309,8 +309,6 @@ class ComplaintControllerTest {
 
         @Test
         void checkComplaintTest() throws Exception {
-
-                System.out.println(list1);
                 Mockito.when(tripRepository.findById(new ObjectId(trip1.getId()))).thenReturn(trip1);
                 Mockito.when(complaintRepository.findByUserAndTrip(user.getId(), trip1.getId())).thenReturn(list1);
                 Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
@@ -321,12 +319,10 @@ class ComplaintControllerTest {
 
                 org.json.JSONObject json2 = new org.json.JSONObject(response);
 
-                System.out.println("ID DEL TRIP" + trip1.getId());
                 String token = json2.getString("token");
-                ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId().toString())
+                ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId())
                                 .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
-                System.out.println("aquiiiiiiii" + result.andReturn().getResponse().getStatus());
 
                 assertThat(result.andReturn().getResponse().getContentAsString()).contains("false");
         }
