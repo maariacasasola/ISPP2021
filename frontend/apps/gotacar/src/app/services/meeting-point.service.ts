@@ -9,7 +9,7 @@ import { MeetingPoint } from '../shared/services/meeting-point';
 export class MeetingPointService {
   constructor(private _http_client: HttpClient) {}
 
-  get_all_meeting_points() {
+  get_all_meeting_points(): Promise<any> {
     return this._http_client
       .get(environment.api_url + '/search_meeting_points')
       .toPromise();

@@ -199,4 +199,8 @@ export class TripDetailsPageComponent {
       }
     }
   }
+
+  user_is_banned() {
+    return this._auth_service.user_is_banned();
+  }
 }

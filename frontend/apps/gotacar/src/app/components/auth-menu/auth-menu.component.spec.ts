@@ -15,6 +15,10 @@ describe('AuthMenuComponent', () => {
     public is_driver(): Observable<Boolean> {
       return of(true);
     }
+
+    public user_is_banned() {
+      return false;
+    }
   }
 
   beforeEach(async () => {
