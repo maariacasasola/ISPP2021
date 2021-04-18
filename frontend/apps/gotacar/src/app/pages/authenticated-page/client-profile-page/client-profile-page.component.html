@@ -23,8 +23,10 @@
       <div>
         <button class="primary" (click)="deleteAccount()">Borrar cuenta</button>
       </div>
-    </div>
+    </div >
+    
     <div class="skills">
+      <h3 *ngIf="is_pending()"> Tu solicitud está en trámite<mat-icon>directions_car</mat-icon></h3>
       <h6>Datos Personales</h6>
       <ul>
         <li>Fecha nacimiento: {{ user?.birthdate | date: 'dd-MM-yyyy' }}</li>
