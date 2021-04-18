@@ -107,4 +107,9 @@ export class TripsService {
       .post(environment.api_url + '/cancel_trip_order_request/' + id, null)
       .toPromise();
   }
+
+  async is_complained(trip_id: string): Promise<any>{
+    return this._http_client
+    .get(environment.api_url + '/complaints/check/' + trip_id).toPromise();
+  }
 }
