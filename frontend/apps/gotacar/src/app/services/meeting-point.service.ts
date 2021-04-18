@@ -14,6 +14,7 @@ export class MeetingPointService {
       .get(environment.api_url + '/search_meeting_points')
       .toPromise();
   }
+
   async post_meeting_point(meetingPoint: MeetingPoint) {
     const body = {
       name: meetingPoint.name,
@@ -21,6 +22,7 @@ export class MeetingPointService {
       lat: meetingPoint.lat,
       lng: meetingPoint.lng,
     };
+
     return this._http_client
       .post(environment.api_url + '/create_meeting_point', body)
       .toPromise();
