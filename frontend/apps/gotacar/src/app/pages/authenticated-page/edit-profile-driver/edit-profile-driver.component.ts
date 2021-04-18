@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import * as moment from 'moment';
 import { UsersService } from '../../../services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-edit-profile-driver',
@@ -13,9 +14,10 @@ import { UsersService } from '../../../services/users.service';
   styleUrls: ['./edit-profile-driver.component.scss'],
 })
 export class EditProfileDriverComponent implements OnInit {
+  today = new Date();
   update_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: ['', [Validators.required, Validators.email]],
     dni: [
       '',
@@ -31,20 +33,21 @@ export class EditProfileDriverComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          '[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}'
+          '([a-zA-Z]{2}\\d{2})(\\d{4})(\\d{4})(\\d{2})(\\d{10})'
         ),
       ],
     ],
-    car_plate: ['', Validators.required],
+    car_plate: ['', [Validators.required,Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
     enrollment_date: ['', Validators.required],
-    model: ['', Validators.required],
-    color: ['', Validators.required],
+    model: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
+    color: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
   });
 
   user;
 
   constructor(
     private fb: FormBuilder,
+    public router: Router,
     private _authService: AuthServiceService,
     private _snackBar: MatSnackBar
   ) {
@@ -55,13 +58,13 @@ export class EditProfileDriverComponent implements OnInit {
     try {
       this.user = await this._authService.get_user_data();
       this.update_form.setValue({
-        firstName: this.user?.firstName,
-        lastName: this.user?.lastName,
-        email: this.user?.email,
-        dni: this.user?.dni,
-        birthdate: this.user?.birthdate,
-        phone: this.user?.phone,
-        iban: this.user?.iban,
+        firstName: this.user?.firstName || '',
+        lastName: this.user?.lastName || '',
+        email: this.user?.email || '',
+        dni: this.user?.dni || '',
+        birthdate: this.user?.birthdate || '',
+        phone: this.user?.phone || '',
+        iban: this.user?.iban || '',
         car_plate: this.user?.carData?.carPlate || '',
         enrollment_date: this.user?.carData?.enrollmentDate || '',
         model: this.user?.carData?.model || '',
@@ -116,6 +119,7 @@ export class EditProfileDriverComponent implements OnInit {
       if (response) {
         await this.load_user_data();
         this.openSnackBar('Perfil actualizado correctamente');
+        this.router.navigate(['authenticated/profile']);
       }
     } catch (error) {
       console.error(error);

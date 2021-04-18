@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
@@ -12,36 +11,40 @@ import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-
 })
 export class UserTripListPageComponent {
   trips = [];
+  filter = {
+    type: null,
+  };
 
   constructor(
     private _trips_service: TripsService,
-    private _snackBar: MatSnackBar,
     private _router: Router,
-    private dialog: MatDialog,
-
+    private dialog: MatDialog
   ) {
     this.load_trips_by_user();
+  }
+
+  set_type(type) {
+    this.filter = { ...this.filter, type: type };
   }
 
   async load_trips_by_user() {
     try {
       this.trips = await this._trips_service.get_trips();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 
-  cancel_trip_order_dialog(trip_id){
-      try{
-        this.dialog.open(CancelTripPlaceDialogComponent, {
-          data: [trip_id],
-          disableClose: true,
-        });
-      }catch(error){
-        console.log(error);
-      }
+  cancel_trip_order_dialog(trip_id) {
+    try {
+      this.dialog.open(CancelTripPlaceDialogComponent, {
+        data: [trip_id],
+        disableClose: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-
 
   get_trip_status(status) {
     switch (status) {

@@ -17,6 +17,9 @@
       <div *ngIf="!isDriver()">
         <button class="primary" (click)="goToEditClient()">Editar</button>
       </div>
+      <div *ngIf="hasCreateRequest()">
+        <button  class="primary" (click)="becomeDriver()">Alta de conductor</button>
+      </div>
       <div>
         <button class="primary" (click)="deleteAccount()">Borrar cuenta</button>
       </div>
@@ -33,8 +36,8 @@
       <div *ngIf="isDriver()">
         <h6>Datos del vehículo</h6>
         <ul>
-          <li>Matrícula: {{ user?.carData?.car_plate }}</li>
-          <li>Alta: {{ user?.carData?.enrollment_date }}</li>
+          <li>Matrícula: {{ user?.carData?.carPlate }}</li>
+          <li>Alta: {{ user?.carData?.enrollmentDate | date: 'dd-MM-yyyy' }}</li>
           <li>Modelo: {{ user?.carData?.model }}</li>
           <li>Color: {{ user?.carData?.color }}</li>
         </ul>

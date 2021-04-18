@@ -37,7 +37,8 @@ public class ComplaintAppeal {
 
     @Override
     public String toString() {
-        return String.format("ComplaintAppeal[id=%s, content=%s, checked=%s, complaint=%s]", id, content, checked.toString(), complaint.toString());
+        return String.format("ComplaintAppeal[id=%s, content=%s, checked=%s, complaint=%s]", id, content,
+                checked.toString(), complaint.toString());
 
     }
 }

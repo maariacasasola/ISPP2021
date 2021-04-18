@@ -21,6 +21,7 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
@@ -31,6 +32,7 @@ import { DriverTripDetailsPageComponent } from './pages/authenticated-page/drive
 import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 
 const routes: Routes = [
   {
@@ -99,6 +101,10 @@ const routes: Routes = [
         path: 'edit-profile-client',
         component: EditProfileClientComponent,
       },
+      {
+        path: 'become-driver',
+        component: ClientBecomeDriverPageComponent,
+      },
 
       {
         path: 'create-trips',
@@ -149,6 +155,10 @@ const routes: Routes = [
       {
         path: 'complaint-appeals',
         component: AdminComplaintAppealsListPageComponent,
+      },
+      {
+        path: 'payment-returns',
+        component: AdminPaymentReturnsListPageComponent,
       },
       {
         path: 'trip-orders',

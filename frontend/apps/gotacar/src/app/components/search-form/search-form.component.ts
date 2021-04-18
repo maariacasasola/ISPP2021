@@ -23,7 +23,7 @@ export class SearchFormComponent {
   origenLocation: Location;
   destinoLocation: Location;
 
-  meeting_points;
+  meeting_points = [];
   searchbar_meeting_points_origin = [];
   searchbar_meeting_points_target = [];
 

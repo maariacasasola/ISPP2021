@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _http_client: HttpClient) { }
+  constructor(private _http_client: HttpClient) {}
 
   get_all_users(): Promise<any> {
     return this._http_client
@@ -21,7 +21,9 @@ export class UsersService {
   }
 
   delete_account(): Promise<any> {
-    return this._http_client.post(environment.api_url + '/delete-account', null).toPromise();
+    return this._http_client
+      .post(environment.api_url + '/delete-account', null)
+      .toPromise();
   }
 
   update_profile_photo(photo_url) {
@@ -33,13 +35,33 @@ export class UsersService {
   }
 
   convert_to_driver(uid: string): Promise<any> {
-    const uid_json={
+    const uid_json = {
       uid: uid,
-    }
-    return this._http_client.post(environment.api_url + '/driver/update', uid_json).toPromise();
+    };
+    return this._http_client
+      .post(environment.api_url + '/driver/update', uid_json)
+      .toPromise();
   }
 
   get_all_driver_requests(): Promise<any> {
-    return this._http_client.get(environment.api_url + '/driver-request/list').toPromise();
+    return this._http_client
+      .get(environment.api_url + '/driver-request/list')
+      .toPromise();
+  }
+  request_conversion_to_driver(user_data) {
+    return this._http_client
+      .post(environment.api_url + '/driver/create', user_data)
+      .toPromise();
+  }
+
+  rate_user(data) {
+    return this._http_client
+      .post(environment.api_url + '/rate', data)
+      .toPromise();
+  }
+  check_users_rated(data) {
+    return this._http_client
+      .post(environment.api_url + '/rate/check', data)
+      .toPromise();
   }
 }

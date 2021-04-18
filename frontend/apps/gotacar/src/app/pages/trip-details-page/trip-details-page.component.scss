@@ -13,7 +13,7 @@
   grid-area: map;
 }
 
-.driver{
+.driver {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
@@ -22,7 +22,7 @@
   margin: 20px 0px 20px 0px;
 }
 
-.driver-info{
+.driver-info {
   grid-area: driver-info;
 }
 
@@ -52,22 +52,35 @@
 }
 
 .driver-status {
-  background-color: $primary;
+  background-color: white;
   padding: 10px;
   align-self: center;
-  border-radius: 50%;
   grid-area: driver-status;
   justify-self: center;
+}
+.verified {
+  color: $secondary;
+}
+
+.orange {
+  color: $warn;
 }
 
 .driver-status img {
   height: 100px;
   width: 100px;
+  border-radius: 50%;
 }
 
 .buy-button {
   color: white;
   background-color: $secondary;
+  width: 100%;
+}
+
+.rating-button {
+  color: white;
+  background-color: $primary;
 }
 
 @media (max-width: 760px) {

@@ -6,14 +6,22 @@
     <mat-icon>sentiment_satisfied_alt </mat-icon>
     <span>Perfil</span>
   </button>
-  <button
-    mat-menu-item
-    *ngIf="authService.is_driver()"
-    routerLink="/authenticated/create-trips"
+  <div
+    [matTooltip]="
+      user_is_banned() ? 'Su cuenta de usuario está baneada actualmente' : null
+    "
   >
-    <mat-icon>directions_car</mat-icon>
-    <span>Publicar viaje</span>
-  </button>
+    <button
+      [disabled]="user_is_banned()"
+      mat-menu-item
+      *ngIf="authService.is_driver()"
+      routerLink="/authenticated/create-trips"
+    >
+      <mat-icon>directions_car</mat-icon>
+      <span>Publicar viaje</span>
+    </button>
+  </div>
+
   <button
     mat-menu-item
     *ngIf="authService.is_driver()"

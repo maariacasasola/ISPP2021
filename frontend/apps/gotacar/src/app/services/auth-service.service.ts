@@ -43,9 +43,7 @@ export class AuthServiceService {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.set_user_data(result.user).then(() => {
-          this.is_banned();
-        });
+        this.set_user_data(result.user);
       })
       .catch((error) => {
         this.handle_firebase_auth_error(error);
@@ -116,17 +114,8 @@ export class AuthServiceService {
     return this.is_client() && has_driver_role;
   }
 
-  is_banned() {
-    let bool = false;
-    this.get_user_data().then((result) => {
-      bool = result.bannedUntil !== null;
-      if (bool) {
-        const t = this.dialog.open(ComplaintAppealDialogComponent, {
-          disableClose: true,
-        });
-        t.afterClosed().subscribe(() => this.sign_out());
-      }
-    });
+  user_is_banned(): boolean {
+    return new Date(localStorage.getItem('bannedUntil')) > new Date();
   }
 
   async get_user_data(): Promise<any> {
@@ -177,10 +166,13 @@ export class AuthServiceService {
   }
 
   async set_user_data(user) {
-    let { token, roles } = await this.get_token(user.uid);
+    let { token, roles, bannedUntil } = await this.get_token(user.uid);
     token = token.replace('Bearer ', '');
     localStorage.setItem('token', token);
     localStorage.setItem('roles', roles);
+    if (!bannedUntil) return;
+    localStorage.setItem('bannedUntil', bannedUntil);
+    this.dialog.open(ComplaintAppealDialogComponent);
   }
 
   get_token(user_uid): Promise<any> {
@@ -197,6 +189,7 @@ export class AuthServiceService {
     localStorage.removeItem('token');
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('bannedUntil');
       localStorage.removeItem('roles');
       this.router.navigate(['log-in']);
     });

@@ -19,8 +19,8 @@ export class CancelTripDialogComponent {
 
   async continue() {
     await this._trips_service.cancel_driver_trip(this.data);
-    this._auth_service.is_banned();
-    this._dialog_ref.close();
+    await this._dialog_ref.close();
+    await this._auth_service.sign_out();
   }
 
   close() {

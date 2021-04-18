@@ -4,15 +4,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
-import { SignUpComponent } from '../../sign-up/sign-up.component';
 import { EditProfileDriverComponent } from './edit-profile-driver.component';
 
-class mockTripService {
+class mockAuthService {
   async get_user_data() {
     return of({
-      name: 'Moises',
+      firstName: 'Moisés',
+      lastName: 'Calzado',
+      email: 'moises122@gmail.com',
+      dni: '54545454N',
+      birthdate: new Date(),
+      phone: '655656776',
+      iban: 'ES35454545454645',
+      carData: {
+        carPlate: '3443MNN',
+        enrollmentDate: new Date(),
+        model: 'BMW',
+        color: 'Rojo',
+      },
     });
   }
 
@@ -28,13 +40,14 @@ describe('EditProfileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         ReactiveFormsModule,
         MatSnackBarModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
       ],
       declarations: [EditProfileDriverComponent],
-      providers: [{ provide: AuthServiceService, useClass: mockTripService }],
+      providers: [{ provide: AuthServiceService, useClass: mockAuthService }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

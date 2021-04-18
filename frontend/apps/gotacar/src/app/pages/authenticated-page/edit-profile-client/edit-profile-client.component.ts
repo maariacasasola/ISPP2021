@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'frontend-edit-profile-client',
@@ -11,8 +12,8 @@ import * as moment from 'moment';
 })
 export class EditProfileClientComponent {
   update_form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: [
       { value: '', disabled: true },
       [Validators.required, Validators.email],
@@ -32,6 +33,7 @@ export class EditProfileClientComponent {
 
   constructor(
     private fb: FormBuilder,
+    public router: Router,
     private _authService: AuthServiceService,
     private _snackBar: MatSnackBar
   ) {
@@ -83,6 +85,7 @@ export class EditProfileClientComponent {
       if (response) {
         await this.load_user_data();
         this.openSnackBar('Perfil actualizado correctamente');
+        this.router.navigate(['authenticated/profile']);
       }
     } catch (error) {
       this.openSnackBar(

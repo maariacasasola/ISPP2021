@@ -1,5 +1,5 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 
 import { MeetingPointSearchbarResultComponent } from './meeting-point-searchbar-result.component';
 
@@ -10,6 +10,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MeetingPointSearchbarResultComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

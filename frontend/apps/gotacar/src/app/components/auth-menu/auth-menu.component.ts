@@ -10,4 +10,8 @@ export class AuthMenuComponent implements OnInit {
   constructor(public authService: AuthServiceService) {}
 
   ngOnInit(): void {}
+
+  user_is_banned() {
+    return this.authService.user_is_banned();
+  }
 }

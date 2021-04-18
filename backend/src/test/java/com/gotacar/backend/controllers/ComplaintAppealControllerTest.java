@@ -339,7 +339,7 @@ class ComplaintAppealControllerTest {
                                 .accept(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-                
+
         }
 
 }

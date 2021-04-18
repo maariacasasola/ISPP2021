@@ -62,7 +62,8 @@ public class TripController {
 					startingPointJson.get("lat").asDouble());
 			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
 			List<Trip> trips = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
-			return trips.stream().filter(x->x.getCanceled().equals(false) || x.getCanceled() == null).collect(Collectors.toList());
+			return trips.stream().filter(x -> x.getCanceled().equals(false) || x.getCanceled() == null)
+					.collect(Collectors.toList());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
@@ -83,6 +84,9 @@ public class TripController {
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
 		try {
+			ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -117,33 +121,39 @@ public class TripController {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			LocalDateTime bannedUntil = currentUser.getBannedUntil();
+			if(bannedUntil != null) {
+            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El usuario esta baneado, no puede realizar esta accion");
+            	}
+            }
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
-			
-			//Lanza error si la fecha de finalizacion es anterior a la de salida
-			if(dateEndJson.isBefore(dateStartJson)) {
+
+			// Lanza error si la fecha de finalizacion es anterior a la de salida
+			if (dateEndJson.isBefore(dateStartJson)) {
 				throw new Exception("La hora de llegada no puede ser anterior a la hora de salida");
 			}
-			//Lanza error si la fecha de salida es igual a la fecha de finalización
-			if(dateEndJson.isEqual(dateStartJson)) {
+			// Lanza error si la fecha de salida es igual a la fecha de finalización
+			if (dateEndJson.isEqual(dateStartJson)) {
 				throw new Exception("La hora de salida no puede ser igual a la hora de llegada");
 			}
 
-			//Lanza error si la fecha de salida es cercana a la fecha de finalización
-			if(dateStartJson.plusMinutes(5).isAfter(dateEndJson)) {
+			// Lanza error si la fecha de salida es cercana a la fecha de finalización
+			if (dateStartJson.plusMinutes(5).isAfter(dateEndJson)) {
 				throw new Exception("La hora de salida no puede ser tan cercana a la hora de llegada");
 			}
 
 			ZonedDateTime dateNowZone = ZonedDateTime.now();
 			dateNowZone = dateNowZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-			//Lanza error si la fecha de salida no dista una hora de la fecha actual
-			if(dateStartJson.isBefore(dateNowZone.toLocalDateTime().plusMinutes(50))) {
+			// Lanza error si la fecha de salida no dista una hora de la fecha actual
+			if (dateStartJson.isBefore(dateNowZone.toLocalDateTime().plusMinutes(50))) {
 				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
 			}
 
-			Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, 
-				comments, placesJson, currentUser);
+			Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,
+					currentUser);
 
 			trip1.setCancelationDateLimit(cancelationDateLimit);
 
@@ -158,6 +168,9 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
+			ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+
 			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -178,10 +191,10 @@ public class TripController {
 			}
 
 			trip1.setCanceled(true);
-			trip1.setCancelationDate(LocalDateTime.now());
+			trip1.setCancelationDate(actualDate.toLocalDateTime());
 
-			if (trip1.getCancelationDateLimit().isBefore(LocalDateTime.now())) {
-				driver.setBannedUntil(LocalDateTime.now().plusDays(14));
+			if (trip1.getCancelationDateLimit().isBefore(actualDate.toLocalDateTime())) {
+				driver.setBannedUntil(actualDate.toLocalDateTime().plusDays(14));
 				userRepository.save(driver);
 			}
 

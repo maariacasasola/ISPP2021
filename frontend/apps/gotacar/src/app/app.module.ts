@@ -50,6 +50,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -87,6 +89,8 @@ import { DriverTripListPageComponent } from './pages/authenticated-page/driver-t
 import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { ComplaintAppealsService } from './services/complaint-appeals.service';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
+import { PaymentReturnsService } from './services/payment-returns.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
 import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
@@ -102,6 +106,10 @@ import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-tri
 import { OrderTripsPipe } from './pipes/order-trips.pipe';
 import { CancelTripPlaceDialogComponent } from './components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
+import { DriverProfileDataDialogComponent } from './components/driver-profile-data-dialog/driver-profile-data-dialog.component';
+import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
+import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 
 registerLocaleData(localeEs, 'es');
 
@@ -144,6 +152,7 @@ registerLocaleData(localeEs, 'es');
     TripMapComponent,
     TripOrderFormDialogComponent,
     AdminComplaintAppealsListPageComponent,
+    AdminPaymentReturnsListPageComponent,
     PaymentSuccessComponent,
     PaymentFailedComponent,
     AdminDriverRequestsPageComponent,
@@ -156,7 +165,11 @@ registerLocaleData(localeEs, 'es');
     ImageUploadDialogComponent,
     DriverTripDetailsPageComponent,
     OrderTripsPipe,
+    TripOrderTypePipe,
     CancelTripPlaceDialogComponent,
+    ClientBecomeDriverPageComponent,
+    DriverProfileDataDialogComponent,
+    RatingUserDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -171,6 +184,7 @@ registerLocaleData(localeEs, 'es');
     MatIconModule,
     MatStepperModule,
     MatExpansionModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -205,9 +219,11 @@ registerLocaleData(localeEs, 'es');
     HttpClientModule,
     AuthServiceService,
     ComplaintAppealsService,
+    PaymentReturnsService,
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,
+    TripOrderTypePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
@@ -220,4 +236,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

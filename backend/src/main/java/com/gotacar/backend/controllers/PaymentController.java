@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -60,15 +62,26 @@ public class PaymentController {
         Stripe.apiKey = stripeApiKey;
 
         try {
+        	ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             JsonNode jsonNode = objectMapper.readTree(body);
             Integer quantity = objectMapper.readTree(jsonNode.get("quantity").toString()).asInt();
             String description = objectMapper.readTree(jsonNode.get("description").toString()).asText();
             String idTrip = objectMapper.readTree(jsonNode.get("idTrip").toString()).asText();
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
-            String idUser = userRepository.findByEmail(authentication.getPrincipal().toString()).getId();
+            String idUser = user.getId();
+            LocalDateTime bannedUntil = user.getBannedUntil();
             Trip trip = tripRepository.findById(new ObjectId(idTrip));
+            
+            if(bannedUntil != null) {
+            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario esta baneado, no puede realizar esta accion");
+            	}
+            }
 
             if (!(trip.getPlaces() >= quantity)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
@@ -165,9 +178,11 @@ public class PaymentController {
 
     public void createTripOrder(Session session) {
         try {
+        	ZonedDateTime actualDate = ZonedDateTime.now();
+    		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             String tripId = session.getMetadata().values().toArray()[3].toString();
             String userId = session.getMetadata().values().toArray()[5].toString();
-            LocalDateTime date = LocalDateTime.now();
+            LocalDateTime date = actualDate.toLocalDateTime();
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());

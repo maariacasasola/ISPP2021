@@ -61,16 +61,17 @@ public class UserController {
 		try {
 			User user = userRepository.findByUid(userId);
 			String token = getJWTToken(user);
-			//Si la fecha de baneo es posterior a la actual entonces se establece en el Token
-			if(user.getBannedUntil() != null) {
+			// Si la fecha de baneo es posterior a la actual entonces se establece en el
+			// Token
+			if (user.getBannedUntil() != null) {
 				ZonedDateTime actualDate = ZonedDateTime.now();
 				actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-				if(user.getBannedUntil().isBefore(actualDate.toLocalDateTime())) {
+				if (user.getBannedUntil().isBefore(actualDate.toLocalDateTime())) {
 					user.setBannedUntil(null);
 					userRepository.save(user);
 				} else {
 					return new TokenResponse(token, user.getRoles(), user.getBannedUntil());
-				}				
+				}
 			}
 			return new TokenResponse(token, user.getRoles(), null);
 		} catch (Exception e) {
@@ -249,7 +250,6 @@ public class UserController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -283,49 +283,50 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
-    @PostMapping("/delete-account")
-    public void deleteAccount() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-            List<TripOrder> tripOrdersPr = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+	@PostMapping("/delete-account")
+	public void deleteAccount() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			List<TripOrder> tripOrdersPr = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
 			List<TripOrder> tripOrdersPa = tripOrderRepository.findByUserAndStatus(user, "PAID");
-            if(user.getRoles().contains("ROLE_CLIENT")){
-                if(!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()){
-                    throw new Exception("El usuario tiene reservas pendientes");
-                }
-            }
-            if(user.getRoles().contains("ROLE_DRIVER")){
-                List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-                if(!trips.isEmpty()){
-                    throw new Exception("El usuario tiene viajes pendientes");
-                }
-            }
-            userRepository.delete(user);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
+			if (user.getRoles().contains("ROLE_CLIENT")) {
+				if (!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()) {
+					throw new Exception("El usuario tiene reservas pendientes");
+				}
+			}
+			if (user.getRoles().contains("ROLE_DRIVER")) {
+				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+				if (!trips.isEmpty()) {
+					throw new Exception("El usuario tiene viajes pendientes");
+				}
+			}
+			userRepository.delete(user);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/delete-penalized-account/{userId}")
-    public void deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
-        try {
-            User user = userRepository.findById(new ObjectId(userId));
-            List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-            if(user.getRoles().contains("ROLE_CLIENT")){
-                if(!tripOrders.isEmpty()){
-                    throw new Exception("El usuario tiene reservas pendientes");
-                }
-            }
-            if(user.getRoles().contains("ROLE_DRIVER")){
-                List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
-                if(!trips.isEmpty()){
-                    throw new Exception("El usuario tiene viajes pendientes");
-                }
-            }
-            userRepository.delete(user);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
+	@PostMapping("/delete-penalized-account/{userId}")
+	public void deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
+		try {
+			User user = userRepository.findById(new ObjectId(userId));
+			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
+			if (user.getRoles().contains("ROLE_CLIENT")) {
+				if (!tripOrders.isEmpty()) {
+					throw new Exception("El usuario tiene reservas pendientes");
+				}
+			}
+			if (user.getRoles().contains("ROLE_DRIVER")) {
+				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
+				if (!trips.isEmpty()) {
+					throw new Exception("El usuario tiene viajes pendientes");
+				}
+			}
+			userRepository.delete(user);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 }

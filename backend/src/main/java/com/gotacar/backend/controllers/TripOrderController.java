@@ -79,7 +79,7 @@ public class TripOrderController {
         try {
             TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             tripOrder.setStatus("REFUNDED");
-            tripOrderRepository.save(tripOrder);         
+            tripOrderRepository.save(tripOrder);
             return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

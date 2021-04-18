@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET })
 public class PaymentReturnController {
 
-@Autowired
-PaymentReturnRepository paymentReturnRepository;
+	@Autowired
+	PaymentReturnRepository paymentReturnRepository;
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/payment-return/list")
