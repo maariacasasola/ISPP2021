@@ -105,7 +105,7 @@ public class BackendApplication implements CommandLineRunner {
                 LocalDate fecha3 = LocalDate.of(2001, 12, 30);
 
                 // Admin
-                User admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es",
+                User admin = new User("Antonio", "Fernández", "jZ1JViuU0ec4d9nuW7R6d5FGCzw2", "admin@gotacar.es",
                                 "89070360G", null, fecha3, lista1, "655757566");
 
                 userRepository.save(admin);
@@ -113,10 +113,10 @@ public class BackendApplication implements CommandLineRunner {
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
                                 "89070310K", null, fecha3, lista3, "645454514");
-                User driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com",
+                User driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gmail.com",
                                 "312312312R", null, fecha1, lista3, "645054554",
                                 LocalDateTime.of(2021, 06, 04, 13, 30, 24));
-                User driver3 = new User("Marina", "Chacón", "h9HmVQqlBQXD289O8t8q7aN2Gzg3", "driver3@gmail.com",
+                User driver3 = new User("Marina", "Chacón", "BwhK9BAP8Vb9Sz6YCVbceXRCE713", "driver3@gmail.com",
                                 "312412412J", null, fecha1, lista3, "645454554");
 
                 userRepository.save(driver);
