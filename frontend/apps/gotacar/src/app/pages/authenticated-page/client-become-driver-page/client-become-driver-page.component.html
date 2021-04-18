@@ -28,7 +28,7 @@
         >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
-        <mat-label>Fecha de alta </mat-label>
+        <mat-label>Fecha obtención carnet </mat-label>
         <input
           matInput
           [matDatepicker]="picker_enrollment_date"
@@ -86,9 +86,9 @@
       </mat-form-field>
 
       <h3>
-        Licencia de conducir * 
-        <button mat-icon-button color="primary" (click)="obtain_driving_license()">
-          <mat-icon> add_circle_outline </mat-icon>
+        Licencia de conducir * <mat-icon *ngIf="driving_license" class="green-check">done_all</mat-icon>
+        <button  mat-icon-button color="primary" (click)="obtain_driving_license()">
+          <mat-icon>{{driving_license  ? 'edit': 'add_circle_outline'}}</mat-icon>
         </button>
       </h3>
     </div>

@@ -1,0 +1,27 @@
+<button class="close-button" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+    <div class="perfil" >
+      <img class="profile-photo" [src]="get_profile_photo()" alt="user" />
+      <h3>{{ trip?.driver?.firstName }} {{ trip?.driver?.lastName }}</h3>
+      <h6>Sevilla</h6>
+  
+     
+      
+      <div class="skills">
+        <h6>Datos del Conductor</h6>
+        <ul>
+          <li>Edad: {{ get_edad() }}</li>
+          <li>Teléfono: {{ trip?.driver?.phone }}</li>
+        </ul>
+        <div >
+          <h6>Datos del vehículo</h6>
+          <ul>
+            <li>Modelo: {{trip?.driver?.carData?.model }}</li>
+            <li>Color: {{ trip?.driver?.carData?.color }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+  
