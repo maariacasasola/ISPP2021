@@ -54,7 +54,7 @@ export class DriverTripListPageComponent {
         this._snackbar.open('Viaje cancelado correctamente', null, {
           duration: 3000,
         });
-        window.location.reload();
+        await this.load_trips_by_driver();
       }
     } catch (error) {
       console.error(error);

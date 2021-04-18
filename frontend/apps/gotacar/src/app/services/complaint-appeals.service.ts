@@ -18,6 +18,12 @@ export class ComplaintAppealsService {
       .toPromise();
   }
 
+  async can_complaint_appeal(): Promise<any>{
+    return await this._http_client
+      .get(environment.api_url + '/complaint-appeal/driver/check')
+      .toPromise();
+  }  
+  
   async create_complaint_appeal_banned(complaint_appeal: ComplaintAppeal, trip_id: string): Promise<any>{
     const body={
       content: complaint_appeal.content,

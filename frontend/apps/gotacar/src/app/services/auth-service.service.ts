@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 import auth from 'firebase/app';
 import { MatDialog } from '@angular/material/dialog';
 import { ComplaintAppealDialogComponent } from '../components/complaint-appeal-dialog/complaint-appeal-dialog.component';
+import { ComplaintAppealsService } from './complaint-appeals.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,9 @@ export class AuthServiceService {
     public router: Router,
     public ngZone: NgZone,
     private _http_client: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _complaint_appeals_service: ComplaintAppealsService,
+    private _snackBar: MatSnackBar,
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -108,16 +112,27 @@ export class AuthServiceService {
     return this.is_client() && has_driver_role;
   }
 
-  is_banned(trip_id:string) {
-    let bool = false;
-    this.get_user_data().then((result) => {
-      bool = result.bannedUntil !== null;
-      if (bool) {
-        const t = this.dialog.open(ComplaintAppealDialogComponent, {
-          data: trip_id,
-          disableClose: true,
-        });
-        t.afterClosed().subscribe(() => this.sign_out());
+  is_banned(trip_id: string) {
+    let isBanned = false;
+    let canAppeal = false;
+    this.get_user_data().then(async (result) => {
+      isBanned = result.bannedUntil !== null;
+      if (!localStorage.getItem('roles').includes('ROLE_ADMIN')) {
+        canAppeal = await this._complaint_appeals_service.can_complaint_appeal();
+        if (isBanned) {
+          if (canAppeal) {
+            const t = this.dialog.open(ComplaintAppealDialogComponent, {
+              data: trip_id,
+              disableClose: true,
+            });
+            t.afterClosed().subscribe(() => this.sign_out());
+          } else {
+            this._snackBar.open("La cuenta está baneada hasta " + result.bannedUntil, null, {
+              duration: 3000,
+            });
+            this.sign_out();
+          }
+        }
       }
     });
   }

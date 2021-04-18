@@ -105,15 +105,29 @@ public class ComplaintAppealController {
                     .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(x -> x.getId())
                     .collect(Collectors.toList());
             int j = 0;
-            List<Complaint> complaint = complaintRepository.findAll();
+            List<Complaint> complaints = complaintRepository.findAll();
             Complaint res = new Complaint();
-            while (j < complaint.size()) {
-                if (trips.contains(complaint.get(j).getTrip().getId())
-                        && complaint.get(j).getStatus().equals("ACCEPTED")) {
-                    res = complaint.get(j);
-                    break;
+            if(!complaints.isEmpty()){
+                complaints=complaints.stream().filter(c->c.getTrip().getDriver().getId()==user.getId()).collect(Collectors.toList());
+                if(!complaints.isEmpty()){
+                    while (j < complaints.size()) {
+                        if (trips.contains(complaints.get(j).getTrip().getId())
+                                && complaints.get(j).getStatus().equals("ACCEPTED")) {
+                            res = complaints.get(j);
+                            break;
+                        }
+                        j++;
+                    }
+                }else{
+                    ZonedDateTime dateCreateZone = ZonedDateTime.now();
+                    dateCreateZone = dateCreateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+                    List<Trip> tripsList=tripRepository.findByDriverId(user.getId());
+                    Complaint complaint = new Complaint("Baneado por límite de cancelación",
+                            "Usuario baneado por cancelar un viaje una vez se ha superado el límite de cancelación", tripsList.get(tripsList.size()-1),
+                            user, dateCreateZone.toLocalDateTime(), "ALREADY_RESOLVED");
+                    complaintRepository.save(complaint);
+                    res=complaint;
                 }
-                j++;
             }
             JsonNode jsonNode = objectMapper.readTree(body);
             String content = jsonNode.get("content").asText();
