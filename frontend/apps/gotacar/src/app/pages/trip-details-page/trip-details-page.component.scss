@@ -13,7 +13,7 @@
   grid-area: map;
 }
 
-.driver{
+.driver {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
@@ -22,7 +22,7 @@
   margin: 20px 0px 20px 0px;
 }
 
-.driver-info{
+.driver-info {
   grid-area: driver-info;
 }
 
@@ -58,9 +58,14 @@
   grid-area: driver-status;
   justify-self: center;
 }
-.verified{
-  color:$secondary;
+.verified {
+  color: $secondary;
 }
+
+.orange {
+  color: $warn;
+}
+
 .driver-status img {
   height: 100px;
   width: 100px;
@@ -71,7 +76,8 @@
   color: white;
   background-color: $secondary;
 }
-.data-button {
+
+.rating-button {
   color: white;
   background-color: $primary;
 }

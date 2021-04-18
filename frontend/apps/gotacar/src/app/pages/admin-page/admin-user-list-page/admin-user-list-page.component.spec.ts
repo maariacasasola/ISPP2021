@@ -1,4 +1,5 @@
 
+import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -45,7 +46,7 @@ describe('AdminUserListPageComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [AdminUserListPageComponent],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, MatSnackBarModule],
+            imports: [RouterTestingModule, MatSnackBarModule, CommonModule],
             providers: [{ provide: UsersService, useClass: mockUsersService }],
         }).compileComponents();
     });

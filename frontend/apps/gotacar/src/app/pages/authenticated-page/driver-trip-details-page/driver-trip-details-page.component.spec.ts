@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DriverTripDetailsPageComponent } from './driver-trip-details-page.component';
 import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
-import { User } from '../../../shared/services/user';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const location1 = {
   name: 'Sevilla',
@@ -40,17 +40,25 @@ class mockTripService {
   public get_trip(): Observable<Trip> {
     return of(TRIP_OBJECT);
   }
+
+  public get_users_by_trip() {
+    return of([]);
+  }
 }
 
 describe('DriverTripDetailsPageComponent', () => {
   let component: DriverTripDetailsPageComponent;
   let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
-  let h1: HTMLElement;
-  let service: TripsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        CommonModule,
+      ],
       declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
       providers: [
         ConvertCentToEurPipe,
@@ -65,24 +73,9 @@ describe('DriverTripDetailsPageComponent', () => {
     fixture = TestBed.createComponent(DriverTripDetailsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    h1 = fixture.nativeElement.querySelector('h1');
-    fixture.detectChanges();
-    service = TestBed.inject(TripsService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display a title', () => {
-    expect(h1.textContent).toContain(component.page_title);
-  });
-
-  it('should return trip information', () => {
-    spyOn(service, 'get_trip').and.returnValue(of(TRIP_OBJECT));
-  });
-
-  it('should return users information', () => {
-    expect(service.get_users_by_trip).toBeCalled;
   });
 });

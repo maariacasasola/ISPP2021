@@ -106,6 +106,7 @@ import { CancelTripPlaceDialogComponent } from './components/cancel-trip-place-d
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 import { DriverProfileDataDialogComponent } from './components/driver-profile-data-dialog/driver-profile-data-dialog.component';
+import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -164,6 +165,7 @@ registerLocaleData(localeEs, 'es');
     CancelTripPlaceDialogComponent,
     ClientBecomeDriverPageComponent,
     DriverProfileDataDialogComponent,
+    RatingUserDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

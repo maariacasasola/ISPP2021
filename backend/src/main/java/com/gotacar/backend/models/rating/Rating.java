@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.gotacar.backend.models.User;
+import com.gotacar.backend.models.trip.Trip;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -39,20 +40,23 @@ public class Rating {
     @Max(5)
     public Integer points;
 
+    @DBRef
+    @NotNull
+    public Trip trip;
+
     private LocalDateTime createdAt;
 
     public Rating() {
 
     }
 
-    public Rating(User from, User to, String content, Integer points) {
-        ZonedDateTime actualDate = ZonedDateTime.now();
-        actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+    public Rating(User from, User to, String content, Integer points, Trip trip) {
         this.from = from;
         this.to = to;
         this.points = points;
         this.content = content;
-        this.createdAt = actualDate.toLocalDateTime();
+        this.createdAt = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Madrid")).toLocalDateTime();
+        this.trip = trip;
     }
 
     @Override

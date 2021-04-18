@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -12,7 +12,7 @@ describe('AuthMenuComponent', () => {
   let authService: AuthServiceService;
 
   class mockAuthService {
-    public is_driver(): Observable<Boolean>{
+    public is_driver(): Observable<Boolean> {
       return of(true);
     }
   }
@@ -20,9 +20,9 @@ describe('AuthMenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AuthMenuComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [RouterTestingModule, MatMenuModule],
-      providers: [{ provide: AuthServiceService, useClass: mockAuthService }]
+      providers: [{ provide: AuthServiceService, useClass: mockAuthService }],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -36,4 +36,4 @@ describe('AuthMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-})
+});
