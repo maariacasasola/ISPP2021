@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
@@ -18,10 +17,8 @@ export class UserTripListPageComponent {
 
   constructor(
     private _trips_service: TripsService,
-    private _snackBar: MatSnackBar,
     private _router: Router,
-    private dialog: MatDialog,
-
+    private dialog: MatDialog
   ) {
     this.load_trips_by_user();
   }
@@ -48,7 +45,6 @@ export class UserTripListPageComponent {
       console.log(error);
     }
   }
-
 
   get_trip_status(status) {
     switch (status) {
