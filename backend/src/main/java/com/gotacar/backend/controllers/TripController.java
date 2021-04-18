@@ -81,6 +81,9 @@ public class TripController {
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
 		try {
+			ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -115,6 +118,12 @@ public class TripController {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			LocalDateTime bannedUntil = currentUser.getBannedUntil();
+			if(bannedUntil != null) {
+            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El usuario esta baneado, no puede realizar esta accion");
+            	}
+            }
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
 
