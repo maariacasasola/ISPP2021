@@ -158,11 +158,9 @@ public class ComplaintController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
             Trip trip = tripRepository.findById(tripId).get();
-            if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
-                return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
-            } else {
-                return false;
-            }
+            
+            System.out.println("CONTROLADORRRRRR "+complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size());
+            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
