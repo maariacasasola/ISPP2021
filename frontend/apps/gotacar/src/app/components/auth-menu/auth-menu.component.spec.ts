@@ -12,8 +12,12 @@ describe('AuthMenuComponent', () => {
   let authService: AuthServiceService;
 
   class mockAuthService {
-    public is_driver(): Observable<Boolean>{
+    public is_driver(): Observable<Boolean> {
       return of(true);
+    }
+
+    public user_is_banned() {
+      return false;
     }
   }
 
@@ -22,7 +26,7 @@ describe('AuthMenuComponent', () => {
       declarations: [AuthMenuComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [RouterTestingModule, MatMenuModule],
-      providers: [{ provide: AuthServiceService, useClass: mockAuthService }]
+      providers: [{ provide: AuthServiceService, useClass: mockAuthService }],
     }).compileComponents();
   });
 
@@ -36,4 +40,4 @@ describe('AuthMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-})
+});
