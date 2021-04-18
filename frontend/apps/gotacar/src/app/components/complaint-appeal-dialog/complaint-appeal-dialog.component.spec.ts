@@ -1,7 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComplaintsService } from '../../services/complaints.service';
 import { ComplaintAppealDialogComponent } from './complaint-appeal-dialog.component';
@@ -21,8 +22,8 @@ describe('ComplaintAppealDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ComplaintAppealDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule,ReactiveFormsModule],
-      providers: [{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: ComplaintsService, useClass: mockComplaintsService }],
+      imports: [RouterTestingModule, MatDialogModule,ReactiveFormsModule, HttpClientTestingModule],
+      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: ComplaintsService, useClass: mockComplaintsService }],
     }).compileComponents();
   });
 

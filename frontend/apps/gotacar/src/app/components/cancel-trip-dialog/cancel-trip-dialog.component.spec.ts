@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -31,7 +32,7 @@ describe('CancelTripDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule],
+      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
     }).compileComponents();
   });
