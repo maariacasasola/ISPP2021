@@ -70,8 +70,11 @@ export class ClientProfilePageComponent {
   isDriver() {
     return this._authService.is_driver();
   }
+  isClientAndNoDriver(){
+    return this._authService.is_client() && !this._authService.is_driver();
+  }
   hasCreateRequest(){
-    return !this.user?.driverStatus;
+    return  this.isClientAndNoDriver() && this.user?.driverStatus!='ACCEPTED';
   }
 
   async update_profile_photo() {

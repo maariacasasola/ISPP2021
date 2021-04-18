@@ -18,9 +18,9 @@ export class EditProfileDriverComponent implements OnInit {
   update_form = this.fb.group({
     firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    email: ['', [Validators.required, Validators.email]],
+    email: [{value:'', disabled:true }, [Validators.required, Validators.email]],
     dni: [
-      '',
+      {value:'', disabled:true },
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
     ],
     birthdate: ['', Validators.required],
@@ -108,7 +108,7 @@ export class EditProfileDriverComponent implements OnInit {
         birthdate: moment(this.update_form.value.birthdate).format(
           'yyyy-MM-DD'
         ),
-        dni: this.update_form.value.dni,
+        dni: this.user.dni,
         phone: this.update_form.value.phone,
         iban: this.update_form.value.iban,
         carData: car_data,
