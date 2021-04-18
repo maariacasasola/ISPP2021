@@ -27,14 +27,23 @@
         <img src="assets/logos_conductores/conductor_verificado.svg" />
       </div>
     </div>
-    <button
-      mat-flat-button
-      class="buy-button"
-      (click)="order_trip()"
-      *ngIf="show_buy_button()"
+    <div
+      [matTooltip]="
+        user_is_banned()
+          ? 'Su cuenta de usuario está baneada actualmente'
+          : null
+      "
     >
-      Reservar viaje
-    </button>
+      <button
+        mat-flat-button
+        class="buy-button"
+        (click)="order_trip()"
+        *ngIf="show_buy_button()"
+        [disabled]="user_is_banned()"
+      >
+        Reservar viaje
+      </button>
+    </div>
   </div>
   <div class="map">
     <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>

@@ -107,4 +107,8 @@ export class TripDetailsPageComponent {
   show_buy_button() {
     return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date();
   }
+
+  user_is_banned() {
+    return this._auth_service.user_is_banned();
+  }
 }
