@@ -1,53 +1,83 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardContent } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
+import { TripOrderTypePipe } from '../../../pipes/trip-order-type.pipe';
 import { TripsService } from '../../../services/trips.service';
 import { Trip } from '../../../shared/services/trip';
+import { TripOrder } from '../../../shared/services/trip-order';
 import { UserTripListPageComponent } from './user-trip-list-page.component';
-
-const location1 = {
-    name: 'Sevilla',
-    address: 'Calle Canal 48"',
-    lat: 37.3747084,
-    lng: -5.9649715,
-};
-
-const location2 = {
-    name: 'Sevilla',
-    address: 'Av. Diego Martínez Barrio',
-    lat: 37.37625144174958,
-    lng: -5.976345387146261,
-};
-
-const TRIP_OBJECT: Trip = {
-    cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
-    comments: '',
-    end_date: new Date(2021, 3, 4, 13, 30, 24),
-    start_date: new Date(2021, 3, 4, 13, 30, 24),
-    ending_point: location2,
-    starting_point: location1,
-    places: 3,
-    price: 200,
-};
-
-class mockTripService {
-    public get_trip(): Observable<Trip> {
-        return of(TRIP_OBJECT);
-    }
-}
 
 describe('UserTripListPageComponent', () => {
     let component: UserTripListPageComponent;
     let fixture: ComponentFixture<UserTripListPageComponent>;
     let service: TripsService;
+    let routerSpy = { navigate: jasmine.createSpy('navigate') };
 
+    const location1 = {
+        name: 'Sevilla',
+        address: 'Calle Canal 48"',
+        lat: 37.3747084,
+        lng: -5.9649715,
+    };
+
+    const location2 = {
+        name: 'Sevilla',
+        address: 'Av. Diego Martínez Barrio',
+        lat: 37.37625144174958,
+        lng: -5.976345387146261,
+    };
+
+    let TRIP_OBJECT: TripOrder = {
+        date: new Date(2021, 6, 4, 13, 30, 24),
+        price: 300,
+        paymentIntent: null,
+        places: 2,
+        status: "PROCCESSING",
+        user: {
+            id: "6072f5bfff1aa84899c35742",
+            firstName: "Juan",
+            lastName: "Perez",
+            uid: "Ej7NpmWydRWMIg28mIypzsI4Bgm2",
+            email: "client@gotacar.es",
+            dni: "80808080R",
+            profilePhoto: null,
+            birthdate: new Date(2021, 6, 4, 13, 30, 24),
+            roles: ["ROLE_CLIENT"],
+            token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
+            emailVerified: true,
+            timesBanned: null,
+        },
+        trip: {
+            cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
+            comments: '',
+            end_date: new Date(2021, 3, 4, 13, 30, 24),
+            start_date: new Date(2021, 3, 4, 13, 30, 24),
+            ending_point: location2,
+            starting_point: location1,
+            places: 3,
+            price: 200,
+        }
+    };
+
+    let TRIP_OBJECTS = [TRIP_OBJECT,];
+
+    class mockTripService {
+        public get_trip(): Observable<TripOrder> {
+            return of(TRIP_OBJECT);
+        }
+
+        public get_trips() {
+            return of([]);
+        }
+    }
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -58,11 +88,12 @@ describe('UserTripListPageComponent', () => {
                 HttpClientTestingModule,
                 BrowserAnimationsModule,
                 MatDialogModule,
-            ], providers: [
-                { provide: TripsService, useClass: mockTripService },
             ],
-
-            schemas: [NO_ERRORS_SCHEMA],
+            providers: [CurrencyPipe,
+                { provide: TripsService, useClass: mockTripService }, { provide: Router, useValue: routerSpy }
+            ],
+            declarations: [UserTripListPageComponent, TripOrderTypePipe],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
         }).compileComponents();
     });
 
@@ -70,6 +101,7 @@ describe('UserTripListPageComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(UserTripListPageComponent);
         component = fixture.componentInstance;
+        service = TestBed.inject(TripsService);
         fixture.detectChanges();
     });
 
@@ -80,9 +112,9 @@ describe('UserTripListPageComponent', () => {
 
     it('should open cancel trip dialog', () => {
         spyOn(component, 'cancel_trip_order_dialog');
-        component.cancel_trip_order_dialog('1');
+        component.cancel_trip_order_dialog("1");
         fixture.detectChanges();
-        expect(component.cancel_trip_order_dialog).toHaveBeenCalled();
+
     });
 
     it('should get right coordinates', () => {
@@ -114,10 +146,9 @@ describe('UserTripListPageComponent', () => {
     })
 
     it('should redirect to create complaints', () => {
-        spyOn(component, 'create_complaint');
-        component.create_complaint(1);
+        component.create_complaint("1");
         fixture.detectChanges();
-        expect(component.create_complaint).toHaveBeenCalled();
+        expect(routerSpy.navigate).toHaveBeenCalledWith(["/", "authenticated", "trips", "1", "create-complaint"],);
     })
 
 });

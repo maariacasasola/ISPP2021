@@ -50,6 +50,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -102,6 +104,7 @@ import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-tri
 import { OrderTripsPipe } from './pipes/order-trips.pipe';
 import { CancelTripPlaceDialogComponent } from './components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 
 registerLocaleData(localeEs, 'es');
 
@@ -156,6 +159,7 @@ registerLocaleData(localeEs, 'es');
     ImageUploadDialogComponent,
     DriverTripDetailsPageComponent,
     OrderTripsPipe,
+    TripOrderTypePipe,
     CancelTripPlaceDialogComponent,
   ],
   imports: [
@@ -171,6 +175,7 @@ registerLocaleData(localeEs, 'es');
     MatIconModule,
     MatStepperModule,
     MatExpansionModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -208,6 +213,7 @@ registerLocaleData(localeEs, 'es');
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,
+    TripOrderTypePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
@@ -220,4 +226,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -154,12 +154,11 @@ describe('SearchFormComponent', () => {
     fixture.detectChanges();
     expect(component.searchForm.valid).toBeTruthy();
     component.onSubmit();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(routerSpy.navigate).toHaveBeenCalledWith([
-        '/',
-        'trip-search-result',
-      ]);
-    });
+    fixture.detectChanges();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/", "trip-search-result"], {
+      "queryParams": { "date": "fecha", "origin": "Origen", "places": 3, "target": "Target" }
+    }
+    );
+
   });
 });

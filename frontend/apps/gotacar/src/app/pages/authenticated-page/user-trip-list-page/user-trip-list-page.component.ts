@@ -12,6 +12,9 @@ import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-
 })
 export class UserTripListPageComponent {
   trips = [];
+  filter = {
+    type: null,
+  };
 
   constructor(
     private _trips_service: TripsService,
@@ -23,23 +26,27 @@ export class UserTripListPageComponent {
     this.load_trips_by_user();
   }
 
+  set_type(type) {
+    this.filter = { ...this.filter, type: type };
+  }
+
   async load_trips_by_user() {
     try {
       this.trips = await this._trips_service.get_trips();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 
-  cancel_trip_order_dialog(trip_id){
-      try{
-        this.dialog.open(CancelTripPlaceDialogComponent, {
-          data: [trip_id],
-          disableClose: true,
-        });
-      }catch(error){
-        console.log(error);
-      }
+  cancel_trip_order_dialog(trip_id) {
+    try {
+      this.dialog.open(CancelTripPlaceDialogComponent, {
+        data: [trip_id],
+        disableClose: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
