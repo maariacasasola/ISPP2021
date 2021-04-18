@@ -55,13 +55,13 @@ export class EditProfileDriverComponent implements OnInit {
     try {
       this.user = await this._authService.get_user_data();
       this.update_form.setValue({
-        firstName: this.user?.firstName,
-        lastName: this.user?.lastName,
-        email: this.user?.email,
-        dni: this.user?.dni,
-        birthdate: this.user?.birthdate,
-        phone: this.user?.phone,
-        iban: this.user?.iban,
+        firstName: this.user?.firstName || '',
+        lastName: this.user?.lastName || '',
+        email: this.user?.email || '',
+        dni: this.user?.dni || '',
+        birthdate: this.user?.birthdate || '',
+        phone: this.user?.phone || '',
+        iban: this.user?.iban || '',
         car_plate: this.user?.carData?.carPlate || '',
         enrollment_date: this.user?.carData?.enrollmentDate || '',
         model: this.user?.carData?.model || '',

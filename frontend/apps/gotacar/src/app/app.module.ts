@@ -15,8 +15,7 @@ import localeEs from '@angular/common/locales/es';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-/// STARS 
-// import { RatingModule } from 'ngx-bootstrap';
+
 ///FLEX LAYOUT
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -102,7 +101,6 @@ import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { OrderTripsPipe } from './pipes/order-trips.pipe';
 import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(localeEs, 'es');
 
@@ -198,7 +196,6 @@ registerLocaleData(localeEs, 'es');
     MatMenuModule,
     FlexLayoutModule,
     NgxSliderModule,
-    NgbModule,
   ],
   providers: [
     AuthenticatedGuard,

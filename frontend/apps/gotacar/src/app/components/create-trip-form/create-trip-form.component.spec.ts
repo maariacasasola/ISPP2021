@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -6,8 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateTripFormComponent } from './create-trip-form.component';
-import { MatStepper } from '@angular/material/stepper';
-import { By } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 describe('MeetingPointSearchbarResultComponent', () => {
   let component: CreateTripFormComponent;
@@ -21,9 +20,10 @@ describe('MeetingPointSearchbarResultComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         BrowserAnimationsModule,
+        CommonModule,
       ],
       declarations: [CreateTripFormComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
