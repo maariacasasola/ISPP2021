@@ -9,6 +9,7 @@ import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { User } from '../../../shared/services/user';
 import { MatDialogModule } from '@angular/material/dialog';
 
 const location1 = {
@@ -36,6 +37,21 @@ const TRIP_OBJECT: Trip = {
   price: 200,
 };
 
+const USER_OBJECT: User = {
+  id: '2',
+  firstName: 'Manuel',
+  lastName: 'Fernandez',
+  uid: '1',
+  email: 'manan@gmail.com',
+  dni: '312312312',
+  profilePhoto: 'http://dasdasdas.com',
+  birthdate: new Date(1994, 6, 4, 13, 30, 24),
+  roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
+  emailVerified: true,
+  timesBanned: 2,
+  token: '12312ed2',
+};
+
 class mockTripService {
   public get_trip(): Observable<Trip> {
     return of(TRIP_OBJECT);
@@ -49,15 +65,15 @@ class mockTripService {
 describe('DriverTripDetailsPageComponent', () => {
   let component: DriverTripDetailsPageComponent;
   let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
+  let h1: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
-        MatSnackBarModule,
         MatDialogModule,
-        CommonModule,
+        MatSnackBarModule,
       ],
       declarations: [DriverTripDetailsPageComponent, ConvertCentToEurPipe],
       providers: [
@@ -77,5 +93,15 @@ describe('DriverTripDetailsPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get profile photo without load on database', () => {
+    expect(component.get_user_profile_photo(USER_OBJECT)).toBe(
+      'http://dasdasdas.com'
+    );
+  });
+
+  it('should check future date', () => {
+    expect(component.checkDate(new Date(2020, 12, 3))).toBe(false);
   });
 });

@@ -4,6 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RatingUserDialogComponent } from '../../../components/rating-user-dialog/rating-user-dialog.component';
+import * as moment from 'moment';
+import { RefuseClientTripDriverDialogComponent } from '../../../components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 import { TripsService } from '../../../services/trips.service';
 import { UsersService } from '../../../services/users.service';
 
@@ -25,7 +27,8 @@ export class DriverTripDetailsPageComponent {
     private _user_service: UsersService,
     private _my_dialog: MatDialog,
     private _route: ActivatedRoute,
-    private _trip_service: TripsService
+    private _trip_service: TripsService,
+    private dialog: MatDialog
   ) {
     this.load_trip();
     this.load_users();
@@ -54,6 +57,7 @@ export class DriverTripDetailsPageComponent {
       });
     }
   }
+  
   async get_users_rated() {
     const usersS = await this._trip_service.get_users_by_trip(
       this._route.snapshot.params['trip_id']
@@ -76,9 +80,11 @@ export class DriverTripDetailsPageComponent {
       this.openSnackBar('Problema al cargar los usuarios valorados');
     }
   }
+
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
   }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
       duration: 3000,
@@ -113,5 +119,20 @@ export class DriverTripDetailsPageComponent {
         this.openSnackBar('Tu valoración no se ha podido realizar');
       }
     }
+  }
+
+  active_cancel_dialog(trip_id, user_id) {
+    try {
+      this.dialog.open(RefuseClientTripDriverDialogComponent, {
+        data: [trip_id, user_id],
+        disableClose: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  checkDate(endingDate) {
+    return moment(endingDate).isAfter(moment());
   }
 }

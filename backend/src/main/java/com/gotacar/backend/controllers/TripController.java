@@ -39,13 +39,16 @@ import org.springframework.web.bind.annotation.*;
 public class TripController {
 
 	@Autowired
+	private RefundController refundController;
+
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
+
+	@Autowired
 	private TripRepository tripRepository;
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private TripOrderRepository tripOrderRepository;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -86,7 +89,7 @@ public class TripController {
 		try {
 			ZonedDateTime actualDate = ZonedDateTime.now();
 			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-			
+
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -122,11 +125,12 @@ public class TripController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			LocalDateTime bannedUntil = currentUser.getBannedUntil();
-			if(bannedUntil != null) {
-            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
-            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El usuario esta baneado, no puede realizar esta accion");
-            	}
-            }
+			if (bannedUntil != null) {
+				if (bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+							"El usuario esta baneado, no puede realizar esta accion");
+				}
+			}
 
 			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
 
@@ -168,9 +172,6 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
-			ZonedDateTime actualDate = ZonedDateTime.now();
-			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-
 			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -190,20 +191,14 @@ public class TripController {
 				throw new Exception("El viaje ya está cancelado");
 			}
 
+			ZonedDateTime dateStartZone = ZonedDateTime.now();
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			LocalDateTime now = dateStartZone.toLocalDateTime();
+
 			trip1.setCanceled(true);
-			trip1.setCancelationDate(actualDate.toLocalDateTime());
+			trip1.setCancelationDate(now);
 
-			if (trip1.getCancelationDateLimit().isBefore(actualDate.toLocalDateTime())) {
-				driver.setBannedUntil(actualDate.toLocalDateTime().plusDays(14));
-				userRepository.save(driver);
-			}
-
-			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
-
-			for (TripOrder order : orders) {
-				order.setStatus("REFUNDED_PENDING");
-				tripOrderRepository.save(order);
-			}
+			refundController.createRefundDriverCancelTrip(trip1);
 
 			tripRepository.save(trip1);
 			return trip1;
@@ -232,5 +227,35 @@ public class TripController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/cancel-user/{user_id}/from-trip/{trip_id}")
+	public Trip cancelUserFromTrip(@PathVariable(value = "user_id") String userId,
+			@PathVariable(value = "trip_id") String tripId) {
+		try {
+
+			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
+
+			User user1 = userRepository.findById(new ObjectId(userId));
+
+			List<TripOrder> listOrders1 = tripOrderRepository.findByTrip(trip1);
+
+			for (TripOrder order : listOrders1) {
+
+				if (order.getUser().getDni().equals(user1.getDni())) {
+					Integer orderPlaces1 = order.getPlaces();
+					trip1.setPlaces(trip1.getPlaces() + orderPlaces1);
+					tripRepository.save(trip1);
+					refundController.createRefundDriverRejection(order);
+				}
+
+			}
+			return trip1;
+
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
 	}
 }
