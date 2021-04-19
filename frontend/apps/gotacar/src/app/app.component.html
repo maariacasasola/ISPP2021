@@ -1,1 +1,6 @@
-<router-outlet></router-outlet>
+<div class="loading" *ngIf="is_loading" [@inOutAnimation]>
+  <img src="assets/img/gotacar-loading.gif" />
+</div>
+<div class="gotacar-app" *ngIf="!is_loading">
+  <router-outlet></router-outlet>
+</div>

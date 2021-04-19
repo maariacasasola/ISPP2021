@@ -424,7 +424,8 @@ public class BackendApplication implements CommandLineRunner {
                                         .antMatchers(HttpMethod.POST, "/cancel_trip_driver").permitAll()
                                         .antMatchers(HttpMethod.POST, "/stripe-webhook").permitAll()
                                         .antMatchers(HttpMethod.GET, "/").permitAll()
-                                        .antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest()
+                                        .antMatchers(HttpMethod.POST, "/search_trips").permitAll()
+                                        .antMatchers(HttpMethod.GET, "/wake-up").permitAll().anyRequest()
                                         .authenticated();
                 }
 

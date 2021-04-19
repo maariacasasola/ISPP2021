@@ -110,6 +110,7 @@ import { DriverProfileDataDialogComponent } from './components/driver-profile-da
 import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
 import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 import { RefuseClientTripDriverDialogComponent } from './components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
+import { HelloService } from './services/hello.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -213,11 +214,13 @@ registerLocaleData(localeEs, 'es');
     MatMenuModule,
     FlexLayoutModule,
     NgxSliderModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AuthenticatedGuard,
     GeocoderServiceService,
     HttpClientModule,
+    HelloService,
     AuthServiceService,
     ComplaintAppealsService,
     PaymentReturnsService,

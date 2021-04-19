@@ -11,4 +11,9 @@ public class HelloController {
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return "La API funciona correctamente";
 	}
+
+	@GetMapping("/wake-up")
+	public Boolean wakeUp() {
+		return true;
+	}
 }
