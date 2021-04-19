@@ -148,7 +148,6 @@ export class ClientBecomeDriverPageComponent implements OnInit {
         this.router.navigate(['authenticated/profile']);
       }
     } catch (error) {
-      console.error(error);
       this.openSnackBar(
         'Ha ocurrido un error al intentar convertirte en conductor'
       );

@@ -40,7 +40,7 @@ export class DriverTripDetailsPageComponent {
       this.get_users_rated();
       this.fecha = new Date(this.trip.startDate);
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al cargar el viaje");
     }
   }
 

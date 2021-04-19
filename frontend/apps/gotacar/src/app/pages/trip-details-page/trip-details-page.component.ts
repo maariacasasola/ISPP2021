@@ -68,7 +68,9 @@ export class TripDetailsPageComponent {
       this.trip = await this._trip_service.get_trip(this.get_trip_id());
       this.fecha = new Date(this.trip.startDate);
     } catch (error) {
-      console.error(error);
+      this._snackbar.open('Se ha producido un error al cargar el viaje', null, {
+        duration: 3000,
+      });
     }
 
   }

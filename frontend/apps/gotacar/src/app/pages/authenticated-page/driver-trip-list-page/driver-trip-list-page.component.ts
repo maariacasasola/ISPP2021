@@ -26,7 +26,9 @@ export class DriverTripListPageComponent {
     try {
       this.trips = await this._trips_service.get_driver_trips();
     } catch (error) {
-      console.error(error);
+      this._snackbar.open("Se ha producido un error al cargar los viajes", null, {
+        duration: 3000,
+      });
     }
   }
 
@@ -54,7 +56,9 @@ export class DriverTripListPageComponent {
         await this.load_trips_by_driver();
       }
     } catch (error) {
-      console.error(error);
+      this._snackbar.open("Se ha producido un error al cancelar el viaje", null, {
+        duration: 2000,
+      });
     }
   }
 }
