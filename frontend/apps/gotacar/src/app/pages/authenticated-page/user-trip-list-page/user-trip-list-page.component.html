@@ -41,7 +41,7 @@
     </p>
 
     <mat-card-actions align="end">
-      <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn"
+      <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn" class="cancel-button"
         (click)="cancel_trip_order_dialog(trip.id)">
         <mat-icon>cancel_presentation</mat-icon>
       </button>
