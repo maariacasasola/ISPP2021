@@ -290,10 +290,8 @@ public class UserController {
 			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
 			List<TripOrder> tripOrdersPr = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
 			List<TripOrder> tripOrdersPa = tripOrderRepository.findByUserAndStatus(user, "PAID");
-			if (user.getRoles().contains("ROLE_CLIENT")) {
-				if (!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()) {
-					throw new Exception("El usuario tiene reservas pendientes");
-				}
+			if (!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()) {
+				throw new Exception("El usuario tiene reservas pendientes");
 			}
 			if (user.getRoles().contains("ROLE_DRIVER")) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
