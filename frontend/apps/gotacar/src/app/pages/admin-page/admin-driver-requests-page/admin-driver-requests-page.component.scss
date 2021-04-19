@@ -1,0 +1,46 @@
+h1 {
+  text-align: center;
+  color: #0e4a6b;
+  margin: 20px;
+  font-size: 30px;
+}
+
+.request {
+  border: 1px solid #0e4a6b;
+  padding: 30px;
+}
+
+.request-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.profile-photo {
+  margin-right: 10px;
+}
+
+.username {
+  margin-bottom: 0 !important;
+}
+
+.requests-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 20px;
+  grid-template-areas: '. .';
+  padding: 20px;
+}
+
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
+@media (max-width: 760px) {
+  .requests-list {
+    display: flex;
+    flex-direction: column;
+  }
+}

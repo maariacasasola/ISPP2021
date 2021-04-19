@@ -1,0 +1,46 @@
+<button class="close-button" (click)="close()">
+  <mat-icon>close</mat-icon>
+</button>
+<h3>Comenta sobre este usuario</h3>
+<mat-dialog-content [formGroup]="rating_form">
+  <mat-form-field class="spacing" appearance="outline">
+    <input matInput type="textarea" formControlName="content" />
+    <mat-error *ngIf="rating_form?.get('content')?.errors?.required"
+      >Campo obligatorio</mat-error
+    >
+  </mat-form-field>
+  <div><mat-icon [ngClass]="{'star_color':rating > 0}"
+    (click)="set_rating(1)"
+      
+    >{{rating > 0 ? 'star' :'star_border'}}</mat-icon>
+    <mat-icon [ngClass]="{'star_color':rating > 1}"
+    (click)="set_rating(2)"
+      
+    >{{rating > 1 ? 'star' :'star_border'}}</mat-icon>
+    <mat-icon [ngClass]="{'star_color':rating > 2}"
+    (click)="set_rating(3)"
+      
+    >{{rating > 2 ? 'star' :'star_border'}}</mat-icon>
+    <mat-icon [ngClass]="{'star_color':rating > 3}"
+    (click)="set_rating(4)"
+      
+    >{{rating > 3 ? 'star' :'star_border'}}</mat-icon>
+    <mat-icon [ngClass]="{'star_color':rating > 4}"
+    (click)="set_rating(5)"
+      
+    >{{rating > 4 ? 'star' :'star_border'}}</mat-icon>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions>
+  
+  <button
+    class="login-button"
+    mat-flat-button
+    type="submit"
+    (click)="onSubmit()"
+    [disabled]="!rating_form.valid"
+  >
+    Valorar
+  </button>
+</mat-dialog-actions>

@@ -52,5 +52,9 @@ export class TripMapComponent implements OnInit {
       info: this.trip?.endingPoint?.address,
     };
     this.markers.push(origin, target);
+    this.center = {
+      lat: (this.trip?.startingPoint?.lat + this.trip?.endingPoint?.lat) / 2,
+      lng: (this.trip?.startingPoint?.lng + this.trip?.endingPoint?.lng) / 2,
+    };
   }
 }

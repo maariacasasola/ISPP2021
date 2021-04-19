@@ -6,20 +6,84 @@
         {{ get_trip_description() }}
       </h2>
       <h3>Fecha y hora: {{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</h3>
-      <h3>
-        Conductor: {{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}
-      </h3>
       <div class="price-and-places">
         <span>Plazas disponibles: {{ trip?.places }}</span>
         <span class="price">{{ trip?.price | convertCentToEur }}</span>
       </div>
     </div>
-    <div class="driver-status" matTooltip="Conductor verificado por GotACar">
-      <img src="assets/logos_conductores/conductor_verificado.svg" />
+    <div class="driver">
+      <div class="driver-info">
+        <h2>Datos del conductor</h2>
+
+        <h3>{{ trip?.driver?.firstName + ' ' + trip?.driver?.lastName }}</h3>
+        <h3 *ngIf="trip?.driver?.carData">
+          {{ trip?.driver?.carData?.model }}
+          {{ trip?.driver?.carData?.color }}
+        </h3>
+        <h3 *ngIf="trip?.driver?.experience">
+          {{ trip?.driver?.experience }} años de experiencia
+        </h3>
+        <div *ngIf="trip?.driver?.averageRatings">
+          <div><b>Valoración media: </b></div>
+
+          <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 0 }">{{
+            trip?.driver?.averageRatings > 0 ? 'star' : 'star_border'
+          }}</mat-icon>
+          <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 1 }">{{
+            trip?.driver?.averageRatings > 1 ? 'star' : 'star_border'
+          }}</mat-icon>
+          <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 2 }">{{
+            trip?.driver?.averageRatings > 2 ? 'star' : 'star_border'
+          }}</mat-icon>
+          <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 3 }">{{
+            trip?.driver?.averageRatings > 3 ? 'star' : 'star_border'
+          }}</mat-icon>
+          <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 4 }">{{
+            trip?.driver?.averageRatings > 4 ? 'star' : 'star_border'
+          }}</mat-icon>
+        </div>
+        <button
+          mat-flat-button
+          *ngIf="
+            !user_already_rated?.includes(trip?.driver?.id) && fecha < today
+          "
+          class="rating-button"
+          (click)="openDialogRating(trip?.driver?.id)"
+        >
+          Valorar conductor
+        </button>
+        <button
+          mat-flat-button
+          color="warn"
+          class="data-button"
+          (click)="open_driver_data_dialog(trip)"
+          *ngIf="show_buy_button()"
+        >
+          Ver datos conductor
+        </button>
+      </div>
+      <div class="driver-status" matTooltip="Conductor verificado por GotACar">
+        <img [src]="get_profile_photo()" />
+        <mat-icon class="verified">verified</mat-icon>
+      </div>
     </div>
-    <button mat-flat-button class="buy-button" (click)="order_trip()" *ngIf="show_buy_button()">
-      Reservar viaje
-    </button>
+    <div
+      [matTooltip]="
+        user_is_banned()
+          ? 'Su cuenta de usuario está baneada actualmente'
+          : null
+      "
+    >
+      <button
+        mat-flat-button
+        class="buy-button"
+        (click)="order_trip()"
+        *ngIf="show_buy_button()"
+        [disabled]="user_is_banned()"
+      >
+        Reservar viaje
+      </button>
+    </div>
   </div>
   <div class="map">
     <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>

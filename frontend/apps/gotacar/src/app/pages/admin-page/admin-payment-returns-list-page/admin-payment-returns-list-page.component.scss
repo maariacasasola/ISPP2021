@@ -1,0 +1,46 @@
+h1 {
+  text-align: center;
+  color: #0e4a6b;
+  margin: 20px;
+  font-size: 30px;
+}
+
+.payment-return {
+  border: 1px solid #0e4a6b;
+  padding: 30px;
+}
+
+.card-title {
+  text-align: right;
+  color: #0e4a6b;
+  font-size: 30px;
+}
+
+.payment-returns-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 20px;
+  grid-template-areas: '. .';
+  padding: 20px;
+}
+
+.button {
+  background-color: #0e4a6b;
+  color: white;
+}
+
+.card-actions {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+@media (max-width: 760px) {
+  .payment-returns-list {
+    display: flex;
+    flex-direction: column;
+  }
+}

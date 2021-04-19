@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,9 +18,9 @@ import java.util.List;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ import com.gotacar.backend.BackendApplication;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
-public class TripOrderControllerTest {
+class TripOrderControllerTest {
 
     @Configuration
     static class TestConfig {
@@ -65,9 +67,11 @@ public class TripOrderControllerTest {
     private User driver;
     private Trip trip;
     private TripOrder order;
+    ZonedDateTime actualDate = ZonedDateTime.now();
 
     @BeforeEach
     void setUp() {
+        actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         List<String> lista1 = new ArrayList<String>();
         lista1.add("ROLE_ADMIN");
         List<String> lista2 = new ArrayList<String>();
@@ -76,17 +80,17 @@ public class TripOrderControllerTest {
         lista3.add("ROLE_CLIENT");
         lista3.add("ROLE_DRIVER");
         driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
-                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
+                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista3, "655757575");
         ObjectId driverObjectId = new ObjectId();
         driver.setId(driverObjectId.toString());
 
         user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es", "89070336D",
-                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
+                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista2, "655757575");
         ObjectId userObjectId = new ObjectId();
         user.setId(userObjectId.toString());
 
         admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es", "89070360G",
-                "http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1);
+                "http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1, "655757575");
         ObjectId adminObjectId = new ObjectId();
         admin.setId(adminObjectId.toString());
 
@@ -103,9 +107,9 @@ public class TripOrderControllerTest {
     }
 
     @Test
-    public void testListTripOrders() throws Exception {
+    void testListTripOrders() throws Exception {
         order = new TripOrder(trip, user, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
-        Mockito.when(tripOrderRepository.findByUserUid(order.getUser().getUid())).thenReturn(Arrays.asList(order));
+        Mockito.when(tripOrderRepository.findByUserId(order.getUser().getId())).thenReturn(Arrays.asList(order));
         Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
         Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
 
@@ -130,8 +134,8 @@ public class TripOrderControllerTest {
     }
 
     @Test
-    public void testCancelTripOrderRequest() throws Exception {
-        trip.setCancelationDateLimit(LocalDateTime.now().plusDays(1));
+    void testCancelTripOrderRequest() throws Exception {
+        trip.setCancelationDateLimit(actualDate.toLocalDateTime().plusDays(1));
         Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
         Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
         Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
@@ -142,25 +146,97 @@ public class TripOrderControllerTest {
         org.json.JSONObject json = new org.json.JSONObject(response);
         String token = json.getString("token");
 
-        mockMvc.perform(get("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
+        Integer beforePlaces = order.getTrip().getPlaces();
+        ResultActions result = mockMvc
+                .perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
 
-        assertThat(order.status).isEqualTo("REFUNDED_PENDING");
+        // assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        // assertThat(order.getStatus()).isEqualTo("REFUNDED_PENDING");
+        // assertThat(order.getTrip().getPlaces()).isEqualTo(beforePlaces + order.getPlaces());
+        // assertThat(order.getStatus()).isEqualTo("REFUNDED");
     }
 
     @Test
-    public void testCancelTripOrder() throws Exception {
+    void testCancelTripOrder() throws Exception {
         Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
         Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
 
-        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn()
-                .getResponse().getContentAsString();
+        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                .getContentAsString();
 
         org.json.JSONObject json = new org.json.JSONObject(response);
         String token = json.getString("token");
 
-        mockMvc.perform(get("/cancel_trip_order/" + order.getId()).header("Authorization", token));
+        ResultActions result = mockMvc
+                .perform(post("/cancel_trip_order/" + order.getId()).header("Authorization", token));
 
-        assertThat(order.status).isEqualTo("REFUNDED");
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(order.getStatus()).isEqualTo("REFUNDED");
+    }
+
+    @Test
+    void testListTripOrderAdmin() throws Exception {
+        Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/list").header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(tripOrderRepository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    void testShowTripOrderAdmin() throws Exception {
+        Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/show/" + order.getId()).header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+    }
+
+    @Test
+    void testListTripOrderUser() throws Exception {
+        Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/list").header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
+    }
+
+    @Test
+    void testShowTripOrderUser() throws Exception {
+        Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+        Mockito.when(tripOrderRepository.findAll()).thenReturn(Arrays.asList(order));
+
+        String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        ResultActions result = mockMvc.perform(get("/trip_order/show/" + order.getId()).header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
     }
 
 }

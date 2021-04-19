@@ -1,7 +1,8 @@
 package com.gotacar.backend.controllers;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,10 +12,10 @@ import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Complaint> listComplaints() {
         try {
-            List<Complaint> complaints = complaintRepository.findAll().stream()
-                    .filter(x -> x.getStatus().equals("PENDING")).collect(Collectors.toList());
-            return complaints;
+            return complaintRepository.findByStatus("PENDING");
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
@@ -62,6 +61,8 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Complaint fileComplaint(@RequestBody String body) {
         try {
+            ZonedDateTime actualDate = ZonedDateTime.now();
+            actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             JsonNode jsonNode = objectMapper.readTree(body);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
@@ -70,14 +71,14 @@ public class ComplaintController {
             ObjectId tripObjectId = new ObjectId(tripId);
             Trip trip = tripRepository.findById(tripObjectId);
 
-            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(new ObjectId(user.getId()), tripObjectId);
+            List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
-            if (trip.getEndingDate().isBefore(LocalDateTime.now())) {
+            if (trip.getEndingDate().isBefore(actualDate.toLocalDateTime())) {
                 if (lto.size() == 1) {
                     String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
                     String title = objectMapper.readTree(jsonNode.get("title").toString()).asText();
 
-                    Complaint complaint = new Complaint(title, content, trip, user, LocalDateTime.now());
+                    Complaint complaint = new Complaint(title, content, trip, user, actualDate.toLocalDateTime());
 
                     this.complaintRepository.save(complaint);
 
@@ -99,31 +100,26 @@ public class ComplaintController {
     public User penalize(@RequestBody String body) {
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
-            User userBanned = new User();
 
-            LocalDateTime dateBanned = OffsetDateTime
-                    .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText()).toLocalDateTime();
+            ZonedDateTime dateBannedJson = ZonedDateTime
+                    .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText());
+            dateBannedJson = dateBannedJson.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            LocalDateTime dateBanned = dateBannedJson.toLocalDateTime();
 
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-
             Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
             Trip tripComplaint = complaintFinal.getTrip();
-            userBanned = tripComplaint.getDriver();
-            String userDni = userBanned.getDni();
+            User userBanned = tripComplaint.getDriver();
 
-            List<String> trips = tripRepository.findAll().stream().filter(a -> a.driver.dni.equals(userDni))
-                    .map(x -> x.getId()).collect(Collectors.toList());
+            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(x -> x.getId())
+                    .collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
+
             int j = 0;
-
             while (j < complaintAll.size()) {
-
-                if (trips.contains(complaintAll.get(j).getTrip().getId())) {
-
+                if (tripsIds.contains(complaintAll.get(j).getTrip().getId())) {
                     complaintAll.get(j).setStatus("ALREADY_RESOLVED");
-
                     complaintRepository.save(complaintAll.get(j));
-
                 }
                 j++;
             }
@@ -132,8 +128,22 @@ public class ComplaintController {
             complaintRepository.save(complaintFinal);
             userBanned.setBannedUntil(dateBanned);
             userRepository.save(userBanned);
-
             return userBanned;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+    @PostMapping("/refuse/{complaintId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId) {
+        try {
+            Complaint complaintFinal = complaintRepository.findById(new ObjectId(complaintId));
+
+            complaintFinal.setStatus("REFUSED");
+            complaintRepository.save(complaintFinal);
+
+            return complaintFinal;
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -141,18 +151,14 @@ public class ComplaintController {
 
     }
 
-    @PostMapping("/refuse/{complaintId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId) {
+    @GetMapping("/complaints/check/{tripId}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public Boolean checkComplaint(@PathVariable(value = "tripId") String tripId) {
         try {
-            String idComplaint = complaintId;
-
-            Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
-
-            complaintFinal.setStatus("REFUSED");
-            complaintRepository.save(complaintFinal);
-
-            return complaintFinal;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            Trip trip = tripRepository.findById(new ObjectId(tripId));
+            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

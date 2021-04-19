@@ -1,10 +1,52 @@
 <frontend-main-header></frontend-main-header>
 
 <section class="page-container">
-  <div class="search-info" *ngIf="trips">
-    <h2>{{ trips?.length }} viajes encontrados</h2>
+  <mat-accordion class="filter filter-accordion">
+    <mat-expansion-panel
+      (opened)="filter_opened = true"
+      (closed)="filter_opened = false"
+      class="mat-elevation-z0"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ trips?.length }} viajes encontrados
+        </mat-panel-title>
+        <mat-panel-description fxLayoutAlign="end">
+          <button mat-flat-button class="filter-button">Filtrar</button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="filter-content">
+        <ngx-slider
+          *ngIf="price_range_options"
+          [(value)]="min_price_range"
+          [(highValue)]="max_price_range"
+          [options]="price_range_options"
+          class="price-range"
+          (highValueChange)="change_filter_max_price($event)"
+          (valueChange)="change_filter_min_price($event)"
+        ></ngx-slider>
+        <div class="order-by">
+          <mat-form-field appearance="fill">
+            <mat-label>Ordenar por</mat-label>
+            <mat-select (selectionChange)="order_by_changed($event.value)">
+              <mat-option value=""> - </mat-option>
+              <mat-option value="price_asc">Precio asc.</mat-option>
+              <mat-option value="price_desc">Precio des.</mat-option>
+              <mat-option value="date_asc">Fecha y hora asc.</mat-option>
+              <mat-option value="date_desc">Fecha y hora desc.</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="results">
+    <frontend-trip-list
+      *ngIf="trips"
+      [trips]="trips | orderTrips: filter"
+    ></frontend-trip-list>
   </div>
-  <frontend-trip-list *ngIf="trips" [trips]="trips"></frontend-trip-list>
 </section>
 
 <frontend-main-footer></frontend-main-footer>

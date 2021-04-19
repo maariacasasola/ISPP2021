@@ -7,9 +7,11 @@ import { AdminComplaintsListPageComponent } from './pages/admin-page/admin-compl
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
+import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
@@ -19,8 +21,18 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { TripSearchResultPageComponent } from './pages/trip-search-result-page/trip-search-result-page.component';
 import { TripDetailsPageComponent } from './pages/trip-details-page/trip-details-page.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { EditProfileDriverComponent } from './pages/authenticated-page/edit-profile-driver/edit-profile-driver.component';
+import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
+import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
+import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
+import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
+import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 
 const routes: Routes = [
   {
@@ -39,6 +51,14 @@ const routes: Routes = [
   {
     path: 'log-in',
     component: LogInPageComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent,
+  },
+  {
+    path: 'google-register',
+    component: RegisterUserGoogleComponent,
   },
   {
     path: 'error',
@@ -70,6 +90,23 @@ const routes: Routes = [
         component: ClientProfilePageComponent,
       },
       {
+        path: 'contact',
+        component: ClientContactPageComponent,
+      },
+      {
+        path: 'edit-profile',
+        component: EditProfileDriverComponent,
+      },
+      {
+        path: 'edit-profile-client',
+        component: EditProfileClientComponent,
+      },
+      {
+        path: 'become-driver',
+        component: ClientBecomeDriverPageComponent,
+      },
+
+      {
         path: 'create-trips',
         component: DriverCreateTripPageComponent,
         canActivate: [DriverGuard],
@@ -77,6 +114,11 @@ const routes: Routes = [
       {
         path: 'driver-trips',
         component: DriverTripListPageComponent,
+        canActivate: [DriverGuard],
+      },
+      {
+        path: 'driver-trips/:trip_id',
+        component: DriverTripDetailsPageComponent,
         canActivate: [DriverGuard],
       },
       {
@@ -103,12 +145,32 @@ const routes: Routes = [
         component: AdminTripListPageComponent,
       },
       {
+        path: 'users',
+        component: AdminUserListPageComponent,
+      },
+      {
         path: 'complaints',
         component: AdminComplaintsListPageComponent,
       },
       {
         path: 'complaint-appeals',
         component: AdminComplaintAppealsListPageComponent,
+      },
+      {
+        path: 'payment-returns',
+        component: AdminPaymentReturnsListPageComponent,
+      },
+      {
+        path: 'trip-orders',
+        component: AdminTripOrdersListPageComponent,
+      },
+      {
+        path: 'trip-orders/:trip_order_id',
+        component: AdminTripOrderDetailsPageComponent,
+      },
+      {
+        path: 'driver-requests',
+        component: AdminDriverRequestsPageComponent,
       },
     ],
   },

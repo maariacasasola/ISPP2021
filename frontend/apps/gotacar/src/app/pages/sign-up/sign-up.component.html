@@ -1,0 +1,105 @@
+<frontend-main-header></frontend-main-header>
+
+<section class="page-content">
+  <h1>Regístrate en GotACar</h1>
+
+  <mat-card [formGroup]="register_form" class="login-card">
+    <div class="form-fields">
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>Nombre </mat-label>
+        <input matInput type="text" formControlName="firstName" required />
+        <mat-error *ngIf="register_form?.get('firstName')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('firstName')?.errors?.pattern"
+          >Proporcione el nombre con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>Apellido </mat-label>
+        <input matInput type="text" formControlName="lastName" required />
+        <mat-error *ngIf="register_form?.get('lastName')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('lastName')?.errors?.pattern"
+          >Proporcione el apellido con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>attach_email</mat-icon>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required />
+        <mat-error *ngIf="register_form?.get('email')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('email')?.errors?.email"
+          >Email inválido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>vpn_key</mat-icon>
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" required />
+        <mat-error *ngIf="register_form?.get('password')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('password')?.errors?.pattern"
+          >Contraseña 8 caracteres mínimo, mayúsculas, minúsculas, números y
+          caracteres especiales</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>DNI</mat-label>
+        <input matInput type="text" formControlName="dni" required />
+        <mat-error *ngIf="register_form?.get('dni')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('dni')?.errors?.pattern"
+          >DNI inválido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-label>Fecha nacimiento </mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="birthdate"
+          [max]="today"
+          required
+          readonly
+          (click)="picker.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="register_form?.get('birthdate')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-label>Teléfono</mat-label>
+        <input matInput type="text" formControlName="phone" required />
+        <mat-error *ngIf="register_form?.get('phone')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="register_form?.get('phone')?.errors?.pattern"
+          >Teléfono inválido</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <button
+      class="login-button"
+      mat-flat-button
+      type="submit"
+      (click)="onSubmit()"
+      [disabled]="!register_form.valid"
+    >
+      Registrarse
+    </button>
+  </mat-card>
+</section>
+<frontend-main-footer></frontend-main-footer>

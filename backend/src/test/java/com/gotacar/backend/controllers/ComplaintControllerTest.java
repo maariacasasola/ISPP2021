@@ -5,9 +5,10 @@ import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +44,7 @@ import net.minidev.json.JSONObject;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TestConfig.class, BackendApplication.class })
-public class ComplaintControllerTest {
+class ComplaintControllerTest {
 
         @Configuration
         static class TestConfig {
@@ -74,7 +75,11 @@ public class ComplaintControllerTest {
         private User admin;
         private User driver;
         private Trip trip;
+        private Trip trip1;
+        private TripOrder tripOrder;
         private Complaint complaint;
+        private Complaint complaint1;
+        private List<Complaint> list1;
 
         @BeforeEach
         void setUp() {
@@ -86,17 +91,17 @@ public class ComplaintControllerTest {
                 lista3.add("ROLE_CLIENT");
                 lista3.add("ROLE_DRIVER");
                 driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es", "89070310K",
-                                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista3);
+                                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista3, "655757575");
                 ObjectId driverObjectId = new ObjectId();
                 driver.setId(driverObjectId.toString());
 
                 user = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es", "89070336D",
-                                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista2);
+                                "http://dniclient.com", LocalDate.of(1999, 10, 10), lista2, "655757575");
                 ObjectId userObjectId = new ObjectId();
                 user.setId(userObjectId.toString());
 
                 admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es",
-                                "89070360G", "http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1);
+                                "89070360G", "http://dniadmin.com", LocalDate.of(1999, 10, 10), lista1, "655757575");
                 ObjectId adminObjectId = new ObjectId();
                 admin.setId(adminObjectId.toString());
 
@@ -107,18 +112,35 @@ public class ComplaintControllerTest {
                 trip = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
                                 LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
                                 3, driver);
+                trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 03, 24, 16, 00, 00),
+                                LocalDateTime.of(2021, 03, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
+                                3, driver);
                 ObjectId tripObjectId = new ObjectId();
                 trip.setId(tripObjectId.toString());
+                ObjectId tripObjectId1 = new ObjectId();
+                trip1.setId(tripObjectId1.toString());
 
                 complaint = new Complaint("title", "content", trip, user, LocalDateTime.of(2021, 05, 24, 16, 30, 00));
+                complaint1 = new Complaint("title", "content", trip1, user, LocalDateTime.of(2021, 03, 24, 16, 30, 00));
+
                 ObjectId complaintObjectId = new ObjectId();
                 complaint.setId(complaintObjectId.toString());
+                ObjectId complaintObjectId1 = new ObjectId();
+                complaint1.setId(complaintObjectId1.toString());
+
+                tripOrder = new TripOrder(trip, user, LocalDateTime.of(2021, 05, 24, 10, 00, 00), 3, "paymentIntent",
+                                1);
+
+
+                list1 = new ArrayList<>();
+                list1.add(complaint1);
 
         }
 
         @Test
-        public void ListComplaintsTest() throws Exception {
-                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
+        void ListComplaintsTest() throws Exception {
+                Mockito.when(complaintRepository.findByStatus(complaint.getStatus()))
+                                .thenReturn(Arrays.asList(complaint));
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
                 String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
@@ -136,16 +158,15 @@ public class ComplaintControllerTest {
 
                 String res = result.andReturn().getResponse().getContentAsString();
                 int contador = 0;
-                while (res.contains("trip")) {
-                        res = res.substring(res.indexOf("trip") + "trip".length(), res.length());
+                while (res.contains("PENDING")) {
+                        res = res.substring(res.indexOf("PENDING") + "PENDING".length(), res.length());
                         contador++;
                 }
-
-                assertThat(contador).isEqualTo(2);
+                assertThat(contador).isEqualTo(1);
         }
 
         @Test
-        public void penalizeTest() throws Exception {
+        void penalizeTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
@@ -167,13 +188,12 @@ public class ComplaintControllerTest {
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
-                assertThat(result.andReturn().getResponse().getContentType().equals(User.class.toString()));
                 assertThat(trip.getDriver().getBannedUntil()).isNotNull();
 
         }
 
         @Test
-        public void refuseTest() throws Exception {
+        void refuseTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 
@@ -190,6 +210,121 @@ public class ComplaintControllerTest {
 
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("REFUSED");
+        }
+
+        // Positivo crear un complaint con un usuario que no ha realizado el viaje
+        @Test
+        public void CreateComplaintTest() throws Exception {
+                trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
+                trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
+                List<TripOrder> listaTripOrders = new ArrayList<>();
+                listaTripOrders.add(tripOrder);
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+                Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+                Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId()))
+                                .thenReturn(listaTripOrders);
+                Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+                JSONObject complaint = new JSONObject();
+                complaint.appendField("tripId", trip.getId());
+                complaint.appendField("title", "Conductor malo");
+                complaint.appendField("content", "El tio es muy mal conductor");
+
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json = new org.json.JSONObject(response);
+                String token = json.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/complaints/create").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(complaint.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
+        }
+
+        // Negativo crear un complaint con un usuario que no ha realizado el viaje
+        @Test
+        public void CreateComplaintTestWrongUser() throws Exception {
+                trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
+                trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
+                List<TripOrder> listaTripOrders = new ArrayList<>();
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+                Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+                Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId()))
+                                .thenReturn(listaTripOrders);
+                Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+                JSONObject complaint = new JSONObject();
+                complaint.appendField("tripId", trip.getId());
+                complaint.appendField("title", "Conductor malo");
+                complaint.appendField("content", "El tio es muy mal conductor");
+
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json = new org.json.JSONObject(response);
+                String token = json.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/complaints/create").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(complaint.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+                assertThat(result.andReturn().getResponse().getErrorMessage())
+                                .isEqualTo("Usted no ha realizado este viaje");
+        }
+
+        // Negativo crear un complaint con la fecha pasada
+        @Test
+        public void CreateComplaintTestWrongDate() throws Exception {
+                List<TripOrder> listaTripOrders = new ArrayList<>();
+                listaTripOrders.add(tripOrder);
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+                Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+                Mockito.when(tripOrderRepository.userHasMadeTrip(user.getId(), trip.getId()))
+                                .thenReturn(listaTripOrders);
+                Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+                JSONObject complaint = new JSONObject();
+                complaint.appendField("tripId", trip.getId());
+                complaint.appendField("title", "Conductor malo");
+                complaint.appendField("content", "El tio es muy mal conductor");
+
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json = new org.json.JSONObject(response);
+                String token = json.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/complaints/create").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(complaint.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+                assertThat(result.andReturn().getResponse().getErrorMessage())
+                                .isEqualTo("El viaje aún no se ha realizado");
+        }
+
+        @Test
+        void checkComplaintTest() throws Exception {
+                Mockito.when(tripRepository.findById(new ObjectId(trip1.getId()))).thenReturn(trip1);
+                Mockito.when(complaintRepository.findByUserAndTrip(user.getId(), trip1.getId())).thenReturn(list1);
+                Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+                ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId())
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+
+                assertThat(result.andReturn().getResponse().getContentAsString()).contains("false");
         }
 
         // @Test

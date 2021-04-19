@@ -6,8 +6,8 @@
     }}</mat-card-title>
 
     <mat-card-content>
-      <p><b>Hora de salida:</b> {{ getStartDate(trip) | date: 'medium' }}</p>
-      <p><b>Hora de llegada:</b> {{ trip?.endingDate | date: 'medium' }}</p>
+      <p><strong>Hora de salida:</strong> {{ getStartDate(trip) | date: 'medium' }}</p>
+      <p><strong>Hora de llegada:</strong> {{ trip?.endingDate | date: 'medium' }}</p>
       <p>
         {{ trip?.startingPoint?.address }} &#8594;
         {{ trip?.endingPoint?.address }}

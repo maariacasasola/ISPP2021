@@ -10,6 +10,10 @@
     <mat-icon>directions_car</mat-icon>
     <span>Viajes registrados</span>
   </button>
+  <button mat-menu-item routerLink="/admin/trip-orders">
+    <mat-icon>shopping_bag</mat-icon>
+    <span>Viajes contratados</span>
+  </button>
   <button mat-menu-item routerLink="/admin/complaints">
     <mat-icon>record_voice_over</mat-icon>
     <span>Quejas de usuarios</span>
@@ -17,6 +21,18 @@
   <button mat-menu-item routerLink="/admin/complaint-appeals">
     <mat-icon>question_answer</mat-icon>
     <span>Apelaciones</span>
+  </button>
+  <button mat-menu-item routerLink="/admin/payment-returns">
+    <mat-icon>monetization_on</mat-icon>
+    <span>Devoluciones</span>
+  </button>
+  <button mat-menu-item routerLink="/admin/users">
+    <mat-icon>supervised_user_circle</mat-icon>
+    <span>Usuarios registrados</span>
+  </button>
+  <button mat-menu-item routerLink="/admin/driver-requests">
+    <mat-icon>published_with_changes</mat-icon>
+    <span>Solicitudes conversión a conductor</span>
   </button>
   <hr />
   <button mat-menu-item (click)="authService.sign_out()">

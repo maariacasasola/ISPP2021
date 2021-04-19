@@ -2,10 +2,10 @@ package com.gotacar.backend.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.stripe.Stripe;
@@ -13,6 +13,7 @@ import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -59,19 +62,36 @@ public class PaymentController {
         Stripe.apiKey = stripeApiKey;
 
         try {
+        	ZonedDateTime actualDate = ZonedDateTime.now();
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             JsonNode jsonNode = objectMapper.readTree(body);
             Integer quantity = objectMapper.readTree(jsonNode.get("quantity").toString()).asInt();
             String description = objectMapper.readTree(jsonNode.get("description").toString()).asText();
             String idTrip = objectMapper.readTree(jsonNode.get("idTrip").toString()).asText();
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
-            String idUser = userRepository.findByEmail(authentication.getPrincipal().toString()).getId();
-            Trip trip = tripRepository.findById(idTrip).get();
+            String idUser = user.getId();
+            LocalDateTime bannedUntil = user.getBannedUntil();
+            Trip trip = tripRepository.findById(new ObjectId(idTrip));
+            
+            if(bannedUntil != null) {
+            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario esta baneado, no puede realizar esta accion");
+            	}
+            }
 
             if (!(trip.getPlaces() >= quantity)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
+
+
+            if(trip.getDriver().getId().equals(idUser)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes reservar tu propio viaje");
+            }
+
 
             List<Object> paymentMethodTypes = new ArrayList<>();
             paymentMethodTypes.add("card");
@@ -114,7 +134,6 @@ public class PaymentController {
         Event event = null;
 
         try {
-            // TODO: Configurar secret de stripe webhook
             event = Webhook.constructEvent(body, signHeader, stripeWebhookSecret);
         } catch (Exception e) {
             return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
@@ -159,14 +178,16 @@ public class PaymentController {
 
     public void createTripOrder(Session session) {
         try {
+        	ZonedDateTime actualDate = ZonedDateTime.now();
+    		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             String tripId = session.getMetadata().values().toArray()[3].toString();
             String userId = session.getMetadata().values().toArray()[5].toString();
-            LocalDateTime date = LocalDateTime.now();
+            LocalDateTime date = actualDate.toLocalDateTime();
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
-            Trip trip = tripRepository.findById(tripId).get();
-            User user = userRepository.findById(userId).get();
+            Trip trip = tripRepository.findById(new ObjectId(tripId));
+            User user = userRepository.findById(new ObjectId(userId));
             Integer places = trip.getPlaces();
 
             if (places >= quantity) {

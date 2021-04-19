@@ -1,0 +1,118 @@
+<section class="trip-details-container" *ngIf="trip">
+  <div class="trip">
+    <h1>{{ page_title }}</h1>
+    <div class="map">
+      <frontend-trip-map *ngIf="trip" [trip]="trip"></frontend-trip-map>
+    </div>
+    <div class="trip-info">
+      <h2>
+        Fecha y hora de inicio:
+        <i>{{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+      </h2>
+      <h2>
+        Fecha y hora de finalización:
+        <i>{{ trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+      </h2>
+      <h2>
+        Fecha límite de cancelación:
+        <i>{{ trip?.cancelationDateLimit | date: 'HH:mm dd/MM/yyyy' }}</i>
+      </h2>
+
+      <div class="price-and-places">
+        <h2>
+          <span>Plazas disponibles: {{ trip?.places }}</span>
+        </h2>
+        <span class="price">{{ trip?.price | convertCentToEur }}</span>
+      </div>
+      <h2>Comentarios del Viaje:</h2>
+      <p>{{ trip?.comments }}</p>
+    </div>
+  </div>
+  <div class="clients">
+    <h2>Reservas</h2>
+    <div class="clients-grid">
+      <mat-card
+        *ngFor="let trip_order of trip.tripOrders"
+        class="mat-elevation-z4"
+      >
+        <mat-card-header>
+          <mat-card-title>{{
+            trip_order.user?.firstName + ' ' + trip_order.user?.lastName
+          }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="get_user_profile_photo(trip_order.user)" />
+        <mat-card-content>
+          <div>
+            <b>{{ trip_order.user?.email }}</b>
+            <p>{{ trip_order.user?.phone }}</p>
+          </div>
+          <div>
+            <b *ngIf="!trip_order.user.times_banned">Veces baneado : 0</b>
+            <b *ngIf="trip_order.user.times_banned"
+              >Veces baneado : {{ trip_order.user.times_banned }}</b
+            >
+
+            <div *ngIf="trip_order.user?.averageRatings">
+              <div><b>Valoración media: </b></div>
+
+              <mat-icon
+                [ngClass]="{ orange: trip_order.user.averageRatings > 0 }"
+                >{{
+                  trip_order.user.averageRatings > 0 ? 'star' : 'star_border'
+                }}</mat-icon
+              >
+              <mat-icon
+                [ngClass]="{ orange: trip_order.user.averageRatings > 1 }"
+                >{{
+                  trip_order.user.averageRatings > 1 ? 'star' : 'star_border'
+                }}</mat-icon
+              >
+              <mat-icon
+                [ngClass]="{ orange: trip_order.user.averageRatings > 2 }"
+                >{{
+                  trip_order.user.averageRatings > 2 ? 'star' : 'star_border'
+                }}</mat-icon
+              >
+              <mat-icon
+                [ngClass]="{ orange: trip_order.user.averageRatings > 3 }"
+                >{{
+                  trip_order.user.averageRatings > 3 ? 'star' : 'star_border'
+                }}</mat-icon
+              >
+              <mat-icon
+                [ngClass]="{ orange: trip_order.user.averageRatings > 4 }"
+                >{{
+                  trip_order.user.averageRatings > 4 ? 'star' : 'star_border'
+                }}</mat-icon
+              >
+            </div>
+            <p *ngIf="users_already_rated?.includes(trip_order.user.id)">
+              Usuario ya valorado
+            </p>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            *ngIf="
+              !users_already_rated?.includes(trip_order.user.id) &&
+              fecha < today
+            "
+            mat-raised-button
+            color="primary"
+            (click)="addValoracionDialog(trip_order.user.id)"
+          >
+            VALORAR
+          </button>
+          <button
+            mat-raised-button
+            *ngIf="checkDate(trip?.endingDate)"
+            (click)="active_cancel_dialog(trip_order.id)"
+            color="primary"
+          >
+            RECHAZAR
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>

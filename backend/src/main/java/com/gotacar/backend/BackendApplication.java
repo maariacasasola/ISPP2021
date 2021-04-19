@@ -23,10 +23,13 @@ import java.util.List;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
-import com.gotacar.backend.models.Trip.Trip;
-import com.gotacar.backend.models.Trip.TripRepository;
-import com.gotacar.backend.models.TripOrder.TripOrder;
-import com.gotacar.backend.models.TripOrder.TripOrderRepository;
+import com.gotacar.backend.models.rating.Rating;
+import com.gotacar.backend.models.rating.RatingRepository;
+import com.gotacar.backend.models.trip.Trip;
+import com.gotacar.backend.models.trip.TripRepository;
+import com.gotacar.backend.models.tripOrder.TripOrder;
+import com.gotacar.backend.models.tripOrder.TripOrderRepository;
+import com.gotacar.backend.models.CarData;
 import com.gotacar.backend.models.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
@@ -34,6 +37,8 @@ import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
+import com.gotacar.backend.models.paymentReturn.PaymentReturnRepository;
+import com.gotacar.backend.models.paymentReturn.PaymentReturn;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -55,6 +60,11 @@ public class BackendApplication implements CommandLineRunner {
 
         @Autowired
         private ComplaintRepository complaintRepository;
+        @Autowired
+        private RatingRepository ratingRepository;
+
+        @Autowired
+        private PaymentReturnRepository paymentReturnRepository;
 
         @Autowired
         Environment environment;
@@ -66,26 +76,27 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        loadSampleDate();
+                        // loadSampleData();
                 }
         }
 
-        private void loadSampleDate() {
-
+        private void loadSampleData() {
                 userRepository.deleteAll();
                 meetingPointRepository.deleteAll();
                 tripRepository.deleteAll();
                 tripOrderRepository.deleteAll();
                 complaintRepository.deleteAll();
                 complaintAppealRepository.deleteAll();
+                paymentReturnRepository.deleteAll();
+                ratingRepository.deleteAll();
 
                 // USERS
                 // -----------------------------------------------------------------------------------------
-                List<String> lista1 = new ArrayList<String>();
+                List<String> lista1 = new ArrayList<>();
                 lista1.add("ROLE_ADMIN");
-                List<String> lista2 = new ArrayList<String>();
+                List<String> lista2 = new ArrayList<>();
                 lista2.add("ROLE_CLIENT");
-                List<String> lista3 = new ArrayList<String>();
+                List<String> lista3 = new ArrayList<>();
                 lista3.add("ROLE_CLIENT");
                 lista3.add("ROLE_DRIVER");
                 LocalDate fecha1 = LocalDate.of(1999, 10, 10);
@@ -93,42 +104,43 @@ public class BackendApplication implements CommandLineRunner {
                 LocalDate fecha3 = LocalDate.of(2001, 12, 30);
 
                 // Admin
-                User admin = new User("Antonio", "Fernández", "Ej7NpmWydRWMIg28mIypzsI4BgM2", "admin@gotacar.es",
-                                "89070360G", "http://dniadmin.com", fecha3, lista1);
+                User admin = new User("Antonio", "Fernández", "jZ1JViuU0ec4d9nuW7R6d5FGCzw2", "admin@gotacar.es",
+                                "89070360G", null, fecha3, lista1, "655757566");
 
                 userRepository.save(admin);
 
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
-                                "89070310K", null, fecha3, lista3);
-                User driver2 = new User("Manuel", "Fernández", "h9HmVQqlBQXD289O8t8q7aN2Gzg2", "driver2@gmail.com",
-                                "312312312R", null, fecha1, lista3, LocalDateTime.of(2021, 06, 04, 13, 30, 24));
-                User driver3 = new User("Marina", "Chacón", "h9HmVQqlBQXD289O8t8q7aN2Gzg3", "driver3@gmail.com",
-                                "312412412J", null, fecha1, lista3);
+                                "89070310K", null, fecha3, lista3, "645454514");
+                User driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gmail.com",
+                                "312312312R", null, fecha1, lista3, "645054554",
+                                LocalDateTime.of(2021, 06, 04, 13, 30, 24));
+                User driver3 = new User("Marina", "Chacón", "BwhK9BAP8Vb9Sz6YCVbceXRCE713", "driver3@gmail.com",
+                                "312412412J", null, fecha1, lista3, "645454554");
 
                 userRepository.save(driver);
                 userRepository.save(driver2);
                 userRepository.save(driver3);
 
                 // Clients
-                User client = new User("Martín", "Romero", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE1", "client@gotacar.es",
-                                "89070336D", "http://dniclient.com", fecha3, lista2);
-                User client2 = new User("Paloma", "Pérez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE2", "client2@gotacar.com",
-                                "42131220T", "http://dniclient.com", fecha2, lista2);
-                User client3 = new User("Blanca", "Ruíz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE3", "client3@gotacar.es",
-                                "89070345D", "http://dniclient.com", fecha1, lista2);
+                User client = new User("Martín", "Romero", "trKzninltQNh75RemITKB8tBIjY2", "client@gotacar.es",
+                                "89070336D", null, fecha3, lista2, "656473627");
+                User client2 = new User("Paloma", "Pérez", "UnlwXau8gSWzK8SwGe0zBzX6aSm2", "client2@gotacar.com",
+                                "42131220T", null, fecha2, lista2, "656473147");
+                User client3 = new User("Blanca", "Ruíz", "glqfC1lpaBWc7pqFa0lnYb0pQvE2", "client3@gotacar.es",
+                                "89070345D", null, fecha1, lista2, "656493647");
                 User client4 = new User("Alberto", "Suárez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE4", "client4@gotacar.com",
-                                "42131225F", "http://dniclient.com", fecha2, lista2);
+                                "42131225F", "http://dniclien4t.com", fecha2, lista2, "656473647");
                 User client5 = new User("Salvador", "Luque", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE5", "client5@gotacar.es",
-                                "89070678S", "http://dniclient.com", fecha3, lista2);
+                                "89070678S", null, fecha3, lista2, "656073647");
                 User client6 = new User("María", "Sánchez", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE6", "client6@gotacar.com",
-                                "35131220T", "http://dniclient.com", fecha1, lista2);
+                                "35131220T", null, fecha1, lista2, "656422647");
                 User client7 = new User("Laura", "Muñoz", "qG6h1Pc4DLbPTTTKmXdSxIMEUUE7", "clien7@gotacar.es",
-                                "80270336K", "http://dniclient.com", fecha3, lista2);
+                                "80270336K", null, fecha3, lista2, "656473445");
                 User client8 = new User("Pedro", "Serrano", "oQfGQi4xechNkcQEdHg29sM5rP33", "client8@gotacar.com",
-                                "42941220L", "http://dniclient.com", fecha2, lista2);
+                                "42941220L", null, fecha2, lista2, "651473647");
                 User client9 = new User("Pedro", "Serrano", "2Sg1OCgPB8YoKjxgocXRJDtcvDo2", "client@gotacar.com",
-                                "42941220L", "http://dniclient.com", fecha2, lista2);
+                                "42941220L", null, fecha2, lista2, "650473647");
 
                 userRepository.save(client);
                 userRepository.save(client2);
@@ -181,12 +193,12 @@ public class BackendApplication implements CommandLineRunner {
                 Location location8 = new Location("Lagoh", "Av. de Palmas Altas, 1, 41012 Sevilla", 37.34260576245235,
                                 -5.987332644990308);
 
-                LocalDateTime fecha4 = LocalDateTime.of(2021, 06, 04, 13, 30, 24);
-                LocalDateTime fecha5 = LocalDateTime.of(2021, 06, 04, 13, 36, 24);
+                LocalDateTime fecha4 = LocalDateTime.of(2024, 02, 28, 13, 30, 24);
+                LocalDateTime fecha5 = LocalDateTime.of(2024, 02, 28, 13, 36, 24);
                 LocalDateTime fecha6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
                 LocalDateTime fecha7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
-                LocalDateTime fecha8 = LocalDateTime.of(2021, 03, 20, 17, 00, 00);
-                LocalDateTime fecha9 = LocalDateTime.of(2021, 03, 20, 17, 21, 00);
+                LocalDateTime fecha8 = LocalDateTime.of(2021, 05, 20, 17, 00, 00);
+                LocalDateTime fecha9 = LocalDateTime.of(2021, 05, 20, 17, 21, 00);
                 LocalDateTime fecha10 = LocalDateTime.of(2021, 03, 21, 12, 00, 00);
                 LocalDateTime fecha11 = LocalDateTime.of(2021, 03, 21, 12, 40, 00);
 
@@ -200,16 +212,16 @@ public class BackendApplication implements CommandLineRunner {
                                 driver3);
                 Trip trip5 = new Trip(location3, location4, 250, fecha4, fecha5, "Viaje desde Triana hasta Torneo", 2,
                                 driver2);
-                Trip trip6 = new Trip(location7, location8, 350, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Lagoh",
-                                2, driver);
+                Trip trip6 = new Trip(location7, location8, 400, fecha8, fecha9, "Viaje desde Puerta Jerez hasta Reina",
+                                5, driver);
                 Trip trip7 = new Trip(location6, location4, 400, fecha8, fecha9,
                                 "Viaje desde Reina Mercedes hasta Torneo", 2, driver2);
                 Trip trip8 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
                                 driver);
-                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
-                                driver);
-                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11, "Viaje desde Torneo hasta Lagoh", 3,
-                                driver);
+                Trip trip9 = new Trip(location4, location8, 450, fecha10, fecha11,
+                                "Viaje desde Torneo hasta Campo del Betis", 3, driver);
+                Trip trip10 = new Trip(location4, location8, 450, fecha10, fecha11,
+                                "Viaje desde Torneo hasta Lagoh Aparcamientos", 3, driver);
 
                 tripRepository.save(trip1);
                 tripRepository.save(trip2);
@@ -224,7 +236,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 // TRIP ORDERS
                 // -----------------------------------------------------------------------------------------
-                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "",
+                TripOrder tripOrder1 = new TripOrder(trip6, client, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 400, "",
                                 1);
                 TripOrder tripOrder2 = new TripOrder(trip6, client2, LocalDateTime.of(2021, 03, 20, 11, 40, 00), 700,
                                 "", 2);
@@ -258,6 +270,21 @@ public class BackendApplication implements CommandLineRunner {
                                 "", 2);
                 TripOrder tripOrder17 = new TripOrder(trip10, client, LocalDateTime.of(2021, 03, 24, 11, 30, 22), 500,
                                 "", 2);
+                TripOrder tripOrder18 = new TripOrder(trip6, client3, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 500,
+                                "", 2);
+                TripOrder tripOrder19 = new TripOrder(trip1, client3, LocalDateTime.of(2021, 05, 23, 11, 45, 00), 440,
+                                "", 2);
+                tripOrder1.setStatus("PAID");
+                tripOrder2.setStatus("PAID");
+                tripOrder3.setStatus("PAID");
+                tripOrder4.setStatus("PAID");
+                tripOrder5.setStatus("PAID");
+                tripOrder6.setStatus("PAID");
+                tripOrder7.setStatus("PAID");
+                tripOrder8.setStatus("PAID");
+                tripOrder9.setStatus("PAID");
+                tripOrder18.setStatus("PAID");
+                tripOrder19.setStatus("PAID");
 
                 tripOrderRepository.save(tripOrder1);
                 tripOrderRepository.save(tripOrder2);
@@ -277,6 +304,8 @@ public class BackendApplication implements CommandLineRunner {
                 tripOrderRepository.save(tripOrder15);
                 tripOrderRepository.save(tripOrder16);
                 tripOrderRepository.save(tripOrder17);
+                tripOrderRepository.save(tripOrder18);
+                tripOrderRepository.save(tripOrder19);
 
                 // COMPLAINTS
                 // -----------------------------------------------------------------------------------------
@@ -290,15 +319,12 @@ public class BackendApplication implements CommandLineRunner {
                                 trip7, client5, LocalDateTime.of(2021, 03, 20, 18, 00, 00), "ALREADY_RESOLVED");
                 Complaint complaint4 = new Complaint("Queja por retraso", "El conductor se ha retrasado 5 min", trip8,
                                 client4, LocalDateTime.of(2021, 03, 21, 12, 30, 00), "REFUSED");
-                Complaint complaint5 = new Complaint("Queja por velocidad1",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip6, client,
+                Complaint complaint5 = new Complaint("Queja por velocidad1", "El coche olía mal", trip6, client,
                                 LocalDateTime.of(2021, 03, 20, 17, 45, 00));
-                Complaint complaint6 = new Complaint("Queja por velocidad2",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip7, client,
-                                LocalDateTime.of(2021, 03, 20, 17, 45, 00));
-                Complaint complaint7 = new Complaint("Queja por velocidad3",
-                                "El conductor iba demasiado rápido, no me he sentido seguro", trip8, client,
-                                LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+                Complaint complaint6 = new Complaint("Queja por velocidad2", "El coche tenía una rueda pinchada", trip7,
+                                client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
+                Complaint complaint7 = new Complaint("Queja por velocidad3", "El conductor escuchaba Bad Gyal", trip8,
+                                client, LocalDateTime.of(2021, 03, 20, 17, 45, 00));
 
                 complaintRepository.save(complaint1);
                 complaintRepository.save(complaint2);
@@ -312,30 +338,72 @@ public class BackendApplication implements CommandLineRunner {
                 // -----------------------------------------------------------------------------------------
                 ComplaintAppeal complaintAppeal1 = new ComplaintAppeal(
                                 "El retraso fue causado por necesidades personales, suelo ser puntual", false,
-                                complaint2);
+                                complaint2, driver2);
                 ComplaintAppeal complaintAppeal2 = new ComplaintAppeal(
-                                "El retraso fue causado por necesidades personales", true, complaint2);
+                                "El retraso fue causado por necesidades personales", true, complaint2, driver2);
                 ComplaintAppeal complaintAppeal3 = new ComplaintAppeal("El retraso fue causado por necesidades", false,
-                                complaint3);
+                                complaint3, driver);
+
+                complaintAppealRepository.save(complaintAppeal1);
+                complaintAppealRepository.save(complaintAppeal2);
 
                 complaintAppealRepository.save(complaintAppeal1);
                 complaintAppealRepository.save(complaintAppeal2);
                 complaintAppealRepository.save(complaintAppeal3);
 
+                // PAYMENT RETURNS
+                // -----------------------------------------------------------------------------------------
+
+                PaymentReturn paymentReturn1 = new PaymentReturn(client, 150);
+                PaymentReturn paymentReturn2 = new PaymentReturn(client2, 180);
+                PaymentReturn paymentReturn3 = new PaymentReturn(client3, 200);
+
+                paymentReturnRepository.save(paymentReturn1);
+                paymentReturnRepository.save(paymentReturn2);
+                paymentReturnRepository.save(paymentReturn3);
+
+                // CAR DATA
+                // -----------------------------------------------------------------------------------------
+
+                CarData data = new CarData("carPlate", LocalDate.of(2017, 03, 20), "model", "color");
+                client.setCarData(data);
+                client.setDrivingLicense("http://carnet");
+                client.setDriverStatus("PENDING");
+                client.setIban("ES0690000001210123456789");
+                client.setTimesBanned(1);
+                client.setExperience(4);
+
+                userRepository.save(client);
+
+                paymentReturnRepository.save(paymentReturn1);
+                paymentReturnRepository.save(paymentReturn2);
+                paymentReturnRepository.save(paymentReturn3);
+
+                Rating rating = new Rating(driver, client, "gola", 4, trip6);
+
+                ratingRepository.save(rating);
+
+                System.out.println(client.getId());
+                System.out.println(client2.getId());
+                System.out.println(trip6.getId());
+
                 // COMPROBACIÓN
                 // -----------------------------------------------------------------------------------------
+
                 Long users = userRepository.count();
                 Long meetingPoints = meetingPointRepository.count();
                 Long trips = tripRepository.count();
                 Long tripOrders = tripOrderRepository.count();
                 Long complaints = complaintRepository.count();
                 Long complaintAppeals = complaintAppealRepository.count();
+                Long paymentReturns = paymentReturnRepository.count();
                 System.out.println(users + " usuarios creados");
                 System.out.println(meetingPoints + " puntos de encuentro creados");
                 System.out.println(trips + " viajes creados");
                 System.out.println(tripOrders + " reservas creadas");
                 System.out.println(complaints + " quejas creadas");
                 System.out.println(complaintAppeals + " apelaciones creadas");
+                System.out.println(paymentReturns + " devoluciones de pago creadas");
 
         }
 
@@ -349,6 +417,7 @@ public class BackendApplication implements CommandLineRunner {
                                         .addFilterAfter(new JWTAuthorizationFilter(),
                                                         UsernamePasswordAuthenticationFilter.class)
                                         .authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll()
+                                        .antMatchers(HttpMethod.POST, "/user/register").permitAll()
                                         .antMatchers(HttpMethod.GET, "/search_meeting_points").permitAll()
                                         .antMatchers(HttpMethod.GET, "/list_trips").permitAll()
                                         .antMatchers(HttpMethod.GET, "/trip/{tripId}").permitAll()

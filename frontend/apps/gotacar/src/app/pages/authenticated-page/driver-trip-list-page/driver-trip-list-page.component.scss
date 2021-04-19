@@ -1,16 +1,14 @@
+@import '~colors.scss';
+
 h1 {
   text-align: center;
-  color: #0e4a6b;
+  color: $secondary;
   margin: 20px;
 }
 
 .trip {
-  border: 1px solid #0e4a6b;
+  border: 1px solid $primary;
   padding: 30px;
-}
-
-.trips-list {
-  width: max-content;
 }
 
 .button {
@@ -18,14 +16,19 @@ h1 {
   color: white;
 }
 
-.no-button {
-  height: 35px;
+.trips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  gap: 20px 20px;
+  grid-template-areas: '. .';
+  padding: 20px;
 }
 
-mat-list {
-  width: 90%;
-}
-
-mat-card-content {
-  width: max-content;
+@media(max-width: 760px) {
+  .trips-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

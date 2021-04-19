@@ -1,0 +1,154 @@
+<section class="page-content">
+  <h1>Actualiza tu perfil de GotACar</h1>
+
+  <mat-card [formGroup]="update_form" class="login-card">
+    <div class="form-fields">
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>Nombre </mat-label>
+        <input matInput type="text" formControlName="firstName" required />
+        <mat-error *ngIf="update_form?.get('firstName')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('firstName')?.errors?.pattern"
+          >Proporcione el nombre con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>Apellido </mat-label>
+        <input matInput type="text" formControlName="lastName" required />
+        <mat-error *ngIf="update_form?.get('lastName')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('lastName')?.errors?.pattern"
+          >Proporcione el apellido con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>attach_email</mat-icon>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required readonly />
+        <mat-error *ngIf="update_form?.get('email')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('email')?.errors?.email"
+          >Email inválido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <mat-label>DNI</mat-label>
+        <input matInput type="text" formControlName="dni" required readonly/>
+        <mat-error *ngIf="update_form?.get('dni')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('dni')?.errors?.pattern"
+          >DNI inválido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-label>Fecha nacimiento </mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="birthdate"
+          required
+          readonly
+          (click)="picker.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="update_form?.get('birthdate')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-label>Teléfono</mat-label>
+        <input matInput type="text" formControlName="phone" required />
+        <mat-error *ngIf="update_form?.get('phone')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('phone')?.errors?.pattern"
+          >Teléfono inválido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>savings</mat-icon>
+        <mat-label>IBAN</mat-label>
+        <input matInput type="email" formControlName="iban" required />
+        <mat-error *ngIf="update_form?.get('iban')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('iban')?.errors?.pattern"
+          >IBAN inválido</mat-error
+        >
+      </mat-form-field>
+      <h2>Datos del vehículo</h2>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Matrícula vehículo </mat-label>
+        <input matInput type="text" formControlName="car_plate" required />
+        <mat-error *ngIf="update_form?.get('car_plate')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('car_plate')?.errors?.pattern"
+          >La matrícula proporcionada no es válida o se corresponde con una matrícula demasiado antigua</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-label>Fecha obtención carnet </mat-label>
+        <input
+          matInput
+          [max]="today"
+          [matDatepicker]="picker_enrollment_date"
+          formControlName="enrollment_date"
+          required
+          readonly
+          (click)="picker_enrollment_date.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker_enrollment_date"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker_enrollment_date></mat-datepicker>
+        <mat-error *ngIf="update_form?.get('enrollment_date')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Modelo </mat-label>
+        <input matInput type="text" formControlName="model" required />
+        <mat-error *ngIf="update_form?.get('model')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('model')?.errors?.pattern"
+          >Proporcione el modelo con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix> drive_eta </mat-icon>
+        <mat-label>Color </mat-label>
+        <input matInput type="text" formControlName="color" required />
+        <mat-error *ngIf="update_form?.get('color')?.errors?.required"
+          >Campo obligatorio</mat-error
+        >
+        <mat-error *ngIf="update_form?.get('color')?.errors?.pattern"
+          >Proporcione el modelo con caracteres del alfabeto</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <button
+      class="login-button"
+      mat-flat-button
+      type="submit"
+      (click)="onSubmit()"
+      [disabled]="!update_form.valid"
+    >
+      Actualizar
+    </button>
+  </mat-card>
+</section>

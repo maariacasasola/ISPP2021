@@ -1,0 +1,34 @@
+<section class="trip-order-details-container">
+    <mat-card class="details">
+        <mat-card-title>Detalles del contrato</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario: </strong>{{trip_order?.user?.firstName}} {{trip_order?.user?.lastName}}</p>
+            <p><strong>Fecha de contratación: </strong> {{ trip_order?.date | date: 'medium' }}</p>
+            <p><strong>Estado: </strong> {{translateStatus(trip_order?.status)}}</p>
+            <p><strong>Payment Intent: </strong> {{trip_order?.paymentIntent}}</p>
+            <p><strong>Plazas reservadas: </strong> {{trip_order?.places}}</p>
+            <p><strong>Precio: </strong> {{trip_order?.price | convertCentToEur}}</p>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class= "details">
+        <mat-card-title>Detalles del viaje</mat-card-title>
+        <mat-card-content>
+            <p><strong>Conductor: </strong>{{trip_order?.trip?.driver?.firstName}} {{trip_order?.trip?.driver?.lastName}}</p>
+            <p><strong>Hora de salida:</strong> {{ trip_order?.trip?.startDate | date: 'medium' }}</p>
+            <p><strong>Hora de llegada:</strong> {{ trip_order?.trip?.endingDate | date: 'medium' }}</p>
+            <p><strong>Ruta: </strong>
+                {{ trip_order?.trip?.startingPoint?.address }} &#8594;
+                {{ trip_order?.trip?.endingPoint?.address }}
+            </p>
+            <p><strong>Precio por plaza: </strong>{{trip_order?.trip?.price | convertCentToEur}}</p>
+            <p *ngIf='trip_order?.trip?.canceled'><strong>Estado: </strong> Cancelado</p>
+        </mat-card-content>
+    </mat-card>
+    <button
+        mat-stroked-button
+        class="button"
+        routerLink="/admin/trip-orders"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+</section>

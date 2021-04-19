@@ -6,9 +6,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.gotacar.backend.models.Trip.Trip;
+import com.gotacar.backend.models.trip.Trip;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +28,11 @@ public class Complaint {
 	public String content;
 
 	@NotNull
+	@DBRef
 	public User user;
 
 	@NotNull
+	@DBRef
 	public Trip trip;
 
 	@NotNull
@@ -61,7 +64,8 @@ public class Complaint {
 
 	@Override
 	public String toString() {
-		return String.format("Complaint[id=%s, title=%s, user=%s, trip:%s]", id, title, user.toString(), trip.toString());
+		return String.format("Complaint[id=%s, title=%s, user=%s, trip:%s]", id, title, user.toString(),
+				trip.toString());
 	}
 
 }

@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 import auth from 'firebase/app';
 import { MatDialog } from '@angular/material/dialog';
 import { ComplaintAppealDialogComponent } from '../components/complaint-appeal-dialog/complaint-appeal-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComplaintAppealsService } from './complaint-appeals.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +22,8 @@ export class AuthServiceService {
     public router: Router,
     public ngZone: NgZone,
     private _http_client: HttpClient,
+    private _complaint_appeals_service: ComplaintAppealsService,
+    private _snackbar: MatSnackBar,
     private dialog: MatDialog
   ) {
     this.afAuth.authState.subscribe((user) => {
@@ -41,25 +45,21 @@ export class AuthServiceService {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.set_user_data(result.user).then(() => {
-          this.is_banned();
-        });
+        this.set_user_data(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.handle_firebase_auth_error(error);
       });
   }
 
   sign_up(email, password) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.send_verification_mail();
-        this.set_user_data(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  async register(user) {
+    return this._http_client
+      .post(environment.api_url + '/user/register', user)
+      .toPromise();
   }
 
   async send_verification_mail() {
@@ -74,10 +74,16 @@ export class AuthServiceService {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        this._snackbar.open(
+          'Revisa tu buzón de correo para restear tu contraseña',
+          null,
+          {
+            duration: 3000,
+          }
+        );
       })
-      .catch((error) => {
-        window.alert(error);
+      .catch(() => {
+        this._snackbar.open('Ha ocurrido un error');
       });
   }
 
@@ -110,17 +116,8 @@ export class AuthServiceService {
     return this.is_client() && has_driver_role;
   }
 
-  is_banned() {
-    let bool = false;
-    this.get_user_data().then((result) => {
-      bool = result.bannedUntil !== null;
-      if (bool) {
-        const t = this.dialog.open(ComplaintAppealDialogComponent, {
-          disableClose: true,
-        });
-        t.afterClosed().subscribe(() => this.sign_out());
-      }
-    });
+  user_is_banned(): boolean {
+    return new Date(localStorage.getItem('bannedUntil')) > new Date();
   }
 
   async get_user_data(): Promise<any> {
@@ -136,22 +133,65 @@ export class AuthServiceService {
   auth_login(provider) {
     return this.afAuth
       .signInWithPopup(provider)
-      .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['home']);
-        });
-        this.set_user_data(result.user);
+      .then(async (result) => {
+        if (result.additionalUserInfo.isNewUser) {
+          this.ngZone.run(() => {
+            this.router.navigate(['/', 'google-register'], {
+              queryParams: {
+                uid: result.user.uid,
+                email: result.user.email,
+              },
+            });
+          });
+        } else {
+          try {
+            await this.set_user_data(result.user);
+            this.ngZone.run(() => {
+              this.router.navigate(['home']);
+            });
+          } catch (error) {
+            localStorage.removeItem('user');
+            this.ngZone.run(() => {
+              this.router.navigate(['/', 'google-register'], {
+                queryParams: {
+                  uid: result.user.uid,
+                  email: result.user.email,
+                },
+              });
+            });
+          }
+        }
       })
       .catch((error) => {
-        window.alert(error);
+        this.handle_firebase_auth_error(error);
       });
   }
 
+  async set_banned(uid) {
+    let { token, roles, bannedUntil } = await this.get_token(uid);
+    localStorage.setItem('bannedUntil', bannedUntil);
+  }
+
   async set_user_data(user) {
-    let { token, roles } = await this.get_token(user.uid);
+    let { token, roles, bannedUntil } = await this.get_token(user.uid);
     token = token.replace('Bearer ', '');
     localStorage.setItem('token', token);
     localStorage.setItem('roles', roles);
+    localStorage.setItem('uid', user.uid);
+    if (!bannedUntil) return;
+    localStorage.setItem('bannedUntil', bannedUntil);
+    this.can_appeal();
+  }
+
+  async can_appeal() {
+    let canAppeal = await this._complaint_appeals_service.can_complaint_appeal();
+    if (canAppeal) {
+      const t = this.dialog.open(ComplaintAppealDialogComponent);
+    } else {
+      this._snackbar.open('La cuenta está baneada ', null, {
+        duration: 3000,
+      });
+    }
   }
 
   get_token(user_uid): Promise<any> {
@@ -168,6 +208,7 @@ export class AuthServiceService {
     localStorage.removeItem('token');
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('bannedUntil');
       localStorage.removeItem('roles');
       this.router.navigate(['log-in']);
     });
@@ -175,5 +216,48 @@ export class AuthServiceService {
 
   get_user() {
     return JSON.parse(localStorage.getItem('user'));
+  }
+
+  async update_user_profile(data) {
+    return this._http_client
+      .post(environment.api_url + '/user/update', data)
+      .toPromise();
+  }
+
+  delete_account() {
+    this.afAuth.currentUser.then((u) =>
+      u.delete().then(() => {
+        this.router.navigate(['home']);
+      })
+    );
+  }
+
+  handle_firebase_auth_error(error) {
+    switch (error.code) {
+      case 'auth/wrong-password':
+        this._snackbar.open('Contraseña incorrecta', null, {
+          duration: 3000,
+        });
+        return;
+      case 'auth/invalid-email':
+        this._snackbar.open('Introduce tu email correctamente', null, {
+          duration: 3000,
+        });
+        return;
+      case 'auth/user-not-found':
+        this._snackbar.open(
+          'No hay ningún usuario registrado con este email',
+          null,
+          {
+            duration: 3000,
+          }
+        );
+        return;
+      default:
+        this._snackbar.open('Ha ocurrido un error al iniciar tu sesión', null, {
+          duration: 3000,
+        });
+        return;
+    }
   }
 }

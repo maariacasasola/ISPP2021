@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { CancelTripPlaceDialogComponent } from '../../../components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
 
 @Component({
   selector: 'frontend-user-trip-list-page',
@@ -10,39 +11,45 @@ import { Router } from '@angular/router';
 })
 export class UserTripListPageComponent {
   trips = [];
+  filter = {
+    type: null,
+  };
 
   constructor(
     private _trips_service: TripsService,
-    private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private dialog: MatDialog
   ) {
     this.load_trips_by_user();
   }
 
+  set_type(type) {
+    this.filter = { ...this.filter, type: type };
+  }
+
   async load_trips_by_user() {
     try {
-      this.trips = await this._trips_service.get_trips();
-      console.log(this.trips);
+      const trips = await this._trips_service.get_trips();
+      trips.forEach(async (trip_order) => {
+        trip_order.can_complain = await this._trips_service.is_complained(
+          trip_order?.trip?.id
+        );
+      });
+      this.trips = trips;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async cancelTripOrder(id) {
+  cancel_trip_order_dialog(trip_id) {
     try {
-      await this._trips_service.cancel_trip(String(id));
-      this.openSnackBar('Se ha cancelado el viaje', 'Cerrar');
-      window.location.reload();
+      this.dialog.open(CancelTripPlaceDialogComponent, {
+        data: [trip_id],
+        disableClose: true,
+      });
     } catch (error) {
       console.error(error);
     }
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 5000,
-      panelClass: ['blue-snackbar'],
-    });
   }
 
   get_trip_status(status) {
@@ -61,7 +68,15 @@ export class UserTripListPageComponent {
   }
 
   show_complaint_button(trip) {
-    return new Date(trip.startDate) < new Date();
+    return new Date(trip.trip.startDate) < new Date() && trip.can_complain;
+  }
+
+  show_cancelation_button(trip) {
+    return (
+      !(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED') &&
+      new Date(trip?.trip?.cancelationDateLimit) > new Date() &&
+      new Date(trip?.trip?.startDate) > new Date()
+    );
   }
 
   go_to_trip(trip_id) {
@@ -69,6 +84,12 @@ export class UserTripListPageComponent {
   }
 
   create_complaint(trip_id) {
-    this._router.navigate(['/', 'authenticated', 'trips', trip_id, 'create-complaint']);
+    this._router.navigate([
+      '/',
+      'authenticated',
+      'trips',
+      trip_id,
+      'create-complaint',
+    ]);
   }
 }

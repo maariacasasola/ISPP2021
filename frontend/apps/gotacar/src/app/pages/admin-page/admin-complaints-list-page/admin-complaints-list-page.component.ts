@@ -55,20 +55,18 @@ export class AdminComplaintsListPageComponent {
         dialog_response
       );
       if (response) {
-        console.log(response);
         this.openSnackBar(
           'Se acepta la queja de ' +
             data?.user?.firstName +
             ' y se penaliza a su conductor ' +
             response['firstName'] +
             ' ' +
-            response['lastName'],
-          'Cerrar'
+            response['lastName']
         );
       }
       await this.load_complaints();
     } catch (error) {
-      this.openSnackBar('No se pudo penalizar, hubo un error', 'Cerrar');
+      this.openSnackBar('No se pudo penalizar, hubo un error');
     }
   }
   async rejectComplaint(complaint) {
@@ -78,18 +76,17 @@ export class AdminComplaintsListPageComponent {
       );
       if (response) {
         this.openSnackBar(
-          'Se rechaza la queja de ' + complaint?.user?.firstName,
-          'Cerrar'
+          'Se rechaza la queja de ' + complaint?.user?.firstName
         );
         await this.load_complaints();
       }
     } catch (error) {
-      this.openSnackBar('No se pudo rechazar, hubo un error', 'Cerrar');
+      this.openSnackBar('No se pudo rechazar, hubo un error');
     }
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
       duration: 5000,
       panelClass: ['blue-snackbar'],
     });

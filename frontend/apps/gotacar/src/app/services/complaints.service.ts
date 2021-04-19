@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Complaint } from '../shared/services/complaint';
 import { Penalty } from '../shared/services/penalty';
-import { ComplaintAppeal } from '../shared/services/complaint-appeal';
 
 @Injectable({
   providedIn: 'root',
@@ -38,15 +37,6 @@ export class ComplaintsService {
       .toPromise();
   }
 
-  async create_complaint_appeal(complaint_appeal: ComplaintAppeal) {
-    const body = {
-      content: complaint_appeal.content,
-      checked: complaint_appeal.checked,
-    };
-    return this._http_client
-      .post(environment.api_url + '/complaint_appeal', body)
-      .toPromise();
-  }
   async refuse_complain(idComplaint: string) {
     return this._http_client
       .post(environment.api_url + '/refuse/' + idComplaint, null)

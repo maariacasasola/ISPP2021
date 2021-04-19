@@ -1,0 +1,22 @@
+<h1>VIAJES CONTRATADOS</h1>
+<div class="trips-list">
+  <mat-card class="trip" *ngFor="let tripOrder of tripOrders">
+    <mat-card-title>{{
+      tripOrder?.user?.firstName + ' ' + tripOrder?.user?.lastName
+    }}</mat-card-title>
+    <br/>
+    <mat-card-content>
+      <p><strong>Estado: </strong>{{translate_status(tripOrder?.status)}}</p>
+      <p><strong>Payment Intent: </strong>{{tripOrder?.paymentIntent}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-stroked-button
+        class="button"
+        (click)="show_trip_order(tripOrder?.id)"
+      >
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -45,15 +45,19 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatListModule } from '@angular/material/list';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
 import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
+import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
 import { MeetingPointMapComponent } from './components/meeting-point-map/meeting-point-map.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meeting-points-page/admin-meeting-points-page.component';
@@ -63,6 +67,7 @@ import { AuthenticatedPageComponent } from './pages/authenticated-page/authentic
 import { MainHeaderComponent } from './components/main-header/main-header.component';
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
+import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
 import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
@@ -83,8 +88,28 @@ import { DriverTripListPageComponent } from './pages/authenticated-page/driver-t
 import { CancelTripDialogComponent } from './components/cancel-trip-dialog/cancel-trip-dialog.component';
 import { AdminComplaintAppealsListPageComponent } from './pages/admin-page/admin-complaint-appeals-list-page/admin-complaint-appeals-list-page.component';
 import { ComplaintAppealsService } from './services/complaint-appeals.service';
+import { AdminPaymentReturnsListPageComponent } from './pages/admin-page/admin-payment-returns-list-page/admin-payment-returns-list-page.component';
+import { PaymentReturnsService } from './services/payment-returns.service';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailedComponent } from './pages/payment-failed/payment-failed.component';
+import { MeetingPointSearchbarResultComponent } from './components/meeting-point-searchbar-result/meeting-point-searchbar-result.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { RegisterUserGoogleComponent } from './pages/register-user-google/register-user-google.component';
+import { EditProfileDriverComponent } from './pages/authenticated-page/edit-profile-driver/edit-profile-driver.component';
+import { EditProfileClientComponent } from './pages/authenticated-page/edit-profile-client/edit-profile-client.component';
+import { DropzoneDirective } from './directives/dropzone.directive';
+import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
+import { DriverTripDetailsPageComponent } from './pages/authenticated-page/driver-trip-details-page/driver-trip-details-page.component';
+import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-list-page.component';
+import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
+import { OrderTripsPipe } from './pipes/order-trips.pipe';
+import { CancelTripPlaceDialogComponent } from './components/cancel-trip-place-dialog/cancel-trip-place-dialog.component';
+import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
+import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
+import { DriverProfileDataDialogComponent } from './components/driver-profile-data-dialog/driver-profile-data-dialog.component';
+import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
+import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
+import { RefuseClientTripDriverDialogComponent } from './components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -96,6 +121,7 @@ registerLocaleData(localeEs, 'es');
     MainHeaderComponent,
     MainFooterComponent,
     ClientProfilePageComponent,
+    ClientContactPageComponent,
     LogInPageComponent,
     ErrorPageComponent,
     SearchFormComponent,
@@ -104,13 +130,16 @@ registerLocaleData(localeEs, 'es');
     AdminPageComponent,
     AdminMeetingPointsPageComponent,
     AuthMenuComponent,
+    AdminTripOrderDetailsPageComponent,
     DriverTripListPageComponent,
     CancelTripDialogComponent,
     AdminMenuComponent,
     NoAuthMenuComponent,
     AdminTripListPageComponent,
+    AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
+    AdminTripOrdersListPageComponent,
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
     UserTripListPageComponent,
@@ -123,24 +152,40 @@ registerLocaleData(localeEs, 'es');
     TripMapComponent,
     TripOrderFormDialogComponent,
     AdminComplaintAppealsListPageComponent,
+    AdminPaymentReturnsListPageComponent,
     PaymentSuccessComponent,
     PaymentFailedComponent,
+    AdminDriverRequestsPageComponent,
+    MeetingPointSearchbarResultComponent,
+    SignUpComponent,
+    RegisterUserGoogleComponent,
+    EditProfileDriverComponent,
+    EditProfileClientComponent,
+    DropzoneDirective,
+    ImageUploadDialogComponent,
+    DriverTripDetailsPageComponent,
+    OrderTripsPipe,
+    TripOrderTypePipe,
+    CancelTripPlaceDialogComponent,
+    ClientBecomeDriverPageComponent,
+    DriverProfileDataDialogComponent,
+    RatingUserDialogComponent,
+    RefuseClientTripDriverDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatInputModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule,
     MatDialogModule,
     MatSidenavModule,
-    MatFormFieldModule,
     MatIconModule,
+    MatStepperModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
@@ -167,6 +212,7 @@ registerLocaleData(localeEs, 'es');
     GoogleMapsModule,
     MatMenuModule,
     FlexLayoutModule,
+    NgxSliderModule,
   ],
   providers: [
     AuthenticatedGuard,
@@ -174,9 +220,11 @@ registerLocaleData(localeEs, 'es');
     HttpClientModule,
     AuthServiceService,
     ComplaintAppealsService,
+    PaymentReturnsService,
     TripsService,
     ConvertCentToEurPipe,
     CurrencyPipe,
+    TripOrderTypePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

@@ -1,0 +1,9 @@
+<div class="searchbar-results">
+  <div
+    class="meeting-point"
+    *ngFor="let meeting_point of searchbar_meeting_points"
+    (click)="meeting_point_selected_emit(meeting_point)"
+  >
+    {{ meeting_point.name }}
+  </div>
+</div>

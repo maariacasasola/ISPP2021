@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,15 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @RestController
 public class MeetingPointController {
-    
+
     @Autowired
     private MeetingPointRepository pointsRepository;
 
@@ -30,7 +29,7 @@ public class MeetingPointController {
 
     @PostMapping("/create_meeting_point")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public MeetingPoint createMeetingPoint(@RequestBody String body){
+    public MeetingPoint createMeetingPoint(@RequestBody String body) {
         try {
             MeetingPoint mp = new MeetingPoint();
             JsonNode jsonNode = objectMapper.readTree(body);
@@ -50,30 +49,26 @@ public class MeetingPointController {
         } catch (Exception e) {
             throw (new IllegalArgumentException(e.getMessage()));
         }
-        
-        
+
     }
 
-	@GetMapping("/search_meeting_points")
-	public List<MeetingPoint> findAllMeetingPoints(){
-		try {
-            List<MeetingPoint> response = new ArrayList<>();
-			response = pointsRepository.findAll();
-            return response;
-		} catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);	
-        }	
-		
-	}
+    @GetMapping("/search_meeting_points")
+    public List<MeetingPoint> findAllMeetingPoints() {
+        try {
+            return pointsRepository.findAll();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
 
-    //Delete
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete_meeting_point/{mpId}")
-     public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId){
-        try{
-            MeetingPoint mp = pointsRepository.findById(mpId).get();
+    public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId) {
+        try {
+            MeetingPoint mp = pointsRepository.findById(new ObjectId(mpId));
             pointsRepository.delete(mp);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }

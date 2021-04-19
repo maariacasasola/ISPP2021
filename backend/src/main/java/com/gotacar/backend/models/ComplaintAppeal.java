@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,11 @@ public class ComplaintAppeal {
     @Id
     String id;
 
+    @DBRef
+    @NotNull
+    public User driver;
+
+    @DBRef
     @NotNull
     public Complaint complaint;
 
@@ -29,10 +35,11 @@ public class ComplaintAppeal {
     public ComplaintAppeal() {
     }
 
-    public ComplaintAppeal(String content, Boolean checked, Complaint complaint) {
+    public ComplaintAppeal(String content, Boolean checked, Complaint complaint, User driver) {
         this.complaint = complaint;
         this.content = content;
         this.checked = checked;
+        this.driver = driver;
     }
 
     @Override

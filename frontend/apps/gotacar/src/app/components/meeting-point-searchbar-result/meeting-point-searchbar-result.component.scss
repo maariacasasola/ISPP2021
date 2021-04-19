@@ -1,0 +1,15 @@
+.searchbar-results {
+  position: absolute;
+  z-index: 99;
+  background-color: white;
+  width: 90%;
+  margin: -10px 10px 10px 10px;
+}
+
+.meeting-point {
+  padding: 5px;
+}
+
+.meeting-point:hover {
+  cursor: pointer;
+}

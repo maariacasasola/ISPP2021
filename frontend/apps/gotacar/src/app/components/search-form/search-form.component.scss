@@ -39,6 +39,23 @@ h1 {
   background-color: #0e4a6b;
 }
 
+.search-form-with-recommendations {
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-selector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 ::ng-deep {
   .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
     color: #538994;
@@ -57,5 +74,14 @@ h1 {
   }
   .mat-form-field-appearance-outline .mat-form-field-outline {
     color: #538994;
+  }
+}
+
+@media (max-width: 760px) {
+  .search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
