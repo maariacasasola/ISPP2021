@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class ClientBecomeDriverPageComponent implements OnInit {
   today:Date = new Date();
+  birth_date;
   driving_license;
   user_id;
   request_form = this.fb.group({
@@ -68,6 +69,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
   async load_user_data() {
     try {
       const user = await this._authService.get_user_data();
+      this.birth_date = user.birthdate;
       this.user_id= user.id;
     } catch (error) {
       this.openSnackBar(
@@ -84,15 +86,25 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     const enrollment_date = moment(this.request_form.value.enrollment_date);
     const years = moment().diff(enrollment_date, 'years');
     const exp = this.request_form.value.experience;
-    return exp>=years;
+    return years>=exp;
+  }
+  checkEnrollmentDateBeforeBirthDate(){
+    const birthdate = moment(this.birth_date);
+    const enrollment = moment(this.request_form.value.enrollment_date);
+    const years = enrollment.diff(birthdate,'years')
+    return enrollment > birthdate && years> 16;
   }
   async onSubmit() {
     if (this.request_form.invalid) {
       this.request_form.markAllAsTouched();
       return;
     }
+    if (!this.checkEnrollmentDateBeforeBirthDate()) {
+      this.openSnackBar('La fecha de obtención de tu carné no puede ser anterior a tu nacimiento y debías ser mayor de edad');
+      return;
+    }
     if(!this.checkExperienciaWithEnrollment()){
-      this.openSnackBar('La fecha de alta no corresponde con tu experiencia')
+      this.openSnackBar('La fecha de obtención de tu carné no corresponde con tu experiencia')
       return;
     }
     if(!this.driving_license){

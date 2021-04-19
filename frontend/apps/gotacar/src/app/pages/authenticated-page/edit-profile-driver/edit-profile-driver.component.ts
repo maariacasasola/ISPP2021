@@ -89,6 +89,10 @@ export class EditProfileDriverComponent implements OnInit {
       this.openSnackBar('Debes ser mayor de 16');
       return;
     }
+    if (!this.checkEnrollmentDateBeforeBirthDate()) {
+      this.openSnackBar('La fecha de obtención de tu carné no puede ser anterior a tu nacimiento y debías ser mayor de edad');
+      return;
+    }
 
     try {
       const car_data = {
@@ -134,6 +138,13 @@ export class EditProfileDriverComponent implements OnInit {
     const years = moment().diff(birthdate, 'years');
     return years > 16;
   }
+  checkEnrollmentDateBeforeBirthDate(){
+    const birthdate = moment(this.update_form.value.birthdate);
+    const enrollment = moment(this.update_form.value.enrollment_date);
+    const years = enrollment.diff(birthdate,'years')
+    return enrollment > birthdate && years> 16;
+  }
+  
 
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {
