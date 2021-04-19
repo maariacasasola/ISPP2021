@@ -135,7 +135,6 @@ export class ClientBecomeDriverPageComponent implements OnInit {
 
       }
     } catch (error) {
-      console.error(error);
       this.openSnackBar(
         'Ha ocurrido un error al intentar convertirte en conductor'
       );

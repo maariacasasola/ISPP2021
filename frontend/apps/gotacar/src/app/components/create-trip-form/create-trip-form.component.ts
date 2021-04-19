@@ -90,7 +90,7 @@ export class CreateTripFormComponent {
         this.router.navigate(['home']);
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar('Se ha producido un error al crear el viaje')
     }
   }
 
@@ -148,7 +148,7 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener la localización origen");
     }
   }
 
@@ -177,7 +177,7 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener la localización destino");
     }
   }
 
@@ -204,7 +204,7 @@ export class CreateTripFormComponent {
     try {
       this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro");
     }
   }
 

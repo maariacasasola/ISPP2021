@@ -75,7 +75,6 @@ export class RegisterUserGoogleComponent implements OnInit {
         await this._router.navigate(['/', 'log-in']);
       }
     } catch (error) {
-      console.error(error);
       this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
     }
   }
