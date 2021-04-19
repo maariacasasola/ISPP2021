@@ -679,12 +679,13 @@ class UserControllerTest {
 		}
 		assertThat(contador).isEqualTo(1);
 	}
-
+	
+	//NEGATIVO Lanza error
 	@Test
 	void testFindAllPendingError() throws Exception {
 		user.setDriverStatus("PENDING");
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
-		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
+		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenThrow(new RuntimeException());
 
 		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
 				.getContentAsString();
@@ -695,15 +696,8 @@ class UserControllerTest {
 		ResultActions result = mockMvc.perform(
 				get("/driver-request/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 
-		String res = result.andReturn().getResponse().getContentAsString();
-		int contador = 0;
-		while (res.contains("driverStatus")) {
-			res = res.substring(res.indexOf("driverStatus") + "driverStatus".length(), res.length());
-			contador++;
-		}
-		assertThat(contador).isEqualTo(1);
 	}
 
 	@Test
