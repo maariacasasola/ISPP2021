@@ -342,3 +342,9 @@ progress::-webkit-progress-value {
     background-color: $primary !important;
   }
 }
+
+map-info-window {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
