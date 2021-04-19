@@ -127,6 +127,32 @@ class MeetingPointControllerTest {
 
 	}
 
+	// NEGATIVO Lanza Error
+	@Test
+	void testCreateMeetingPointError() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
+		// Construcción del json para el body
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("lat", 37.355465467940405);
+
+		// Login como usuario
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json.getString("token");
+
+		// Petición post al controlador
+		ResultActions result = mockMvc.perform(
+				post("/create_meeting_point").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+
+	}
+
 	@Test
 	void testCreateMeetingPointAdmin() throws Exception {
 		Mockito.when(meetingPointRepository.findByName("Heliopolis")).thenReturn(
@@ -172,8 +198,22 @@ class MeetingPointControllerTest {
 		assertThat(lista.size()).isEqualTo(1);
 
 	}
-	
-	//POSITIVO eliminar punto de encuentro como administrador
+
+	// NEGATIVO Lanza error
+	@Test
+	void testFindAllMeetingPointsError() throws Exception {
+		Mockito.when(meetingPointRepository.findAll()).thenThrow(new RuntimeException());
+
+		RequestBuilder builder = MockMvcRequestBuilders.get("/search_meeting_points");
+		ObjectMapper mapper = new ObjectMapper();
+
+		ResultActions result = mockMvc.perform(builder);
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+
+	}
+
+	// POSITIVO eliminar punto de encuentro como administrador
 	@Test
 	void testDeleteMeetingPoint() throws Exception {
 		Mockito.when(meetingPointRepository.findById(new ObjectId(meetingPoint.getId()))).thenReturn(meetingPoint);
@@ -184,11 +224,30 @@ class MeetingPointControllerTest {
 				.getContentAsString();
 		org.json.JSONObject json = new org.json.JSONObject(response);
 		String token = json.getString("token");
-		
-		ResultActions result = mockMvc.perform(
-				post("/delete_meeting_point/{mpId}", meetingPoint.getId()).header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON));
-		
+
+		ResultActions result = mockMvc
+				.perform(post("/delete_meeting_point/{mpId}", meetingPoint.getId()).header("Authorization", token)
+						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+	
+	//NEGATIVO Lanza Error
+	@Test
+	void testDeleteMeetingPointError() throws Exception {
+		Mockito.when(meetingPointRepository.findById(new ObjectId(meetingPoint.getId()))).thenThrow(new RuntimeException());
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
+		// Login como administrador
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/delete_meeting_point/{mpId}", meetingPoint.getId()).header("Authorization", token)
+						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
 	}
 }
