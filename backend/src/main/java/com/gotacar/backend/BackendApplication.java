@@ -337,15 +337,15 @@ public class BackendApplication implements CommandLineRunner {
                 // COMPLAINT APPEALS
                 // -----------------------------------------------------------------------------------------
                 ComplaintAppeal complaintAppeal1 = new ComplaintAppeal(
-                        "El retraso fue causado por necesidades personales, suelo ser puntual", false,
-                        complaint2, driver2);
-        ComplaintAppeal complaintAppeal2 = new ComplaintAppeal(
-                        "El retraso fue causado por necesidades personales", true, complaint2, driver2);
-        ComplaintAppeal complaintAppeal3 = new ComplaintAppeal("El retraso fue causado por necesidades", false,
-                        complaint3, driver);
+                                "El retraso fue causado por necesidades personales, suelo ser puntual", false,
+                                complaint2, driver2);
+                ComplaintAppeal complaintAppeal2 = new ComplaintAppeal(
+                                "El retraso fue causado por necesidades personales", true, complaint2, driver2);
+                ComplaintAppeal complaintAppeal3 = new ComplaintAppeal("El retraso fue causado por necesidades", false,
+                                complaint3, driver);
 
-        complaintAppealRepository.save(complaintAppeal1);
-        complaintAppealRepository.save(complaintAppeal2);
+                complaintAppealRepository.save(complaintAppeal1);
+                complaintAppealRepository.save(complaintAppeal2);
 
                 complaintAppealRepository.save(complaintAppeal1);
                 complaintAppealRepository.save(complaintAppeal2);

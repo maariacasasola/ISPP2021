@@ -132,7 +132,7 @@ public class TripController {
 				}
 			}
 
-			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
+			LocalDateTime cancelationDateLimit = dateStartJson.minusMinutes(30);
 
 			// Lanza error si la fecha de finalizacion es anterior a la de salida
 			if (dateEndJson.isBefore(dateStartJson)) {
@@ -223,39 +223,32 @@ public class TripController {
 	@GetMapping("/trip/{tripId}")
 	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
 		try {
-			return tripRepository.findById(new ObjectId(tripId));
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			List<TripOrder> tripOrders = tripOrderRepository.findByTripAndStatus(trip, "PAID");
+			trip.setTripOrders(tripOrders);
+			return trip;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 
 	@PreAuthorize("hasRole('ROLE_DRIVER')")
-	@PostMapping("/cancel-user/{user_id}/from-trip/{trip_id}")
-	public Trip cancelUserFromTrip(@PathVariable(value = "user_id") String userId,
-			@PathVariable(value = "trip_id") String tripId) {
+	@PostMapping("/trip-order/{trip_order_id}/cancel")
+	public Trip cancelUserFromTrip(@PathVariable(value = "trip_order_id") String tripOrderId) {
 		try {
-
-			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
-
-			User user1 = userRepository.findById(new ObjectId(userId));
-
-			List<TripOrder> listOrders1 = tripOrderRepository.findByTrip(trip1);
-
-			for (TripOrder order : listOrders1) {
-
-				if (order.getUser().getDni().equals(user1.getDni())) {
-					Integer orderPlaces1 = order.getPlaces();
-					trip1.setPlaces(trip1.getPlaces() + orderPlaces1);
-					tripRepository.save(trip1);
-					refundController.createRefundDriverRejection(order);
-				}
-
+			TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(tripOrderId));
+			Trip trip = tripOrder.getTrip();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User currentDriver = userRepository.findByEmail(authentication.getPrincipal().toString());
+			if (currentDriver.getId().equals(trip.getDriver().getId())) {
+				Integer orderPlaces = tripOrder.getPlaces();
+				trip.setPlaces(trip.getPlaces() + orderPlaces);
+				tripRepository.save(trip);
+				refundController.createRefundDriverRejection(tripOrder);
 			}
-			return trip1;
-
+			return trip;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
-
 	}
 }

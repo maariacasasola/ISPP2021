@@ -83,6 +83,10 @@
   background-color: $primary;
 }
 
+.data-button {
+  color: white;
+}
+
 @media (max-width: 760px) {
   .trip-details-container {
     display: flex;

@@ -16,11 +16,15 @@ export class TripsService {
   }
 
   get_all_trip_orders(): Promise<any> {
-    return this._http_client.get(environment.api_url + '/trip_order/list').toPromise();
+    return this._http_client
+      .get(environment.api_url + '/trip_order/list')
+      .toPromise();
   }
 
   get_trip_order(trip_order_id: string): Promise<any> {
-    return this._http_client.get(environment.api_url + '/trip_order/show/' + trip_order_id).toPromise();
+    return this._http_client
+      .get(environment.api_url + '/trip_order/show/' + trip_order_id)
+      .toPromise();
   }
 
   get_trips(): Promise<any> {
@@ -45,9 +49,12 @@ export class TripsService {
       .toPromise();
   }
 
-  cancel_user_from_trip(data){
+  cancel_trip_order(trip_order_id) {
     return this._http_client
-      .post(environment.api_url + '/cancel-user/' + data[1] + '/from-trip/' + data[0], null)
+      .post(
+        environment.api_url + '/trip-order/' + trip_order_id + '/cancel',
+        null
+      )
       .toPromise();
   }
 
@@ -74,8 +81,10 @@ export class TripsService {
       .toPromise();
   }
 
-  async get_users_by_trip(trip_id: string): Promise<any>{
-    return this._http_client.get(environment.api_url + '/list_users_trip/' + trip_id).toPromise();
+  async get_users_by_trip(trip_id: string): Promise<any> {
+    return this._http_client
+      .get(environment.api_url + '/list_users_trip/' + trip_id)
+      .toPromise();
   }
 
   async create_stripe_session(trip_id, quantity, description): Promise<any> {
@@ -107,8 +116,9 @@ export class TripsService {
       .toPromise();
   }
 
-  async is_complained(trip_id: string): Promise<any>{
+  async is_complained(trip_id: string): Promise<any> {
     return this._http_client
-    .get(environment.api_url + '/complaints/check/' + trip_id).toPromise();
+      .get(environment.api_url + '/complaints/check/' + trip_id)
+      .toPromise();
   }
 }
