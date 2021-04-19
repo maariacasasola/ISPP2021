@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./client-become-driver-page.component.scss'],
 })
 export class ClientBecomeDriverPageComponent implements OnInit {
-  today:Date = new Date();
+  today: Date = new Date();
   birth_date;
   driving_license;
   user_id;
@@ -27,15 +27,23 @@ export class ClientBecomeDriverPageComponent implements OnInit {
         ),
       ],
     ],
-    experience: ['', [Validators.required,Validators.min(0), Validators.max(50),]],
+    experience: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(50)],
+    ],
     car_plate: [
       '',
-      [Validators.required,
-      Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]
+      [
+        Validators.required,
+        Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}'),
+      ],
     ],
     enrollment_date: ['', Validators.required],
-    model: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    color: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    model: ['', [Validators.required]],
+    color: [
+      '',
+      [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')],
+    ],
   });
   constructor(
     private fb: FormBuilder,
@@ -70,7 +78,7 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     try {
       const user = await this._authService.get_user_data();
       this.birth_date = user.birthdate;
-      this.user_id= user.id;
+      this.user_id = user.id;
     } catch (error) {
       this.openSnackBar(
         'Ha ocurrido un error al recuperar el identificador de usuario'
@@ -82,17 +90,17 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       duration: 3000,
     });
   }
-  checkExperienciaWithEnrollment():boolean{
+  checkExperienciaWithEnrollment(): boolean {
     const enrollment_date = moment(this.request_form.value.enrollment_date);
     const years = moment().diff(enrollment_date, 'years');
     const exp = this.request_form.value.experience;
-    return years>=exp;
+    return years >= exp;
   }
-  checkEnrollmentDateBeforeBirthDate(){
+  checkEnrollmentDateBeforeBirthDate() {
     const birthdate = moment(this.birth_date);
     const enrollment = moment(this.request_form.value.enrollment_date);
-    const years = enrollment.diff(birthdate,'years')
-    return enrollment > birthdate && years> 16;
+    const years = enrollment.diff(birthdate, 'years');
+    return enrollment > birthdate && years > 16;
   }
   async onSubmit() {
     if (this.request_form.invalid) {
@@ -100,15 +108,19 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       return;
     }
     if (!this.checkEnrollmentDateBeforeBirthDate()) {
-      this.openSnackBar('La fecha de obtención de tu carné no puede ser anterior a tu nacimiento y debías ser mayor de edad');
+      this.openSnackBar(
+        'La fecha de obtención de tu carné no puede ser anterior a tu nacimiento y debías ser mayor de edad'
+      );
       return;
     }
-    if(!this.checkExperienciaWithEnrollment()){
-      this.openSnackBar('La fecha de obtención de tu carné no corresponde con tu experiencia')
+    if (!this.checkExperienciaWithEnrollment()) {
+      this.openSnackBar(
+        'La fecha de obtención de tu carné no corresponde con tu experiencia'
+      );
       return;
     }
-    if(!this.driving_license){
-      this.openSnackBar('Debe proporcionar una imagen de su licencia')
+    if (!this.driving_license) {
+      this.openSnackBar('Debe proporcionar una imagen de su licencia');
       return;
     }
     try {
@@ -122,17 +134,18 @@ export class ClientBecomeDriverPageComponent implements OnInit {
       };
 
       const user_data = {
-        id:this.user_id,
+        id: this.user_id,
         iban: this.request_form.value.iban,
-        experience:Number(this.request_form.value.experience),
+        experience: Number(this.request_form.value.experience),
         car_data: car_data,
-        driving_license:this.driving_license,
+        driving_license: this.driving_license,
       };
-      const response = await this._userService.request_conversion_to_driver(user_data);
+      const response = await this._userService.request_conversion_to_driver(
+        user_data
+      );
       if (response) {
         this.openSnackBar('Petición de conversión realizada correctamente');
         this.router.navigate(['authenticated/profile']);
-
       }
     } catch (error) {
       console.error(error);
