@@ -1,12 +1,6 @@
 <div class="grid-container">
   <div class="formulario">
-    <div class="space">
-      <button mat-fab color="warn" (click)="toggleDisplayCreation()">
-        <mat-icon>add_location_alt</mat-icon>
-      </button>
-    </div>
-
-    <div class="custom" [hidden]="isShow">
+    <div class="custom">
       <form class="custom" [formGroup]="new_meeting_point">
         <h3>Añadir punto de encuentro</h3>
         <mat-form-field appearance="fill">
@@ -73,8 +67,8 @@
 
       <map-info-window
         >{{ infoContent }}
-        <button mat-mini-fab color="warn" (click)="deleteMarker(infoPosition)">
-          Delete
+        <button class="delete-meeting-point" (click)="deleteMarker(infoPosition)">
+          <mat-icon>delete</mat-icon>
         </button>
       </map-info-window>
     </google-map>
