@@ -18,15 +18,15 @@
           <mat-label>Direccion</mat-label>
           <input type="text" formControlName="address" matInput />
         </mat-form-field>
-
-        <mat-form-field appearance="fill">
+        
+        <mat-form-field matTooltip="Haz click en el mapa para obtener las coordenadas" appearance="fill">
           <mat-label>Latitud</mat-label>
-          <input type="text" formControlName="lat" matInput />
+          <input type="text" formControlName="lat" matInput readonly/>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field matTooltip="Haz click en el mapa para obtener las coordenadas" appearance="fill">
           <mat-label>Longitud</mat-label>
-          <input type="text" formControlName="lng" matInput />
+          <input type="text" formControlName="lng" matInput readonly />
         </mat-form-field>
 
         <div class="custom2">
@@ -73,9 +73,11 @@
 
       <map-info-window
         >{{ infoContent }}
-        <button mat-mini-fab color="warn" (click)="deleteMarker(infoPosition)">
-          Delete
+       
+        <button matTooltip="Eliminar punto de encuentro" mat-icon-button  (click)="deleteMarker(infoPosition)">
+          <mat-icon>delete</mat-icon>
         </button>
+      
       </map-info-window>
     </google-map>
   </div>
