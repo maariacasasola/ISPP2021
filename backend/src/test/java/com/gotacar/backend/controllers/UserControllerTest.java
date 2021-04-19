@@ -584,11 +584,38 @@ class UserControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);
 	}
 
+	// POSITIVO no hay ningún trip order pagado asociado a ese viaje
 	@Test
 	@WithMockUser(value = "spring")
-	void testFindUsersByTrip() throws Exception {
+	void testFindUsersByTrip0() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+		String tripId = trip.getId();
+
+		ResultActions result = mockMvc.perform(get("/list_users_trip/{tripId}", tripId).header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
+	}
+
+	// POSITIVO hay un trip order pagado asociado a ese viaje
+	@Test
+	@WithMockUser(value = "spring")
+	void testFindUsersByTrip1() throws Exception {
+		List<TripOrder> tripOrders = new ArrayList<>();
+		tripOrder1.setStatus("PAID");
+		tripOrders.add(tripOrder1);
+		tripOrders.add(tripOrder2);
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
+		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(tripOrders);
 
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
@@ -626,9 +653,13 @@ class UserControllerTest {
 
 	@Test
 	void deleteAccountWithTrip() throws Exception {
+		List<Trip> trips = new ArrayList<Trip>();
+		trips.add(trip2);
+		trips.add(trip);
+		trips.add(trip1);
 		Mockito.when(userRepository.findByUid(driver2.getUid())).thenReturn(driver2);
 		Mockito.when(userRepository.findByEmail(driver2.getEmail())).thenReturn(driver2);
-		Mockito.when(tripRepository.findByDriverAndCanceled(driver2, false)).thenReturn(java.util.Arrays.asList(trip2));
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver2, false)).thenReturn(trips);
 		Mockito.when(tripOrderRepository.findByUserAndStatus(driver2, "PROCCESSING"))
 				.thenReturn(new ArrayList<TripOrder>());
 
@@ -649,7 +680,7 @@ class UserControllerTest {
 		Mockito.when(userRepository.findByUid(user1.getUid())).thenReturn(user1);
 		Mockito.when(userRepository.findByEmail(user1.getEmail())).thenReturn(user1);
 		Mockito.when(tripRepository.findByDriverAndCanceled(user1, false)).thenReturn(new ArrayList<Trip>());
-		Mockito.when(tripOrderRepository.findByUserAndStatus(user1, "PROCCESSING"))
+		Mockito.when(tripOrderRepository.findByUserAndStatus(user1, "PAID"))
 				.thenReturn(java.util.Arrays.asList(tripOrder1));
 
 		String response = mockMvc.perform(post("/user").param("uid", user1.getUid())).andReturn().getResponse()
@@ -664,16 +695,15 @@ class UserControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
 
+	// POSITIVO Eliminar cuenta de un usuario penalizado
 	@Test
 	@WithMockUser(value = "spring")
 	void testDeletePenalizedAccount() throws Exception {
 		user.setTimesBanned(4);
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
-		Mockito.when(userRepository.findById(new ObjectId(user.getId()))).thenReturn(user);
-		Mockito.when(tripRepository.findByDriverAndCanceled(user, false)).thenReturn(new ArrayList<>());
-		Mockito.when(tripOrderRepository.findByUserAndStatus(user, "PROCCESSING"))
-				.thenReturn(new ArrayList<TripOrder>());
-		;
+		Mockito.when(userRepository.findById(new ObjectId(driver.getId()))).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(new ArrayList<>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PAID")).thenReturn(new ArrayList<TripOrder>());
 
 		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
 				.getContentAsString();
@@ -681,13 +711,97 @@ class UserControllerTest {
 		org.json.JSONObject json2 = new org.json.JSONObject(response);
 		String token = json2.getString("token");
 
-		ResultActions result = mockMvc.perform(post("/delete-penalized-account").header("Authorization", token)
-				.contentType(MediaType.APPLICATION_JSON));
+		ResultActions result = mockMvc.perform(post("/delete-penalized-account/{userId}", driver.getId())
+				.header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
-	// TEst positivo ciando el usuario no esta baneado
+	// NEGATIVO Eliminar usuario con reservas pendientes
+	@Test
+	@WithMockUser(value = "spring")
+	void testDeletePenalizedAccountPendingOrders() throws Exception {
+		List<TripOrder> tripOrders = new ArrayList<>();
+		tripOrders.add(tripOrder1);
+		user.setTimesBanned(4);
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findById(new ObjectId(driver.getId()))).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(new ArrayList<Trip>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PROCCESSING")).thenReturn(tripOrders);
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc.perform(post("/delete-penalized-account/{userId}", driver.getId())
+				.header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+		assertThat(result.andReturn().getResponse().getErrorMessage())
+				.isEqualTo("El usuario tiene reservas pendientes");
+
+	}
+
+	// NEGATIVO ELiminar usuario con viajes pendientes
+	@Test
+	@WithMockUser(value = "spring")
+	void testDeletePenalizedAccountPendingTrips() throws Exception {
+		List<Trip> trips = new ArrayList<Trip>();
+		trips.add(trip2);
+		trips.add(trip);
+		trips.add(trip1);
+		user.setTimesBanned(4);
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findById(new ObjectId(driver.getId()))).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(trips);
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc.perform(post("/delete-penalized-account/{userId}", driver.getId())
+				.header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isEqualTo("El usuario tiene viajes pendientes");
+
+	}
+
+	// POSITIVO ELiminar admin
+	@Test
+	@WithMockUser(value = "spring")
+	void testDeletePenalizedAccountAdmin() throws Exception {
+		List<Trip> trips = new ArrayList<Trip>();
+		trips.add(trip2);
+		trips.add(trip);
+		trips.add(trip1);
+		user.setTimesBanned(4);
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findById(new ObjectId(admin.getId()))).thenReturn(admin);
+		Mockito.when(tripRepository.findByDriverAndCanceled(admin, false)).thenReturn(new ArrayList<Trip>());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(admin, "PROCCESSING"))
+				.thenReturn(new ArrayList<TripOrder>());
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc.perform(post("/delete-penalized-account/{userId}", admin.getId())
+				.header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+	}
+
+	// TEST positivo cuando el usuario no esta baneado
 	@Test
 	void testLoginBannedNull() throws Exception {
 		driver.setBannedUntil(null);
