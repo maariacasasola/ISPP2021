@@ -178,6 +178,29 @@ class UserControllerTest {
 
 	}
 
+	// NEGATIVO Test entra dentro del catch
+	@Test
+	void testListEnrolledUsersError() throws Exception {
+		List<User> lista = new ArrayList<User>();
+		lista.add(driver);
+		lista.add(driver2);
+		lista.add(user);
+		lista.add(user1);
+		Mockito.when(userRepository.findByRolesContaining("ROLE_CLIENT")).thenThrow(new RuntimeException());
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				get("/enrolled-user/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+
 	@Test
 	void deleteAccountNothing() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
@@ -216,6 +239,20 @@ class UserControllerTest {
 				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 		// comprobamos el resultado
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	@Test
+	void testRegisterError() throws Exception {
+		// creamos el Json
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("birthdate", "1990-11-11");
+		sampleObject.appendField("phone", "655656565");
+
+		// hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
+				.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos el resultado
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
 
 	@Test
@@ -323,6 +360,36 @@ class UserControllerTest {
 		// comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
+	
+	//NEGATIVO lanza error
+	@Test
+	public void testUpdateDataClientError() throws Exception {
+		// Obtenemos el rol de usuario
+		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+		Mockito.when(userRepository.findByEmail(user.getEmail())).thenThrow(new RuntimeException());
+
+		String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+		// creamos el Json
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("firstName", "Martín");
+		sampleObject.appendField("lastName", "Romero");
+		sampleObject.appendField("email", "client1@gotacar.es");
+		sampleObject.appendField("profilePhoto", "ejemploFoto.com");
+		sampleObject.appendField("birthdate", "2000-06-04");
+		sampleObject.appendField("phone", "655656565");
+		sampleObject.appendField("dni", "54545454N");
+
+		// hacemos el post
+		ResultActions result = mockMvc
+				.perform(post("/user/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+		// comprobamos los datos
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
 
 	@Test
 	public void testUpdateDataDriver() throws Exception {
@@ -381,6 +448,30 @@ class UserControllerTest {
 				.accept(MediaType.APPLICATION_JSON));
 		// comprobamos los datos
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+	}
+
+	// NEGATIVO Lanza error
+	@Test
+	public void testUpdateProfilePhotoError() throws Exception {
+		// Obtenemos el rol de usuario
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenThrow(new RuntimeException());
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+		// creamos el Json
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("profilePhoto", "https://fotos.es/photo1.png");
+
+		// hacemos el post
+		ResultActions result = mockMvc.perform(post("/user/update/profile-photo").header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+				.accept(MediaType.APPLICATION_JSON));
+		// comprobamos los datos
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
 
 	@Test
@@ -521,6 +612,28 @@ class UserControllerTest {
 		assertThat(user.getDriverStatus()).isEqualTo("ACCEPTED");
 	}
 
+	// NEGATIVO Update info de driver
+	@Test
+	void testAcceptRequestToDriverError() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByUid(user.getUid())).thenThrow(new RuntimeException());
+
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("uid", user.getUid());
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+		String token = json2.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+
 	@Test
 	void testAcceptRequestToDriverFailed() throws Exception {
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
@@ -543,6 +656,32 @@ class UserControllerTest {
 
 	@Test
 	void testFindAllPending() throws Exception {
+		user.setDriverStatus("PENDING");
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				get("/driver-request/list").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+		String res = result.andReturn().getResponse().getContentAsString();
+		int contador = 0;
+		while (res.contains("driverStatus")) {
+			res = res.substring(res.indexOf("driverStatus") + "driverStatus".length(), res.length());
+			contador++;
+		}
+		assertThat(contador).isEqualTo(1);
+	}
+
+	@Test
+	void testFindAllPendingError() throws Exception {
 		user.setDriverStatus("PENDING");
 		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
 		Mockito.when(userRepository.findByDriverStatus("PENDING")).thenReturn(java.util.Arrays.asList(user));
@@ -603,7 +742,26 @@ class UserControllerTest {
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 	}
+	//Negativo lanza error
+	@Test
+	@WithMockUser(value = "spring")
+	void testFindUsersByTripError() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenThrow(new RuntimeException());
 
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+		org.json.JSONObject json2 = new org.json.JSONObject(response);
+		// Obtengo el token
+		String token = json2.getString("token");
+		String tripId = trip.getId();
+
+		ResultActions result = mockMvc.perform(get("/list_users_trip/{tripId}", tripId).header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+	
 	@Test
 	void deleteAccountWithTripAndTripOrder() throws Exception {
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
@@ -622,6 +780,26 @@ class UserControllerTest {
 				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
+	
+	@Test
+	void deleteAccountWithTripAndTripOrderPendingTrips() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriverAndCanceled(driver, false)).thenReturn(java.util.Arrays.asList());
+		Mockito.when(tripOrderRepository.findByUserAndStatus(driver, "PROCCESSING"))
+				.thenReturn(java.util.Arrays.asList());
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				post("/delete-account").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 	}
 
 	@Test
@@ -701,6 +879,18 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(dateS).isEqualTo("null");
+	}
+
+	// NEGATIVO entra en el catch
+	@Test
+	void testLoginError() throws Exception {
+		driver.setBannedUntil(null);
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenThrow(new RuntimeException());
+
+		ResultActions result = mockMvc
+				.perform(post("/user").param("uid", driver.getUid()).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(400);
 	}
 
 	// Test positivo cuando el ususario esta baneado con una fecha posterior a la
