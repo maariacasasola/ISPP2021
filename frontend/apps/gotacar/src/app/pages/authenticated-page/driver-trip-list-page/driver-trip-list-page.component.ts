@@ -56,7 +56,9 @@ export class DriverTripListPageComponent {
         await this.load_trips_by_driver();
       }
     } catch (error) {
-      this._snackbar.open("Se ha producido un error al cancelar el viaje");
+      this._snackbar.open("Se ha producido un error al cancelar el viaje", null, {
+        duration: 2000,
+      });
     }
   }
 }

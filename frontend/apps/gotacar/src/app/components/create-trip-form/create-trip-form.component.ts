@@ -103,13 +103,16 @@ export class CreateTripFormComponent {
   checkDates() {
     const startDateHour = moment(this.createTripForm.value.fechaHoraInicio);
     const endingDateHour = moment(this.createTripForm.value.fechaHoraFin);
-
+    
     if (startDateHour.isAfter(endingDateHour)) {
       return 'La fecha de llegada tiene que ser posterior a la de salida';
     }
     // Check de que se crea con un margen con al menos 1h de antelación
     if (moment().isAfter(moment(startDateHour).subtract(1, 'hours'))) {
       return 'Debes crear tu viaje con al menos una hora de antelación';
+    }
+    if(moment().diff(startDateHour,'years')<=1 || moment().diff(endingDateHour,'years')<=1 ){
+      return '¿Seguro que quieres reservar a tan largo plazo? No realizamos viajes en el tiempo!';
     }
 
     // Fecha de llegada no es más de dos horas mayor que la de salida
