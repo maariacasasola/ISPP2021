@@ -41,11 +41,9 @@ export class ComplaintAppealDialogComponent {
       } else {
         const new_complaint_appeal = {
           content: this.complaintAppealForm.value.content || '',
+          tripId: this.data
         };
-        const response = await this._complaint_appeals_service.create_complaint_appeal_banned(
-          new_complaint_appeal,
-          this.data
-        );
+        const response = await this._complaint_appeals_service.create_complaint_appeal_banned(new_complaint_appeal);
         if (response) {
           this.show_correct_appeal_snackbar();
         }

@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
@@ -37,7 +38,7 @@ describe('CancelTripDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, BrowserAnimationsModule],
+      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, BrowserAnimationsModule, MatSnackBarModule],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
     }).compileComponents();
   });

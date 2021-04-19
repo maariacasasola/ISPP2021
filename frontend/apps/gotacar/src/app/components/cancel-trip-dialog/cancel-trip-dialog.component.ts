@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { TripsService } from '../../services/trips.service';
@@ -23,29 +24,35 @@ export class CancelTripDialogComponent {
     private _trips_service: TripsService,
     private _complaint_appeals_service: ComplaintAppealsService,
     private _dialog: MatDialog,
+    private _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private data: string
-  ) {}
+  ) { }
 
   async continue() {
-    await this._trips_service.cancel_driver_trip(this.data);
-    await this._dialog_ref.close();
-    await this._auth_service.set_banned(localStorage.getItem('uid'));
-    this._dialog.open(ComplaintAppealDialogComponent);
+    try {
+      await this._trips_service.cancel_driver_trip(this.data);
+      await this._dialog_ref.close(true);
+      await this._auth_service.set_banned(localStorage.getItem('uid'));
+      if (await this._complaint_appeals_service.can_complaint_appeal()) {
+        this._dialog.open(ComplaintAppealDialogComponent, {
+          data: this.data
+        });
+      }else{
+        this.openSnackBar("La cuenta ha sido baneada");
+      }
+    } catch (error) {
+      this.openSnackBar("Ha ocurrido un error");
+    }
   }
 
   close() {
     this._dialog_ref.close();
   }
 
-  create_complaint_appeal() {
-    try {
-      const new_complaint_appeal = {
-        content: this.complaintAppealForm.value.content || '',
-      };
-      this._complaint_appeals_service.create_complaint_appeal_banned(new_complaint_appeal,this.data);
-      this._dialog_ref.close();
-    } catch (error) {
-      console.error(error);
-    }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
+      duration: 5000,
+      panelClass: ['blue-snackbar'],
+    });
   }
 }
