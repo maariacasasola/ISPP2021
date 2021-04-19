@@ -8,6 +8,7 @@ import auth from 'firebase/app';
 import { MatDialog } from '@angular/material/dialog';
 import { ComplaintAppealDialogComponent } from '../components/complaint-appeal-dialog/complaint-appeal-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComplaintAppealsService } from './complaint-appeals.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,9 @@ export class AuthServiceService {
     public router: Router,
     public ngZone: NgZone,
     private _http_client: HttpClient,
-    private dialog: MatDialog,
-    private _snackbar: MatSnackBar
+    private _complaint_appeals_service: ComplaintAppealsService,
+    private _snackbar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -165,14 +167,31 @@ export class AuthServiceService {
       });
   }
 
+  async set_banned(uid) {
+    let { token, roles, bannedUntil } = await this.get_token(uid);
+    localStorage.setItem('bannedUntil', bannedUntil);
+  }
+
   async set_user_data(user) {
     let { token, roles, bannedUntil } = await this.get_token(user.uid);
     token = token.replace('Bearer ', '');
     localStorage.setItem('token', token);
     localStorage.setItem('roles', roles);
+    localStorage.setItem('uid', user.uid);
     if (!bannedUntil) return;
     localStorage.setItem('bannedUntil', bannedUntil);
-    this.dialog.open(ComplaintAppealDialogComponent);
+    this.can_appeal();
+  }
+
+  async can_appeal() {
+    let canAppeal = await this._complaint_appeals_service.can_complaint_appeal();
+    if (canAppeal) {
+      const t = this.dialog.open(ComplaintAppealDialogComponent);
+    } else {
+      this._snackbar.open('La cuenta está baneada ', null, {
+        duration: 3000,
+      });
+    }
   }
 
   get_token(user_uid): Promise<any> {

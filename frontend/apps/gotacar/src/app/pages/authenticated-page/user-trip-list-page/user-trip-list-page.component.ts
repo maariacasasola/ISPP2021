@@ -37,7 +37,7 @@ export class UserTripListPageComponent {
       });
       this.trips = trips;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -48,7 +48,7 @@ export class UserTripListPageComponent {
         disableClose: true,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

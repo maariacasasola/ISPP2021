@@ -128,7 +128,6 @@ export class ClientBecomeDriverPageComponent implements OnInit {
         car_data: car_data,
         driving_license:this.driving_license,
       };
-      console.log(user_data);
       const response = await this._userService.request_conversion_to_driver(user_data);
       if (response) {
         this.openSnackBar('Petición de conversión realizada correctamente');

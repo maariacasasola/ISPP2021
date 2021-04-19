@@ -3,9 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CancelTripDialogComponent } from '../../../components/cancel-trip-dialog/cancel-trip-dialog.component';
-import { AuthServiceService } from '../../../services/auth-service.service';
 import { TripsService } from '../../../services/trips.service';
-import { Trip } from '../../../shared/services/trip';
 
 @Component({
   selector: 'frontend-driver-trip-list-page',
@@ -18,7 +16,6 @@ export class DriverTripListPageComponent {
   constructor(
     private _trips_service: TripsService,
     private _snackbar: MatSnackBar,
-    private _auth_service: AuthServiceService,
     private dialog: MatDialog,
     private _router: Router
   ) {
@@ -54,7 +51,7 @@ export class DriverTripListPageComponent {
         this._snackbar.open('Viaje cancelado correctamente', null, {
           duration: 3000,
         });
-        window.location.reload();
+        await this.load_trips_by_driver();
       }
     } catch (error) {
       console.error(error);

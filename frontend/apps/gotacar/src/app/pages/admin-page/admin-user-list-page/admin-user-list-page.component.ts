@@ -28,6 +28,7 @@ export class AdminUserListPageComponent {
   async delete_account(user_id: string) {
     try {
       await this._users_service.delete_penalized_account(user_id);
+      await this.load_users();
     } catch (error) {
       if (error.error.message === 'El usuario tiene reservas pendientes') {
         this._snackbar.open('El usuario tiene reservas pendientes', null, {

@@ -1,6 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { AuthServiceService } from '../../services/auth-service.service';
@@ -18,8 +20,12 @@ describe('CancelTripDialogComponent', () => {
   };
 
   class mockAuthService {
-    public is_banned(): Observable<Boolean>{
+    public user_is_banned(): Observable<Boolean>{
       return of(true);
+    }
+
+    public set_banned(){
+      return of();
     }
   }
 
@@ -31,7 +37,7 @@ describe('CancelTripDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule],
+      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, BrowserAnimationsModule],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
     }).compileComponents();
   });

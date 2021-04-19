@@ -7,7 +7,33 @@ import { ComplaintAppeal } from '../shared/services/complaint-appeal';
   providedIn: 'root',
 })
 export class ComplaintAppealsService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient,
+    ) {}
+
+  async can_complaint_appeal(): Promise<any>{
+    return await this._http_client
+      .get(environment.api_url + '/complaint-appeal/driver/check')
+      .toPromise();
+  }
+
+  async create_complaint_appeal_complaint(complaint_appeal: ComplaintAppeal): Promise<any> {
+    const body = {
+      content: complaint_appeal.content,
+    };
+    return this._http_client
+      .post(environment.api_url + '/complaint-appeal/complaint/create', body)
+      .toPromise();
+  }
+
+  async create_complaint_appeal_banned(complaint_appeal: ComplaintAppeal, trip_id: string): Promise<any>{
+    const body={
+      content: complaint_appeal.content,
+      tripId: trip_id,
+    }
+    return this._http_client
+    .post(environment.api_url + '/complaint-appeal/create', body)
+    .toPromise();
+  }
 
   async get_all_complaints(): Promise<any> {
     return await this._http_client
