@@ -52,7 +52,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { NoAuthMenuComponent } from './components/no-auth-menu/no-auth-menu.component';
@@ -110,6 +109,7 @@ import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/clie
 import { DriverProfileDataDialogComponent } from './components/driver-profile-data-dialog/driver-profile-data-dialog.component';
 import { RatingUserDialogComponent } from './components/rating-user-dialog/rating-user-dialog.component';
 import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
+import { RefuseClientTripDriverDialogComponent } from './components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -170,6 +170,7 @@ registerLocaleData(localeEs, 'es');
     ClientBecomeDriverPageComponent,
     DriverProfileDataDialogComponent,
     RatingUserDialogComponent,
+    RefuseClientTripDriverDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -236,4 +237,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

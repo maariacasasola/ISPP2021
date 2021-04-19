@@ -73,10 +73,6 @@ public class ComplaintController {
 
             List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
-            if (!(complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0)) {
-                throw new Exception("Ya te has quejado de este viaje");
-            }
-
             if (trip.getEndingDate().isBefore(actualDate.toLocalDateTime())) {
                 if (lto.size() == 1) {
                     String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
@@ -148,6 +144,21 @@ public class ComplaintController {
             complaintRepository.save(complaintFinal);
 
             return complaintFinal;
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+
+    }
+
+    @GetMapping("/complaints/check/{tripId}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public Boolean checkComplaint(@PathVariable(value = "tripId") String tripId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            Trip trip = tripRepository.findById(new ObjectId(tripId));
+            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

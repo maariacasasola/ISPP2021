@@ -29,9 +29,15 @@ export class UserTripListPageComponent {
 
   async load_trips_by_user() {
     try {
-      this.trips = await this._trips_service.get_trips();
+      const trips = await this._trips_service.get_trips();
+      trips.forEach(async (trip_order) => {
+        trip_order.can_complain = await this._trips_service.is_complained(
+          trip_order?.trip?.id
+        );
+      });
+      this.trips = trips;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -42,7 +48,7 @@ export class UserTripListPageComponent {
         disableClose: true,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -62,7 +68,7 @@ export class UserTripListPageComponent {
   }
 
   show_complaint_button(trip) {
-    return new Date(trip.startDate) < new Date();
+    return new Date(trip.trip.startDate) < new Date() && trip.can_complain;
   }
 
   show_cancelation_button(trip) {

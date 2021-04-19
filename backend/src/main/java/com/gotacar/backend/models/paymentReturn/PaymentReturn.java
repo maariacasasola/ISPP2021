@@ -39,6 +39,6 @@ public class PaymentReturn {
 
     @Override
     public String toString() {
-        return String.format("Complaint[id=%s, amount=%s, user=%s]", id, amount, user.toString());
+        return String.format("PaymentReturn[id=%s, amount=%s, user=%s]", id, amount, user.toString());
     }
 }

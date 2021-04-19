@@ -24,12 +24,17 @@ export class CreateTripFormComponent {
     destino: ['', Validators.required],
     fechaHoraInicio: ['', Validators.required],
     fechaHoraFin: ['', Validators.required],
-    numeroPasajero: ['',
-     [Validators.required, Validators.min(1), Validators.max(4),
-      Validators.pattern('^[1-4]$')]],
+    numeroPasajero: [
+      '',
+      [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(4),
+        Validators.pattern('^[1-4]$'),
+      ],
+    ],
     comentarios: ['', Validators.required],
-    price: ['',
-     [Validators.required, Validators.min(0.5)]],
+    price: ['', [Validators.required, Validators.min(0.5)]],
   });
 
   location_origin: Location;
@@ -67,7 +72,6 @@ export class CreateTripFormComponent {
       return;
     }
 
-
     const trip: Trip = {
       starting_point: this.location_origin,
       ending_point: this.location_target,
@@ -82,6 +86,7 @@ export class CreateTripFormComponent {
     try {
       const response = this.tripService.create_trip(trip);
       if (response) {
+        this.openSnackBar('Viaje creado correctamente');
         this.router.navigate(['home']);
       }
     } catch (error) {
@@ -117,7 +122,6 @@ export class CreateTripFormComponent {
       return '¡Correr al volante es peligroso! Deberías tardar más en llegar a tu destino';
     }
   }
-
 
   async get_origin() {
     try {

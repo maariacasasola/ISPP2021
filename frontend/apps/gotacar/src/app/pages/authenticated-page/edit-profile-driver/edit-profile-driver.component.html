@@ -28,7 +28,7 @@
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>attach_email</mat-icon>
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
+        <input matInput type="email" formControlName="email" required readonly />
         <mat-error *ngIf="update_form?.get('email')?.errors?.required"
           >Campo obligatorio</mat-error
         >
@@ -39,7 +39,7 @@
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>account_circle</mat-icon>
         <mat-label>DNI</mat-label>
-        <input matInput type="text" formControlName="dni" required />
+        <input matInput type="text" formControlName="dni" required readonly/>
         <mat-error *ngIf="update_form?.get('dni')?.errors?.required"
           >Campo obligatorio</mat-error
         >

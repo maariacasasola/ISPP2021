@@ -18,9 +18,9 @@ export class EditProfileDriverComponent implements OnInit {
   update_form = this.fb.group({
     firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    email: ['', [Validators.required, Validators.email]],
+    email: [{value:'', disabled:true }, [Validators.required, Validators.email]],
     dni: [
-      '',
+      {value:'', disabled:true },
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
     ],
     birthdate: ['', Validators.required],
@@ -89,6 +89,10 @@ export class EditProfileDriverComponent implements OnInit {
       this.openSnackBar('Debes ser mayor de 16');
       return;
     }
+    if (!this.checkEnrollmentDateBeforeBirthDate()) {
+      this.openSnackBar('La fecha de obtención de tu carné no puede ser anterior a tu nacimiento y debías ser mayor de edad');
+      return;
+    }
 
     try {
       const car_data = {
@@ -108,7 +112,7 @@ export class EditProfileDriverComponent implements OnInit {
         birthdate: moment(this.update_form.value.birthdate).format(
           'yyyy-MM-DD'
         ),
-        dni: this.update_form.value.dni,
+        dni: this.user.dni,
         phone: this.update_form.value.phone,
         iban: this.update_form.value.iban,
         carData: car_data,
@@ -134,6 +138,13 @@ export class EditProfileDriverComponent implements OnInit {
     const years = moment().diff(birthdate, 'years');
     return years > 16;
   }
+  checkEnrollmentDateBeforeBirthDate(){
+    const birthdate = moment(this.update_form.value.birthdate);
+    const enrollment = moment(this.update_form.value.enrollment_date);
+    const years = enrollment.diff(birthdate,'years')
+    return enrollment > birthdate && years> 16;
+  }
+  
 
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {

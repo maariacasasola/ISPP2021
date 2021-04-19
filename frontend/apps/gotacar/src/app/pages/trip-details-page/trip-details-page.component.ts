@@ -147,7 +147,9 @@ export class TripDetailsPageComponent {
   }
 
   show_buy_button() {
-    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date() && this.trip?.canceled !==true;
+    const user = JSON.parse(localStorage.getItem('user'));
+    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date() 
+      && this.trip?.canceled !==true && user.uid !== this.trip.driver.uid;
   }
   async driver_is_rated() {
     this.trip = await this._trip_service.get_trip(this.get_trip_id());

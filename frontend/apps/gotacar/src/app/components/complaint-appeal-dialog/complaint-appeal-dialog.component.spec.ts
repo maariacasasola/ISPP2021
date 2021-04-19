@@ -1,28 +1,64 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ComplaintsService } from '../../services/complaints.service';
+import { of } from 'rxjs';
+import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { ComplaintAppealDialogComponent } from './complaint-appeal-dialog.component';
 
 describe('ComplaintAppealDialogComponent', () => {
   let component: ComplaintAppealDialogComponent;
   let fixture: ComponentFixture<ComplaintAppealDialogComponent>;
-  let complaintsService: ComplaintsService;
 
-  class mockComplaintsService {}
+  class mockComplaintsService {
+    public create_complaint_appeal_complaint() {
+      return of({
+        driver: {},
+        complaint: {},
+        content:
+          'El retraso fue causado por necesidades personales, suelo ser puntual',
+        checked: false,
+      });
+    }
+
+    public create_complaint_appeal_banned() {
+      return of({
+        driver: {},
+        complaint: {},
+        content:
+          'El retraso fue causado por necesidades personales, suelo ser puntual',
+        checked: false,
+      });
+    }
+  }
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: jasmine.createSpy('close'),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComplaintAppealDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule,ReactiveFormsModule],
-      providers: [{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: ComplaintsService, useClass: mockComplaintsService }],
+      imports: [
+        RouterTestingModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: '' },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: ComplaintAppealsService, useClass: mockComplaintsService },
+      ],
     }).compileComponents();
   });
 
@@ -40,4 +76,4 @@ describe('ComplaintAppealDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
-})
+});

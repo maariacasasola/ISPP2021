@@ -4,6 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RatingUserDialogComponent } from '../../../components/rating-user-dialog/rating-user-dialog.component';
+import * as moment from 'moment';
+import { RefuseClientTripDriverDialogComponent } from '../../../components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 import { TripsService } from '../../../services/trips.service';
 import { UsersService } from '../../../services/users.service';
 
@@ -17,7 +19,6 @@ export class DriverTripDetailsPageComponent {
   fecha;
   page_title = 'Detalles del viaje';
   trip;
-  users;
   users_already_rated;
 
   constructor(
@@ -25,11 +26,10 @@ export class DriverTripDetailsPageComponent {
     private _user_service: UsersService,
     private _my_dialog: MatDialog,
     private _route: ActivatedRoute,
-    private _trip_service: TripsService
+    private _trip_service: TripsService,
+    private dialog: MatDialog
   ) {
     this.load_trip();
-    this.load_users();
-    this.get_users_rated();
   }
 
   private async load_trip() {
@@ -37,23 +37,13 @@ export class DriverTripDetailsPageComponent {
       this.trip = await this._trip_service.get_trip(
         this._route.snapshot.params['trip_id']
       );
+      this.get_users_rated();
       this.fecha = new Date(this.trip.startDate);
     } catch (error) {
       console.error(error);
     }
   }
 
-  private async load_users() {
-    try {
-      this.users = await this._trip_service.get_users_by_trip(
-        this._route.snapshot.params['trip_id']
-      );
-    } catch (error) {
-      this._snackBar.open('Ha ocurrido un error', null, {
-        duration: 3000,
-      });
-    }
-  }
   async get_users_rated() {
     const usersS = await this._trip_service.get_users_by_trip(
       this._route.snapshot.params['trip_id']
@@ -76,13 +66,9 @@ export class DriverTripDetailsPageComponent {
       this.openSnackBar('Problema al cargar los usuarios valorados');
     }
   }
+
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
-  }
-  openSnackBar(message: string) {
-    this._snackBar.open(message, null, {
-      duration: 3000,
-    });
   }
 
   async addValoracionDialog(id) {
@@ -106,12 +92,44 @@ export class DriverTripDetailsPageComponent {
         const response = await this._user_service.rate_user(dialog_response);
         if (response) {
           this.openSnackBar('Tu valoración ha sido exitosa');
-          await this.load_users();
+          await this.load_trip();
           await this.get_users_rated();
         }
       } catch (error) {
         this.openSnackBar('Tu valoración no se ha podido realizar');
       }
     }
+  }
+
+  async active_cancel_dialog(trip_order_id) {
+    try {
+      const confirm_dialog = this.dialog.open(
+        RefuseClientTripDriverDialogComponent
+      );
+
+      const response = await confirm_dialog.afterClosed().toPromise();
+      if (response) {
+        const api_response = await this._trip_service.cancel_trip_order(
+          trip_order_id
+        );
+        if (api_response) {
+          this.openSnackBar('Cliente rechazado correctamente');
+          await this.load_trip();
+        }
+      }
+    } catch (error) {
+      this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
+      console.error(error);
+    }
+  }
+
+  checkDate(endingDate) {
+    return moment(endingDate).isAfter(moment());
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 }

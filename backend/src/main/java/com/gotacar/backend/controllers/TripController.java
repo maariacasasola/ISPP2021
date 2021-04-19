@@ -39,13 +39,16 @@ import org.springframework.web.bind.annotation.*;
 public class TripController {
 
 	@Autowired
+	private RefundController refundController;
+
+	@Autowired
+	private TripOrderRepository tripOrderRepository;
+
+	@Autowired
 	private TripRepository tripRepository;
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private TripOrderRepository tripOrderRepository;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -86,7 +89,7 @@ public class TripController {
 		try {
 			ZonedDateTime actualDate = ZonedDateTime.now();
 			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-			
+
 			JsonNode jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
@@ -122,13 +125,14 @@ public class TripController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			LocalDateTime bannedUntil = currentUser.getBannedUntil();
-			if(bannedUntil != null) {
-            	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
-            		throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El usuario esta baneado, no puede realizar esta accion");
-            	}
-            }
+			if (bannedUntil != null) {
+				if (bannedUntil.isAfter(actualDate.toLocalDateTime())) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+							"El usuario esta baneado, no puede realizar esta accion");
+				}
+			}
 
-			LocalDateTime cancelationDateLimit = dateStartJson.minusHours(1);
+			LocalDateTime cancelationDateLimit = dateStartJson.minusMinutes(30);
 
 			// Lanza error si la fecha de finalizacion es anterior a la de salida
 			if (dateEndJson.isBefore(dateStartJson)) {
@@ -168,9 +172,6 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
-			ZonedDateTime actualDate = ZonedDateTime.now();
-			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-
 			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
@@ -190,20 +191,14 @@ public class TripController {
 				throw new Exception("El viaje ya está cancelado");
 			}
 
+			ZonedDateTime dateStartZone = ZonedDateTime.now();
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			LocalDateTime now = dateStartZone.toLocalDateTime();
+
 			trip1.setCanceled(true);
-			trip1.setCancelationDate(actualDate.toLocalDateTime());
+			trip1.setCancelationDate(now);
 
-			if (trip1.getCancelationDateLimit().isBefore(actualDate.toLocalDateTime())) {
-				driver.setBannedUntil(actualDate.toLocalDateTime().plusDays(14));
-				userRepository.save(driver);
-			}
-
-			List<TripOrder> orders = tripOrderRepository.findByTrip(trip1);
-
-			for (TripOrder order : orders) {
-				order.setStatus("REFUNDED_PENDING");
-				tripOrderRepository.save(order);
-			}
+			refundController.createRefundDriverCancelTrip(trip1);
 
 			tripRepository.save(trip1);
 			return trip1;
@@ -228,7 +223,30 @@ public class TripController {
 	@GetMapping("/trip/{tripId}")
 	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
 		try {
-			return tripRepository.findById(new ObjectId(tripId));
+			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			List<TripOrder> tripOrders = tripOrderRepository.findByTripAndStatus(trip, "PAID");
+			trip.setTripOrders(tripOrders);
+			return trip;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_DRIVER')")
+	@PostMapping("/trip-order/{trip_order_id}/cancel")
+	public Trip cancelUserFromTrip(@PathVariable(value = "trip_order_id") String tripOrderId) {
+		try {
+			TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(tripOrderId));
+			Trip trip = tripOrder.getTrip();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User currentDriver = userRepository.findByEmail(authentication.getPrincipal().toString());
+			if (currentDriver.getId().equals(trip.getDriver().getId())) {
+				Integer orderPlaces = tripOrder.getPlaces();
+				trip.setPlaces(trip.getPlaces() + orderPlaces);
+				tripRepository.save(trip);
+				refundController.createRefundDriverRejection(tripOrder);
+			}
+			return trip;
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}

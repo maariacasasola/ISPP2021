@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
@@ -13,6 +12,7 @@ import { TripOrderTypePipe } from '../../../pipes/trip-order-type.pipe';
 import { TripsService } from '../../../services/trips.service';
 import { TripOrder } from '../../../shared/services/trip-order';
 import { UserTripListPageComponent } from './user-trip-list-page.component';
+import { AuthServiceService } from '../../../services/auth-service.service';
 
 const location1 = {
   name: 'Sevilla',
@@ -60,8 +60,6 @@ let TRIP_OBJECT: TripOrder = {
   },
 };
 
-let TRIP_OBJECTS = [TRIP_OBJECT];
-
 class mockTripService {
   public get_trip(): Observable<TripOrder> {
     return of(TRIP_OBJECT);
@@ -69,6 +67,12 @@ class mockTripService {
 
   public get_trips() {
     return of([]);
+  }
+}
+
+class mockAuthService {
+  public sign_out() {
+    return;
   }
 }
 
@@ -91,6 +95,7 @@ describe('UserTripListPageComponent', () => {
         CurrencyPipe,
         { provide: TripsService, useClass: mockTripService },
         { provide: Router, useValue: routerSpy },
+        { provide: AuthServiceService, useClass: mockAuthService },
       ],
       declarations: [UserTripListPageComponent, TripOrderTypePipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

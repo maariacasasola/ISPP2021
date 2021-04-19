@@ -31,10 +31,13 @@ import org.springframework.http.HttpStatus;
 public class TripOrderController {
 
     @Autowired
-    private TripOrderRepository tripOrderRepository;
+    private RefundController refundController;
 
     @Autowired
     private TripRepository tripRepository;
+
+    @Autowired
+    private TripOrderRepository tripOrderRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -57,17 +60,10 @@ public class TripOrderController {
         try {
             TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
             Trip trip = tripOrder.getTrip();
-            ZonedDateTime now = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            LocalDateTime dateNow = now.toLocalDateTime();
-            if (trip.getCancelationDateLimit().isAfter(dateNow)) {
-                tripOrder.setStatus("REFUNDED_PENDING");
-                tripOrderRepository.save(tripOrder);
-                trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
-                tripRepository.save(trip);
-                return tripOrder;
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de cancelación ha expirado");
-            }
+            refundController.createRefundClientCancel(tripOrder);
+            trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
+            tripRepository.save(trip);
+            return tripOrder;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }

@@ -17,11 +17,11 @@ h1 {
   margin: 10px;
 }
 
-.icon{
+.icon {
   margin-left: 10px;
 }
 
-.buttons-group{
+.buttons-group {
   display: flex;
   justify-content: center;
 }
@@ -35,7 +35,11 @@ h1 {
   padding: 20px;
 }
 
-@media(max-width: 760px) {
+.cancel-button {
+  margin: 10px;
+}
+
+@media (max-width: 760px) {
   .trips-list {
     display: flex;
     flex-direction: column;

@@ -19,7 +19,7 @@ export class EditProfileClientComponent {
       [Validators.required, Validators.email],
     ],
     dni: [
-      '',
+      {value:'', disabled:true },
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
     ],
     birthdate: ['', Validators.required],
@@ -78,7 +78,7 @@ export class EditProfileClientComponent {
         birthdate: moment(this.update_form.value.birthdate).format(
           'yyyy-MM-DD'
         ),
-        dni: this.update_form.value.dni,
+        dni: this.user.dni,
         phone: this.update_form.value.phone,
       };
       const response = await this._authService.update_user_profile(user_data);
