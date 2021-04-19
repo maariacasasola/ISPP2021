@@ -59,7 +59,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
         });
       });
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro",'Cerrar');
     }
   }
 
@@ -78,10 +78,16 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       const meeting_point = this.meeting_points_array.find(
         (x) => x.lat === infoPosition.lat && x.lng === infoPosition.lng
       );
-      this._meeting_point_service.delete_meeting_point(meeting_point.id);
-      window.location.reload();
+      const response = await this._meeting_point_service.delete_meeting_point(meeting_point.id);
+      if (response) {
+        this.openSnackBar(
+          'Punto eliminado satisfactoriamente', "Cerrar");
+      }
+      this.markers = [];
+      await this.get_all_meeting_points();
+      
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al eliminar el punto de encuentro","Cerrar");
     }
   }
 
