@@ -1,21 +1,31 @@
 <h1>DEVOLUCIONES</h1>
 <div class="payment-returns-list">
-    <mat-card class="payment-return" *ngFor="let payment_return of payment_returns">
-      <div class="payment-return-header">
-        <mat-card-title class="id">
-          {{ 'Devolución ' + payment_return?.id }}
-        </mat-card-title>
-      </div>
-  
-      <mat-card-content>
-        <p><strong>Id:</strong> {{ payment_return?.id }}</p>
-        <p><strong>Usuario:</strong> {{ payment_return?.user?.firstName + ' ' + payment_return?.user?.lastName }}</p>
-        <p><strong>Cantidad:</strong> {{ payment_return?.amount + '€'}}</p>
-        <p>
-          <strong>Fecha de creación:</strong>
-          {{ payment_return?.createdAt | date: 'HH:mm dd/MM/yyyy' }}
-        </p>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  
+  <mat-card
+    class="payment-return"
+    *ngFor="let payment_return of payment_returns"
+  >
+    <div class="payment-return-header">
+      <mat-card-title class="id">
+        {{ 'Devolución ' + payment_return?.id }}
+      </mat-card-title>
+    </div>
+
+    <mat-card-content>
+      <p><strong>Id:</strong> {{ payment_return?.id }}</p>
+      <p>
+        <strong>Usuario:</strong>
+        {{
+          payment_return?.user?.firstName + ' ' + payment_return?.user?.lastName
+        }}
+      </p>
+      <p>
+        <strong>Cantidad:</strong>
+        {{ payment_return?.amount | convertCentToEur }}
+      </p>
+      <p>
+        <strong>Fecha de creación:</strong>
+        {{ payment_return?.createdAt | date: 'HH:mm dd/MM/yyyy' }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

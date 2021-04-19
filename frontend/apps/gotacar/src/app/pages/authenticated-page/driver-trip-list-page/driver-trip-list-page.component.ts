@@ -34,7 +34,6 @@ export class DriverTripListPageComponent {
     return new Date(start_date) > new Date();
   }
 
-
   go_to_trip(trip_id) {
     this._router.navigate(['/', 'authenticated', 'driver-trips', trip_id]);
   }
@@ -51,8 +50,8 @@ export class DriverTripListPageComponent {
         this._snackbar.open('Viaje cancelado correctamente', null, {
           duration: 3000,
         });
-        await this.load_trips_by_driver();
       }
+      await this.load_trips_by_driver();
     } catch (error) {
       console.error(error);
     }
