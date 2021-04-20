@@ -4,6 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'frontend-main-footer',
@@ -11,7 +12,10 @@ import {
   styleUrls: ['./main-footer.component.scss'],
 })
 export class MainFooterComponent implements OnInit {
-  constructor() {}
+  constructor(private _authService: AuthServiceService) {}
 
   ngOnInit(): void {}
+  canAccess():boolean{
+    return this._authService.is_client() ||  this._authService.is_driver();
+  }
 }
