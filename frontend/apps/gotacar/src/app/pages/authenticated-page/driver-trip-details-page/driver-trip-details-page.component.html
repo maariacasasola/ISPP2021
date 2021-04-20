@@ -54,7 +54,7 @@
 
             <div *ngIf="trip_order.user?.averageRatings">
               <div><b>Valoración media: </b></div>
-
+              <div class="rating-content">
               <mat-icon
                 [ngClass]="{ orange: trip_order.user.averageRatings > 0 }"
                 >{{
@@ -84,7 +84,10 @@
                 >{{
                   trip_order.user.averageRatings > 4 ? 'star' : 'star_border'
                 }}</mat-icon
+                
               >
+              <button mat-icon-button class="button-special" (click)="go_to_user_ratings(trip_order.user.id)"><mat-icon class="material-icons md-18">rate_review</mat-icon></button>
+            </div>
             </div>
             <p *ngIf="users_already_rated?.includes(trip_order.user.id)">
               Usuario ya valorado

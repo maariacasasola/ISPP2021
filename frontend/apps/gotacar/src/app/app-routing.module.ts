@@ -33,6 +33,7 @@ import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
+import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ClientProfilePageComponent,
+      },
+      {
+        path:'user-ratings/:user_id',
+        component:ShowRatingsComponent,
       },
       {
         path: 'contact',
@@ -147,6 +152,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: AdminUserListPageComponent,
+      },
+      {
+        path:'user-ratings/:user_id',
+        component:ShowRatingsComponent,
       },
       {
         path: 'complaints',

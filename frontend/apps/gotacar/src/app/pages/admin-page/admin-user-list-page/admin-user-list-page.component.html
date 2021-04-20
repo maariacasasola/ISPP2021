@@ -35,7 +35,6 @@
         <strong>Baneado hasta:</strong>
         {{ user?.bannedUntil | date: 'HH:mm dd/MM/yyyy' }}
       </p>
-
       <div *ngIf="user.averageRatings">
         <p *ngIf="user?.averageRatings"><strong>Valoración media:</strong></p>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 0 }">{{
@@ -53,6 +52,7 @@
         <mat-icon [ngClass]="{ orange: user.averageRatings > 4 }">{{
           user.averageRatings > 4 ? 'star' : 'star_border'
         }}</mat-icon>
+        <button mat-icon-button class="button" (click)="go_to_user_ratings(user.id)"><mat-icon>rate_review</mat-icon></button>
       </div>
     </mat-card-content>
     <mat-card-actions>

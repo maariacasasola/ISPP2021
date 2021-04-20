@@ -111,6 +111,7 @@ import { RatingUserDialogComponent } from './components/rating-user-dialog/ratin
 import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 import { RefuseClientTripDriverDialogComponent } from './components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 import { HelloService } from './services/hello.service';
+import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -172,6 +173,7 @@ registerLocaleData(localeEs, 'es');
     DriverProfileDataDialogComponent,
     RatingUserDialogComponent,
     RefuseClientTripDriverDialogComponent,
+    ShowRatingsComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

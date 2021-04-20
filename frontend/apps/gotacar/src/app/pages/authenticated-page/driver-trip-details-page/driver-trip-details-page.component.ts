@@ -2,7 +2,7 @@ import { JsonpClientBackend } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RatingUserDialogComponent } from '../../../components/rating-user-dialog/rating-user-dialog.component';
 import * as moment from 'moment';
 import { RefuseClientTripDriverDialogComponent } from '../../../components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
@@ -27,7 +27,8 @@ export class DriverTripDetailsPageComponent {
     private _my_dialog: MatDialog,
     private _route: ActivatedRoute,
     private _trip_service: TripsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _router: Router,
   ) {
     this.load_trip();
   }
@@ -69,6 +70,9 @@ export class DriverTripDetailsPageComponent {
 
   get_user_profile_photo(user) {
     return user?.profilePhoto || 'assets/img/generic-user.jpg';
+  }
+  go_to_user_ratings(user_id) {
+    this._router.navigate(['/', 'authenticated', 'user-ratings', user_id]);
   }
 
   async addValoracionDialog(id) {
