@@ -39,7 +39,6 @@ import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
-import org.springframework.data.geo.Point;
 import com.gotacar.backend.controllers.TripControllerTest.TestConfig;
 
 @SpringBootTest
@@ -161,6 +160,7 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
@@ -206,6 +206,7 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
@@ -252,6 +253,7 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
@@ -293,12 +295,13 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
 		ending_poinJsonObject.appendField("name", "Reina Mercedes");
 		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
-		// Construcción del json para el body
+
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("start_date", "2021-06-04T13:30:00.000+00");
 		sampleObject.appendField("end_date", "2021-06-04T13:30:00.000+00");
@@ -308,15 +311,12 @@ class TripControllerTest {
 		sampleObject.appendField("starting_point", starting_poinJsonObject);
 		sampleObject.appendField("ending_point", ending_poinJsonObject);
 
-		// Login como administrador
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
-		// Petición post al controlador
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
@@ -338,12 +338,13 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
 		ending_poinJsonObject.appendField("name", "Reina Mercedes");
 		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
-		// Construcción del json para el body
+
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("start_date", "2021-06-04T13:30:00.000+00");
 		sampleObject.appendField("end_date", "2021-06-04T13:20:00.000+00");
@@ -353,15 +354,12 @@ class TripControllerTest {
 		sampleObject.appendField("starting_point", starting_poinJsonObject);
 		sampleObject.appendField("ending_point", ending_poinJsonObject);
 
-		// Login como administrador
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
-		// Petición post al controlador
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
@@ -382,12 +380,13 @@ class TripControllerTest {
 		starting_poinJsonObject.appendField("lng", -5.982498103652494);
 		starting_poinJsonObject.appendField("name", "Heliopolis");
 		starting_poinJsonObject.appendField("address", "Calle Ifni, 41012 Sevilla");
+
 		JSONObject ending_poinJsonObject = new JSONObject();
 		ending_poinJsonObject.appendField("lat", 37.355465467940405);
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
 		ending_poinJsonObject.appendField("name", "Reina Mercedes");
 		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
-		// Construcción del json para el body
+
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("start_date", "2021-06-04T13:20:00.000+00");
 		sampleObject.appendField("end_date", "2021-06-04T13:24:00.000+00");
@@ -397,15 +396,12 @@ class TripControllerTest {
 		sampleObject.appendField("starting_point", starting_poinJsonObject);
 		sampleObject.appendField("ending_point", ending_poinJsonObject);
 
-		// Login como administrador
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
-		// Petición post al controlador
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
@@ -431,7 +427,6 @@ class TripControllerTest {
 		ending_poinJsonObject.appendField("lng", -5.982498103652494);
 		ending_poinJsonObject.appendField("name", "Reina Mercedes");
 		ending_poinJsonObject.appendField("address", "Calle Teba, 41012 Sevilla");
-		// Construcción del json para el body
 
 		ZonedDateTime dateStartZone = ZonedDateTime.now();
 		dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
@@ -448,15 +443,12 @@ class TripControllerTest {
 		sampleObject.appendField("starting_point", starting_poinJsonObject);
 		sampleObject.appendField("ending_point", ending_poinJsonObject);
 
-		// Login como administrador
 		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
 				.getContentAsString();
 
 		org.json.JSONObject json = new org.json.JSONObject(response);
-		// Obtengo el token
 		String token = json.getString("token");
 
-		// Petición post al controlador
 		ResultActions result = mockMvc
 				.perform(post("/create_trip").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
@@ -495,29 +487,29 @@ class TripControllerTest {
 
 	@Test
 	void testCancelTripDriver() throws Exception {
-	Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
-	Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
-	Mockito.when(tripRepository.findById(new
-	ObjectId(trip.getId()))).thenReturn(trip);
-	Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findById(new
+		ObjectId(trip.getId()))).thenReturn(trip);
+		Mockito.when(tripOrderRepository.findByTrip(trip)).thenReturn(Arrays.asList(order));
 
-	String response = mockMvc.perform(post("/user").param("uid",
-	driver.getUid())).andReturn().getResponse()
-	.getContentAsString();
+		String response = mockMvc.perform(post("/user").param("uid",
+		driver.getUid())).andReturn().getResponse()
+		.getContentAsString();
 
-	org.json.JSONObject json = new org.json.JSONObject(response);
-	String token = json.getString("token");
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
 
-	String tripId = trip.getId();
+		String tripId = trip.getId();
 
-	ResultActions result = mockMvc
-	.perform(post("/cancel_trip_driver/{trip_id}",
-	tripId).header("Authorization", token)
-	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		ResultActions result = mockMvc
+		.perform(post("/cancel_trip_driver/{trip_id}",
+		tripId).header("Authorization", token)
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
 
-	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-	assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
-	assertThat(trip.getCanceled());
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
+		assertThat(trip.getCanceled());
 	}
 
 	@Test
@@ -566,53 +558,7 @@ class TripControllerTest {
 	}
 
 	@Test
-	void testSearchTripsWithIncorrectPlaces() throws Exception {
-		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
-
-		JSONObject sampleObject = new JSONObject();
-		sampleObject.appendField("date", "2021-05-24T16:00:00.000+00");
-		sampleObject.appendField("places", 0);
-
-		JSONObject startingPointObj = new JSONObject();
-		startingPointObj.appendField("name", trip.getStartingPoint().getName());
-		startingPointObj.appendField("address", trip.getStartingPoint().getAddress());
-		startingPointObj.appendField("lat", trip.getStartingPoint().getLat());
-		startingPointObj.appendField("lng", trip.getStartingPoint().getLng());
-
-		sampleObject.appendField("starting_point", startingPointObj);
-
-		JSONObject endingPointObj = new JSONObject();
-		endingPointObj.appendField("name", trip.getStartingPoint().getName());
-		endingPointObj.appendField("address", trip.getStartingPoint().getAddress());
-		endingPointObj.appendField("lat", trip.getEndingPoint().getLat());
-		endingPointObj.appendField("lng", trip.getEndingPoint().getLng());
-
-		sampleObject.appendField("ending_point", endingPointObj);
-
-		Point startingPoint = new Point(trip.getStartingPoint().getLat(),trip.getStartingPoint().getLng());
-		Point endingPoint = new Point(trip.getEndingPoint().getLat(),trip.getEndingPoint().getLng());
-
-		Mockito.when(tripRepository.searchTrips(startingPoint,endingPoint,0,trip.getStartDate())).thenReturn(Arrays.asList());
-
-		ResultActions result = mockMvc.perform(post("/search_trips").contentType(MediaType.APPLICATION_JSON)
-			.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-
-		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-
-		String res = result.andReturn().getResponse().getContentAsString();
-		int contador = 0;
-		while (res.indexOf("startingPoint") > -1) {
-			res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(),
-			res.length());
-			contador++;
-		}
-
-		assertThat(contador).isEqualTo(0);
-	}
-
-	@Test
 	void testCancelUserFromTrip() throws Exception {
-		order.setStatus("PAID");
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
 		Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
@@ -635,27 +581,47 @@ class TripControllerTest {
 	}
 
 	// @Test
-	// void testGetTripDetails() throws Exception {
-	// 	order.setStatus("PAID");
+	// void testSearchTrips() throws Exception {
 	// 	Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
-	// 	Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
-	// 	Mockito.when(tripRepository.findById(new ObjectId(trip.getId()))).thenReturn(trip);
-	// 	Mockito.when(tripOrderRepository.findByTripAndStatus(trip, "PAID")).thenReturn(Arrays.asList(order));
 
-	// 	String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
-	// 			.getContentAsString();
+	// 	JSONObject sampleObject = new JSONObject();
+	// 	sampleObject.appendField("date", "2021-05-24T16:00:00.000+00");
+	// 	sampleObject.appendField("places", trip.getPlaces());
 
-	// 	org.json.JSONObject json = new org.json.JSONObject(response);
-	// 	String token = json.getString("token");
+	// 	JSONObject startingPointObj = new JSONObject();
+	// 	startingPointObj.appendField("name", trip.getStartingPoint().getName());
+	// 	startingPointObj.appendField("address", trip.getStartingPoint().getAddress());
+	// 	startingPointObj.appendField("lat", trip.getStartingPoint().getLat());
+	// 	startingPointObj.appendField("lng", trip.getStartingPoint().getLng());
 
-	// 	String tripId = trip.getId();
+	// 	sampleObject.appendField("starting_point", startingPointObj);
 
-	// 	ResultActions result = mockMvc
-	// 			.perform(get("/trip/{tripId}", tripId).header("Authorization", token)
-	// 					.contentType(MediaType.APPLICATION_JSON));
+	// 	JSONObject endingPointObj = new JSONObject();
+	// 	endingPointObj.appendField("name", trip.getStartingPoint().getName());
+	// 	endingPointObj.appendField("address", trip.getStartingPoint().getAddress());
+	// 	endingPointObj.appendField("lat", trip.getEndingPoint().getLat());
+	// 	endingPointObj.appendField("lng", trip.getEndingPoint().getLng());
+
+	// 	sampleObject.appendField("ending_point", endingPointObj);
+
+	// 	Point startingPoint = new Point(trip.getStartingPoint().getLat(),trip.getStartingPoint().getLng());
+	// 	Point endingPoint = new Point(trip.getEndingPoint().getLat(),trip.getEndingPoint().getLng());
+
+	// 	Mockito.when(tripRepository.searchTrips(startingPoint,endingPoint,trip.getPlaces(),trip.getStartDate())).thenReturn(Arrays.asList());
+
+	// 	ResultActions result = mockMvc.perform(post("/search_trips").contentType(MediaType.APPLICATION_JSON)
+	// 		.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 	// 	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-	// 	assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
-	// }
 
+	// 	String res = result.andReturn().getResponse().getContentAsString();
+	// 	int contador = 0;
+	// 	while (res.indexOf("startingPoint") > -1) {
+	// 		res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(),
+	// 		res.length());
+	// 		contador++;
+	// 	}
+
+	// 	assertThat(contador).isEqualTo(1);
+	// }
 }
