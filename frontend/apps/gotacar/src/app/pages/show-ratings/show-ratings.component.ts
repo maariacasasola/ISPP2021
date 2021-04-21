@@ -1,21 +1,41 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'frontend-show-ratings',
   templateUrl: './show-ratings.component.html',
-  styleUrls: ['./show-ratings.component.scss']
+  styleUrls: ['./show-ratings.component.scss'],
 })
 export class ShowRatingsComponent implements OnInit {
-  prueba;
-  constructor(private _router: Router,private _route: ActivatedRoute,) { 
-    this.prueba=this.get_user_id();
+  ratingsComments;
+  constructor(
+    private _router: Router,
+    private _route: ActivatedRoute,
+    private _userService: UsersService,
+    private _snackBar: MatSnackBar,
+  ) {
+    this.load_comments();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   private get_user_id(): string {
     return this._route.snapshot.params['user_id'];
   }
 
+  async load_comments() {
+    try {
+      const userId = this.get_user_id();
+      const response = await this._userService.get_ratings_by_userid(userId);
+      this.ratingsComments = response;
+    } catch (error) {
+      this.openSnackBar("Ha ocurrido un error al intentar obtener las valoraciones de este usuario");
+    }
+  }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null, {
+      duration: 3000,
+    });
+  }
 }

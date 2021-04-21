@@ -1,35 +1,61 @@
 <h1>Valoraciones</h1>
 <div class="ratings-list">
-  <mat-card class="rating" >
+  <mat-card class="rating" *ngFor="let rating of ratingsComments">
     <div class="rating-header">
       <mat-card-title class="username">
-       Valoracion de {{ prueba }}
+        {{ rating?.from?.firstName }} {{ rating?.from?.lastName }}
+        <mat-icon class="material-icons md-15">border_color</mat-icon>
       </mat-card-title>
     </div>
-    <hr>
+    <hr />
 
     <mat-card-content>
-        <div class="rating-content">
-      
-        <mat-icon class="material-icons md-18">{{
-            'star' 
-          }}</mat-icon>
-          <mat-icon class="material-icons md-18">{{
-             'star_border'
-          }}</mat-icon>
-        
-        <div class="createdAt">Valorada el 14/3/2021</div>
-    </div>
- 
-           
-        
-           
-       
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse fugit autem velit non fuga facere sunt? Placeat debitis aspernatur omnis eum cumque, quidem dolore vel a modi accusamus? Sunt, aliquid?</p>
-      
-      
+      <div class="rating-content">
+        <mat-icon
+          class="material-icons md-18"
+          [ngClass]="{ orange: rating?.to?.averageRatings > 0 }"
+          >{{
+            rating?.to?.averageRatings > 0 ? 'star' : 'star_border'
+          }}</mat-icon
+        >
+        <mat-icon
+          class="material-icons md-18"
+          [ngClass]="{ orange: rating?.to?.averageRatings > 1 }"
+          >{{
+            rating?.to?.averageRatings > 1 ? 'star' : 'star_border'
+          }}</mat-icon
+        >
+        <mat-icon
+          class="material-icons md-18"
+          [ngClass]="{ orange: rating?.to?.averageRatings > 2 }"
+          >{{
+            rating?.to?.averageRatings > 2 ? 'star' : 'star_border'
+          }}</mat-icon
+        >
+        <mat-icon
+          class="material-icons md-18"
+          [ngClass]="{ orange: rating?.to?.averageRatings > 3 }"
+          >{{
+            rating?.to?.averageRatings > 3 ? 'star' : 'star_border'
+          }}</mat-icon
+        >
+        <mat-icon
+          class="material-icons md-18"
+          [ngClass]="{ orange: rating?.to?.averageRatings > 4 }"
+          >{{
+            rating?.to?.averageRatings > 4 ? 'star' : 'star_border'
+          }}</mat-icon
+        >
+        <div class="createdAt">
+          Valorada el {{ rating?.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+        </div>
+      </div>
+
+      <p> <strong>Usuario:</strong> {{ rating?.to?.firstName }} {{ rating?.to?.lastName }}</p>
+      <p> <strong>Viaje:</strong> {{rating?.trip?.startingPoint?.address}} 
+        <mat-icon class="material-icons md-15">arrow_right_alt</mat-icon>
+          {{rating?.trip?.endingPoint?.address}}<mat-icon class="material-icons md-15">location_on</mat-icon></p>
+      <p><strong>Comentario:</strong>{{ rating?.content }}</p>
     </mat-card-content>
   </mat-card>
 </div>
-
-

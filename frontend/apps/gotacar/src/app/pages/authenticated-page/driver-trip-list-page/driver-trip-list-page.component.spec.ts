@@ -13,7 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DriverTripListPageComponent } from './driver-trip-list-page.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'apps/gotacar/src/environments/environment';
-import moment = require('moment');
+import * as moment from 'moment';
 
 class mockTripService{
     get_driver_trips(){

@@ -64,4 +64,8 @@ export class UsersService {
       .post(environment.api_url + '/rate/check', data)
       .toPromise();
   }
+  async get_ratings_by_userid(idUser:string): Promise<any>{
+    return this._http_client.get(environment.api_url + '/ratings/'+ idUser).toPromise();
+
+  }
 }
