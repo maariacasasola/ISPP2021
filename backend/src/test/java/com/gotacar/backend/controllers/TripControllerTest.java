@@ -579,49 +579,4 @@ class TripControllerTest {
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
 		assertThat(trip.getPlaces()).isEqualTo(beforePlaces + order.getPlaces());
 	}
-
-	// @Test
-	// void testSearchTrips() throws Exception {
-	// 	Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
-
-	// 	JSONObject sampleObject = new JSONObject();
-	// 	sampleObject.appendField("date", "2021-05-24T16:00:00.000+00");
-	// 	sampleObject.appendField("places", trip.getPlaces());
-
-	// 	JSONObject startingPointObj = new JSONObject();
-	// 	startingPointObj.appendField("name", trip.getStartingPoint().getName());
-	// 	startingPointObj.appendField("address", trip.getStartingPoint().getAddress());
-	// 	startingPointObj.appendField("lat", trip.getStartingPoint().getLat());
-	// 	startingPointObj.appendField("lng", trip.getStartingPoint().getLng());
-
-	// 	sampleObject.appendField("starting_point", startingPointObj);
-
-	// 	JSONObject endingPointObj = new JSONObject();
-	// 	endingPointObj.appendField("name", trip.getStartingPoint().getName());
-	// 	endingPointObj.appendField("address", trip.getStartingPoint().getAddress());
-	// 	endingPointObj.appendField("lat", trip.getEndingPoint().getLat());
-	// 	endingPointObj.appendField("lng", trip.getEndingPoint().getLng());
-
-	// 	sampleObject.appendField("ending_point", endingPointObj);
-
-	// 	Point startingPoint = new Point(trip.getStartingPoint().getLat(),trip.getStartingPoint().getLng());
-	// 	Point endingPoint = new Point(trip.getEndingPoint().getLat(),trip.getEndingPoint().getLng());
-
-	// 	Mockito.when(tripRepository.searchTrips(startingPoint,endingPoint,trip.getPlaces(),trip.getStartDate())).thenReturn(Arrays.asList());
-
-	// 	ResultActions result = mockMvc.perform(post("/search_trips").contentType(MediaType.APPLICATION_JSON)
-	// 		.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
-
-	// 	assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-
-	// 	String res = result.andReturn().getResponse().getContentAsString();
-	// 	int contador = 0;
-	// 	while (res.indexOf("startingPoint") > -1) {
-	// 		res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(),
-	// 		res.length());
-	// 		contador++;
-	// 	}
-
-	// 	assertThat(contador).isEqualTo(1);
-	// }
 }

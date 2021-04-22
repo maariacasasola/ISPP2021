@@ -323,7 +323,6 @@ class ComplaintControllerTest {
                 ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId())
                                 .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
-
                 assertThat(result.andReturn().getResponse().getContentAsString()).contains("false");
         }
 
