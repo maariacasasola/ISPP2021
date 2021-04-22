@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../../services/auth-service.service';
+import { Directive, HostListener } from '@angular/core'
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'frontend-main-header',
@@ -10,7 +12,7 @@ import { AuthServiceService } from '../../services/auth-service.service';
 export class MainHeaderComponent {
   showFiller = false;
 
-  constructor(public authService: AuthServiceService, public router: Router) {}
+  constructor(public authService: AuthServiceService, public router: Router, private _location: Location) {}
 
   isAdmin() {
     return this.authService.is_admin();
@@ -30,5 +32,9 @@ export class MainHeaderComponent {
 
   redirect() {
     this.router.navigate(['home']);
+  }
+
+  go_back() {
+    this._location.back();
   }
 }
