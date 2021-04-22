@@ -7,6 +7,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.gotacar.backend.models.complaint.Complaint;
 import com.gotacar.backend.models.trip.Trip;
 
 import static org.assertj.core.api.Assertions.assertThat;

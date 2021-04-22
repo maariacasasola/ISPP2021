@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaint.Complaint;
+import com.gotacar.backend.models.complaint.ComplaintRepository;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.trip.Trip;

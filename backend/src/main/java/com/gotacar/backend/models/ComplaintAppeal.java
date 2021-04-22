@@ -3,6 +3,8 @@ package com.gotacar.backend.models;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.gotacar.backend.models.complaint.Complaint;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;

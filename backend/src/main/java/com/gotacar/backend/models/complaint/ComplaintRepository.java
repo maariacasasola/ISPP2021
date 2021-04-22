@@ -1,4 +1,4 @@
-package com.gotacar.backend.models;
+package com.gotacar.backend.models.complaint;
 
 import java.util.List;
 import java.util.Optional;
