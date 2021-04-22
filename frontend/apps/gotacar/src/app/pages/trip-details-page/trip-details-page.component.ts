@@ -10,20 +10,20 @@ import { TripOrderFormDialogComponent } from '../../components/trip-order-form-d
 import { AuthServiceService } from '../../services/auth-service.service';
 import { TripsService } from '../../services/trips.service';
 import { UsersService } from '../../services/users.service';
-import * as moment from 'moment';
+
 @Component({
   selector: 'frontend-trip-details-page',
   templateUrl: './trip-details-page.component.html',
   styleUrls: ['./trip-details-page.component.scss'],
 })
 export class TripDetailsPageComponent {
-  today=new Date();
+  today = new Date();
   fecha;
   user_already_rated;
   page_title = 'Detalles del viaje';
   trip;
   stripePromise = loadStripe(environment.stripe_api_key);
-
+  user = JSON.parse(localStorage.getItem('user'));
   constructor(
     private _user_service: UsersService,
     private _route: ActivatedRoute,
@@ -35,18 +35,18 @@ export class TripDetailsPageComponent {
   ) {
     this.load_trip();
     this.driver_is_rated();
-   
+
   }
 
   private get_trip_id(): string {
     return this._route.snapshot.params['trip_id'];
   }
-  open_driver_data_dialog(trip){
+  open_driver_data_dialog(trip) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
-     trip:this.trip,
+      trip: this.trip,
     };
 
     const dialogRef = this._my_dialog.open(
@@ -61,9 +61,9 @@ export class TripDetailsPageComponent {
     return 'assets/img/generic-user.jpg';
   }
   private async load_trip() {
-    
-    
-    
+
+
+
     try {
       this.trip = await this._trip_service.get_trip(this.get_trip_id());
       this.fecha = new Date(this.trip.startDate);
@@ -120,16 +120,16 @@ export class TripDetailsPageComponent {
       // Vamos al checkout para procesar el pago
       await this.go_to_checkout(session_id);
     } catch (error) {
-      if(error.error.message === '400 BAD_REQUEST "No puedes reservar tu propio viaje"'){
+      if (error.error.message === '400 BAD_REQUEST "No puedes reservar tu propio viaje"') {
         this._snackbar.open('No puedes reservar tu propio viaje', null, {
           duration: 3000,
         });
       }
-      if(error.error.message === '400 BAD_REQUEST "El viaje no tiene tantas plazas"'){
+      if (error.error.message === '400 BAD_REQUEST "El viaje no tiene tantas plazas"') {
         this._snackbar.open('El viaje no tiene tantas plazas', null, {
           duration: 3000,
         });
-      }     
+      }
       this._snackbar.open('Ha ocurrido un error al comprar el viaje', null, {
         duration: 3000,
       });
@@ -149,9 +149,8 @@ export class TripDetailsPageComponent {
   }
 
   show_buy_button() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date() 
-      && this.trip?.canceled !==true && user.uid !== this.trip.driver.uid;
+    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date()
+      && this.trip?.canceled !== true && this.user.uid !== this.trip.driver.uid;
   }
   async driver_is_rated() {
     this.trip = await this._trip_service.get_trip(this.get_trip_id());
