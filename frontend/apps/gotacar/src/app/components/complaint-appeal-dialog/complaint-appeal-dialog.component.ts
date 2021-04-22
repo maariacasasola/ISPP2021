@@ -30,6 +30,12 @@ export class ComplaintAppealDialogComponent {
   }
 
   async create_complaint_appeal() {
+
+    if (this.complaintAppealForm.invalid) {
+      this.complaintAppealForm.markAllAsTouched();
+      return;
+    }
+
     try {
       if (this.data.tripId == null) {
         const new_complaint_appeal = {
@@ -56,7 +62,7 @@ export class ComplaintAppealDialogComponent {
       console.error(error);
     }
   }
-  
+
   private show_correct_appeal_snackbar() {
     this._snackbar.open('Su apelación se ha registrado correctamente', null, {
       duration: 3000,
