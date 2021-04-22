@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { OrderTripsPipe } from '../../pipes/order-trips.pipe';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { MeetingPointService } from '../../services/meeting-point.service';
+import { TripsService } from '../../services/trips.service';
 import { TripSearchResultPageComponent } from './trip-search-result-page.component';
 
 class mockMeetingPointService {
@@ -25,9 +26,20 @@ class mockGeocoderService {
   }
 }
 
+class tripsService {
+  seach_trips(origin, target, places, date) {
+    return [
+      {
+        startDate: new Date(),
+      },
+    ];
+  }
+}
+
 describe('TripSearchResultPageComponent', () => {
   let component: TripSearchResultPageComponent;
   let fixture: ComponentFixture<TripSearchResultPageComponent>;
+  let service;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -57,9 +69,11 @@ describe('TripSearchResultPageComponent', () => {
         },
         { provide: MeetingPointService, useClass: mockMeetingPointService },
         { provide: GeocoderServiceService, useClass: mockGeocoderService },
+        { provide: TripsService, useClass: tripsService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
+    service = TestBed.inject(GeocoderServiceService);
   });
 
   beforeEach(() => {
@@ -126,5 +140,60 @@ describe('TripSearchResultPageComponent', () => {
     expect(component.price_range_options.translate(10)).toBe('0.1 €');
     expect(component.price_range_options.floor).toBe(0);
     expect(component.price_range_options.ceil).toBe(100);
+  });
+
+  it('should get search results', async () => {
+    component.coordinatesOrigin = {
+      lat: 2.333,
+      lng: 1.222,
+    };
+    component.coordinatesTarget = {
+      lat: 2.333,
+      lng: 1.222,
+    };
+    component.date = new Date().toString();
+    component.places = 2;
+    fixture.detectChanges();
+
+    await component.get_search_results();
+
+    expect(component.trips.length).toBe(0);
+  });
+
+  it('should get coordinates from meeting_points', async () => {
+    component.meeting_points = [
+      {
+        name: 'Calle canal 48',
+        lat: 2.33,
+        lng: 3.22,
+      },
+    ];
+
+    fixture.detectChanges();
+
+    const result = await component.get_coordinates('Calle canal 48');
+
+    expect(result.lat).toBe(2.33);
+  });
+
+  it('should get coordinates from google', async () => {
+    fixture.detectChanges();
+
+    spyOn(service, 'get_location_from_address').and.returnValue({
+      results: [
+        {
+          location: 'Sevilla',
+          geometry: {
+            location: {
+              lat: 2.22,
+              lng: 3.44,
+            },
+          },
+        },
+      ],
+    });
+    const result = await component.get_coordinates('Calle canal 48');
+
+    expect(result.lat).toBe(2.22);
   });
 });

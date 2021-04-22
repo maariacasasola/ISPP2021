@@ -60,31 +60,6 @@ export class AuthServiceService {
       .toPromise();
   }
 
-  async send_verification_mail() {
-    return this.afAuth.currentUser.then((u) =>
-      u.sendEmailVerification().then(() => {
-        this.router.navigate(['verify-email-address']);
-      })
-    );
-  }
-
-  forgot_password(passwordResetEmail) {
-    return this.afAuth
-      .sendPasswordResetEmail(passwordResetEmail)
-      .then(() => {
-        this._snackbar.open(
-          'Revisa tu buzón de correo para restear tu contraseña',
-          null,
-          {
-            duration: 3000,
-          }
-        );
-      })
-      .catch(() => {
-        this._snackbar.open('Ha ocurrido un error');
-      });
-  }
-
   is_logged_in(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null ? true : false;

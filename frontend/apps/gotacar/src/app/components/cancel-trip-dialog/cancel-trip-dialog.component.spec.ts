@@ -1,6 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { AuthServiceService } from '../../services/auth-service.service';
@@ -14,17 +18,21 @@ describe('CancelTripDialogComponent', () => {
   let authService: AuthServiceService;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: jasmine.createSpy('close'),
   };
 
   class mockAuthService {
-    public is_banned(): Observable<Boolean>{
+    public is_banned(): Observable<Boolean> {
       return of(true);
+    }
+
+    public sign_out() {
+      return;
     }
   }
 
   class mockTripsService {
-    public cancel_driver_trip() { }
+    public cancel_driver_trip() {}
   }
 
   beforeEach(async () => {
@@ -32,7 +40,12 @@ describe('CancelTripDialogComponent', () => {
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [RouterTestingModule, MatDialogModule],
-      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: AuthServiceService, useClass: mockAuthService },
+        { provide: TripsService, useClass: mockTripsService },
+      ],
     }).compileComponents();
   });
 
@@ -58,4 +71,4 @@ describe('CancelTripDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
-})
+});
