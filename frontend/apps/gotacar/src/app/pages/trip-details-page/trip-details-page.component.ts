@@ -29,7 +29,7 @@ export class TripDetailsPageComponent {
     private _route: ActivatedRoute,
     private _my_dialog: MatDialog,
     private _trip_service: TripsService,
-    private _snackbar: MatSnackBar,
+    public _snackbar: MatSnackBar,
     private _auth_service: AuthServiceService,
     private _dialog: MatDialog
   ) {
@@ -60,10 +60,7 @@ export class TripDetailsPageComponent {
     }
     return 'assets/img/generic-user.jpg';
   }
-  private async load_trip() {
-
-
-
+  async load_trip() {
     try {
       this.trip = await this._trip_service.get_trip(this.get_trip_id());
       this.fecha = new Date(this.trip.startDate);
@@ -72,7 +69,6 @@ export class TripDetailsPageComponent {
         duration: 3000,
       });
     }
-
   }
 
   get_trip_description() {

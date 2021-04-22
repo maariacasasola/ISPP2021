@@ -32,13 +32,13 @@ const location2 = {
 
 const USER_OBJECT = {
     id: '1',
-    firstName: 'Manuel',
-    lastName: 'Fernandez',
+    firstName: 'Miguel',
+    lastName: 'Hernandez',
     uid: '1',
-    email: 'manan@gmail.com',
+    email: 'migher@gmail.com',
     dni: '312312312',
     profilePhoto: 'http://dasdasdas.com',
-    birthdate: new Date(1994, 6, 4, 13, 30, 24),
+    birthdate: new Date(1997, 6, 10, 12, 30, 18),
     roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
     emailVerified: true,
     timesBanned: 2,
@@ -124,6 +124,7 @@ describe('TripDetailsPageComponent', () => {
     let authService: AuthServiceService;
     let dialog: any;
     let userService: UsersService;
+    let tripService: TripsService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -151,6 +152,7 @@ describe('TripDetailsPageComponent', () => {
         component = fixture.componentInstance;
         authService = TestBed.inject(AuthServiceService);
         userService = TestBed.inject(UsersService);
+        tripService = TestBed.inject(TripsService);
         dialog = TestBed.inject(MatDialog);
         fixture.detectChanges();
     });
@@ -196,9 +198,50 @@ describe('TripDetailsPageComponent', () => {
         expect(spy_open_dialog).toBeCalledTimes(1);
     }));
 
+    it('should throw error snackbar trying to load trip', () => {
+        const spy = spyOn(component._snackbar, 'open');
+        fixture.detectChanges();
+
+        spyOn(tripService, 'get_trip').and.throwError('error');
+        fixture.detectChanges();
+        component.load_trip();
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            expect(spy).toHaveBeenCalledWith('Se ha producido un error al cargar el viaje', null, {
+                duration: 3000,
+            });
+        });
+    });
+
+    it('should throw error snackbar trying to order trip', () => {
+        const spy = spyOn(component._snackbar, 'open');
+        fixture.detectChanges();
+
+        spyOn(userService, 'rate_user').and.throwError('error');
+        fixture.detectChanges();
+        component.openDialogRating(TRIP_OBJECT.driver.id);
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            expect(spy).toHaveBeenCalledWith('Tu valoración no se ha podido realizar', null, {
+                duration: 3000,
+            });
+        });
+    });
+
     it('should order trip', (async () => {
         const spy_is_client = spyOn(authService, 'is_client').and.returnValue(true);
         const spy_open_dialog = spyOn(dialog, 'open').and.callThrough();
+        component.order_trip();
+        fixture.detectChanges();
+        expect(spy_is_client).toBeCalledTimes(1);
+        expect(spy_open_dialog).toBeCalledTimes(1);
+    }));
+
+    it('should order trip without response', (async () => {
+        const spy_is_client = spyOn(authService, 'is_client').and.returnValue(true);
+        const spy_open_dialog = spyOn(dialog, 'open').and.returnValue({
+            afterClosed: () => of(),
+          });
         component.order_trip();
         fixture.detectChanges();
         expect(spy_is_client).toBeCalledTimes(1);
@@ -221,5 +264,4 @@ describe('TripDetailsPageComponent', () => {
             && TRIP_OBJECT.canceled !== true && USER_OBJECT2.uid !== TRIP_OBJECT.driver.uid);
         fixture.detectChanges();
     });
-
 });
