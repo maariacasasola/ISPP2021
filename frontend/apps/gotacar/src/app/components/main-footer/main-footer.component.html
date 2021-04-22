@@ -1,7 +1,7 @@
 <footer>
   <div class="footer-content">
     <p>Sobre nosotros</p>
-    <p><a href="/authenticated/contact">Contacto</a></p>
+    <p *ngIf="canAccess()"><a href="/authenticated/contact">Contacto</a></p>
     <p>Términos y condiciones</p>
   </div>
   <img class="footer-logo" src="../../../assets/img/logo4.png" />
