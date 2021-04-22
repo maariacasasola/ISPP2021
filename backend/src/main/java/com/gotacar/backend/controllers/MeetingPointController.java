@@ -47,7 +47,7 @@ public class MeetingPointController {
             pointsRepository.save(mp);
             return mp;
         } catch (Exception e) {
-            throw (new IllegalArgumentException(e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
 
     }

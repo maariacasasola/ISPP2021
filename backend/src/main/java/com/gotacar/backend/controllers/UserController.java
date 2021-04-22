@@ -128,7 +128,7 @@ public class UserController {
 
 			return user;
 		} catch (Exception e) {
-			throw (new IllegalArgumentException(e.getMessage()));
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class UserController {
 
 			return user;
 		} catch (Exception e) {
-			throw (new IllegalArgumentException(e.getMessage()));
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 
@@ -186,7 +186,7 @@ public class UserController {
 			userRepository.save(user);
 			return user;
 		} catch (Exception e) {
-			throw (new IllegalArgumentException(e.getMessage()));
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 
