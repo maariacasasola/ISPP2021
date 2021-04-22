@@ -13,37 +13,37 @@
       <div class="rating-content">
         <mat-icon
           class="material-icons md-18"
-          [ngClass]="{ orange: rating?.to?.averageRatings > 0 }"
+          [ngClass]="{ orange: rating?.points > 0 }"
           >{{
-            rating?.to?.averageRatings > 0 ? 'star' : 'star_border'
+            rating?.points > 0 ? 'star' : 'star_border'
           }}</mat-icon
         >
         <mat-icon
           class="material-icons md-18"
-          [ngClass]="{ orange: rating?.to?.averageRatings > 1 }"
+          [ngClass]="{ orange: rating?.points > 1 }"
           >{{
-            rating?.to?.averageRatings > 1 ? 'star' : 'star_border'
+            rating?.points > 1 ? 'star' : 'star_border'
           }}</mat-icon
         >
         <mat-icon
           class="material-icons md-18"
-          [ngClass]="{ orange: rating?.to?.averageRatings > 2 }"
+          [ngClass]="{ orange: rating?.points > 2 }"
           >{{
-            rating?.to?.averageRatings > 2 ? 'star' : 'star_border'
+            rating?.points > 2 ? 'star' : 'star_border'
           }}</mat-icon
         >
         <mat-icon
           class="material-icons md-18"
-          [ngClass]="{ orange: rating?.to?.averageRatings > 3 }"
+          [ngClass]="{ orange: rating?.points > 3 }"
           >{{
-            rating?.to?.averageRatings > 3 ? 'star' : 'star_border'
+            rating?.points > 3 ? 'star' : 'star_border'
           }}</mat-icon
         >
         <mat-icon
           class="material-icons md-18"
-          [ngClass]="{ orange: rating?.to?.averageRatings > 4 }"
+          [ngClass]="{ orange: rating?.points > 4 }"
           >{{
-            rating?.to?.averageRatings > 4 ? 'star' : 'star_border'
+            rating?.points > 4 ? 'star' : 'star_border'
           }}</mat-icon
         >
         <div class="createdAt">
