@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { UsersService } from '../../../services/users.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class AdminUserListPageComponent {
 
   constructor(
     private _users_service: UsersService,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private _router: Router,
   ) {
     this.load_users();
   }
@@ -42,6 +44,9 @@ export class AdminUserListPageComponent {
         });
       }
     }
+  }
+  go_to_user_ratings(user_id) {
+    this._router.navigate(['/', 'admin', 'user-ratings', user_id]);
   }
 
   get_profile_photo(user) {

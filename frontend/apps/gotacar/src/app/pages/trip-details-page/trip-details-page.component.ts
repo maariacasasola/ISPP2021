@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'apps/gotacar/src/environments/environment';
 import { DriverProfileDataDialogComponent } from '../../components/driver-profile-data-dialog/driver-profile-data-dialog.component';
@@ -28,6 +28,7 @@ export class TripDetailsPageComponent {
     private _user_service: UsersService,
     private _route: ActivatedRoute,
     private _my_dialog: MatDialog,
+    private _router: Router,
     private _trip_service: TripsService,
     private _snackbar: MatSnackBar,
     private _auth_service: AuthServiceService,
@@ -202,6 +203,9 @@ export class TripDetailsPageComponent {
         });
       }
     }
+  }
+  go_to_user_ratings(user_id) {
+    this._router.navigate(['/', 'authenticated', 'user-ratings', user_id]);
   }
 
   user_is_banned() {

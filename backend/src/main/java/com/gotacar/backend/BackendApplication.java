@@ -76,7 +76,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        // loadSampleData();
+                       // loadSampleData();
                 }
         }
 
@@ -112,6 +112,7 @@ public class BackendApplication implements CommandLineRunner {
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
                                 "89070310K", null, fecha3, lista3, "645454514");
+                                
                 User driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gmail.com",
                                 "312312312R", null, fecha1, lista3, "645054554",
                                 LocalDateTime.of(2021, 06, 04, 13, 30, 24));
@@ -121,6 +122,8 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver);
                 userRepository.save(driver2);
                 userRepository.save(driver3);
+
+                
 
                 // Clients
                 User client = new User("Martín", "Romero", "trKzninltQNh75RemITKB8tBIjY2", "client@gotacar.es",
@@ -379,7 +382,7 @@ public class BackendApplication implements CommandLineRunner {
                 paymentReturnRepository.save(paymentReturn2);
                 paymentReturnRepository.save(paymentReturn3);
 
-                Rating rating = new Rating(driver, client, "gola", 4, trip6);
+                Rating rating = new Rating(client, driver, "gola", 4, trip6);
 
                 ratingRepository.save(rating);
 

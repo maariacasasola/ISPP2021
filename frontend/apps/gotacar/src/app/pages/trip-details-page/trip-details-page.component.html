@@ -25,7 +25,7 @@
         </h3>
         <div *ngIf="trip?.driver?.averageRatings">
           <div><b>Valoración media: </b></div>
-
+          <div class="rating-content">
           <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 0 }">{{
             trip?.driver?.averageRatings > 0 ? 'star' : 'star_border'
           }}</mat-icon>
@@ -41,6 +41,8 @@
           <mat-icon [ngClass]="{ orange: trip?.driver?.averageRatings > 4 }">{{
             trip?.driver?.averageRatings > 4 ? 'star' : 'star_border'
           }}</mat-icon>
+          <button mat-icon-button class="button-special" (click)="go_to_user_ratings(trip?.driver?.id)"><mat-icon class="material-icons md-18">rate_review</mat-icon></button>
+        </div>
         </div>
         <button
           mat-flat-button
