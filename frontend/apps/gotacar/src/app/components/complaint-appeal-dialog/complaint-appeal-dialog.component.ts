@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { ComplaintAppealsService } from '../../services/complaint-appeals.servic
 })
 export class ComplaintAppealDialogComponent {
   complaintAppealForm: FormGroup = new FormGroup({
-    content: new FormControl(''),
+    content: new FormControl('', Validators.required),
   });
   constructor(
     public router: Router,
