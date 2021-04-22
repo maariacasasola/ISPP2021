@@ -76,7 +76,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        // loadSampleData();
+                        loadSampleData();
                 }
         }
 
@@ -336,7 +336,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 // COMPLAINT APPEALS
                 // -----------------------------------------------------------------------------------------
-                ComplaintAppeal complaintAppeal1 = new ComplaintAppeal(
+                /*ComplaintAppeal complaintAppeal1 = new ComplaintAppeal(
                                 "El retraso fue causado por necesidades personales, suelo ser puntual", false,
                                 complaint2, driver2);
                 ComplaintAppeal complaintAppeal2 = new ComplaintAppeal(
@@ -349,7 +349,7 @@ public class BackendApplication implements CommandLineRunner {
 
                 complaintAppealRepository.save(complaintAppeal1);
                 complaintAppealRepository.save(complaintAppeal2);
-                complaintAppealRepository.save(complaintAppeal3);
+                complaintAppealRepository.save(complaintAppeal3);*/
 
                 // PAYMENT RETURNS
                 // -----------------------------------------------------------------------------------------

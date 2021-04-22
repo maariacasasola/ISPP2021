@@ -1,6 +1,10 @@
 <h1 mat-dialog-title class="title">Usuario baneado</h1>
 <div mat-dialog-content class="content">
-  Este usuario se encuentra baneado por incumplir con nuestros términos de uso
+  <div *ngIf = 'complaint'>
+  <h4>Detalles del bloqueo de la cuenta: {{complaint.title}}</h4>
+  <p>{{complaint.content}}</p>
+  </div>
+  <h4>Este usuario se encuentra baneado por incumplir con nuestros términos de uso</h4>
   <h3>Crea tu apelación al administrador</h3>
   <form [formGroup]="complaintAppealForm" class="form-fields">
     <mat-form-field appearance="outline">

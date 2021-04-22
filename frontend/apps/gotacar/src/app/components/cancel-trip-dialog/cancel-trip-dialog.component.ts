@@ -35,7 +35,7 @@ export class CancelTripDialogComponent {
       await this._auth_service.set_banned(localStorage.getItem('uid'));
       if (await this._complaint_appeals_service.can_complaint_appeal()) {
         this._dialog.open(ComplaintAppealDialogComponent, {
-          data: this.data
+          data: {tripId: this.data}
         });
       }else{
         this.openSnackBar("La cuenta ha sido baneada");

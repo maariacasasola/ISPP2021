@@ -19,8 +19,11 @@ export class ComplaintAppealDialogComponent {
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
     private _complaint_appeals_service: ComplaintAppealsService,
     private _snackbar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) private data: string
-  ) {}
+    @Inject(MAT_DIALOG_DATA) private data,
+  ) {
+  }
+
+  complaint = this.data?.complaint;
 
   close() {
     this._dialog_ref.close();
@@ -28,7 +31,7 @@ export class ComplaintAppealDialogComponent {
 
   async create_complaint_appeal() {
     try {
-      if (this.data == null) {
+      if (this.data.tripId == null) {
         const new_complaint_appeal = {
           content: this.complaintAppealForm.value.content || '',
         };
@@ -41,7 +44,7 @@ export class ComplaintAppealDialogComponent {
       } else {
         const new_complaint_appeal = {
           content: this.complaintAppealForm.value.content || '',
-          tripId: this.data
+          tripId: this.data.tripId
         };
         const response = await this._complaint_appeals_service.create_complaint_appeal_banned(new_complaint_appeal);
         if (response) {
