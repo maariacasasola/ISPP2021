@@ -42,7 +42,7 @@ describe('CancelTripDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule],
+      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: mockDialogRef },
