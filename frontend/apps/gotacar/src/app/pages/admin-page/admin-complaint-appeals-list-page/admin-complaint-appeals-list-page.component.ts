@@ -8,11 +8,11 @@ import { ComplaintAppealsService } from '../../../services/complaint-appeals.ser
   styleUrls: ['./admin-complaint-appeals-list-page.component.scss'],
 })
 export class AdminComplaintAppealsListPageComponent {
-  complaint_appeals;
+  complaint_appeals = [];
 
   constructor(
     private _complaint_appeals_service: ComplaintAppealsService,
-    private _snackbar: MatSnackBar
+    public _snackbar: MatSnackBar
   ) {
     this.load_complaint_appeals();
   }

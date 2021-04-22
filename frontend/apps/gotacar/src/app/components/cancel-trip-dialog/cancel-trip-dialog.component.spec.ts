@@ -17,7 +17,7 @@ describe('CancelTripDialogComponent', () => {
   let authService: AuthServiceService;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: jasmine.createSpy('close'),
   };
 
   class mockAuthService {
@@ -28,18 +28,27 @@ describe('CancelTripDialogComponent', () => {
     public set_banned(){
       return of();
     }
+
+    public sign_out() {
+      return;
+    }
   }
 
   class mockTripsService {
-    public cancel_driver_trip() { }
+    public cancel_driver_trip() {}
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, BrowserAnimationsModule, MatSnackBarModule],
-      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
+      imports: [RouterTestingModule, MatDialogModule],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: AuthServiceService, useClass: mockAuthService },
+        { provide: TripsService, useClass: mockTripsService },
+      ],
     }).compileComponents();
   });
 
@@ -65,4 +74,4 @@ describe('CancelTripDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
-})
+});
