@@ -10,8 +10,11 @@
 <div class="trips-list">
   <mat-card class="trip" *ngFor="let trip of trips | tripOrderType: filter">
     <mat-card-title class="card-title">{{
-      trip?.user?.firstName + ' ' + trip?.user?.lastName
-      }}</mat-card-title>
+      trip?.trip?.driver?.firstName + ' ' + trip?.trip?.driver?.lastName
+      }}<mat-icon class="driver-icon">directions_car</mat-icon></mat-card-title>
+    <div class="card-subtitle">
+      <p>Conductor/a</p>
+    </div>
     <mat-card-content class="card-content">
       <p>
         <b>Hora de salida:</b>
