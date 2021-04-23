@@ -16,6 +16,11 @@ import { environment } from 'apps/gotacar/src/environments/environment';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 
+class mockTripServiceError{
+  load_trips_by_driver(){
+    return Observable.throw(new Error('El viaje ya está cancelado'));
+  }
+}
 class mockTripService {
   get_driver_trips() {
     return [];
@@ -74,8 +79,9 @@ describe('DriverTripListPageComponent', () => {
        "driver-trips",
        1,]);
   }));
-  it('Cancel date error', ()=>{
-    component.cancel(1,'2021/04/11');
-    expect(mockDialogRef.close).toHaveBeenCalled();
-  });
+  // it('Cancel date error', ()=>{
+  //   component.cancel(1,'2021/04/11');
+  //   expect(mockDialogRef.close).toHaveBeenCalled();
+  // });
+  
 });
