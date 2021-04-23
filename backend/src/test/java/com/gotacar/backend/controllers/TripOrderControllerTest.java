@@ -62,6 +62,9 @@ class TripOrderControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private RefundController refundController;
+
     private User user;
     private User admin;
     private User driver;
@@ -96,8 +99,8 @@ class TripOrderControllerTest {
 
         Location location1 = new Location("Cerro del Águila", "Calle Canal 48", 37.37536809507917, -5.96211306033204);
         Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958, -5.976345387146261);
-        trip = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
-                LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver);
+        trip = new Trip(location1, location2, 220, LocalDateTime.of(2021, 07, 24, 16, 00, 00),
+                LocalDateTime.of(2021, 07, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver);
         ObjectId tripObjectId = new ObjectId();
         trip.setId(tripObjectId.toString());
 
@@ -150,6 +153,27 @@ class TripOrderControllerTest {
         ResultActions result = mockMvc.perform(get("/list_trip_orders").header("Authorization", token));
 
         assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+    }
+
+    @Test
+    void testCancelTripOrderRequest() throws Exception {
+        trip.setCancelationDateLimit(actualDate.toLocalDateTime().plusDays(1));
+        Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+        Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
+        Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
+
+        String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                .getContentAsString();
+
+        org.json.JSONObject json = new org.json.JSONObject(response);
+        String token = json.getString("token");
+
+        Integer beforePlaces = order.getTrip().getPlaces();
+        ResultActions result = mockMvc
+                .perform(post("/cancel_trip_order_request/{orderId}", order.getId()).header("Authorization", token));
+
+        assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+        assertThat(order.getTrip().getPlaces()).isEqualTo(beforePlaces + order.getPlaces());
     }
 
     @Test
