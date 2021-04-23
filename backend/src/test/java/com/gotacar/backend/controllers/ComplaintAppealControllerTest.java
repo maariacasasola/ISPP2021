@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaint.Complaint;
+import com.gotacar.backend.models.complaint.ComplaintRepository;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
 import com.gotacar.backend.models.trip.Trip;

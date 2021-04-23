@@ -3,15 +3,16 @@ package com.gotacar.backend.controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaint.Complaint;
+import com.gotacar.backend.models.complaint.ComplaintRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
@@ -164,6 +165,25 @@ public class ComplaintController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
 
+    }
+
+    @GetMapping("/complaint/last/{driverUid}")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    public Complaint lastComplaint(@PathVariable(value = "driverUid") String driverUid) {
+        try {
+            List<Complaint> complaints = complaintRepository.findByStatus("ACCEPTED");
+            if (!complaints.isEmpty()) {
+                complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getUid().equals(driverUid))
+                        .collect(Collectors.toList());
+                Collections.sort(complaints, (x, y) -> x.creationDate.compareTo(y.creationDate));
+                Complaint c = complaints.get(complaints.size() - 1);
+                return c;
+            }else{
+                throw new Exception("Este conductor no tiene quejas");
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
 }

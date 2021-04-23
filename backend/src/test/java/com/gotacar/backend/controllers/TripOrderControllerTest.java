@@ -153,29 +153,6 @@ class TripOrderControllerTest {
     }
 
     @Test
-    void testCancelTripOrderRequest() throws Exception {
-        trip.setCancelationDateLimit(actualDate.toLocalDateTime().plusDays(1));
-        Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
-        Mockito.when(userRepository.findByEmail("client@gotacar.es")).thenReturn(user);
-        Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
-
-        String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
-                .getContentAsString();
-
-        org.json.JSONObject json = new org.json.JSONObject(response);
-        String token = json.getString("token");
-
-        Integer beforePlaces = order.getTrip().getPlaces();
-        ResultActions result = mockMvc
-                .perform(post("/cancel_trip_order_request/" + order.getId()).header("Authorization", token));
-
-        // assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
-        // assertThat(order.getStatus()).isEqualTo("REFUNDED_PENDING");
-        // assertThat(order.getTrip().getPlaces()).isEqualTo(beforePlaces + order.getPlaces());
-        // assertThat(order.getStatus()).isEqualTo("REFUNDED");
-    }
-
-    @Test
     void testCancelTripOrder() throws Exception {
         Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
         Mockito.when(tripOrderRepository.findById(new ObjectId(order.getId()))).thenReturn(order);
