@@ -205,7 +205,6 @@ class MeetingPointControllerTest {
 		Mockito.when(meetingPointRepository.findAll()).thenThrow(new RuntimeException());
 
 		RequestBuilder builder = MockMvcRequestBuilders.get("/search_meeting_points");
-		ObjectMapper mapper = new ObjectMapper();
 
 		ResultActions result = mockMvc.perform(builder);
 

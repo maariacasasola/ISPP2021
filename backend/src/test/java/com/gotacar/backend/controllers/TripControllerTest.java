@@ -30,6 +30,7 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.geo.Point;
 
 import com.gotacar.backend.BackendApplication;
 import com.gotacar.backend.models.Location;
@@ -120,6 +121,49 @@ class TripControllerTest {
 		order = new TripOrder(trip, user, LocalDateTime.of(2021, 03, 20, 11, 45, 00), 350, "", 1);
 		ObjectId orderObjectId = new ObjectId();
 		order.setId(orderObjectId.toString());
+	}
+
+	@Test
+	void testSearchTrips() throws Exception {
+		Point startingPoint = new Point(trip.getStartingPoint().getLng(),trip.getStartingPoint().getLat());
+		Point endingPoint = new Point(trip.getEndingPoint().getLng(),trip.getEndingPoint().getLat());
+		Mockito.when(tripRepository.searchTrips(startingPoint,endingPoint,trip.getPlaces(),trip.getStartDate())).thenReturn(Arrays.asList(trip));
+
+		JSONObject sampleObject = new JSONObject();
+		sampleObject.appendField("date", "2021-05-24T16:00:00.000+00");
+		sampleObject.appendField("places", trip.getPlaces());
+
+		JSONObject startingPointObj = new JSONObject();
+		startingPointObj.appendField("name", trip.getStartingPoint().getName());
+		startingPointObj.appendField("address", trip.getStartingPoint().getAddress());
+		startingPointObj.appendField("lat", trip.getStartingPoint().getLat());
+		startingPointObj.appendField("lng", trip.getStartingPoint().getLng());
+
+		sampleObject.appendField("starting_point", startingPointObj);
+
+		JSONObject endingPointObj = new JSONObject();
+		endingPointObj.appendField("name", trip.getStartingPoint().getName());
+		endingPointObj.appendField("address", trip.getStartingPoint().getAddress());
+		endingPointObj.appendField("lat", trip.getEndingPoint().getLat());
+		endingPointObj.appendField("lng", trip.getEndingPoint().getLng());
+
+		sampleObject.appendField("ending_point", endingPointObj);
+
+		ResultActions result = mockMvc.perform(post("/search_trips").contentType(MediaType.APPLICATION_JSON)
+			.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+
+		String res = result.andReturn().getResponse().getContentAsString();
+		System.out.println(res);
+		int contador = 0;
+		while (res.indexOf("startingPoint") > -1) {
+			res = res.substring(res.indexOf("startingPoint") + "startingPoint".length(),
+			res.length());
+			contador++;
+		}
+
+		assertThat(contador).isEqualTo(1);
 	}
 
 	@Test
