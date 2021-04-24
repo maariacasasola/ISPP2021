@@ -12,6 +12,7 @@ import { AuthenticatedPageComponent } from './pages/authenticated-page/authentic
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
+import { AboutUsPageComponent } from './pages/authenticated-page/about-us-page/about-us-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
@@ -93,6 +94,10 @@ const routes: Routes = [
       {
         path:'user-ratings/:user_id',
         component:ShowRatingsComponent,
+      },
+      {
+        path: 'about-us',
+        component: AboutUsPageComponent,
       },
       {
         path: 'contact',

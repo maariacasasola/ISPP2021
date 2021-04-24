@@ -1,0 +1,45 @@
+h1 {
+	text-align: center;
+	color: #0e4a6b;
+	margin: 20px;
+	font-size: 30px;
+  }
+  
+  .us {
+	border: 1px solid #0e4a6b;
+	padding: 30px;
+  }
+  
+  .us-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 15px;
+  }
+  
+  .profile-photo {
+	float: left;
+	margin-right: 10px;
+	width: 20%;
+	height: 20%;
+  }
+  
+  .name {
+	padding-top: 0%;
+  }
+  
+  .us-list {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px 20px;
+	grid-template-areas: '. .';
+	padding: 20px;
+  }
+  
+  @media (max-width: 760px) {
+	.us-list {
+	  display: flex;
+	  flex-direction: column;
+	}
+  }
+  
