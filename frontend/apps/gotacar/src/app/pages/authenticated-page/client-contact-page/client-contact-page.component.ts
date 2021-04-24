@@ -14,7 +14,7 @@ import {
 })
 export class ClientContactPageComponent implements OnInit {
   form: FormGroup;
-  name: FormControl = new FormControl('', [Validators.required]);
+  name: FormControl = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]);
   email: FormControl = new FormControl('', [
     Validators.required,
     Validators.email,
