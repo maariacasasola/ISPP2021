@@ -39,14 +39,11 @@ export class AdminComplaintsListPageComponent {
     dialogConfig.data = {
       id_complaint: data.id,
     };
-
     const dialogRef = this._my_dialog.open(
       PenaltyDialogComponent,
       dialogConfig
     );
-
     const dialog_response = await dialogRef.afterClosed().toPromise();
-
     if (!dialog_response) {
       return;
     }
@@ -57,11 +54,11 @@ export class AdminComplaintsListPageComponent {
       if (response) {
         this.openSnackBar(
           'Se acepta la queja de ' +
-            data?.user?.firstName +
-            ' y se penaliza a su conductor ' +
-            response['firstName'] +
-            ' ' +
-            response['lastName']
+          data?.user?.firstName +
+          ' y se penaliza a su conductor ' +
+          response['firstName'] +
+          ' ' +
+          response['lastName']
         );
       }
       await this.load_complaints();

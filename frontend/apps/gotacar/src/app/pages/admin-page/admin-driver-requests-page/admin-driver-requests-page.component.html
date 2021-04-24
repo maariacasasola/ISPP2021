@@ -2,15 +2,15 @@
 
 <div class="requests-list">
     <mat-card class="request" *ngFor="let user of requests">
-        <div class="request-header">
-            <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" />
+        <mat-card-header>
+            <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" alt="Foto de perfil" />
             <mat-card-title class="username">
                 {{ user?.firstName + ' ' + user?.lastName }}
             </mat-card-title>
-        </div>
+        </mat-card-header>
         <mat-card-content>
             <p><strong> Email: </strong>{{ user?.email }}</p>
-            <p><strong>DNI:</strong>{{ user?.dni }}</p>
+            <p><strong>DNI: </strong>{{ user?.dni }}</p>
             <p *ngIf="user?.timesBanned"><strong>Baneado {{ user?.timesBanned }} veces</strong></p>
             <p><strong>Permiso de conducir: </strong>{{ user?.drivingLicense }}</p>
             <p><strong>Fecha del carné de conducir: </strong>{{ user?.carData?.enrollmentDate | date: 'dd/MM/yyyy' }}
@@ -18,11 +18,10 @@
             <p><strong>Experiencia: </strong>{{user?.experience}} años</p>
             <p><strong>Matrícula: </strong>{{ user?.carData?.carPlate }}</p>
         </mat-card-content>
-        <mat-card-actions align="end">
+        <mat-card-actions>
             <button mat-stroked-button class="button" (click)="accept_request(user)">
-                <mat-icon> check_circle</mat-icon>
+                <mat-icon> check</mat-icon>
             </button>
         </mat-card-actions>
     </mat-card>
-    <br />
 </div>

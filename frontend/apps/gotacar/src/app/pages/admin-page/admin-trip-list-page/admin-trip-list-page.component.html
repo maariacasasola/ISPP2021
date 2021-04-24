@@ -3,16 +3,15 @@
   <mat-card class="trip" *ngFor="let trip of trips">
     <mat-card-title>{{
       trip?.driver?.firstName + ' ' + trip?.driver?.lastName
-    }}</mat-card-title>
-
+      }}</mat-card-title>
     <mat-card-content>
       <p><strong>Hora de salida:</strong> {{ getStartDate(trip) | date: 'medium' }}</p>
       <p><strong>Hora de llegada:</strong> {{ trip?.endingDate | date: 'medium' }}</p>
-      <p>
+      <p><strong>Ruta: </strong>
         {{ trip?.startingPoint?.address }} &#8594;
         {{ trip?.endingPoint?.address }}
       </p>
-      <p>{{ trip?.price | convertCentToEur }}</p>
+      <p><strong>Precio: </strong>{{ trip?.price | convertCentToEur }}</p>
     </mat-card-content>
   </mat-card>
 </div>

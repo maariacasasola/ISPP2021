@@ -45,6 +45,7 @@ export class AdminUserListPageComponent {
       }
     }
   }
+  
   go_to_user_ratings(user_id) {
     this._router.navigate(['/', 'admin', 'user-ratings', user_id]);
   }
