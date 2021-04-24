@@ -18,7 +18,7 @@ export class ClientComplaintPageComponent implements OnInit {
     private _complaints_service: ComplaintsService,
     private route: ActivatedRoute,
     private router: Router,
-    private _snackbar: MatSnackBar
+    public _snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {}

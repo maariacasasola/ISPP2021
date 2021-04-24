@@ -44,7 +44,7 @@ export class CreateTripFormComponent {
 
   constructor(
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private tripService: TripsService,
     private geoService: GeocoderServiceService,
     private _meeting_points_service: MeetingPointService,
