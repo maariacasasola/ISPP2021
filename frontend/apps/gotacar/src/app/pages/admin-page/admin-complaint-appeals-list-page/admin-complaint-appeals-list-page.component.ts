@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComplaintAppealsService } from '../../../services/complaint-appeals.service';
 
@@ -30,7 +30,9 @@ export class AdminComplaintAppealsListPageComponent {
       const response = await this._complaint_appeals_service.accept_complaint_appeal(
         complaint_appeal_id
       );
-      this.show_message('Apelación aceptada correctamente');
+      if (response) {
+        this.show_message('Apelación aceptada correctamente');
+      }
       await this.load_complaint_appeals();
     } catch (error) {
       this.show_message('Ha ocurrido un error, inténtelo más tarde');
@@ -42,7 +44,9 @@ export class AdminComplaintAppealsListPageComponent {
       const response = await this._complaint_appeals_service.reject_complaint_appeal(
         complaint_appeal_id
       );
-      this.show_message('Apelación rechazada correctamente');
+      if (response) {
+        this.show_message('Apelación rechazada correctamente');
+      }
       await this.load_complaint_appeals();
     } catch (error) {
       this.show_message('Ha ocurrido un error, inténtelo más tarde');

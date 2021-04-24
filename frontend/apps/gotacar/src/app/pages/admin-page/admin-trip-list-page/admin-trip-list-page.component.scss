@@ -10,23 +10,12 @@ h1 {
   padding: 30px;
 }
 
-.card-title {
-  text-align: right;
-  color: #0e4a6b;
-  font-size: 30px;
-}
-
 .trips-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px 20px;
-  grid-template-areas: '. .';
+  grid-template-areas: ". . .";
   padding: 20px;
-}
-
-.button {
-  background-color: #0e4a6b;
-  color: white;
 }
 
 @media (max-width: 760px) {
