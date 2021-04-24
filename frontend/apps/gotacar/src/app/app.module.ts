@@ -51,6 +51,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -112,6 +113,9 @@ import { TripOrderTypePipe } from './pipes/trip-order-type.pipe';
 import { RefuseClientTripDriverDialogComponent } from './components/refuse-client-trip-driver-dialog/refuse-client-trip-driver-dialog.component';
 import { HelloService } from './services/hello.service';
 import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -171,6 +175,9 @@ registerLocaleData(localeEs, 'es');
     CancelTripPlaceDialogComponent,
     ClientBecomeDriverPageComponent,
     DriverProfileDataDialogComponent,
+    TermsAndConditionsComponent,
+    PrivacyPolicyComponent,
+    CancelationPolicyComponent,
     RatingUserDialogComponent,
     RefuseClientTripDriverDialogComponent,
     ShowRatingsComponent,
@@ -183,6 +190,7 @@ registerLocaleData(localeEs, 'es');
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatSidenavModule,
     MatIconModule,
@@ -242,4 +250,4 @@ registerLocaleData(localeEs, 'es');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
