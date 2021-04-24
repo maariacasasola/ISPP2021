@@ -127,8 +127,8 @@ export class DriverTripDetailsPageComponent {
     }
   }
 
-  checkDate(endingDate) {
-    return moment(endingDate).isAfter(moment());
+  checkDate(cancelationDate) {
+    return moment(cancelationDate).isAfter(moment());
   }
 
   openSnackBar(message: string) {
