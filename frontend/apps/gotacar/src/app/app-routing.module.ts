@@ -34,6 +34,9 @@ import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-tri
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
 import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 
 const routes: Routes = [
   {
@@ -80,6 +83,18 @@ const routes: Routes = [
   {
     path: 'trip/:trip_id',
     component: TripDetailsPageComponent,
+  },
+  {
+    path: 'terms-and-conditions',
+    component: TermsAndConditionsComponent,
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+  },
+  {
+    path: 'cancelation-policy',
+    component: CancelationPolicyComponent,
   },
   {
     path: 'authenticated',
