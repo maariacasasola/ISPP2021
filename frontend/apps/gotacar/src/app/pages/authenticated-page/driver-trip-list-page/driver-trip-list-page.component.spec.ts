@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -15,6 +15,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'apps/gotacar/src/environments/environment';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
 
 class mockTripServiceError{
   load_trips_by_driver(){
@@ -23,10 +24,7 @@ class mockTripServiceError{
 }
 class mockTripService {
   get_driver_trips() {
-    return [];
-  }
-  load_trips_by_driver(){
-    return [];
+    return Promise.resolve([]);
   }
 }
 describe('DriverTripListPageComponent', () => {
@@ -38,6 +36,7 @@ describe('DriverTripListPageComponent', () => {
   const mockDialogRef = {
     close: jasmine.createSpy('close'),
   };
+  let tripService : TripsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,6 +60,7 @@ describe('DriverTripListPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DriverTripListPageComponent);
     component = fixture.componentInstance;
+    tripService = TestBed.inject(TripsService);
     fixture.detectChanges();
   });
 
@@ -79,9 +79,7 @@ describe('DriverTripListPageComponent', () => {
        "driver-trips",
        1,]);
   }));
-  // it('Cancel date error', ()=>{
-  //   component.cancel(1,'2021/04/11');
-  //   expect(mockDialogRef.close).toHaveBeenCalled();
-  // });
+  
+  
   
 });

@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RatingUserDialogComponent } from './rating-user-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 describe('RatingUserDialogComponent', () => {
@@ -20,7 +21,7 @@ describe('RatingUserDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ RatingUserDialogComponent ],
       imports: [ MatDialogModule,  MatSnackBarModule,FormsModule,
-        ReactiveFormsModule,],
+        ReactiveFormsModule,BrowserAnimationsModule ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
       providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -83,14 +84,17 @@ describe('RatingUserDialogComponent', () => {
   it('Should set rating',()=>{
     let rating = "2"
     component.rating=rating
-    spyOn(component,'set_rating');
+    // spyOn(component,'set_rating');
     component.set_rating(rating);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(component.rating).toEqual(rating);
+      expect(component.set_rating).toHaveBeenCalled();
     });
+    
 
     
 
-  })
+  });
+ 
 });
