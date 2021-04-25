@@ -1,34 +1,28 @@
 <h1>APELACIONES</h1>
-<div class="complaint-appeals-list">
-  <mat-card
-    class="complaint-appeal"
-    *ngFor="let complaint_appeal of complaint_appeals"
-  >
-    <mat-card-title>{{ complaint_appeal?.complaint?.title }}</mat-card-title>
+<div class="complaint-appeals-list" *ngIf="complaint_appeals">
+  <mat-card class="complaint-appeal" *ngFor="let complaint_appeal of complaint_appeals">
+    <mat-card-header>
+      <mat-card-title>{{ complaint_appeal?.complaint?.title }}</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
       <p>
         <strong>Fecha de publicación:</strong>
         {{
-          complaint_appeal?.complaint?.creationDate | date: 'HH:ss dd/MM/yyyy'
+        complaint_appeal?.complaint?.creationDate | date: 'HH:ss dd/MM/yyyy'
         }}
       </p>
       <p><strong>Queja:</strong> {{ complaint_appeal?.complaint?.content }}</p>
       <p><strong>Apelación:</strong> {{ complaint_appeal?.content }}</p>
+      <p><strong>Realizada por: </strong>{{complaint_appeal?.driver?.firstName + ' '
+        +complaint_appeal?.driver?.lastName}}
+      </p>
     </mat-card-content>
     <mat-card-actions class="card-actions">
-      <button
-        mat-raised-button
-        class="button"
-        (click)="reject_complaint_appeal(complaint_appeal?.id)"
-      >
+      <button mat-raised-button class="refuse-button" (click)="reject_complaint_appeal(complaint_appeal?.id)">
         <mat-icon> clear </mat-icon>
       </button>
-      <button
-        mat-raised-button
-        class="button"
-        (click)="accept_complaint_appeal(complaint_appeal?.id)"
-      >
-        <mat-icon> check_circle</mat-icon>
+      <button mat-raised-button class="accept-button" (click)="accept_complaint_appeal(complaint_appeal?.id)">
+        <mat-icon> check</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>

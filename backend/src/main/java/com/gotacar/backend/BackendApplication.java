@@ -30,10 +30,10 @@ import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.models.CarData;
-import com.gotacar.backend.models.Complaint;
+import com.gotacar.backend.models.complaint.Complaint;
 import com.gotacar.backend.models.ComplaintAppeal;
 import com.gotacar.backend.models.ComplaintAppealRepository;
-import com.gotacar.backend.models.ComplaintRepository;
+import com.gotacar.backend.models.complaint.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
@@ -76,7 +76,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                        // loadSampleData();
+                       // loadSampleData();
                 }
         }
 
@@ -112,6 +112,7 @@ public class BackendApplication implements CommandLineRunner {
                 // Drivers
                 User driver = new User("Jesús", "Márquez", "h9HmVQqlBQXD289O8t8q7aN2Gzg1", "driver@gotacar.es",
                                 "89070310K", null, fecha3, lista3, "645454514");
+                                
                 User driver2 = new User("Manuel", "Fernández", "59t8UjqwHhWafrmdI3ZzpmHdod02", "driver2@gmail.com",
                                 "312312312R", null, fecha1, lista3, "645054554",
                                 LocalDateTime.of(2021, 06, 04, 13, 30, 24));
@@ -121,6 +122,8 @@ public class BackendApplication implements CommandLineRunner {
                 userRepository.save(driver);
                 userRepository.save(driver2);
                 userRepository.save(driver3);
+
+                
 
                 // Clients
                 User client = new User("Martín", "Romero", "trKzninltQNh75RemITKB8tBIjY2", "client@gotacar.es",
@@ -379,7 +382,7 @@ public class BackendApplication implements CommandLineRunner {
                 paymentReturnRepository.save(paymentReturn2);
                 paymentReturnRepository.save(paymentReturn3);
 
-                Rating rating = new Rating(driver, client, "gola", 4, trip6);
+                Rating rating = new Rating(client, driver, "gola", 4, trip6);
 
                 ratingRepository.save(rating);
 
@@ -424,7 +427,8 @@ public class BackendApplication implements CommandLineRunner {
                                         .antMatchers(HttpMethod.POST, "/cancel_trip_driver").permitAll()
                                         .antMatchers(HttpMethod.POST, "/stripe-webhook").permitAll()
                                         .antMatchers(HttpMethod.GET, "/").permitAll()
-                                        .antMatchers(HttpMethod.POST, "/search_trips").permitAll().anyRequest()
+                                        .antMatchers(HttpMethod.POST, "/search_trips").permitAll()
+                                        .antMatchers(HttpMethod.GET, "/wake-up").permitAll().anyRequest()
                                         .authenticated();
                 }
 

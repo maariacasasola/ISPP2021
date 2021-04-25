@@ -30,7 +30,11 @@ mat-form-field {
 }
 
 .trip-comments {
-  grid-area: trip-comments;
+  grid-area: trip-comments; 
+}
+
+.comments-input{
+  max-height: 135px;
 }
 
 .start-date {

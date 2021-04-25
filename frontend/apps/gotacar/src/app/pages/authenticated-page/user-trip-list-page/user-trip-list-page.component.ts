@@ -74,7 +74,6 @@ export class UserTripListPageComponent {
   show_cancelation_button(trip) {
     return (
       !(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED') &&
-      new Date(trip?.trip?.cancelationDateLimit) > new Date() &&
       new Date(trip?.trip?.startDate) > new Date()
     );
   }

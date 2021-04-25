@@ -1,10 +1,10 @@
 package com.gotacar.backend.controllers;
 
-import com.gotacar.backend.models.Complaint;
-import com.gotacar.backend.models.ComplaintRepository;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
+import com.gotacar.backend.models.complaint.Complaint;
+import com.gotacar.backend.models.complaint.ComplaintRepository;
 import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
@@ -322,7 +322,6 @@ class ComplaintControllerTest {
                 String token = json2.getString("token");
                 ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId())
                                 .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
-
 
                 assertThat(result.andReturn().getResponse().getContentAsString()).contains("false");
         }

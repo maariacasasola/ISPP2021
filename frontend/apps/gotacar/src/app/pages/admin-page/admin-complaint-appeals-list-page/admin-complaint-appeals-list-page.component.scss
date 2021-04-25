@@ -10,32 +10,22 @@ h1 {
   padding: 30px;
 }
 
-.card-title {
-  text-align: right;
-  color: #0e4a6b;
-  font-size: 30px;
-}
-
 .complaint-appeals-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px 20px;
-  grid-template-areas: '. .';
+  grid-template-areas: ". . .";
   padding: 20px;
 }
 
-.button {
-  background-color: #0e4a6b;
+.accept-button {
   color: white;
+  background-color: #70c070;
 }
 
-.card-actions {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+.refuse-button {
+  color: white;
+  background-color: #f37555;
 }
 
 @media (max-width: 760px) {

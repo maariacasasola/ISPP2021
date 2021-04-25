@@ -47,7 +47,7 @@ public class MeetingPointController {
             pointsRepository.save(mp);
             return mp;
         } catch (Exception e) {
-            throw (new IllegalArgumentException(e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
 
     }
@@ -64,10 +64,11 @@ public class MeetingPointController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete_meeting_point/{mpId}")
-    public void deleteMeetingPoint(@PathVariable(value = "mpId") String mpId) {
+    public Boolean deleteMeetingPoint(@PathVariable(value = "mpId") String mpId) {
         try {
             MeetingPoint mp = pointsRepository.findById(new ObjectId(mpId));
             pointsRepository.delete(mp);
+            return true;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

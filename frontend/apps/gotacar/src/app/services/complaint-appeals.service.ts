@@ -25,13 +25,9 @@ export class ComplaintAppealsService {
       .toPromise();
   }
 
-  async create_complaint_appeal_banned(complaint_appeal: ComplaintAppeal, trip_id: string): Promise<any>{
-    const body={
-      content: complaint_appeal.content,
-      tripId: trip_id,
-    }
+  async create_complaint_appeal_banned(complaint_appeal: ComplaintAppeal): Promise<any>{
     return this._http_client
-    .post(environment.api_url + '/complaint-appeal/create', body)
+    .post(environment.api_url + '/complaint-appeal/create', complaint_appeal)
     .toPromise();
   }
 

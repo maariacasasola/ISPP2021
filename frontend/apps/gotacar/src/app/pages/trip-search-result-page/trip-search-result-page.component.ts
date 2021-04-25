@@ -75,7 +75,7 @@ export class TripSearchResultPageComponent implements OnInit {
         this.places,
         new Date(this.date)
       );
-      this.trips = this.trips.filter(x => this.tipIsInHour(x.startDate));
+      this.trips = this.trips.filter((x) => this.tipIsInHour(x.startDate));
       this.set_filters();
     } catch (error) {
       console.error(error);
@@ -120,7 +120,7 @@ export class TripSearchResultPageComponent implements OnInit {
   }
 
   tipIsInHour(startDate) {
-    return moment(startDate).isAfter(moment().add(10, 'minutes'))
+    return moment(startDate).isAfter(moment().add(10, 'minutes'));
   }
 
   openSnackBar(message: string) {
@@ -148,18 +148,8 @@ export class TripSearchResultPageComponent implements OnInit {
     this.min_price_range = min_price;
     this.max_price_range = max_price;
     this.price_range_options = {};
-    this.price_range_options.translate = (
-      value: number,
-      label: LabelType
-    ): string => {
-      switch (label) {
-        case LabelType.Low:
-          return convert_cent_to_eur(value) + ' €';
-        case LabelType.High:
-          return convert_cent_to_eur(value) + ' €';
-        default:
-          return convert_cent_to_eur(value) + ' €';
-      }
+    this.price_range_options.translate = (value: number): string => {
+      return convert_cent_to_eur(value) + ' €';
     };
     this.price_range_options.floor = min_price;
     this.price_range_options.ceil = max_price;

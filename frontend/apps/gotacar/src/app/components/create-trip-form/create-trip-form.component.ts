@@ -44,7 +44,7 @@ export class CreateTripFormComponent {
 
   constructor(
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private tripService: TripsService,
     private geoService: GeocoderServiceService,
     private _meeting_points_service: MeetingPointService,
@@ -90,7 +90,7 @@ export class CreateTripFormComponent {
         this.router.navigate(['home']);
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar('Se ha producido un error al crear el viaje')
     }
   }
 
@@ -103,13 +103,18 @@ export class CreateTripFormComponent {
   checkDates() {
     const startDateHour = moment(this.createTripForm.value.fechaHoraInicio);
     const endingDateHour = moment(this.createTripForm.value.fechaHoraFin);
-
+    if(!startDateHour.isValid() || !endingDateHour.isValid()){
+      return "Posiblemente haya introducido una fecha muy lejana";
+    }
     if (startDateHour.isAfter(endingDateHour)) {
       return 'La fecha de llegada tiene que ser posterior a la de salida';
     }
     // Check de que se crea con un margen con al menos 1h de antelación
     if (moment().isAfter(moment(startDateHour).subtract(1, 'hours'))) {
       return 'Debes crear tu viaje con al menos una hora de antelación';
+    }
+    if(moment().add(1,'years').isBefore(startDateHour) || moment().add(1,'years').isBefore(endingDateHour)){
+      return '¿Seguro que quieres reservar a tan largo plazo? No realizamos viajes en el tiempo!';
     }
 
     // Fecha de llegada no es más de dos horas mayor que la de salida
@@ -148,7 +153,7 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener la localización origen");
     }
   }
 
@@ -177,7 +182,7 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener la localización destino");
     }
   }
 
@@ -204,7 +209,7 @@ export class CreateTripFormComponent {
     try {
       this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro");
     }
   }
 

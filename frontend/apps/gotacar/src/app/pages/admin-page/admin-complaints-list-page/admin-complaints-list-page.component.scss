@@ -8,33 +8,29 @@ h1 {
 .complaint {
   border: 1px solid #0e4a6b;
   padding: 30px;
-  margin: 10px;
 }
 
-.complaint-title {
-  text-align: right;
-  color: #0e4a6b;
-  font-size: 30px;
+.complaints-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 20px;
+  grid-template-areas: ". . .";
+  padding: 20px;
 }
 
-.mat-card-subtitle {
-  font-size: 20px;
-}
-
-.button {
-  background-color: #0e4a6b;
+.accept-button {
   color: white;
+  background-color: #70c070;
 }
 
-.user-title {
-  font-size: 23px;
-  color: #0e4a6b;
+.refuse-button {
+  color: white;
+  background-color: #f37555;
 }
-.complaint-title {
-  text-align: center;
-  font-size: 23px;
-  color: #0a1d27;
-}
-.content {
-  padding: 16px;
+
+@media (max-width: 760px) {
+  .complaints-list {
+    display: flex;
+    flex-direction: column;
+  }
 }

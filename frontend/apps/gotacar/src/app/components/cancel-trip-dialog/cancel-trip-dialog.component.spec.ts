@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
@@ -16,7 +17,7 @@ describe('CancelTripDialogComponent', () => {
   let authService: AuthServiceService;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: jasmine.createSpy('close'),
   };
 
   class mockAuthService {
@@ -27,18 +28,27 @@ describe('CancelTripDialogComponent', () => {
     public set_banned(){
       return of();
     }
+
+    public sign_out() {
+      return;
+    }
   }
 
   class mockTripsService {
-    public cancel_driver_trip() { }
+    public cancel_driver_trip() {}
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CancelTripDialogComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, BrowserAnimationsModule],
-      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: mockDialogRef },{ provide: AuthServiceService, useClass: mockAuthService },{ provide: TripsService, useClass: mockTripsService }],
+      imports: [RouterTestingModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: AuthServiceService, useClass: mockAuthService },
+        { provide: TripsService, useClass: mockTripsService },
+      ],
     }).compileComponents();
   });
 
@@ -64,4 +74,4 @@ describe('CancelTripDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
-})
+});

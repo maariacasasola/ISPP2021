@@ -81,7 +81,15 @@
   text-align: center;
   color: #0e4a6b;
 }
-
+.rating-content{
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.button-special {
+  background-color: #0e4a6b;
+  color: white;
+}
 .button {
   background-color: #0e4a6b;
   color: white;

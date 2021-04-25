@@ -1,8 +1,10 @@
 <footer>
   <div class="footer-content">
     <p>Sobre nosotros</p>
-    <p><a href="/authenticated/contact">Contacto</a></p>
-    <p>Términos y condiciones</p>
+    <p *ngIf="canAccess()"><a href="/authenticated/contact">Contacto</a></p>
+    <p class="link" routerLink="/terms-and-conditions">Términos y condiciones</p>
+    <p class="link" routerLink="/privacy-policy">Política de privacidad</p>
+    <p class="link" routerLink="/cancelation-policy">Política de cancelación</p>
   </div>
   <img class="footer-logo" src="../../../assets/img/logo4.png" />
   <div class="footer-content">

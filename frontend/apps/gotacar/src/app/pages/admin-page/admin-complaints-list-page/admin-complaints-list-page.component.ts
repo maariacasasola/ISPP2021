@@ -16,8 +16,8 @@ export class AdminComplaintsListPageComponent {
 
   constructor(
     private _complaints_service: ComplaintsService,
-    private _my_dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    public _my_dialog: MatDialog,
+    public _snackBar: MatSnackBar
   ) {
     this.load_complaints();
   }
@@ -39,14 +39,11 @@ export class AdminComplaintsListPageComponent {
     dialogConfig.data = {
       id_complaint: data.id,
     };
-
     const dialogRef = this._my_dialog.open(
       PenaltyDialogComponent,
       dialogConfig
     );
-
     const dialog_response = await dialogRef.afterClosed().toPromise();
-
     if (!dialog_response) {
       return;
     }
@@ -57,11 +54,11 @@ export class AdminComplaintsListPageComponent {
       if (response) {
         this.openSnackBar(
           'Se acepta la queja de ' +
-            data?.user?.firstName +
-            ' y se penaliza a su conductor ' +
-            response['firstName'] +
-            ' ' +
-            response['lastName']
+          data?.user?.firstName +
+          ' y se penaliza a su conductor ' +
+          response['firstName'] +
+          ' ' +
+          response['lastName']
         );
       }
       await this.load_complaints();
@@ -69,6 +66,7 @@ export class AdminComplaintsListPageComponent {
       this.openSnackBar('No se pudo penalizar, hubo un error');
     }
   }
+
   async rejectComplaint(complaint) {
     try {
       const response = await this._complaints_service.refuse_complain(
@@ -91,6 +89,7 @@ export class AdminComplaintsListPageComponent {
       panelClass: ['blue-snackbar'],
     });
   }
+
   isPending(data: string): string {
     if (data === 'PENDING') {
       return 'Pendiente';

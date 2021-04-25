@@ -42,4 +42,9 @@ export class ComplaintsService {
       .post(environment.api_url + '/refuse/' + idComplaint, null)
       .toPromise();
   }
+
+  get_complaint_for_user_banned(user_uid: string){
+    return this._http_client
+    .get(environment.api_url + '/complaint/last/' + user_uid).toPromise();
+  }
 }

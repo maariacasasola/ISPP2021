@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'frontend-sign-up',
@@ -12,9 +13,10 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   today = new Date();
+  accepted = false;
   register_form = this.fb.group({
-    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    firstName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: ['', [Validators.required, Validators.email]],
     password: [
       '',
@@ -40,9 +42,13 @@ export class SignUpComponent implements OnInit {
     private _authService: AuthServiceService,
     private _snackBar: MatSnackBar,
     private _router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  checked(event: MatCheckboxChange): void {
+    this.accepted = event.checked;
+  }
 
   async onSubmit() {
     if (this.register_form.invalid) {
@@ -88,12 +94,12 @@ export class SignUpComponent implements OnInit {
         }
       })
       .catch((error) => {
-        if(error.message==='The email address is badly formatted.'){
+        if (error.message === 'The email address is badly formatted.') {
           this.openSnackBar('El email no es válido');
-        }else{
+        } else {
           this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
         }
-        
+
       });
   }
 

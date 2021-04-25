@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 import { MeetingPointService } from '../../../services/meeting-point.service';
@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './admin-meeting-points-page.component.html',
   styleUrls: ['./admin-meeting-points-page.component.scss'],
 })
-export class AdminMeetingPointsPageComponent implements OnInit {
+export class AdminMeetingPointsPageComponent {
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow;
 
@@ -42,8 +42,6 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     this.get_all_meeting_points();
   }
 
-  ngOnInit(): void {}
-
   async get_all_meeting_points() {
     try {
       this.meeting_points = await this._meeting_point_service.get_all_meeting_points();
@@ -59,7 +57,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
         });
       });
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro", 'Cerrar');
     }
   }
 
@@ -67,6 +65,7 @@ export class AdminMeetingPointsPageComponent implements OnInit {
     this.isShow = !this.isShow;
     this.new_meeting_point.reset();
   }
+
   resetForm() {
     this.new_meeting_point.reset();
   }
@@ -78,10 +77,15 @@ export class AdminMeetingPointsPageComponent implements OnInit {
       const meeting_point = this.meeting_points_array.find(
         (x) => x.lat === infoPosition.lat && x.lng === infoPosition.lng
       );
-      this._meeting_point_service.delete_meeting_point(meeting_point.id);
-      window.location.reload();
+      const response = await this._meeting_point_service.delete_meeting_point(meeting_point.id);
+      if (response) {
+        this.openSnackBar(
+          'Punto eliminado satisfactoriamente', "Cerrar");
+      }
+      this.markers = [];
+      await this.get_all_meeting_points();
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al eliminar el punto de encuentro", "Cerrar");
     }
   }
 

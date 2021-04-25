@@ -9,12 +9,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ComplaintAppealDialogComponent } from '../components/complaint-appeal-dialog/complaint-appeal-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComplaintAppealsService } from './complaint-appeals.service';
+import { ComplaintsService } from './complaints.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServiceService {
   userData: any;
+  complaint;
 
   constructor(
     public afs: AngularFirestore,
@@ -24,6 +26,7 @@ export class AuthServiceService {
     private _http_client: HttpClient,
     private _complaint_appeals_service: ComplaintAppealsService,
     private _snackbar: MatSnackBar,
+    private _complaint_service: ComplaintsService,
     private dialog: MatDialog
   ) {
     this.afAuth.authState.subscribe((user) => {
@@ -60,31 +63,6 @@ export class AuthServiceService {
     return this._http_client
       .post(environment.api_url + '/user/register', user)
       .toPromise();
-  }
-
-  async send_verification_mail() {
-    return this.afAuth.currentUser.then((u) =>
-      u.sendEmailVerification().then(() => {
-        this.router.navigate(['verify-email-address']);
-      })
-    );
-  }
-
-  forgot_password(passwordResetEmail) {
-    return this.afAuth
-      .sendPasswordResetEmail(passwordResetEmail)
-      .then(() => {
-        this._snackbar.open(
-          'Revisa tu buzón de correo para restear tu contraseña',
-          null,
-          {
-            duration: 3000,
-          }
-        );
-      })
-      .catch(() => {
-        this._snackbar.open('Ha ocurrido un error');
-      });
   }
 
   is_logged_in(): boolean {
@@ -186,7 +164,13 @@ export class AuthServiceService {
   async can_appeal() {
     let canAppeal = await this._complaint_appeals_service.can_complaint_appeal();
     if (canAppeal) {
-      const t = this.dialog.open(ComplaintAppealDialogComponent);
+      const user = JSON.parse(localStorage.getItem('user'));
+      try{
+         this.complaint = await this._complaint_service.get_complaint_for_user_banned(user.uid);
+      }catch(error){
+        console.error(error);
+      }
+      const t = this.dialog.open(ComplaintAppealDialogComponent, {data:{complaint: this.complaint}});
     } else {
       this._snackbar.open('La cuenta está baneada ', null, {
         duration: 3000,

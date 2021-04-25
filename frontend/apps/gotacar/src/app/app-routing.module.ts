@@ -33,6 +33,10 @@ import { AdminTripOrdersListPageComponent } from './pages/admin-page/admin-trip-
 import { AdminTripOrderDetailsPageComponent } from './pages/admin-page/admin-trip-orders-page/admin-trip-orders-details/admin-trip-order-details-page.component';
 import { AdminDriverRequestsPageComponent } from './pages/admin-page/admin-driver-requests-page/admin-driver-requests-page.component';
 import { ClientBecomeDriverPageComponent } from './pages/authenticated-page/client-become-driver-page/client-become-driver-page.component';
+import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 
 const routes: Routes = [
   {
@@ -81,6 +85,18 @@ const routes: Routes = [
     component: TripDetailsPageComponent,
   },
   {
+    path: 'terms-and-conditions',
+    component: TermsAndConditionsComponent,
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+  },
+  {
+    path: 'cancelation-policy',
+    component: CancelationPolicyComponent,
+  },
+  {
     path: 'authenticated',
     component: AuthenticatedPageComponent,
     canActivate: [AuthenticatedGuard],
@@ -88,6 +104,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ClientProfilePageComponent,
+      },
+      {
+        path:'user-ratings/:user_id',
+        component:ShowRatingsComponent,
       },
       {
         path: 'contact',
@@ -147,6 +167,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: AdminUserListPageComponent,
+      },
+      {
+        path:'user-ratings/:user_id',
+        component:ShowRatingsComponent,
       },
       {
         path: 'complaints',

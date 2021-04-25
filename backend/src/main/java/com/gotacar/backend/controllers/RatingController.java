@@ -15,7 +15,8 @@ import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -136,6 +137,17 @@ public class RatingController {
 			}
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+	}
+	@PreAuthorize("hasRole('ROLE_CLIENT') || hasRole('ROLE_ADMIN') || hasRole('ROLE_DRIVER')")
+	@GetMapping("/ratings/{idUser}")
+	public List<Rating> getRatings(@PathVariable(value = "idUser") String userId) {
+		try {
+			User user = userRepository.findById(new ObjectId(userId));
+			List<Rating> ratings = ratingRepository.findByTo(user);
+			return ratings;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 
