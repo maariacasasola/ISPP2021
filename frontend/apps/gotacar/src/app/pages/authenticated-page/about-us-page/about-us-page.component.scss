@@ -11,9 +11,7 @@ h1 {
   }
   
   .us-header {
-	display: flex;
 	flex-direction: row;
-	align-items: center;
 	margin-bottom: 15px;
   }
   
@@ -25,7 +23,17 @@ h1 {
   }
   
   .name {
-	padding-top: 0%;
+	float: center;
+	display: flex;
+	justify-content: center;
+  }
+
+  .content {
+	padding-top: 4%;
+	text-align: center;
+	float: center;
+	display: flex;
+	justify-content: center;
   }
   
   .us-list {
