@@ -17,6 +17,7 @@ jobs:
       before_deploy:
         - bash ./scripts/deploy-prepro.sh
         - bash ./scripts/deploy-pro.sh 
+        - bash ./scripts/deploy-v3.sh
       deploy:
         - provider: firebase
           skip_cleanup: true
@@ -30,6 +31,12 @@ jobs:
           project: gotacar-prepro
           on:
             branch: develop
+        - provider: firebase
+          token: "$FB_DEPLOY"
+          skip_cleanup: true
+          project: gotacar-v3
+          on:
+            branch: sprint3
     - dist: trusty
       language: java
       jdk: oraclejdk11
