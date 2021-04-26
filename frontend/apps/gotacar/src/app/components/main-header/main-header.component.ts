@@ -9,10 +9,11 @@ import {Location} from '@angular/common';
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.scss'],
 })
-export class MainHeaderComponent {
+export class MainHeaderComponent{
   showFiller = false;
-
-  constructor(public authService: AuthServiceService, public router: Router, private _location: Location) {}
+  
+  constructor(public authService: AuthServiceService, public router: Router, private _location: Location) {
+  }
 
   isAdmin() {
     return this.authService.is_admin();
@@ -32,6 +33,14 @@ export class MainHeaderComponent {
 
   redirect() {
     this.router.navigate(['home']);
+  }
+
+  isEdgeDomain() {
+    console.log(this.router.url)
+    return (this.router.url.includes('home')
+    || this.router.url.includes('log-in')
+    || this.router.url.includes('sign-up')
+    || this.router.url.includes('google-register'));
   }
 
   go_back() {
