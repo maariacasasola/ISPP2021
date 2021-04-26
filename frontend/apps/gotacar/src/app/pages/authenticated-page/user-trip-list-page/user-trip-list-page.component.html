@@ -45,7 +45,7 @@
 
     <mat-card-actions align="end">
       <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn" class="cancel-button"
-        (click)="cancel_trip_order_dialog(trip.id)">
+        (click)="cancel_trip_order_dialog(trip.id, trip?.trip?.cancelationDateLimit)">
         <mat-icon>cancel_presentation</mat-icon>
       </button>
       <button mat-raised-button class="button" (click)="go_to_trip(trip.trip.id)">

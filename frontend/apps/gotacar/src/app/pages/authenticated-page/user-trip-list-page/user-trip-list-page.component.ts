@@ -41,12 +41,25 @@ export class UserTripListPageComponent {
     }
   }
 
-  cancel_trip_order_dialog(trip_id) {
+  cancel_trip_order_dialog(trip_id, cancelationDateLimit) {
     try {
-      this.dialog.open(CancelTripPlaceDialogComponent, {
-        data: [trip_id],
-        disableClose: true,
-      });
+      if (new Date(cancelationDateLimit) < new Date()) {
+        this.dialog.open(CancelTripPlaceDialogComponent, {
+          data: {
+            trip_id: [trip_id],
+            afterLimit: true,
+          },
+          disableClose: true,
+        });
+      } else {
+        this.dialog.open(CancelTripPlaceDialogComponent, {
+          data: {
+            trip_id: [trip_id],
+            afterLimit: false,
+          },
+          disableClose: true,
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -62,6 +75,8 @@ export class UserTripListPageComponent {
         return 'Devolución completada';
       case 'PAID':
         return 'Pago realizado';
+      case 'CANT_REFUND':
+        return 'Devolución denegada';
       default:
         break;
     }
@@ -73,7 +88,7 @@ export class UserTripListPageComponent {
 
   show_cancelation_button(trip) {
     return (
-      !(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED') &&
+      !(trip?.status === 'REFUNDED_PENDING' || trip?.status === 'REFUNDED' || trip?.status === 'CANT_REFUND') &&
       new Date(trip?.trip?.startDate) > new Date()
     );
   }
