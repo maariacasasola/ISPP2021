@@ -249,7 +249,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   font-size: 24px;
   font-family: 'Material Icons', 'Material Icons';
   .mat-badge-content {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
   }
 }
 
@@ -298,11 +298,11 @@ button:hover {
 }
 
 ///////////////////////DROPZONE
-.dropzone { 
+.dropzone {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; 
+  flex-direction: column;
   min-width: 50vw;
   font-weight: 200;
   height: 200px;
@@ -312,12 +312,12 @@ button:hover {
   margin: 10px 0;
 
   &.hovering {
-      border: 2px solid $warn;
-      color: #dadada !important;
+    border: 2px solid $warn;
+    color: #dadada !important;
   }
 
   .file-label {
-      font-size: 1.2em;
+    font-size: 1.2em;
   }
 }
 
@@ -343,7 +343,7 @@ progress::-webkit-progress-value {
   }
 }
 
-map-info-window {
+.map-info-window {
   display: flex;
   flex-direction: row;
   align-items: center;

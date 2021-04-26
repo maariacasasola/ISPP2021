@@ -9,11 +9,5 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./about-us-page.component.scss'],
 })
 export class AboutUsPageComponent {
-
-  constructor(
-    private _snackbar: MatSnackBar,
-    private _router: Router,
-  ) {
-    
-  }
+  constructor() {}
 }

@@ -10,7 +10,15 @@
   [class.hovering]="isHovering"
   (click)="select_image()"
 >
-  <img [src]="img_url" *ngIf="file" [ngClass]="{'new-profile-photo': !is_become_driver, 'new-profile-photo2': is_become_driver}" />
+  <img
+    alt="new-profile-image"
+    [src]="img_url"
+    *ngIf="file"
+    [ngClass]="{
+      'new-profile-photo': !is_become_driver,
+      'new-profile-photo2': is_become_driver
+    }"
+  />
   <p *ngIf="!file">Arrastra tu imagen o haz click para abrir</p>
   <input id="file_input" type="file" [multiple]="false" style="display: none" />
 </div>
