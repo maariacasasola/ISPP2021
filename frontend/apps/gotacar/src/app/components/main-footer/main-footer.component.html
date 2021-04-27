@@ -1,8 +1,7 @@
 <footer>
   <div class="footer-content">
-    <p><a routerLink="/about-us">Sobre nosotros</a></p>
-    <p *ngIf="canAccess()">
-      <a routerLink="/authenticated/contact">Contacto</a>
+    <p class="link" routerLink="/about-us">Sobre nosotros</p>
+    <p class="link" *ngIf="canAccess()" routerLink="/authenticated/contact">Contacto
     </p>
     <p class="link" routerLink="/terms-and-conditions">
       Términos y condiciones
