@@ -32,7 +32,7 @@ public class PaymentReturn {
     public PaymentReturn(User user, Integer amount) {
         this.user = user;
         this.amount = amount;
-        ZonedDateTime dateStartZone = ZonedDateTime.now();
+        var dateStartZone = ZonedDateTime.now();
         dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         this.createdAt = dateStartZone.toLocalDateTime();
     }

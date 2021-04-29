@@ -19,7 +19,7 @@ public class TripOrderRepositoryImpl implements TripOrderRepositoryCustom {
 
     @Override
     public List<TripOrder> userHasMadeTrip(String userId, String tripId) {
-        Query query = new Query();
+        var query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 
         if (userId != null) {
@@ -39,7 +39,7 @@ public class TripOrderRepositoryImpl implements TripOrderRepositoryCustom {
 
     public TripOrder searchProcessingTripOrderByTripAndUser(String tripId, String userId) {
 
-        Query query = new Query();
+        var query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 
         if (tripId != null) {
