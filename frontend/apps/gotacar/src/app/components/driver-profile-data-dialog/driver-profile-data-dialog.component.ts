@@ -21,7 +21,7 @@ export class DriverProfileDataDialogComponent {
 
   get_age() {
     const birthdate = moment(this.trip?.driver?.birthdate);
-    return moment().diff(birthdate, 'years');;
+    return moment().diff(birthdate, 'years');
   }
 
   get_profile_photo() {
