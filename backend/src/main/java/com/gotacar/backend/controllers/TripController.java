@@ -55,15 +55,15 @@ public class TripController {
 	@PostMapping(path = "/search_trips", consumes = "application/json")
 	public List<Trip> searchTrip(@RequestBody() String body) {
 		try {
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
-			LocalDateTime dateJson = OffsetDateTime
+			var dateJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-			Point startingPoint = new Point(startingPointJson.get("lng").asDouble(),
+			var startingPoint = new Point(startingPointJson.get("lng").asDouble(),
 					startingPointJson.get("lat").asDouble());
-			Point endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
+			var endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
 			List<Trip> trips = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
 			return trips.stream().filter(x -> x.getCanceled().equals(false) || x.getCanceled() == null)
 					.collect(Collectors.toList());
@@ -87,20 +87,20 @@ public class TripController {
 	@PostMapping("/create_trip")
 	public Trip createTrip(@RequestBody() String body) {
 		try {
-			ZonedDateTime actualDate = ZonedDateTime.now();
+			var actualDate = ZonedDateTime.now();
 			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 
 			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
 
-			Location startingPoint = new Location(startingPointJson.get("name").asText(),
+			var startingPoint = new Location(startingPointJson.get("name").asText(),
 					startingPointJson.get("address").asText(), startingPointJson.get("lat").asDouble(),
 					startingPointJson.get("lng").asDouble());
 
 			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
 
-			Location endingPoint = new Location(endingPointJson.get("name").asText(),
+			var endingPoint = new Location(endingPointJson.get("name").asText(),
 					endingPointJson.get("address").asText(), endingPointJson.get("lat").asDouble(),
 					endingPointJson.get("lng").asDouble());
 
@@ -108,22 +108,22 @@ public class TripController {
 
 			Integer price = objectMapper.readTree(jsonNode.get("price").toString()).asInt();
 
-			ZonedDateTime dateStartZone = ZonedDateTime
+			var dateStartZone = ZonedDateTime
 					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
 			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-			LocalDateTime dateStartJson = dateStartZone.toLocalDateTime();
+			var dateStartJson = dateStartZone.toLocalDateTime();
 
-			ZonedDateTime dateEndZone = ZonedDateTime
+			var dateEndZone = ZonedDateTime
 					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText());
 			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-			LocalDateTime dateEndJson = dateEndZone.toLocalDateTime();
+			var dateEndJson = dateEndZone.toLocalDateTime();
 
 			String comments = objectMapper.readTree(jsonNode.get("comments").toString()).asText();
 
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			LocalDateTime bannedUntil = currentUser.getBannedUntil();
 			if (bannedUntil != null) {
 				if (bannedUntil.isAfter(actualDate.toLocalDateTime())) {
@@ -148,7 +148,7 @@ public class TripController {
 				throw new Exception("La hora de salida no puede ser tan cercana a la hora de llegada");
 			}
 
-			ZonedDateTime dateNowZone = ZonedDateTime.now();
+			var dateNowZone = ZonedDateTime.now();
 			dateNowZone = dateNowZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
 			// Lanza error si la fecha de salida no dista una hora de la fecha actual
@@ -156,7 +156,7 @@ public class TripController {
 				throw new Exception("El viaje debe ser publicado, al menos, con una hora de antelación");
 			}
 
-			Trip trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,
+			var trip1 = new Trip(startingPoint, endingPoint, price, dateStartJson, dateEndJson, comments, placesJson,
 					currentUser);
 
 			trip1.setCancelationDateLimit(cancelationDateLimit);
@@ -172,15 +172,15 @@ public class TripController {
 	@PostMapping("/cancel_trip_driver/{trip_id}")
 	public Trip cancelTripDriver(@PathVariable(value = "trip_id") String tripId) {
 		try {
-			Trip trip1 = tripRepository.findById(new ObjectId(tripId));
+			var trip1 = tripRepository.findById(new ObjectId(tripId));
 
 			Boolean canceled = trip1.getCanceled();
 
 			// Compruebo si el conductor del viaje es el usuario logueado
 			User driver = trip1.getDriver();
 
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 
 			if (!((currentUser.getId()).equals(driver.getId()))) {
 				throw new Exception("Usted no ha realizado este viaje");
@@ -191,9 +191,9 @@ public class TripController {
 				throw new Exception("El viaje ya está cancelado");
 			}
 
-			ZonedDateTime dateStartZone = ZonedDateTime.now();
+			var dateStartZone = ZonedDateTime.now();
 			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-			LocalDateTime now = dateStartZone.toLocalDateTime();
+			var now = dateStartZone.toLocalDateTime();
 
 			trip1.setCanceled(true);
 			trip1.setCancelationDate(now);
@@ -212,8 +212,8 @@ public class TripController {
 	@GetMapping("/list_trips_driver")
 	public List<Trip> listTripsDriver() {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var currentUser = userRepository.findByEmail(authentication.getPrincipal().toString());
 			return tripRepository.findByDriver(currentUser);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -223,7 +223,7 @@ public class TripController {
 	@GetMapping("/trip/{tripId}")
 	public @ResponseBody Trip getTripDetails(@PathVariable(value = "tripId") String tripId) {
 		try {
-			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			var trip = tripRepository.findById(new ObjectId(tripId));
 			List<TripOrder> tripOrders = tripOrderRepository.findByTripAndStatus(trip, "PAID");
 			trip.setTripOrders(tripOrders);
 			return trip;
@@ -236,10 +236,10 @@ public class TripController {
 	@PostMapping("/trip-order/{trip_order_id}/cancel")
 	public Trip cancelUserFromTrip(@PathVariable(value = "trip_order_id") String tripOrderId) {
 		try {
-			TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(tripOrderId));
-			Trip trip = tripOrder.getTrip();
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User currentDriver = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var tripOrder = tripOrderRepository.findById(new ObjectId(tripOrderId));
+			var trip = tripOrder.getTrip();
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var currentDriver = userRepository.findByEmail(authentication.getPrincipal().toString());
 			if (currentDriver.getId().equals(trip.getDriver().getId())) {
 				Integer orderPlaces = tripOrder.getPlaces();
 				trip.setPlaces(trip.getPlaces() + orderPlaces);

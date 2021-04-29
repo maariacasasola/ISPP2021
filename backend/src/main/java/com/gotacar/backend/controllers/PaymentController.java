@@ -62,20 +62,20 @@ public class PaymentController {
         Stripe.apiKey = stripeApiKey;
 
         try {
-        	ZonedDateTime actualDate = ZonedDateTime.now();
+        	var actualDate = ZonedDateTime.now();
 			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            JsonNode jsonNode = objectMapper.readTree(body);
+            var jsonNode = objectMapper.readTree(body);
             Integer quantity = objectMapper.readTree(jsonNode.get("quantity").toString()).asInt();
             String description = objectMapper.readTree(jsonNode.get("description").toString()).asText();
             String idTrip = objectMapper.readTree(jsonNode.get("idTrip").toString()).asText();
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
             
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
             String idUser = user.getId();
             LocalDateTime bannedUntil = user.getBannedUntil();
-            Trip trip = tripRepository.findById(new ObjectId(idTrip));
+            var trip = tripRepository.findById(new ObjectId(idTrip));
             
             if(bannedUntil != null) {
             	if(bannedUntil.isAfter(actualDate.toLocalDateTime())) {
@@ -141,7 +141,7 @@ public class PaymentController {
 
         switch (event.getType()) {
         case "checkout.session.completed":
-            Session session = (Session) event.getDataObjectDeserializer().getObject().get();
+            var session = (Session) event.getDataObjectDeserializer().getObject().get();
             // Save an order in your database, marked as 'awaiting payment'
             createTripOrder(session);
             // Check if the order is paid (e.g., from a card payment)
@@ -155,12 +155,12 @@ public class PaymentController {
 
             break;
         case "checkout.session.async_payment_succeeded":
-            Session session_succeeded = (Session) event.getDataObjectDeserializer().getObject().get();
+            var session_succeeded = (Session) event.getDataObjectDeserializer().getObject().get();
             fulfillOrder(session_succeeded);
             break;
         case "checkout.session.async_payment_failed":
             // TODO: Sé que no se usa, me falta gestionar un evento
-            Session session_failed = (Session) event.getDataObjectDeserializer().getObject().get();
+            var session_failed = (Session) event.getDataObjectDeserializer().getObject().get();
             // Send an email to the customer asking them to retry their order
             // emailCustomerAboutFailedPayment(session);
             break;
@@ -169,25 +169,25 @@ public class PaymentController {
     }
 
     public void fulfillOrder(Session session) {
-        String tripId = session.getMetadata().values().toArray()[3].toString();
-        String userId = session.getMetadata().values().toArray()[5].toString();
-        TripOrder pendingTripOrder = tripOrderRepository.searchProcessingTripOrderByTripAndUser(tripId, userId);
+        var tripId = session.getMetadata().values().toArray()[3].toString();
+        var userId = session.getMetadata().values().toArray()[5].toString();
+        var pendingTripOrder = tripOrderRepository.searchProcessingTripOrderByTripAndUser(tripId, userId);
         pendingTripOrder.setStatus("PAID");
         tripOrderRepository.save(pendingTripOrder);
     }
 
     public void createTripOrder(Session session) {
         try {
-        	ZonedDateTime actualDate = ZonedDateTime.now();
+        	var actualDate = ZonedDateTime.now();
     		actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            String tripId = session.getMetadata().values().toArray()[3].toString();
-            String userId = session.getMetadata().values().toArray()[5].toString();
-            LocalDateTime date = actualDate.toLocalDateTime();
+            var tripId = session.getMetadata().values().toArray()[3].toString();
+            var userId = session.getMetadata().values().toArray()[5].toString();
+            var date = actualDate.toLocalDateTime();
             Integer price = session.getAmountTotal().intValue();
             String paymentIntent = session.getPaymentIntent();
             Integer quantity = Integer.parseInt(session.getMetadata().values().toArray()[1].toString());
-            Trip trip = tripRepository.findById(new ObjectId(tripId));
-            User user = userRepository.findById(new ObjectId(userId));
+            var trip = tripRepository.findById(new ObjectId(tripId));
+            var user = userRepository.findById(new ObjectId(userId));
             Integer places = trip.getPlaces();
 
             if (places >= quantity) {
@@ -196,7 +196,7 @@ public class PaymentController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El viaje no tiene tantas plazas");
             }
 
-            TripOrder res = new TripOrder(trip, user, date, price, paymentIntent, quantity);
+            var res = new TripOrder(trip, user, date, price, paymentIntent, quantity);
             tripOrderRepository.save(res);
             trip.setPlaces(places);
             tripRepository.save(trip);

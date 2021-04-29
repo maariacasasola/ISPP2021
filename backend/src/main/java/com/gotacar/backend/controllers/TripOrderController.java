@@ -43,8 +43,8 @@ public class TripOrderController {
     @GetMapping("/list_trip_orders")
     public List<TripOrder> listTripOrders() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
             return tripOrderRepository.findByUserId(user.getId());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -55,8 +55,8 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order_request/{id}")
     public TripOrder cancelTripOrderRequest(@PathVariable(value = "id") String id) {
         try {
-            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
-            Trip trip = tripOrder.getTrip();
+            var tripOrder = tripOrderRepository.findById(new ObjectId(id));
+            var trip = tripOrder.getTrip();
             refundController.createRefundClientCancel(tripOrder);
             trip.setPlaces(trip.getPlaces() + tripOrder.getPlaces());
             tripRepository.save(trip);
@@ -70,7 +70,7 @@ public class TripOrderController {
     @PostMapping("/cancel_trip_order/{id}")
     public TripOrder cancelTripOrder(@PathVariable(value = "id") String id) {
         try {
-            TripOrder tripOrder = tripOrderRepository.findById(new ObjectId(id));
+            var tripOrder = tripOrderRepository.findById(new ObjectId(id));
             tripOrder.setStatus("REFUNDED");
             tripOrderRepository.save(tripOrder);
             return tripOrder;

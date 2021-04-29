@@ -31,8 +31,8 @@ public class MeetingPointController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MeetingPoint createMeetingPoint(@RequestBody String body) {
         try {
-            MeetingPoint mp = new MeetingPoint();
-            JsonNode jsonNode = objectMapper.readTree(body);
+            var mp = new MeetingPoint();
+            var jsonNode = objectMapper.readTree(body);
 
             String address = objectMapper.readTree(jsonNode.get("address").toString()).asText();
             String name = objectMapper.readTree(jsonNode.get("name").toString()).asText();
