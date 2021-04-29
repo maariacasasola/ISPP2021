@@ -96,6 +96,8 @@ export class SignUpComponent implements OnInit {
       .catch((error) => {
         if (error.message === 'The email address is badly formatted.') {
           this.openSnackBar('El email no es válido');
+        }if (error.message === "The email address is already in use by another account.") {
+          this.openSnackBar('El email ya esta siendo usado por otro usuario');
         } else {
           this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
         }
