@@ -38,6 +38,7 @@ import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.componen
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
+import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
 
 const routes: Routes = [
   {
@@ -200,6 +201,10 @@ const routes: Routes = [
       {
         path: 'driver-requests',
         component: AdminDriverRequestsPageComponent,
+      },
+      {
+        path: 'admin-stats',
+        component: AdminStatsPageComponent,
       },
     ],
   },

@@ -1,0 +1,35 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "MediaValoracion MediaValoracion MediaValoracion MediaViajesConduc MediaViajesConduc ."
+      "MediaValoracion MediaValoracion MediaValoracion ViajeOfertado ViajeOfertado ."
+      "Percent Percent MediaViajesContra MediaViajesContra MediaViajesContra ."
+      "Percent Percent MediaViajesContra MediaViajesContra MediaViajesContra ."
+      ". . . . . .";
+  }
+  
+  .MediaValoracion { grid-area: MediaValoracion; }
+  
+  .ViajeOfertado { grid-area: ViajeOfertado; }
+  
+  .MediaViajesConduc { grid-area: MediaViajesConduc; }
+  
+  .Percent { grid-area: Percent; }
+  
+  .MediaViajesContra { grid-area: MediaViajesContra; }
+  
+
+@media (max-width: 760px) {
+  .grid-container {
+    grid-template-areas: 
+    "ViajeOfertado"
+    "MediaViajesConduc"
+    "MediaViajesContra"
+    "Percent"
+    "MediaValoracion"
+    ;
+  }
+}

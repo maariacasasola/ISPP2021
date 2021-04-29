@@ -117,6 +117,7 @@ import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.componen
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
+import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -183,6 +184,7 @@ registerLocaleData(localeEs, 'es');
     RatingUserDialogComponent,
     RefuseClientTripDriverDialogComponent,
     ShowRatingsComponent,
+    AdminStatsPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
