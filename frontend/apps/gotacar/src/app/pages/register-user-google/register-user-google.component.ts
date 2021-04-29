@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'frontend-register-user-google',
@@ -13,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RegisterUserGoogleComponent {
   firebase_uid;
   firebase_email;
+  accepted = false;
 
   register_form = this.fb.group({
     firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
@@ -37,6 +39,10 @@ export class RegisterUserGoogleComponent {
   ) {
     this.firebase_email = this._route.snapshot.queryParams['email'];
     this.firebase_uid = this._route.snapshot.queryParams['uid'];
+  }
+
+  checked(event: MatCheckboxChange): void {
+    this.accepted = event.checked;
   }
 
   async onSubmit() {
