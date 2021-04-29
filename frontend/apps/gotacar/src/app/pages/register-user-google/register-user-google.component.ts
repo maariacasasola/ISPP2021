@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './register-user-google.component.html',
   styleUrls: ['./register-user-google.component.scss'],
 })
-export class RegisterUserGoogleComponent implements OnInit {
+export class RegisterUserGoogleComponent {
   firebase_uid;
   firebase_email;
 
@@ -38,8 +38,6 @@ export class RegisterUserGoogleComponent implements OnInit {
     this.firebase_email = this._route.snapshot.queryParams['email'];
     this.firebase_uid = this._route.snapshot.queryParams['uid'];
   }
-
-  ngOnInit(): void {}
 
   async onSubmit() {
     if (this.register_form.invalid) {

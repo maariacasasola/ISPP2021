@@ -12,7 +12,7 @@ import {
   templateUrl: './client-contact-page.component.html',
   styleUrls: ['./client-contact-page.component.scss'],
 })
-export class ClientContactPageComponent implements OnInit {
+export class ClientContactPageComponent {
   form: FormGroup;
   name: FormControl = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]);
   email: FormControl = new FormControl('', [
@@ -23,10 +23,10 @@ export class ClientContactPageComponent implements OnInit {
     Validators.required,
     Validators.maxLength(256),
   ]);
-  honeypot: FormControl = new FormControl(''); // we will use this to prevent spam
-  submitted: boolean = false; // show and hide the success message
-  isLoading: boolean = false; // disable the submit button if we're loading
-  responseMessage: string; // the response message to show to the user
+  honeypot: FormControl = new FormControl('');
+  submitted: boolean = false;
+  isLoading: boolean = false;
+  responseMessage: string;
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.form = this.formBuilder.group({
       name: this.name,
@@ -35,7 +35,6 @@ export class ClientContactPageComponent implements OnInit {
       honeypot: this.honeypot,
     });
   }
-  ngOnInit(): void {}
 
   onSubmit() {
     if (this.form.status == 'VALID' && this.honeypot.value == '') {

@@ -1,12 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import {
-  AngularFireStorage,
-  AngularFireUploadTask,
-} from '@angular/fire/storage';
+import { Component, Inject } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'frontend-image-upload-dialog',
@@ -111,6 +107,13 @@ export class ImageUploadDialogComponent {
     this._dialogRef.close();
   }
 
+
+  get_download_url(storageRef) {
+    storageRef.getDownloadURL().subscribe((downloadURL) => {
+      this._dialogRef.close(downloadURL);
+    });
+  }
+
   submit() {
     if (this.is_become_driver) {
       const path = `driving_license/${this.user_id}.webp`;
@@ -121,9 +124,7 @@ export class ImageUploadDialogComponent {
         .snapshotChanges()
         .pipe(
           finalize(() => {
-            storageRef.getDownloadURL().subscribe((downloadURL) => {
-              this._dialogRef.close(downloadURL);
-            });
+            this.get_download_url(storageRef);
           })
         )
         .subscribe();
@@ -136,9 +137,7 @@ export class ImageUploadDialogComponent {
         .snapshotChanges()
         .pipe(
           finalize(() => {
-            storageRef.getDownloadURL().subscribe((downloadURL) => {
-              this._dialogRef.close(downloadURL);
-            });
+            this.get_download_url(storageRef);
           })
         )
         .subscribe();

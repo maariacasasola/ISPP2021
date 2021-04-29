@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
@@ -8,7 +8,7 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './show-ratings.component.html',
   styleUrls: ['./show-ratings.component.scss'],
 })
-export class ShowRatingsComponent implements OnInit {
+export class ShowRatingsComponent {
   ratingsComments;
   constructor(
     private _router: Router,
@@ -19,7 +19,6 @@ export class ShowRatingsComponent implements OnInit {
     this.load_comments();
   }
 
-  ngOnInit(): void {}
   private get_user_id(): string {
     return this._route.snapshot.params['user_id'];
   }

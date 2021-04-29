@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthServiceService } from '../../../services/auth-service.service';
 import * as moment from 'moment';
-import { UsersService } from '../../../services/users.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,14 +12,14 @@ import { Router } from '@angular/router';
   templateUrl: './edit-profile-driver.component.html',
   styleUrls: ['./edit-profile-driver.component.scss'],
 })
-export class EditProfileDriverComponent implements OnInit {
+export class EditProfileDriverComponent {
   today = new Date();
   update_form = this.fb.group({
-    firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    lastName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    email: [{value:'', disabled:true }, [Validators.required, Validators.email]],
+    firstName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
     dni: [
-      {value:'', disabled:true },
+      { value: '', disabled: true },
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
     ],
     birthdate: ['', Validators.required],
@@ -37,10 +36,10 @@ export class EditProfileDriverComponent implements OnInit {
         ),
       ],
     ],
-    car_plate: ['', [Validators.required,Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
+    car_plate: ['', [Validators.required, Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
     enrollment_date: ['', Validators.required],
-    model: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
-    color: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]*$')]],
+    model: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+    color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
   });
 
   user;
@@ -76,8 +75,6 @@ export class EditProfileDriverComponent implements OnInit {
       );
     }
   }
-
-  ngOnInit(): void {}
 
   async onSubmit() {
     if (this.update_form.invalid) {
@@ -138,13 +135,13 @@ export class EditProfileDriverComponent implements OnInit {
     const years = moment().diff(birthdate, 'years');
     return years > 16;
   }
-  checkEnrollmentDateBeforeBirthDate(){
+  checkEnrollmentDateBeforeBirthDate() {
     const birthdate = moment(this.update_form.value.birthdate);
     const enrollment = moment(this.update_form.value.enrollment_date);
-    const years = enrollment.diff(birthdate,'years')
-    return enrollment > birthdate && years> 16;
+    const years = enrollment.diff(birthdate, 'years')
+    return enrollment > birthdate && years > 16;
   }
-  
+
 
   openSnackBar(message: string) {
     this._snackBar.open(message, null, {

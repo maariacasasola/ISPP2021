@@ -1,11 +1,9 @@
 import {
   Component,
   Input,
-  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 
 @Component({

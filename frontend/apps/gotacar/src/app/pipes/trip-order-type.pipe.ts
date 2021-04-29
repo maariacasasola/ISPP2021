@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { validateBasis } from '@angular/flex-layout';
 
 @Pipe({
   name: 'tripOrderType',

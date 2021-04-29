@@ -1,17 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../../services/auth-service.service';
-import { Directive, HostListener } from '@angular/core'
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'frontend-main-header',
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.scss'],
 })
-export class MainHeaderComponent{
+export class MainHeaderComponent {
   showFiller = false;
-  
+
   constructor(public authService: AuthServiceService, public router: Router, private _location: Location) {
   }
 
@@ -38,9 +37,9 @@ export class MainHeaderComponent{
   isEdgeDomain() {
     console.log(this.router.url)
     return (this.router.url.includes('home')
-    || this.router.url.includes('log-in')
-    || this.router.url.includes('sign-up')
-    || this.router.url.includes('google-register'));
+      || this.router.url.includes('log-in')
+      || this.router.url.includes('sign-up')
+      || this.router.url.includes('google-register'));
   }
 
   go_back() {
