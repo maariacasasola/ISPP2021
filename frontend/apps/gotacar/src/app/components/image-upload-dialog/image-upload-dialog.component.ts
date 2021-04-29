@@ -109,8 +109,10 @@ export class ImageUploadDialogComponent {
 
 
   get_download_url(storageRef) {
-    storageRef.getDownloadURL().subscribe((downloadURL) => {
-      this._dialogRef.close(downloadURL);
+    storageRef.getDownloadURL().subscribe({
+      next: (downloadURL) => {
+        this._dialogRef.close(downloadURL);
+      }
     });
   }
 
