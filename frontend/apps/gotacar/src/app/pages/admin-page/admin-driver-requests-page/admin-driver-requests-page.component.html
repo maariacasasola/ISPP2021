@@ -1,7 +1,7 @@
 <h1>LISTA DE SOLICITUDES DE CONDUCTORES</h1>
 
 <div class="requests-list">
-    <mat-card class="request" *ngFor="let user of requests">
+    <mat-card class="request mat-elevation-z4" *ngFor="let user of requests">
         <mat-card-header>
             <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" alt="Foto de perfil" />
             <mat-card-title class="username">

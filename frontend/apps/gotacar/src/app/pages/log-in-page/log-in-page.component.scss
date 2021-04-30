@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   margin: 80px;
-  min-height: 100vh;
+  min-height: 65vh;
   color: #0e4a6b;
 }
 
@@ -39,6 +39,11 @@
   background-color: #538994;
   margin: 10px 20px 10px 20px;
   width: 100%;
+}
+
+.login-button mat-icon {
+  margin-right: 15px;
+  padding-bottom: 4px;
 }
 
 .loading-wrapper {
@@ -69,11 +74,27 @@
   }
 }
 
+@media (max-width: 760px) {
+  .page-content {
+    margin: 15%;
+    min-height: 50vh;
+  }
 
-@media(max-width: 760px) {
+  h2 {
+    text-align: center;
+  }
+
   .form-fields {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .login-card .form-fields {
+    width: 100%;
+  }
+
+  .login-card mat-form-field {
+    margin-bottom: 10px;
   }
 }

@@ -38,10 +38,13 @@ h1 {
   background-color: #70c070;
 }
 
-
 @media (max-width: 760px) {
   .requests-list {
     display: flex;
     flex-direction: column;
+  }
+
+  .requests-list mat-card {
+    margin: 10px 0;
   }
 }

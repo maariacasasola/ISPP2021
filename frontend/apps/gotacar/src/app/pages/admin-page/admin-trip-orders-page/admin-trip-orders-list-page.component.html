@@ -1,6 +1,6 @@
 <h1>VIAJES CONTRATADOS</h1>
 <div class="trips-list">
-  <mat-card class="trip" *ngFor="let tripOrder of tripOrders">
+  <mat-card class="trip mat-elevation-z4" *ngFor="let tripOrder of tripOrders">
     <mat-card-content>
       <p><strong>Viaje: </strong>{{ tripOrder?.trip?.startingPoint?.address }} &#8594;
         {{ tripOrder?.trip?.endingPoint?.address }}</p>

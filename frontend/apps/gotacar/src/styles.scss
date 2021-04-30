@@ -348,3 +348,7 @@ progress::-webkit-progress-value {
   flex-direction: row;
   align-items: center;
 }
+
+.mat-checkbox-label {
+  white-space: normal !important;
+}

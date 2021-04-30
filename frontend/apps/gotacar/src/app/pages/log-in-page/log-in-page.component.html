@@ -10,7 +10,7 @@
     <div class="form-fields">
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput type="text" #userName required />
+        <input id="email" matInput type="text" #userName required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -33,6 +33,7 @@
       class="login-button"
       (click)="authService.google_auth()"
     >
+      <mat-icon svgIcon="google"></mat-icon>
       Iniciar sesión con Google
     </button>
     <button
