@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -7,15 +7,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './trip-order-form-dialog.component.html',
   styleUrls: ['./trip-order-form-dialog.component.scss'],
 })
-export class TripOrderFormDialogComponent implements OnInit {
+export class TripOrderFormDialogComponent {
   places_form = new FormControl(1, Validators.required);
 
   constructor(
     public dialogRef: MatDialogRef<TripOrderFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {}
-
-  ngOnInit(): void {}
+  ) { }
 
   submit() {
     this.dialogRef.close({

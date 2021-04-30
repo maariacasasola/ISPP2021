@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './client-become-driver-page.component.html',
   styleUrls: ['./client-become-driver-page.component.scss'],
 })
-export class ClientBecomeDriverPageComponent implements OnInit {
+export class ClientBecomeDriverPageComponent {
   today: Date = new Date();
   birth_date;
   driving_license;
@@ -56,7 +56,6 @@ export class ClientBecomeDriverPageComponent implements OnInit {
     this.load_user_data();
   }
 
-  ngOnInit(): void {}
   async obtain_driving_license() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;

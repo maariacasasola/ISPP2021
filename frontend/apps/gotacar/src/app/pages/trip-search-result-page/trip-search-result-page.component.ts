@@ -1,5 +1,4 @@
-import { LabelType, Options } from '@angular-slider/ngx-slider';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -13,7 +12,7 @@ import { convert_cent_to_eur } from '../../shared/utils/functions';
   templateUrl: './trip-search-result-page.component.html',
   styleUrls: ['./trip-search-result-page.component.scss'],
 })
-export class TripSearchResultPageComponent implements OnInit {
+export class TripSearchResultPageComponent {
   coordinatesOrigin;
   coordinatesTarget;
   places;
@@ -42,8 +41,6 @@ export class TripSearchResultPageComponent implements OnInit {
   ) {
     this.load_search_params();
   }
-
-  ngOnInit(): void {}
 
   async load_search_params() {
     await this.get_all_meeting_points();
@@ -89,11 +86,10 @@ export class TripSearchResultPageComponent implements OnInit {
         (meeting_point) => meeting_point.name === place_name
       );
       if (meeting_point_matched.length > 0) {
-        const coordinates = {
+        return {
           lat: meeting_point_matched[0].lat,
           lng: meeting_point_matched[0].lng,
         };
-        return coordinates;
       }
 
       // En caso de que no sea un meeting point, llamamos a geocoding
@@ -106,11 +102,10 @@ export class TripSearchResultPageComponent implements OnInit {
       );
 
       if (search_result.length > 0) {
-        const coordinates = {
+        return {
           lat: search_result[0]?.geometry?.location?.lat,
           lng: search_result[0]?.geometry?.location?.lng,
         };
-        return coordinates;
       } else {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }

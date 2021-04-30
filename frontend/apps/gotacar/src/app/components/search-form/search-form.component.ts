@@ -14,7 +14,6 @@ export class SearchFormComponent {
     origin: ['', Validators.required],
     target: ['', Validators.required],
     date: ['', Validators.required],
-    // TODO: Poner required y poner formulario campo
     places: [1],
   });
 

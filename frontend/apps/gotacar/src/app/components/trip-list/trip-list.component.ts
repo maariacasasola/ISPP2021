@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,12 +6,10 @@ import { Router } from '@angular/router';
   templateUrl: './trip-list.component.html',
   styleUrls: ['./trip-list.component.scss'],
 })
-export class TripListComponent implements OnInit {
+export class TripListComponent {
   @Input() trips;
 
-  constructor(private _router: Router) {}
-
-  ngOnInit(): void {}
+  constructor(private _router: Router) { }
 
   get_profile_photo(trip) {
     return trip?.driver?.profilePhoto

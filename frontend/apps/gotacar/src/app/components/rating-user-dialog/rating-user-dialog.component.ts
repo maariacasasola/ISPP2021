@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -9,53 +9,51 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './rating-user-dialog.component.html',
   styleUrls: ['./rating-user-dialog.component.scss']
 })
-export class RatingUserDialogComponent implements OnInit {
+export class RatingUserDialogComponent {
   rating;
   to;
   idTrip;
   rating_form = this._form_builder.group({
-    content:['', Validators.required],
+    content: ['', Validators.required],
   });
   constructor(@Inject(MAT_DIALOG_DATA) data,
-  private _dialogRef: MatDialogRef<RatingUserDialogComponent>,
-  private _snackBar: MatSnackBar,private _form_builder: FormBuilder,) {
+    private _dialogRef: MatDialogRef<RatingUserDialogComponent>,
+    private _snackBar: MatSnackBar, private _form_builder: FormBuilder,) {
     this.to = data.to;
-    this.idTrip=data.trip_id;
-   }
-
-  ngOnInit(): void {
+    this.idTrip = data.trip_id;
   }
-  onSubmit(){
+
+  onSubmit() {
     if (this.rating_form.invalid) {
       this.rating_form.markAllAsTouched();
       return;
     }
 
-    if (this.rating===undefined) {
+    if (this.rating === undefined) {
       this.openSnackBar('Debes proporcionar una valoración estrella');
       return;
     }
     try {
       const data = {
         to: this.to,
-        content : this.rating_form.value.content,
-        points : this.rating,
+        content: this.rating_form.value.content,
+        points: this.rating,
         trip_id: this.idTrip,
       }
-      
+
       this._dialogRef.close(data);
     } catch (error) {
       this.openSnackBar(
         'Ha ocurrido un error al valorar al usuario'
       );
-      
+
     }
-    
+
   }
-  set_rating(rating){
-    this.rating=rating;
+  set_rating(rating) {
+    this.rating = rating;
   }
-  close(){
+  close() {
     this._dialogRef.close();
   }
   openSnackBar(message: string) {
@@ -63,6 +61,6 @@ export class RatingUserDialogComponent implements OnInit {
       duration: 3000,
     });
   }
-  
+
 
 }

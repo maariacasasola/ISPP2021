@@ -1,6 +1,5 @@
-import { Component, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-//import {DialogElementsForbiddenDialog} from '../components/access-forbidden/access-forbidden.component';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
@@ -15,7 +14,7 @@ import { AccessForbiddenDialogComponent } from '../components/access-forbidden/a
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(public router: Router, public dialog: MatDialog) {}
+  constructor(public router: Router, public dialog: MatDialog) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
