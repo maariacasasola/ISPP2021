@@ -1,6 +1,6 @@
 package com.gotacar.backend.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.MeetingPoint;
 import com.gotacar.backend.models.MeetingPointRepository;
