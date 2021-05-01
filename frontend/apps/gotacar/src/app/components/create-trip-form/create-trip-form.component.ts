@@ -34,7 +34,7 @@ export class CreateTripFormComponent {
       ],
     ],
     comentarios: ['', Validators.required],
-    price: ['', [Validators.required, Validators.min(0.5)]],
+    price: ['', [Validators.required, Validators.min(0.5), Validators.max(1000)]],
   });
 
   location_origin: Location;
