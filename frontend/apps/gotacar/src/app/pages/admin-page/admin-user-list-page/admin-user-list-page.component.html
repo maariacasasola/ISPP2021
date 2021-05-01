@@ -1,12 +1,13 @@
 <h1>USUARIOS REGISTRADOS</h1>
 <div class="users-list">
   <mat-card class="user" *ngFor="let user of users">
-    <mat-card-header>
+    <mat-card-header class="user-header">
       <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" alt="Foto de perfil" />
       <mat-card-title class="username">
         {{ user?.firstName + ' ' + user?.lastName }}
       </mat-card-title>
     </mat-card-header>
+    <br>
     <mat-card-content>
       <p><strong>Nombre:</strong> {{ user?.firstName }}</p>
       <p><strong>Apellidos:</strong> {{ user?.lastName }}</p>
@@ -54,6 +55,9 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
+      <button  mat-raised-button class="button" (click)="go_to_alert_user(user?.email)">
+        <mat-icon>notification_important</mat-icon>
+      </button>
       <button *ngIf="user.averageRatings" mat-raised-button class="button" (click)="go_to_user_ratings(user.id)">
         <mat-icon>star_half</mat-icon>
       </button>

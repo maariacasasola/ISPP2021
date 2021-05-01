@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -8,17 +9,13 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'frontend-client-contact-page',
-  templateUrl: './client-contact-page.component.html',
-  styleUrls: ['./client-contact-page.component.scss'],
+  selector: 'frontend-admin-alert-page',
+  templateUrl: './admin-alert-page.component.html',
+  styleUrls: ['./admin-alert-page.component.scss'],
 })
-export class ClientContactPageComponent implements OnInit {
+export class AdminAlertPageComponent implements OnInit {
   form: FormGroup;
-  name: FormControl = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]);
-  email: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  email: string;
   message: FormControl = new FormControl('', [
     Validators.required,
     Validators.maxLength(256),
@@ -27,28 +24,32 @@ export class ClientContactPageComponent implements OnInit {
   submitted: boolean = false; // show and hide the success message
   isLoading: boolean = false; // disable the submit button if we're loading
   responseMessage: string; // the response message to show to the user
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private route:ActivatedRoute) {
+
     this.form = this.formBuilder.group({
-      name: this.name,
-      email: this.email,
       message: this.message,
+      email: this.email,
       honeypot: this.honeypot,
     });
+    
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.email = this.route.snapshot.paramMap.get('user_email');
+  }
 
   onSubmit() {
+    console.log("email: " + this.email)
     if (this.form.status == 'VALID' && this.honeypot.value == '') {
       this.form.disable(); // disable the form if it's valid to disable multiple submissions
       var formData: any = new FormData();
-      formData.append('name', this.form.get('name').value);
-      formData.append('email', this.form.get('email').value);
+      formData.append('email', this.email);
       formData.append('message', this.form.get('message').value);
       this.isLoading = true; // sending the post request async so it's in progress
       this.submitted = false; // hide the response message on multiple submits
       this.http
         .post(
-          'https://script.google.com/macros/s/AKfycbxlhA3jo-cAC3g_XMbQ4NW4dDf1RpRZyEfjrHJs9g/exec',
+          'https://script.google.com/macros/s/AKfycbz7EwoK-15OdeQrSrMtDTkPKixhpkHtlon5Yhxle08GcUm41v16/exec',
           formData
         )
         .subscribe(
@@ -56,7 +57,7 @@ export class ClientContactPageComponent implements OnInit {
             // choose the response message
             if (response['result'] == 'success') {
               this.responseMessage =
-                'Gracias por ponerte en contacto con el equipo de soporte de GotACar. Contactaremos contigo con la mayor brevedad posible.';
+                'El mensaje de alerta ha sido enviado satisfactoriamente.';
             } else {
               this.responseMessage =
                 'Oops! Algo ha ido mal... ¿Podrías refrescar la página o voler a intentarlo más tarde?.';

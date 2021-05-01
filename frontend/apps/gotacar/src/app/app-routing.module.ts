@@ -8,6 +8,7 @@ import { AdminMeetingPointsPageComponent } from './pages/admin-page/admin-meetin
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { AdminTripListPageComponent } from './pages/admin-page/admin-trip-list-page/admin-trip-list-page.component';
 import { AdminUserListPageComponent } from './pages/admin-page/admin-user-list-page/admin-user-list-page.component';
+import { AdminAlertPageComponent } from './pages/admin-page/admin-alert-page/admin-alert-page.component';
 import { AuthenticatedPageComponent } from './pages/authenticated-page/authenticated-page.component';
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
@@ -200,6 +201,10 @@ const routes: Routes = [
       {
         path: 'driver-requests',
         component: AdminDriverRequestsPageComponent,
+      },
+      {
+        path: 'alert/:user_email',
+        component: AdminAlertPageComponent,
       },
     ],
   },

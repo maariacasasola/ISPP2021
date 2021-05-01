@@ -69,6 +69,7 @@ import { MainHeaderComponent } from './components/main-header/main-header.compon
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
+import { AdminAlertPageComponent } from './pages/admin-page/admin-alert-page/admin-alert-page.component';
 import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
@@ -129,6 +130,7 @@ registerLocaleData(localeEs, 'es');
     MainFooterComponent,
     ClientProfilePageComponent,
     ClientContactPageComponent,
+    AdminAlertPageComponent,
     AboutUsPageComponent,
     LogInPageComponent,
     ErrorPageComponent,
