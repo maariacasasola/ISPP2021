@@ -23,7 +23,7 @@
   <input id="file_input" type="file" [multiple]="false" style="display: none" />
 </div>
 <div mat-dialog-actions class="dialog-actions">
-  <button mat-flat-button class="submit" (click)="submit()">
+  <button [disabled]="!file" mat-flat-button class="submit" (click)="submit()">
     Subir imagen
   </button>
 </div>
