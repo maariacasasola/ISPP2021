@@ -35,7 +35,6 @@ export class MainHeaderComponent {
   }
 
   isEdgeDomain() {
-    console.log(this.router.url)
     return (this.router.url.includes('home')
       || this.router.url.includes('log-in')
       || this.router.url.includes('sign-up')

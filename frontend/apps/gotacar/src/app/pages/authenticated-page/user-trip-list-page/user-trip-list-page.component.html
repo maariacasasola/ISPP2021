@@ -11,13 +11,13 @@
   </button>
 </div>
 <div class="trips-list">
-  <mat-card class="trip" *ngFor="let trip of trips | tripOrderType: filter">
-    <mat-card-title class="card-title"
-      >{{ trip?.trip?.driver?.firstName + ' ' + trip?.trip?.driver?.lastName
-      }}<mat-icon class="driver-icon">directions_car</mat-icon></mat-card-title
-    >
+  <mat-card class="trip mat-elevation-z4" *ngFor="let trip of trips | tripOrderType: filter">
     <div class="card-subtitle">
-      <p>Conductor/a</p>
+      <p>
+        Conductor/a:
+        {{ trip?.trip?.driver?.firstName + ' ' + trip?.trip?.driver?.lastName }}
+      </p>
+      <mat-icon class="driver-icon">directions_car</mat-icon>
     </div>
     <mat-card-content class="card-content">
       <p>
@@ -48,8 +48,15 @@
     </p>
 
     <mat-card-actions align="end">
-      <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn" class="cancel-button"
-        (click)="cancel_trip_order_dialog(trip.id, trip?.trip?.cancelationDateLimit)">
+      <button
+        *ngIf="show_cancelation_button(trip)"
+        mat-raised-button
+        color="warn"
+        class="cancel-button"
+        (click)="
+          cancel_trip_order_dialog(trip.id, trip?.trip?.cancelationDateLimit)
+        "
+      >
         <mat-icon>cancel_presentation</mat-icon>
       </button>
       <button

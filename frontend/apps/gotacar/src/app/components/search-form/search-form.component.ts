@@ -26,6 +26,8 @@ export class SearchFormComponent {
   searchbar_meeting_points_origin = [];
   searchbar_meeting_points_target = [];
 
+  timeout_clear;
+
   constructor(
     private _meeting_points_service: MeetingPointService,
     private fb: FormBuilder,
@@ -78,6 +80,10 @@ export class SearchFormComponent {
     this.searchbar_meeting_points_origin = this.meeting_points.filter(
       (meeting_point) => best_results.includes(meeting_point.name)
     );
+    this.timeout_clear = setTimeout(() => {
+      this.searchbar_meeting_points_origin = [];
+      this.timeout_clear = null;
+    }, 3000);
   }
 
   search_meeting_points_target(text) {
@@ -98,6 +104,10 @@ export class SearchFormComponent {
     this.searchbar_meeting_points_target = this.meeting_points.filter(
       (meeting_point) => best_results.includes(meeting_point.name)
     );
+    this.timeout_clear = setTimeout(() => {
+      this.searchbar_meeting_points_target = [];
+      this.timeout_clear = null;
+    }, 3000);
   }
 
   selected_meeting_point_origin(meeting_point) {

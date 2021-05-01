@@ -1,37 +1,54 @@
 <h1>LISTA DE QUEJAS DE USUARIOS</h1>
 
 <div class="complaints-list">
-  <div *ngFor="let complaint of complaints">
-    <mat-card class="complaint">
-      <mat-card-header>
-        <mat-card-title>
-          {{ complaint?.title }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong> Realizada por </strong>:
-          {{ complaint?.user?.firstName + ' ' + complaint?.user?.lastName }}
-        </p>
-        <p><strong> Realizada para </strong>:
-          {{ complaint?.trip?.driver?.firstName + ' ' + complaint?.trip?.driver?.lastName }}
-        </p>
-        <p *ngIf="complaint?.trip?.driver?.timesBanned"><strong>Conductor baneado </strong>{{
-          complaint?.trip?.driver?.timesBanned}} veces</p>
-        <p>
-          <strong>Creación de la queja:</strong>
-          {{ complaint?.creationDate | date: 'short' }}
-        </p>
-        <p><strong>Descripción:</strong> {{ complaint?.content }}</p>
-        <p><strong>Estado:</strong> {{ isPending(complaint?.status) }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button class="refuse-button" (click)="rejectComplaint(complaint)">
-          <mat-icon> clear </mat-icon>
-        </button>
-        <button mat-raised-button class="accept-button" (click)="openDialog(complaint)">
-          <mat-icon> check</mat-icon>
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  <mat-card
+    *ngFor="let complaint of complaints"
+    class="complaint mat-elevation-z4"
+  >
+    <mat-card-header>
+      <mat-card-title>
+        {{ complaint?.title }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        <strong> Realizada por </strong>:
+        {{ complaint?.user?.firstName + ' ' + complaint?.user?.lastName }}
+      </p>
+      <p>
+        <strong> Realizada para </strong>:
+        {{
+          complaint?.trip?.driver?.firstName +
+            ' ' +
+            complaint?.trip?.driver?.lastName
+        }}
+      </p>
+      <p *ngIf="complaint?.trip?.driver?.timesBanned">
+        <strong>Conductor baneado </strong
+        >{{ complaint?.trip?.driver?.timesBanned }} veces
+      </p>
+      <p>
+        <strong>Creación de la queja:</strong>
+        {{ complaint?.creationDate | date: 'short' }}
+      </p>
+      <p><strong>Descripción:</strong> {{ complaint?.content }}</p>
+      <p><strong>Estado:</strong> {{ isPending(complaint?.status) }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        class="refuse-button"
+        (click)="rejectComplaint(complaint)"
+      >
+        <mat-icon> clear </mat-icon>
+      </button>
+      <button
+        mat-raised-button
+        class="accept-button"
+        (click)="openDialog(complaint)"
+      >
+        <mat-icon> check</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

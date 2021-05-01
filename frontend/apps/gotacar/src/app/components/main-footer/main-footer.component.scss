@@ -38,6 +38,13 @@ p {
     align-items: center;
   }
 
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   p {
     padding: 10px;
   }

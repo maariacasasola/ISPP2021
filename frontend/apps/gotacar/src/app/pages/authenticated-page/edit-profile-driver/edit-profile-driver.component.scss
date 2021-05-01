@@ -42,3 +42,25 @@
   background-color: #538994;
   margin: 20px;
 }
+
+@media (max-width: 760px) {
+  .page-content {
+    margin: 5%;
+  }
+
+  .form-fields {
+    padding: 0;
+  }
+
+  .login-card {
+    padding: 10px 0;
+  }
+
+  .login-card mat-form-field {
+    margin: 10px 0;
+  }
+
+  .login-button {
+    margin-top: 0;
+  }
+}

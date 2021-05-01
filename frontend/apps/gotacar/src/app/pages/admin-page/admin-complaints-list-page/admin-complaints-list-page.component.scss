@@ -14,7 +14,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 20px;
-  grid-template-areas: ". . .";
+  grid-template-areas: '. . .';
   padding: 20px;
 }
 
@@ -32,5 +32,9 @@ h1 {
   .complaints-list {
     display: flex;
     flex-direction: column;
+  }
+
+  .complaints-list mat-card {
+    margin: 10px 0;
   }
 }
