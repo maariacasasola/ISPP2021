@@ -133,6 +133,7 @@
               matInput
               type="number"
               step="0.01"
+              max="1000"
               formControlName="price"
               required
             />
@@ -141,6 +142,10 @@
           <mat-error *ngIf="createTripForm.get('price')?.errors?.min">
             El precio mínimo del viaje debe ser de 0.5€
           </mat-error>
+          <mat-error
+            *ngIf="createTripForm.get('price')?.errors?.max"
+            >El precio máximo del viaje debe ser de 1000€</mat-error
+          >
         </div>
         <div class="places">
           <mat-form-field appearance="outline">
