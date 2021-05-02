@@ -7,15 +7,15 @@
     <div class="trip-info">
       <h2>
         Fecha y hora de inicio:
-        <i>{{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+        <em>{{ trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}</em>
       </h2>
       <h2>
         Fecha y hora de finalización:
-        <i>{{ trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}</i>
+        <em>{{ trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}</em>
       </h2>
       <h2>
         Fecha límite de cancelación:
-        <i>{{ trip?.cancelationDateLimit | date: 'HH:mm dd/MM/yyyy' }}</i>
+        <em>{{ trip?.cancelationDateLimit | date: 'HH:mm dd/MM/yyyy' }}</em>
       </h2>
 
       <div class="price-and-places">
@@ -40,54 +40,65 @@
             trip_order.user?.firstName + ' ' + trip_order.user?.lastName
           }}</mat-card-title>
         </mat-card-header>
-        <img mat-card-image [src]="get_user_profile_photo(trip_order.user)" />
+        <img
+          alt="user-profile-photo"
+          mat-card-image
+          [src]="get_user_profile_photo(trip_order.user)"
+        />
         <mat-card-content>
           <div>
-            <b>{{ trip_order.user?.email }}</b>
+            <strong>{{ trip_order.user?.email }}</strong>
             <p>{{ trip_order.user?.phone }}</p>
           </div>
           <div>
-            <b *ngIf="!trip_order.user.times_banned">Veces baneado : 0</b>
-            <b *ngIf="trip_order.user.times_banned"
-              >Veces baneado : {{ trip_order.user.times_banned }}</b
+            <strong *ngIf="!trip_order.user.times_banned"
+              >Veces baneado : 0</strong
             >
+            <strong *ngIf="trip_order.user.times_banned">
+              Veces baneado : {{ trip_order.user.times_banned }}
+            </strong>
 
             <div *ngIf="trip_order.user?.averageRatings">
-              <div><b>Valoración media: </b></div>
+              <div><strong>Valoración media: </strong></div>
               <div class="rating-content">
-              <mat-icon
-                [ngClass]="{ orange: trip_order.user.averageRatings > 0 }"
-                >{{
-                  trip_order.user.averageRatings > 0 ? 'star' : 'star_border'
-                }}</mat-icon
-              >
-              <mat-icon
-                [ngClass]="{ orange: trip_order.user.averageRatings > 1 }"
-                >{{
-                  trip_order.user.averageRatings > 1 ? 'star' : 'star_border'
-                }}</mat-icon
-              >
-              <mat-icon
-                [ngClass]="{ orange: trip_order.user.averageRatings > 2 }"
-                >{{
-                  trip_order.user.averageRatings > 2 ? 'star' : 'star_border'
-                }}</mat-icon
-              >
-              <mat-icon
-                [ngClass]="{ orange: trip_order.user.averageRatings > 3 }"
-                >{{
-                  trip_order.user.averageRatings > 3 ? 'star' : 'star_border'
-                }}</mat-icon
-              >
-              <mat-icon
-                [ngClass]="{ orange: trip_order.user.averageRatings > 4 }"
-                >{{
-                  trip_order.user.averageRatings > 4 ? 'star' : 'star_border'
-                }}</mat-icon
-                
-              >
-              <button mat-icon-button class="button-special" (click)="go_to_user_ratings(trip_order.user.id)"><mat-icon class="material-icons md-18">rate_review</mat-icon></button>
-            </div>
+                <mat-icon
+                  [ngClass]="{ orange: trip_order.user.averageRatings > 0 }"
+                  >{{
+                    trip_order.user.averageRatings > 0 ? 'star' : 'star_border'
+                  }}</mat-icon
+                >
+                <mat-icon
+                  [ngClass]="{ orange: trip_order.user.averageRatings > 1 }"
+                  >{{
+                    trip_order.user.averageRatings > 1 ? 'star' : 'star_border'
+                  }}</mat-icon
+                >
+                <mat-icon
+                  [ngClass]="{ orange: trip_order.user.averageRatings > 2 }"
+                  >{{
+                    trip_order.user.averageRatings > 2 ? 'star' : 'star_border'
+                  }}</mat-icon
+                >
+                <mat-icon
+                  [ngClass]="{ orange: trip_order.user.averageRatings > 3 }"
+                  >{{
+                    trip_order.user.averageRatings > 3 ? 'star' : 'star_border'
+                  }}</mat-icon
+                >
+                <mat-icon
+                  [ngClass]="{ orange: trip_order.user.averageRatings > 4 }"
+                  >{{
+                    trip_order.user.averageRatings > 4 ? 'star' : 'star_border'
+                  }}</mat-icon
+                >
+                <button
+                  mat-icon-button
+                  class="button-special"
+                  (click)="go_to_user_ratings(trip_order.user.id)"
+                >
+                  <mat-icon class="material-icons md-18">rate_review</mat-icon>
+                </button>
+              </div>
             </div>
             <p *ngIf="users_already_rated?.includes(trip_order.user.id)">
               Usuario ya valorado

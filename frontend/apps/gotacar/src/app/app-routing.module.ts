@@ -12,6 +12,7 @@ import { AuthenticatedPageComponent } from './pages/authenticated-page/authentic
 import { ClientComplaintPageComponent } from './pages/authenticated-page/client-complaint-page/client-complaint-page.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
+import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 import { DriverCreateTripPageComponent } from './pages/authenticated-page/driver-create-trip-page/driver-create-trip-page.component';
 import { DriverTripListPageComponent } from './pages/authenticated-page/driver-trip-list-page/driver-trip-list-page.component';
 import { UserTripListPageComponent } from './pages/authenticated-page/user-trip-list-page/user-trip-list-page.component';
@@ -37,6 +38,7 @@ import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.componen
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
+import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
 
 const routes: Routes = [
   {
@@ -97,6 +99,10 @@ const routes: Routes = [
     component: CancelationPolicyComponent,
   },
   {
+    path: 'about-us',
+    component: AboutUsPageComponent,
+  },
+  {
     path: 'authenticated',
     component: AuthenticatedPageComponent,
     canActivate: [AuthenticatedGuard],
@@ -106,8 +112,8 @@ const routes: Routes = [
         component: ClientProfilePageComponent,
       },
       {
-        path:'user-ratings/:user_id',
-        component:ShowRatingsComponent,
+        path: 'user-ratings/:user_id',
+        component: ShowRatingsComponent,
       },
       {
         path: 'contact',
@@ -169,8 +175,8 @@ const routes: Routes = [
         component: AdminUserListPageComponent,
       },
       {
-        path:'user-ratings/:user_id',
-        component:ShowRatingsComponent,
+        path: 'user-ratings/:user_id',
+        component: ShowRatingsComponent,
       },
       {
         path: 'complaints',
@@ -196,13 +202,21 @@ const routes: Routes = [
         path: 'driver-requests',
         component: AdminDriverRequestsPageComponent,
       },
+      {
+        path: 'admin-stats',
+        component: AdminStatsPageComponent,
+      },
     ],
   },
 ]; // sets up routes constant where you define your routes
 
 // configures NgModule imports and exports
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'top',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

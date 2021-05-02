@@ -22,7 +22,7 @@ const user1 = {
   uid: 'h9HmVQqlBQXD289O8t8q7aN2Gzg1',
   email: 'manan@gmail.com',
   dni: '312312312',
-  profilePhoto: 'http://dasdasdas.com',
+  profilePhoto: 'https://dasdasdas.com',
   birthdate: fecha3,
   roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
 };
@@ -33,7 +33,7 @@ const user2 = {
   uid: '1',
   email: 'manan@gmail.com',
   dni: '312312312',
-  profilePhoto: 'http://dasdasdas.com',
+  profilePhoto: 'https://dasdasdas.com',
   birthdate: fecha3,
   roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
 };

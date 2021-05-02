@@ -39,7 +39,7 @@
 			gotacar-back
 		</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>
-			target/sute/jacoco/jacoco.xml
+			target/site/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>

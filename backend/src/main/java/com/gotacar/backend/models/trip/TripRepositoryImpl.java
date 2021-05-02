@@ -40,11 +40,11 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
 
         criteria.add(Criteria.where("canceled").is(false));
 
+        criteria.add(Criteria.where("startDate").gte(date).lt(nextDay));
+
         if (!criteria.isEmpty()) {
             query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
         }
-
-        criteria.add(Criteria.where("startDate").gte(date).lte(nextDay));
 
         List<Trip> viajesPuntoEmpezar = mongoTemplate.find(query, Trip.class);
 

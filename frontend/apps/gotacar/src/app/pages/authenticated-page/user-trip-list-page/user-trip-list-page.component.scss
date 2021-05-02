@@ -5,20 +5,18 @@ h1 {
   font-size: 30px;
 }
 
-.card-title {
-  text-align: right;
-  color: #0e4a6b;
-  font-size: 30px;
-  display: flex;
-  justify-content: center;
-}
-
 .card-subtitle {
-  text-align: right;
   color: #0b3a53;
   font-size: 20px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-subtitle p {
+  margin: 0 !important;
 }
 
 .driver-icon {
@@ -58,5 +56,9 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .trips-list mat-card {
+    margin: 10px;
   }
 }

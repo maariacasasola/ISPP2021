@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../../services/auth-service.service';
@@ -12,14 +12,14 @@ import { Router } from '@angular/router';
 })
 export class EditProfileClientComponent {
   update_form = this.fb.group({
-    firstName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    lastName: ['',  [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    firstName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
+    lastName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     email: [
       { value: '', disabled: true },
       [Validators.required, Validators.email],
     ],
     dni: [
-      {value:'', disabled:true },
+      { value: '', disabled: true },
       [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
     ],
     birthdate: ['', Validators.required],

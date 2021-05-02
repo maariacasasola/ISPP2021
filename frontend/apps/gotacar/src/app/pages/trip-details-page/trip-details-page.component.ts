@@ -27,7 +27,6 @@ export class TripDetailsPageComponent {
   constructor(
     private _user_service: UsersService,
     private _route: ActivatedRoute,
-    private _my_dialog: MatDialog,
     private _router: Router,
     private _trip_service: TripsService,
     public _snackbar: MatSnackBar,
@@ -50,7 +49,7 @@ export class TripDetailsPageComponent {
       trip: this.trip,
     };
 
-    const dialogRef = this._my_dialog.open(
+    this._dialog.open(
       DriverProfileDataDialogComponent,
       dialogConfig
     );

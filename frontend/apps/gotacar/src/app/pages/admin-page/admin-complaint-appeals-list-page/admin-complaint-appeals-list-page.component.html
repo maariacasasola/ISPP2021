@@ -1,6 +1,6 @@
 <h1>APELACIONES</h1>
 <div class="complaint-appeals-list" *ngIf="complaint_appeals">
-  <mat-card class="complaint-appeal" *ngFor="let complaint_appeal of complaint_appeals">
+  <mat-card class="complaint-appeal mat-elevation-z4" *ngFor="let complaint_appeal of complaint_appeals">
     <mat-card-header>
       <mat-card-title>{{ complaint_appeal?.complaint?.title }}</mat-card-title>
     </mat-card-header>

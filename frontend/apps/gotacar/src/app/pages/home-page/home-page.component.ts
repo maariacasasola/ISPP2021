@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'frontend-home-page',
@@ -7,6 +7,4 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent {
   app_title = 'GotACar';
-
-  constructor() {}
 }

@@ -1,5 +1,8 @@
 <mat-toolbar class="main-toolbar">
   <div class="logo-container">
+    <div *ngIf="!isEdgeDomain()">
+      <button mat-icon-button class="back-button" (click)="go_back()"><mat-icon>arrow_back_ios</mat-icon></button>
+    </div>
     <img
       (click)="redirect()"
       src="assets/icons/icon-128x128.png"

@@ -5,8 +5,8 @@ export interface TripOrder {
     trip: Trip;
     user: User;
     date: Date;
-    price: Number;
+    price: number;
     paymentIntent: string;
-    places: Number;
+    places: number;
     status: string;
 }

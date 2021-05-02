@@ -58,6 +58,8 @@ public class RefundController {
                 createPaymentReturn(refund, user);
             } else {
                 // TODO 60% al conductor y 40% GotACar
+                tripOrder.setStatus("CANT_REFUND");
+                tripOrderRepository.save(tripOrder);
             }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

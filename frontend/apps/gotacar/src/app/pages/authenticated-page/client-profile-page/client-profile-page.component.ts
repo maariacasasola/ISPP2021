@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { ImageUploadDialogComponent } from '../../../components/image-upload-dialog/image-upload-dialog.component';
@@ -48,12 +48,12 @@ export class ClientProfilePageComponent {
       this._authService.delete_account();
       this._authService.sign_out();
     } catch (error) {
-      if(error.error.message==='El usuario tiene reservas pendientes'){
+      if (error.error.message === 'El usuario tiene reservas pendientes') {
         this._snackBar.open('La cuenta no puede ser borrada, tienes reservas pendientes', null, {
           duration: 3000,
         });
       }
-      if(error.error.message==='El usuario tiene viajes pendientes'){
+      if (error.error.message === 'El usuario tiene viajes pendientes') {
         this._snackBar.open('La cuenta no puede ser borrada, tienes viajes pendientes', null, {
           duration: 3000,
         });
@@ -70,14 +70,14 @@ export class ClientProfilePageComponent {
   isDriver() {
     return this._authService.is_driver();
   }
-  isClientAndNoDriver(){
+  isClientAndNoDriver() {
     return this._authService.is_client() && !this._authService.is_driver();
   }
-  is_pending(){
-    return this.user?.driverStatus==='PENDING';
+  is_pending() {
+    return this.user?.driverStatus === 'PENDING';
   }
-  hasCreateRequest(){
-    return  this.isClientAndNoDriver() && !this.user?.driverStatus;
+  hasCreateRequest() {
+    return this.isClientAndNoDriver() && !this.user?.driverStatus;
   }
 
   async update_profile_photo() {
@@ -86,7 +86,7 @@ export class ClientProfilePageComponent {
     dialogConfig.panelClass = 'login-dialog';
     dialogConfig.data = {
       user_id: this.user.id,
-      is_become_driver:false,
+      is_become_driver: false,
     };
 
     const dialogRef = this._my_dialog.open(
@@ -117,8 +117,8 @@ export class ClientProfilePageComponent {
     }
     return 'assets/img/generic-user.jpg';
   }
-  becomeDriver(){
+  becomeDriver() {
     this.router.navigate(['authenticated/become-driver']);
-    
+
   }
 }

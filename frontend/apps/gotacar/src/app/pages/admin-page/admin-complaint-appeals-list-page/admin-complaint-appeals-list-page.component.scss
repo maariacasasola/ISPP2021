@@ -33,4 +33,8 @@ h1 {
     display: flex;
     flex-direction: column;
   }
+
+  .complaint-appeals-list mat-card {
+    margin: 10px 0;
+  }
 }

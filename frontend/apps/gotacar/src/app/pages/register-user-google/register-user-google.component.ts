@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'frontend-register-user-google',
   templateUrl: './register-user-google.component.html',
   styleUrls: ['./register-user-google.component.scss'],
 })
-export class RegisterUserGoogleComponent implements OnInit {
+export class RegisterUserGoogleComponent {
   firebase_uid;
   firebase_email;
+  accepted = false;
 
   register_form = this.fb.group({
     firstName: ['', [Validators.required,Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
@@ -39,7 +41,9 @@ export class RegisterUserGoogleComponent implements OnInit {
     this.firebase_uid = this._route.snapshot.queryParams['uid'];
   }
 
-  ngOnInit(): void {}
+  checked(event: MatCheckboxChange): void {
+    this.accepted = event.checked;
+  }
 
   async onSubmit() {
     if (this.register_form.invalid) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { ComplaintsService } from '../../../services/complaints.service';
   templateUrl: './client-complaint-page.component.html',
   styleUrls: ['./client-complaint-page.component.scss'],
 })
-export class ClientComplaintPageComponent implements OnInit {
+export class ClientComplaintPageComponent {
   complaintForm: FormGroup = new FormGroup({
     title: new FormControl(''),
     content: new FormControl(''),
@@ -19,9 +19,7 @@ export class ClientComplaintPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public _snackbar: MatSnackBar
-  ) {}
-
-  ngOnInit(): void {}
+  ) { }
 
   async create_complaint() {
     try {
