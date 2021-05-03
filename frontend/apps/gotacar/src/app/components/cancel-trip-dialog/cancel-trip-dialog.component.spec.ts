@@ -3,7 +3,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { AuthServiceService } from '../../services/auth-service.service';
@@ -74,4 +73,14 @@ describe('CancelTripDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
+
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackBar, 'open');
+    fixture.detectChanges();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 5000,
+      panelClass: ['blue-snackbar'],
+    });
+});
 });

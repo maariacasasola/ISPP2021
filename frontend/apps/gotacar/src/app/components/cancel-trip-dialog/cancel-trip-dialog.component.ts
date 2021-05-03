@@ -24,7 +24,7 @@ export class CancelTripDialogComponent {
     private _trips_service: TripsService,
     private _complaint_appeals_service: ComplaintAppealsService,
     private _dialog: MatDialog,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private data: string
   ) { }
 

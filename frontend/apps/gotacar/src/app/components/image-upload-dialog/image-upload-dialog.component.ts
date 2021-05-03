@@ -19,7 +19,7 @@ export class ImageUploadDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private _dialogRef: MatDialogRef<ImageUploadDialogComponent>,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private storage: AngularFireStorage
   ) {
     this.user_id = data.user_id;
