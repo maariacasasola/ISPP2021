@@ -3,10 +3,8 @@ footer {
   color: #444444;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 10px;
   justify-items: center;
-  border: #444444;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .footer-content {
@@ -25,10 +23,16 @@ img {
 .footer-logo {
   height: 60px;
   width: auto;
+  padding: 20px 0;
 }
 
 p {
-  padding: 20px 0 20px 20px;
+  padding: 10px;
+}
+
+.copyright {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 @media (max-width: 760px) {
@@ -47,5 +51,17 @@ p {
 
   p {
     padding: 10px;
+  }
+
+  .footer-content {
+    order: 1;
+  }
+
+  .copyright {
+    order: 2;
+  }
+
+  .footer-logo {
+    order: 3;
   }
 }
