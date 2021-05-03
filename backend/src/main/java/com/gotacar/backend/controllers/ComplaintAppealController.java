@@ -101,6 +101,7 @@ public class ComplaintAppealController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            String email = authentication.getPrincipal().toString();
             List<String> trips = tripRepository.findAll().stream()
                     .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(x -> x.getId())
                     .collect(Collectors.toList());
@@ -108,7 +109,7 @@ public class ComplaintAppealController {
             List<Complaint> complaints = complaintRepository.findAll();
             Complaint res = new Complaint();
             if (!complaints.isEmpty()) {
-                complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getId() == user.getId())
+                complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getEmail().equals(email))
                         .collect(Collectors.toList());
                 if (!complaints.isEmpty()) {
                     while (j < complaints.size()) {
