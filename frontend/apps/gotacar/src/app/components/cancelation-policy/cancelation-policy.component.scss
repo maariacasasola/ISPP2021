@@ -5,19 +5,26 @@ h1 {
   font-size: xx-large;
 }
 
-.container{
+.container {
   background-color: #ececec;
   padding: 20px;
 }
 
-.cancelation-container{
+.cancelation-container {
   background-color: white;
   border-radius: 10px;
   padding: 40px;
   margin: 40px 40px;
 }
 
-.button{
+.button {
   background-color: #0e4a6b;
   color: white;
+}
+
+@media (max-width: 760px) {
+  .cancelation-container {
+    padding: 20px;
+    margin: 0;
+  }
 }
