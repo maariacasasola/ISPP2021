@@ -63,7 +63,7 @@ public class RatingController {
 			if (points < 1 || points > 5) {
 				throw new IllegalArgumentException("Las valoraciones no están en el rango 1-5");
 			}
-			if (content == "") {
+			if (content.equals("") ) {
 				throw new IllegalArgumentException("El contenido está vacío");
 			}
 			if (userRepository.findById(new ObjectId(idUser)) == null) {
