@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'apps/gotacar/src/environments/environment';
 import { ImageUploadDialogComponent } from './image-upload-dialog.component';
 import { createMockFileList } from '../../shared/file-testing/file';
-import { By } from '@angular/platform-browser';
 
 describe('ImageUploadDialogComponent', () => {
   let component: ImageUploadDialogComponent;

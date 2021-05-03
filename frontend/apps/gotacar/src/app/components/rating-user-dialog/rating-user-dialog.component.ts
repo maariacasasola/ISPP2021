@@ -18,7 +18,7 @@ export class RatingUserDialogComponent {
   });
   constructor(@Inject(MAT_DIALOG_DATA) data,
     private _dialogRef: MatDialogRef<RatingUserDialogComponent>,
-    private _snackBar: MatSnackBar, private _form_builder: FormBuilder,) {
+    public _snackBar: MatSnackBar, private _form_builder: FormBuilder,) {
     this.to = data.to;
     this.idTrip = data.trip_id;
   }

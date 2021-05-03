@@ -8,7 +8,7 @@ import { UsersService } from '../../../services/users.service';
 })
 export class AdminDriverRequestsPageComponent {
   requests = [];
-  constructor(private _users_service: UsersService, private _snackBar: MatSnackBar,
+  constructor(private _users_service: UsersService, public _snackBar: MatSnackBar,
   ) {
     this.load_driver_requests();
   }

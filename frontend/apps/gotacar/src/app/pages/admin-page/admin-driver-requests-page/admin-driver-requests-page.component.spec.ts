@@ -28,14 +28,13 @@ describe('AdminDriverRequestsPageComponent', () => {
         timesBanned: null,
     }
 
-    const USER_OBJECT: User = {
+    const USER_OBJECT = {
         id: "6072f5bfff1aa84899c35742",
         firstName: "Juan",
         lastName: "Perez",
         uid: "Ej7NpmWydRWMIg28mIypzsI4Bgm2",
         email: "client@gotacar.es",
         dni: "80808080R",
-        profilePhoto: null,
         birthdate: new Date(2021, 6, 4, 13, 30, 24),
         roles: ["ROLE_CLIENT"],
         token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
@@ -51,7 +50,7 @@ describe('AdminDriverRequestsPageComponent', () => {
             uid: "Ej7NpmWydRWMIg28mIypzsI4Bgm2",
             email: "client@gotacar.es",
             dni: "80808080R",
-            profilePhoto: null,
+            profilePhoto: "http://dadada.com",
             birthdate: new Date(2021, 6, 4, 13, 30, 24),
             roles: ["ROLE_CLIENT"],
             token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
@@ -97,5 +96,17 @@ describe('AdminDriverRequestsPageComponent', () => {
     it('#accept_request() should accept request', () => {
         component.accept_request(USER_OBJECT);
         spyOn(usersService, 'convert_to_driver').and.returnValue(of(DRIVER_OBJECT));
+    });
+
+    it('should get profile photo of generic user', () => {
+        expect(component.get_profile_photo(USER_OBJECT)).toBe(
+            'assets/img/default-user.jpg'
+        );
+    });
+    
+    it('should get profile photo of user', () => {
+        expect(component.get_profile_photo(USER_OBJECTS[0])).toBe(
+            USER_OBJECTS[0].profilePhoto
+        );
     });
 });

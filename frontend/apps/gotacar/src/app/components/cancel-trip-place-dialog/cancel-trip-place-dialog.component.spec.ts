@@ -66,5 +66,17 @@ describe('CancelTripPlaceDialogComponent', () => {
     expect(h1.textContent).toContain('Atención');
   });
 
+  it('should get message before limit', () => {
+    component.data.afterLimit=false;
+    component.get_message();
+    fixture.detectChanges();
+    expect(component.message).toBe('Va a proceder a rechazar su plaza en este viaje. \n Se procederá a devolverle el importe.');
+  });
 
+  it('should get message after limit', () => {
+    component.data.afterLimit=true;
+    component.get_message();
+    fixture.detectChanges();
+    expect(component.message).toBe('Va a proceder a rechazar su plaza en este viaje después del límite de cancelación. \n Tenga en cuenta que no se le devolverá el importe de la misma.');
+  });
 });
