@@ -14,7 +14,7 @@ export class CancelTripPlaceDialogComponent {
     private _dialog_ref: MatDialogRef<CancelTripPlaceDialogComponent>,
     private _trips_service: TripsService,
     private _snackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) private data
+    @Inject(MAT_DIALOG_DATA) public data
   ) {
     this.get_message();
   }

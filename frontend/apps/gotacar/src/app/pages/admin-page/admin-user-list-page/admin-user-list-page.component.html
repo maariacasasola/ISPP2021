@@ -2,11 +2,17 @@
 <div class="users-list">
   <mat-card class="user mat-elevation-z4" *ngFor="let user of users">
     <mat-card-header>
-      <img mat-card-avatar class="profile-photo" [src]="get_profile_photo(user)" alt="Foto de perfil" />
+      <img
+        mat-card-avatar
+        class="profile-photo"
+        [src]="get_profile_photo(user)"
+        alt="Foto de perfil"
+      />
       <mat-card-title class="username">
         {{ user?.firstName + ' ' + user?.lastName }}
       </mat-card-title>
     </mat-card-header>
+    <br />
     <mat-card-content>
       <p><strong>Nombre:</strong> {{ user?.firstName }}</p>
       <p><strong>Apellidos:</strong> {{ user?.lastName }}</p>
@@ -19,11 +25,11 @@
       <p>
         <strong>Roles:</strong>
         {{
-        user?.roles
-        .toString()
-        .replaceAll('ROLE_CLIENT', 'Cliente')
-        .replaceAll('ROLE_DRIVER', 'Conductor')
-        .replaceAll(',', ', ')
+          user?.roles
+            .toString()
+            .replaceAll('ROLE_CLIENT', 'Cliente')
+            .replaceAll('ROLE_DRIVER', 'Conductor')
+            .replaceAll(',', ', ')
         }}
       </p>
       <p *ngIf="user?.bannedUntil">
@@ -38,26 +44,43 @@
         <p><strong>Valoración media:</strong></p>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 0 }">{{
           user.averageRatings > 0 ? 'star' : 'star_border'
-          }}</mat-icon>
+        }}</mat-icon>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 1 }">{{
           user.averageRatings > 1 ? 'star' : 'star_border'
-          }}</mat-icon>
+        }}</mat-icon>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 2 }">{{
           user.averageRatings > 2 ? 'star' : 'star_border'
-          }}</mat-icon>
+        }}</mat-icon>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 3 }">{{
           user.averageRatings > 3 ? 'star' : 'star_border'
-          }}</mat-icon>
+        }}</mat-icon>
         <mat-icon [ngClass]="{ orange: user.averageRatings > 4 }">{{
           user.averageRatings > 4 ? 'star' : 'star_border'
-          }}</mat-icon>
+        }}</mat-icon>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button *ngIf="user.averageRatings" mat-raised-button class="button" (click)="go_to_user_ratings(user.id)">
+      <button
+        mat-raised-button
+        class="button"
+        (click)="go_to_alert_user(user?.email)"
+      >
+        <mat-icon>notification_important</mat-icon>
+      </button>
+      <button
+        *ngIf="user.averageRatings"
+        mat-raised-button
+        class="button"
+        (click)="go_to_user_ratings(user.id)"
+      >
         <mat-icon>star_half</mat-icon>
       </button>
-      <button mat-raised-button class="button" *ngIf="user?.timesBanned >= 3" (click)="delete_account(user?.id)">
+      <button
+        mat-raised-button
+        class="button"
+        *ngIf="user?.timesBanned >= 3"
+        (click)="delete_account(user?.id)"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>

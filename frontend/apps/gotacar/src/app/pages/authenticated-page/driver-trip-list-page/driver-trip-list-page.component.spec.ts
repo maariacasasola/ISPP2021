@@ -1,21 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
-import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import { Observable, of } from 'rxjs';
-import { Trip } from '../../../shared/services/trip';
+import { Observable } from 'rxjs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { User } from '../../../shared/services/user';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DriverTripListPageComponent } from './driver-trip-list-page.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'apps/gotacar/src/environments/environment';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-import { By } from '@angular/platform-browser';
 
 class mockTripServiceError{
   load_trips_by_driver(){

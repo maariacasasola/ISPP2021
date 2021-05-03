@@ -64,6 +64,21 @@ describe('AdminComplaintAppealListComponent', () => {
     expect(component.complaint_appeals[0].content).toBe('Queja 1');
   });
 
+  it('should throw error when load complaint appeals', () => {
+    const spy = spyOn(component, 'show_message');
+    spyOn(complaint_appeals_service, 'get_all_complaints').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.load_complaint_appeals();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(
+        'Ha ocurrido un error, inténtelo más tarde'
+      );
+    });
+  });
+
   it('should accept complaint appeal', () => {
     const spy = spyOn(component, 'show_message');
     fixture.detectChanges();

@@ -47,7 +47,7 @@ export class ClientContactPageComponent {
       this.submitted = false; // hide the response message on multiple submits
       this.http
         .post(
-          'https://script.google.com/macros/s/AKfycbwwr5N0tI0DxqCZqflFDt4kXfOxdo0npQW7Lq6z2FbDeauMRds/exec',
+          'https://script.google.com/macros/s/AKfycbxlhA3jo-cAC3g_XMbQ4NW4dDf1RpRZyEfjrHJs9g/exec',
           formData
         )
         .subscribe(

@@ -12,7 +12,7 @@ export class AdminPaymentReturnsListPageComponent {
 
   constructor(
     private _payment_returns_service: PaymentReturnsService,
-    private _snackbar: MatSnackBar
+    public _snackbar: MatSnackBar
   ) {
     this.load_payment_returns();
   }

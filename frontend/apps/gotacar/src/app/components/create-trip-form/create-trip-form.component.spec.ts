@@ -491,7 +491,6 @@ describe('MeetingPointSearchbarResultComponent', () => {
         duration: 3000,
       });
     });
-
   });
 
 
