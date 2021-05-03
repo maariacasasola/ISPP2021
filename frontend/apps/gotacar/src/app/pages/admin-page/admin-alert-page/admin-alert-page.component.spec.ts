@@ -7,21 +7,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AdminAlertPageComponent } from './admin-alert-page.component';
 
-
-
 describe('AdminAlertPageComponent', () => {
   let component: AdminAlertPageComponent;
   let fixture: ComponentFixture<AdminAlertPageComponent>;
   const fakeActivatedRoute = {
-    snapshot: { data: {} }
+    snapshot: { data: {} },
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminAlertPageComponent],
-      imports: [HttpClientTestingModule, MatFormFieldModule, RouterTestingModule],
+      imports: [
+        HttpClientTestingModule,
+        MatFormFieldModule,
+        RouterTestingModule,
+      ],
       providers: [
-        FormBuilder, {provide: ActivatedRoute, useValue: fakeActivatedRoute}
+        FormBuilder,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
     })
       .compileComponents()
