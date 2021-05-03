@@ -76,4 +76,13 @@ describe('ComplaintAppealDialogComponent', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
+
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackbar, 'open');
+    fixture.detectChanges();
+    component.show_correct_appeal_snackbar();
+    expect(spy).toHaveBeenCalledWith('Su apelación se ha registrado correctamente', null, {
+      duration: 3000,
+    });
+  });
 });

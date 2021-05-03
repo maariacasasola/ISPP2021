@@ -19,7 +19,7 @@ export class ImageUploadDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private _dialogRef: MatDialogRef<ImageUploadDialogComponent>,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private storage: AngularFireStorage
   ) {
     this.user_id = data.user_id;
@@ -32,12 +32,12 @@ export class ImageUploadDialogComponent {
 
   onDrop(files: FileList) {
     if (files.length > 1) {
-      this.openSnackBar('Maximo una imagen');
+      this.openSnackBar('Máximo una imagen');
       return;
     }
 
     if (files.item(0).size > 2097152) {
-      this.openSnackBar('Peso maximo 2MB');
+      this.openSnackBar('Peso máximo 2MB');
       return;
     }
 
@@ -73,12 +73,12 @@ export class ImageUploadDialogComponent {
 
     file_input.onchange = () => {
       if (file_input.files.length > 1) {
-        this.openSnackBar('Maximo una imagen');
+        this.openSnackBar('Máximo una imagen');
         return;
       }
 
       if (file_input.files.item(0).size > 2097152) {
-        this.openSnackBar('Peso maximo 2MB');
+        this.openSnackBar('Peso máximo 2MB');
         return;
       }
 

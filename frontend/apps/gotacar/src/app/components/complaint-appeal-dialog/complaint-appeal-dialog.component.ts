@@ -18,7 +18,7 @@ export class ComplaintAppealDialogComponent {
     public router: Router,
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
     private _complaint_appeals_service: ComplaintAppealsService,
-    private _snackbar: MatSnackBar,
+    public _snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private data,
   ) {
   }
@@ -63,7 +63,7 @@ export class ComplaintAppealDialogComponent {
     }
   }
 
-  private show_correct_appeal_snackbar() {
+  show_correct_appeal_snackbar() {
     this._snackbar.open('Su apelación se ha registrado correctamente', null, {
       duration: 3000,
     });
