@@ -39,6 +39,7 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
+import { AdminAlertPageComponent } from './pages/admin-page/admin-alert-page/admin-alert-page.component';
 
 const routes: Routes = [
   {
@@ -206,11 +207,14 @@ const routes: Routes = [
         path: 'admin-stats',
         component: AdminStatsPageComponent,
       },
+      {
+        path: 'alert/:user_email',
+        component: AdminAlertPageComponent,
+      },
     ],
   },
-]; // sets up routes constant where you define your routes
+];
 
-// configures NgModule imports and exports
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {

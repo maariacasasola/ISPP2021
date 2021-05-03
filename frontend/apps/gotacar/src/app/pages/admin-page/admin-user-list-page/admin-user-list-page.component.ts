@@ -50,6 +50,10 @@ export class AdminUserListPageComponent {
     this._router.navigate(['/', 'admin', 'user-ratings', user_id]);
   }
 
+  go_to_alert_user(user_email: string) {
+    this._router.navigate(['admin', 'alert', user_email])
+  }
+
   get_profile_photo(user) {
     return user.profilePhoto
       ? user.profilePhoto

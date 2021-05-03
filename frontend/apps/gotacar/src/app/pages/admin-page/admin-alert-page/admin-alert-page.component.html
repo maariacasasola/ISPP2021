@@ -1,0 +1,30 @@
+<div class="Title">
+  <h1>Alertar sobre información de usuario</h1>
+</div>
+
+<form class="alert" [formGroup]="form" method="post" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Mensaje</mat-label>
+    <textarea
+      matInput
+      [formControl]="message"
+      maxlength="256"
+      placeholder="Le comento que..."
+      required
+    ></textarea>
+    <mat-hint align="end"> {{ message.value?.length || 0 }}/256</mat-hint>
+    <mat-error *ngIf="message.invalid">Introduce tu mensaje</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button [disabled]="isLoading" type="submit">Enviar</button>
+  <input [formControl]="honeypot" class="hidden" type="text" />
+  <div class="Warning">
+    <h5>
+      Sé paciente al enviar tu alerta, puede tardar unos segundos. Espera hasta
+      que aparezca el mensaje de que se ha enviado correctamente.
+    </h5>
+  </div>
+  <div [ngClass]="!submitted ? 'hidden' : 'visible'" class="center-text">
+    <span>{{ responseMessage }}</span>
+  </div>
+</form>
