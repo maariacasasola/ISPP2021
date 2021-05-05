@@ -1,7 +1,7 @@
-import { Component, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import {
+  Router,
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
@@ -14,7 +14,7 @@ import { AccessForbiddenDialogComponent } from '../components/access-forbidden/a
   providedIn: 'root',
 })
 export class AuthenticatedGuard implements CanActivate {
-  constructor(public router: Router, public dialog: MatDialog) {}
+  constructor(public router: Router, public dialog: MatDialog) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,

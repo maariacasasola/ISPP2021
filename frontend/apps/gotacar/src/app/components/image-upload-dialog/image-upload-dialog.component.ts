@@ -1,12 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import {
-  AngularFireStorage,
-  AngularFireUploadTask,
-} from '@angular/fire/storage';
+import { Component, Inject } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'frontend-image-upload-dialog',
@@ -23,7 +19,7 @@ export class ImageUploadDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private _dialogRef: MatDialogRef<ImageUploadDialogComponent>,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private storage: AngularFireStorage
   ) {
     this.user_id = data.user_id;
@@ -36,12 +32,12 @@ export class ImageUploadDialogComponent {
 
   onDrop(files: FileList) {
     if (files.length > 1) {
-      this.openSnackBar('Maximo una imagen');
+      this.openSnackBar('Máximo una imagen');
       return;
     }
 
     if (files.item(0).size > 2097152) {
-      this.openSnackBar('Peso maximo 2MB');
+      this.openSnackBar('Peso máximo 2MB');
       return;
     }
 
@@ -77,12 +73,12 @@ export class ImageUploadDialogComponent {
 
     file_input.onchange = () => {
       if (file_input.files.length > 1) {
-        this.openSnackBar('Maximo una imagen');
+        this.openSnackBar('Máximo una imagen');
         return;
       }
 
       if (file_input.files.item(0).size > 2097152) {
-        this.openSnackBar('Peso maximo 2MB');
+        this.openSnackBar('Peso máximo 2MB');
         return;
       }
 
@@ -111,6 +107,15 @@ export class ImageUploadDialogComponent {
     this._dialogRef.close();
   }
 
+
+  get_download_url(storageRef) {
+    storageRef.getDownloadURL().subscribe({
+      next: (downloadURL) => {
+        this._dialogRef.close(downloadURL);
+      }
+    });
+  }
+
   submit() {
     if (this.is_become_driver) {
       const path = `driving_license/${this.user_id}.webp`;
@@ -121,9 +126,7 @@ export class ImageUploadDialogComponent {
         .snapshotChanges()
         .pipe(
           finalize(() => {
-            storageRef.getDownloadURL().subscribe((downloadURL) => {
-              this._dialogRef.close(downloadURL);
-            });
+            this.get_download_url(storageRef);
           })
         )
         .subscribe();
@@ -136,9 +139,7 @@ export class ImageUploadDialogComponent {
         .snapshotChanges()
         .pipe(
           finalize(() => {
-            storageRef.getDownloadURL().subscribe((downloadURL) => {
-              this._dialogRef.close(downloadURL);
-            });
+            this.get_download_url(storageRef);
           })
         )
         .subscribe();

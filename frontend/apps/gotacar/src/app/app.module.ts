@@ -69,7 +69,8 @@ import { MainHeaderComponent } from './components/main-header/main-header.compon
 import { MainFooterComponent } from './components/main-footer/main-footer.component';
 import { ClientProfilePageComponent } from './pages/authenticated-page/client-profile-page/client-profile-page.component';
 import { ClientContactPageComponent } from './pages/authenticated-page/client-contact-page/client-contact-page.component';
-import { AboutUsPageComponent } from './pages/authenticated-page/about-us-page/about-us-page.component';
+import { AdminAlertPageComponent } from './pages/admin-page/admin-alert-page/admin-alert-page.component';
+import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { ConvertCentToEurPipe } from './pipes/convert-cent-to-eur.pipe';
 import { AccessForbiddenDialogComponent } from './components/access-forbidden/access-forbidden.component';
@@ -117,6 +118,7 @@ import { ShowRatingsComponent } from './pages/show-ratings/show-ratings.componen
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
+import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -129,6 +131,7 @@ registerLocaleData(localeEs, 'es');
     MainFooterComponent,
     ClientProfilePageComponent,
     ClientContactPageComponent,
+    AdminAlertPageComponent,
     AboutUsPageComponent,
     LogInPageComponent,
     ErrorPageComponent,
@@ -183,6 +186,7 @@ registerLocaleData(localeEs, 'es');
     RatingUserDialogComponent,
     RefuseClientTripDriverDialogComponent,
     ShowRatingsComponent,
+    AdminStatsPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

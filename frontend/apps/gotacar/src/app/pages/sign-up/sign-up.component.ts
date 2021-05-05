@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthServiceService } from '../../services/auth-service.service';
@@ -11,7 +11,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
   today = new Date();
   accepted = false;
   register_form = this.fb.group({
@@ -43,8 +43,6 @@ export class SignUpComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private _router: Router
   ) { }
-
-  ngOnInit(): void { }
 
   checked(event: MatCheckboxChange): void {
     this.accepted = event.checked;
@@ -96,6 +94,8 @@ export class SignUpComponent implements OnInit {
       .catch((error) => {
         if (error.message === 'The email address is badly formatted.') {
           this.openSnackBar('El email no es válido');
+        }if (error.message === "The email address is already in use by another account.") {
+          this.openSnackBar('El email ya esta siendo usado por otro usuario');
         } else {
           this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
         }

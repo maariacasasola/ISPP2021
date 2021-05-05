@@ -8,10 +8,10 @@ import { Penalty } from '../shared/services/penalty';
   providedIn: 'root',
 })
 export class ComplaintsService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   async get_all_complaints(): Promise<any> {
-    return await this._http_client
+    return this._http_client
       .get(environment.api_url + '/complaints/list')
       .toPromise();
   }
@@ -43,8 +43,8 @@ export class ComplaintsService {
       .toPromise();
   }
 
-  get_complaint_for_user_banned(user_uid: string){
+  get_complaint_for_user_banned(user_uid: string) {
     return this._http_client
-    .get(environment.api_url + '/complaint/last/' + user_uid).toPromise();
+      .get(environment.api_url + '/complaint/last/' + user_uid).toPromise();
   }
 }

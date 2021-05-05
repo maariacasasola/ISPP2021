@@ -1,6 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
 import { HelloService } from './services/hello.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'frontend-root',
@@ -24,7 +26,17 @@ export class AppComponent {
 
   is_loading = true;
 
-  constructor(private _hello_service: HelloService) {
+  constructor(
+    private _hello_service: HelloService,
+    private _mat_icon_registry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
+    this._mat_icon_registry.addSvgIcon(
+      'google',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/google-icon.svg'
+      )
+    );
     this._hello_service.hello();
     setTimeout(() => {
       this.is_loading = false;

@@ -24,7 +24,7 @@ export class CancelTripDialogComponent {
     private _trips_service: TripsService,
     private _complaint_appeals_service: ComplaintAppealsService,
     private _dialog: MatDialog,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private data: string
   ) { }
 
@@ -32,12 +32,14 @@ export class CancelTripDialogComponent {
     try {
       await this._trips_service.cancel_driver_trip(this.data);
       await this._dialog_ref.close(true);
+      let close = Promise.resolve(this._dialog_ref.close(true));
+      await close;
       await this._auth_service.set_banned(localStorage.getItem('uid'));
       if (await this._complaint_appeals_service.can_complaint_appeal()) {
         this._dialog.open(ComplaintAppealDialogComponent, {
-          data: {tripId: this.data}
+          data: { tripId: this.data }
         });
-      }else{
+      } else {
         this.openSnackBar("La cuenta ha sido baneada");
       }
     } catch (error) {

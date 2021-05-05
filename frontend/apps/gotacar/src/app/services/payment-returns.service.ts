@@ -6,10 +6,10 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class PaymentReturnsService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   async get_all_payment_returns(): Promise<any> {
-    return await this._http_client
+    return this._http_client
       .get(environment.api_url + '/payment-return/list')
       .toPromise();
   }

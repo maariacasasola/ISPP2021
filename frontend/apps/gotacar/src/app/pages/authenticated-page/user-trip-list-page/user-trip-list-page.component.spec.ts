@@ -114,7 +114,7 @@ describe('UserTripListPageComponent', () => {
 
   it('should open cancel trip dialog', () => {
     spyOn(component, 'cancel_trip_order_dialog');
-    component.cancel_trip_order_dialog('1');
+    component.cancel_trip_order_dialog('1',false);
     fixture.detectChanges();
   });
 

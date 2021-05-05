@@ -4,7 +4,6 @@ import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 @Component({
   selector: 'frontend-trip-map',
   templateUrl: './trip-map.component.html',
-  styleUrls: ['./trip-map.component.scss'],
 })
 export class TripMapComponent implements OnInit {
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
@@ -22,8 +21,6 @@ export class TripMapComponent implements OnInit {
 
   markers = [];
   marker_info;
-
-  constructor() {}
 
   ngOnInit() {
     this.load_markers();

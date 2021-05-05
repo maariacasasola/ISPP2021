@@ -69,13 +69,15 @@
         >
       </mat-form-field>
     </div>
-
+    <mat-checkbox (change)="checked($event)" class="example-margin">Para completar el registro debes leer los <a
+      routerLink="/terms-and-conditions">términos de uso</a> y la <a routerLink="/privacy-policy">política de
+      privacidad</a></mat-checkbox>
     <button
       class="login-button"
       mat-flat-button
       type="submit"
       (click)="onSubmit()"
-      [disabled]="!register_form.valid"
+      [disabled]="!register_form.valid || !accepted"
     >
       Registrarse
     </button>

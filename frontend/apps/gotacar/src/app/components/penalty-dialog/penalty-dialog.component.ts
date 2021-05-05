@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Penalty } from '../../shared/services/penalty';
@@ -6,9 +6,8 @@ import { Penalty } from '../../shared/services/penalty';
 @Component({
   selector: 'frontend-penalty-dialog',
   templateUrl: './penalty-dialog.component.html',
-  styleUrls: ['./penalty-dialog.component.scss'],
 })
-export class PenaltyDialogComponent implements OnInit {
+export class PenaltyDialogComponent {
   id_complaint: string;
   minDate: string;
   penalty_form = this._form_builder.group({
@@ -23,8 +22,6 @@ export class PenaltyDialogComponent implements OnInit {
     this.id_complaint = data.id_complaint;
     this.minDate = new Date().toISOString().slice(0, 16);
   }
-
-  ngOnInit(): void {}
 
   onSubmit() {
     const data: Penalty = {

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { validateBasis } from '@angular/flex-layout';
 
 @Pipe({
   name: 'tripOrderType',
@@ -20,8 +19,6 @@ export class TripOrderTypePipe implements PipeTransform {
         trip_order = trip_order.filter(
           (t) => new Date(t?.trip?.startDate) < new Date()
         );
-      } else {
-        trip_order = trip_order;
       }
     }
     return trip_order;

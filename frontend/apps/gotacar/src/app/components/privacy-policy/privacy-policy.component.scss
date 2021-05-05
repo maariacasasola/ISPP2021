@@ -5,19 +5,26 @@ h1 {
   font-size: xx-large;
 }
 
-.container{
+.container {
   background-color: #d6d5d5;
   padding: 20px;
 }
 
-.privacy-container{
+.privacy-container {
   background-color: white;
   border-radius: 10px;
   padding: 40px;
   margin: 40px 40px;
 }
 
-.button{
+.button {
   background-color: #0e4a6b;
   color: white;
+}
+
+@media (max-width: 760px) {
+  .privacy-container {
+    padding: 20px;
+    margin: 0;
+  }
 }

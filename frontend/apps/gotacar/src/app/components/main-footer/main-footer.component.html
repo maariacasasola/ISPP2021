@@ -1,13 +1,23 @@
 <footer>
-  <div class="footer-content">
-    <p><a href="/authenticated/about-us">Sobre nosotros</a></p>
-    <p *ngIf="canAccess()"><a href="/authenticated/contact">Contacto</a></p>
-    <p class="link" routerLink="/terms-and-conditions">Términos y condiciones</p>
+  <div class="links">
+    <p class="link" routerLink="/about-us">Sobre nosotros</p>
+    <p class="link" *ngIf="canAccess()" routerLink="/authenticated/contact">
+      Contacto
+    </p>
+    <p class="link" routerLink="/terms-and-conditions">
+      Términos y condiciones
+    </p>
     <p class="link" routerLink="/privacy-policy">Política de privacidad</p>
     <p class="link" routerLink="/cancelation-policy">Política de cancelación</p>
   </div>
-  <img class="footer-logo" src="../../../assets/img/logo4.png" />
-  <div class="footer-content">
+  <div class="logo-container">
+    <img
+      alt="footer-logo"
+      class="footer-logo"
+      src="../../../assets/img/logo4.png"
+    />
+  </div>
+  <div class="copyright">
     <p>Versión 1.0</p>
     <p>GotACar, 2021 ©</p>
   </div>

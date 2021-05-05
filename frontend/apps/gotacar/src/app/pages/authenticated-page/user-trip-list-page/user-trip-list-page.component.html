@@ -1,31 +1,35 @@
 <h1>VIAJES CONTRATADOS</h1>
 <div class="buttons-group">
-  <button mat-flat-button class="button" (click)="set_type('all')">Todos<mat-icon class="icon">drive_eta</mat-icon>
-    </button>
-  <button mat-flat-button class="button" (click)="set_type('pending')">Pendientes<mat-icon class="icon">pending
-    </mat-icon></button>
-  <button mat-flat-button class="button" (click)="set_type('completed')">Completados<mat-icon class="icon">task_alt
-    </mat-icon></button>
+  <button mat-flat-button class="button" (click)="set_type('all')">
+    Todos<mat-icon class="icon">drive_eta</mat-icon>
+  </button>
+  <button mat-flat-button class="button" (click)="set_type('pending')">
+    Pendientes<mat-icon class="icon">pending </mat-icon>
+  </button>
+  <button mat-flat-button class="button" (click)="set_type('completed')">
+    Completados<mat-icon class="icon">task_alt </mat-icon>
+  </button>
 </div>
 <div class="trips-list">
-  <mat-card class="trip" *ngFor="let trip of trips | tripOrderType: filter">
-    <mat-card-title class="card-title">{{
-      trip?.trip?.driver?.firstName + ' ' + trip?.trip?.driver?.lastName
-      }}<mat-icon class="driver-icon">directions_car</mat-icon></mat-card-title>
+  <mat-card class="trip mat-elevation-z4" *ngFor="let trip of trips | tripOrderType: filter">
     <div class="card-subtitle">
-      <p>Conductor/a</p>
+      <p>
+        Conductor/a:
+        {{ trip?.trip?.driver?.firstName + ' ' + trip?.trip?.driver?.lastName }}
+      </p>
+      <mat-icon class="driver-icon">directions_car</mat-icon>
     </div>
     <mat-card-content class="card-content">
       <p>
-        <b>Hora de salida:</b>
+        <strong>Hora de salida:</strong>
         {{ trip?.trip?.startDate | date: 'HH:mm dd/MM/yyyy' }}
       </p>
       <p>
-        <b>Hora de llegada:</b>
+        <strong>Hora de llegada:</strong>
         {{ trip?.trip?.endingDate | date: 'HH:mm dd/MM/yyyy' }}
       </p>
       <p>
-        <b>Fecha límite de cancelación:</b>
+        <strong>Fecha límite de cancelación:</strong>
         {{ trip?.trip?.cancelationDateLimit | date: 'HH:mm dd/MM/yyyy' }}
       </p>
       <div style="text-align: center">
@@ -44,15 +48,30 @@
     </p>
 
     <mat-card-actions align="end">
-      <button *ngIf="show_cancelation_button(trip)" mat-raised-button color="warn" class="cancel-button"
-        (click)="cancel_trip_order_dialog(trip.id)">
+      <button
+        *ngIf="show_cancelation_button(trip)"
+        mat-raised-button
+        color="warn"
+        class="cancel-button"
+        (click)="
+          cancel_trip_order_dialog(trip.id, trip?.trip?.cancelationDateLimit)
+        "
+      >
         <mat-icon>cancel_presentation</mat-icon>
       </button>
-      <button mat-raised-button class="button" (click)="go_to_trip(trip.trip.id)">
+      <button
+        mat-raised-button
+        class="button"
+        (click)="go_to_trip(trip.trip.id)"
+      >
         <mat-icon>open_in_new</mat-icon>
       </button>
-      <button mat-raised-button class="button" (click)="create_complaint(trip.trip.id)"
-        *ngIf="show_complaint_button(trip)">
+      <button
+        mat-raised-button
+        class="button"
+        (click)="create_complaint(trip.trip.id)"
+        *ngIf="show_complaint_button(trip)"
+      >
         <mat-icon>report</mat-icon>
       </button>
     </mat-card-actions>

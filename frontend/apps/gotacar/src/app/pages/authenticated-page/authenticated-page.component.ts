@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
@@ -6,10 +6,8 @@ import { AuthServiceService } from '../../services/auth-service.service';
   templateUrl: './authenticated-page.component.html',
   styleUrls: ['./authenticated-page.component.scss'],
 })
-export class AuthenticatedPageComponent implements OnInit {
+export class AuthenticatedPageComponent {
   showFiller = false;
 
-  constructor(public authService: AuthServiceService) {}
-
-  ngOnInit(): void {}
+  constructor(public authService: AuthServiceService) { }
 }

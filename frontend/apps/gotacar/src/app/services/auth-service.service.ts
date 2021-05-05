@@ -1,6 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -19,7 +18,6 @@ export class AuthServiceService {
   complaint;
 
   constructor(
-    public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
@@ -99,7 +97,7 @@ export class AuthServiceService {
   }
 
   async get_user_data(): Promise<any> {
-    return await this._http_client
+    return this._http_client
       .get(environment.api_url + '/current_user')
       .toPromise();
   }
@@ -108,19 +106,23 @@ export class AuthServiceService {
     return this.auth_login(new auth.auth.GoogleAuthProvider());
   }
 
+  navigate_google_register(result) {
+    this.ngZone.run(() => {
+      this.router.navigate(['/', 'google-register'], {
+        queryParams: {
+          uid: result.user.uid,
+          email: result.user.email,
+        },
+      });
+    });
+  }
+
   auth_login(provider) {
     return this.afAuth
       .signInWithPopup(provider)
       .then(async (result) => {
         if (result.additionalUserInfo.isNewUser) {
-          this.ngZone.run(() => {
-            this.router.navigate(['/', 'google-register'], {
-              queryParams: {
-                uid: result.user.uid,
-                email: result.user.email,
-              },
-            });
-          });
+          this.navigate_google_register(result)
         } else {
           try {
             await this.set_user_data(result.user);
@@ -129,14 +131,7 @@ export class AuthServiceService {
             });
           } catch (error) {
             localStorage.removeItem('user');
-            this.ngZone.run(() => {
-              this.router.navigate(['/', 'google-register'], {
-                queryParams: {
-                  uid: result.user.uid,
-                  email: result.user.email,
-                },
-              });
-            });
+            this.navigate_google_register(result)
           }
         }
       })
@@ -146,7 +141,7 @@ export class AuthServiceService {
   }
 
   async set_banned(uid) {
-    let { token, roles, bannedUntil } = await this.get_token(uid);
+    let { bannedUntil } = await this.get_token(uid);
     localStorage.setItem('bannedUntil', bannedUntil);
   }
 
@@ -165,12 +160,12 @@ export class AuthServiceService {
     let canAppeal = await this._complaint_appeals_service.can_complaint_appeal();
     if (canAppeal) {
       const user = JSON.parse(localStorage.getItem('user'));
-      try{
-         this.complaint = await this._complaint_service.get_complaint_for_user_banned(user.uid);
-      }catch(error){
+      try {
+        this.complaint = await this._complaint_service.get_complaint_for_user_banned(user.uid);
+      } catch (error) {
         console.error(error);
       }
-      const t = this.dialog.open(ComplaintAppealDialogComponent, {data:{complaint: this.complaint}});
+      this.dialog.open(ComplaintAppealDialogComponent, { data: { complaint: this.complaint } });
     } else {
       this._snackbar.open('La cuenta está baneada ', null, {
         duration: 3000,

@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RatingUserDialogComponent } from './rating-user-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 describe('RatingUserDialogComponent', () => {
   let component: RatingUserDialogComponent;
@@ -16,19 +13,17 @@ describe('RatingUserDialogComponent', () => {
     close: jasmine.createSpy('close')
   };
 
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RatingUserDialogComponent ],
-      imports: [ MatDialogModule,  MatSnackBarModule,FormsModule,
-        ReactiveFormsModule,BrowserAnimationsModule ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      declarations: [RatingUserDialogComponent],
+      imports: [MatDialogModule, MatSnackBarModule, FormsModule,
+        ReactiveFormsModule, BrowserAnimationsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: mockDialogRef }
-  ]
-    })
-    .compileComponents();
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: mockDialogRef }
+      ]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -40,10 +35,12 @@ describe('RatingUserDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   it('#close() should close dialog', () => {
     component.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
+
   it('should mark form as touched', async () => {
     component.rating_form.setValue({
       content: '',
@@ -58,11 +55,26 @@ describe('RatingUserDialogComponent', () => {
     });
   });
 
+  it('should close dialog when rating provided', async () => {
+    component.rating_form.setValue({
+      content: 'Viaje agradable',
+    });
+    component.rating = "2";
+    fixture.detectChanges();
+    const spy = spyOn(component, 'openSnackBar');
+    expect(component.rating_form.valid).toBeTruthy();
+    component.onSubmit();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+    });
+    expect(mockDialogRef.close).toHaveBeenCalled();
+  });
+
   it('should open snackbar when rating no provided', async () => {
     component.rating_form.setValue({
       content: 'Viaje agradable',
     });
-    let rating;
     fixture.detectChanges();
     const spy = spyOn(component, 'openSnackBar');
     expect(component.rating_form.valid).toBeTruthy();
@@ -72,29 +84,37 @@ describe('RatingUserDialogComponent', () => {
       expect(spy).toHaveBeenCalled();
     });
     component.close();
-
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
+
   it('should open snackbar', () => {
-    spyOn(component, 'openSnackBar');
-    component.openSnackBar('hola');
+    const spy = spyOn(component._snackBar, 'open');
     fixture.detectChanges();
-    expect(component.openSnackBar).toHaveBeenCalled();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 3000,
+    });
   });
-  it('Should set rating',()=>{
-    let rating = "2"
-    component.rating=rating
-    // spyOn(component,'set_rating');
-    component.set_rating(rating);
+
+  it('Should set rating', () => {
+    component.set_rating("2");
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.rating).toEqual(rating);
-      expect(component.set_rating).toHaveBeenCalled();
+      expect(component.rating).toEqual("2");
     });
-    
-
-    
-
   });
- 
+
+  // it('should open snackbar when error ocurred on submit', () => {
+  //   const spy = spyOn(component._snackBar, 'open');
+  //   fixture.detectChanges();
+  //   spyOn(component, 'onSubmit').and.throwError('error');
+  //   fixture.detectChanges();
+  //   component.onSubmit();
+  //   fixture.whenStable().then(() => {
+  //     fixture.detectChanges();
+  //     expect(spy).toHaveBeenCalledWith('Ha ocurrido un error al valorar al usuario', null, {
+  //       duration: 3000,
+  //     });
+  //   });
+  // });
 });
