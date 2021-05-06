@@ -31,7 +31,6 @@ export class CancelTripDialogComponent {
   async continue() {
     try {
       await this._trips_service.cancel_driver_trip(this.data);
-      await this._dialog_ref.close(true);
       let close = Promise.resolve(this._dialog_ref.close(true));
       await close;
       await this._auth_service.set_banned(localStorage.getItem('uid'));
