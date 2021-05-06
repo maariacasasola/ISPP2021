@@ -57,7 +57,7 @@ export class AdminMeetingPointsPageComponent {
         });
       });
     } catch (error) {
-      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro", 'Cerrar');
+      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro");
     }
   }
 
@@ -80,12 +80,12 @@ export class AdminMeetingPointsPageComponent {
       const response = await this._meeting_point_service.delete_meeting_point(meeting_point.id);
       if (response) {
         this.openSnackBar(
-          'Punto eliminado satisfactoriamente', "Cerrar");
+          'Punto eliminado satisfactoriamente');
       }
       this.markers = [];
       await this.get_all_meeting_points();
     } catch (error) {
-      this.openSnackBar("Se ha producido un error al eliminar el punto de encuentro", "Cerrar");
+      this.openSnackBar("Se ha producido un error al eliminar el punto de encuentro");
     }
   }
 
@@ -112,13 +112,12 @@ export class AdminMeetingPointsPageComponent {
       const meeting_point_created = response['address'].toString();
       if (response) {
         this.openSnackBar(
-          'Punto creado satisfactoriamente en ' + meeting_point_created,
-          'Cerrar'
+          'Punto creado satisfactoriamente en ' + meeting_point_created
         );
       }
       this.get_all_meeting_points();
     } catch (error) {
-      console.error(error);
+      this.openSnackBar("Se ha producido un error al crear el punto de encuentro");
     }
   }
 
@@ -128,8 +127,8 @@ export class AdminMeetingPointsPageComponent {
     this.info.open(marker);
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, null,{
       duration: 2000,
       panelClass: ['blue-snackbar'],
     });

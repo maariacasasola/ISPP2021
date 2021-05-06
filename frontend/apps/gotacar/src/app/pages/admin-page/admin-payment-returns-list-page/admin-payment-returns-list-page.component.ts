@@ -8,7 +8,7 @@ import { PaymentReturnsService } from '../../../services/payment-returns.service
   styleUrls: ['./admin-payment-returns-list-page.component.scss'],
 })
 export class AdminPaymentReturnsListPageComponent {
-  payment_returns;
+  payment_returns = [];
 
   constructor(
     private _payment_returns_service: PaymentReturnsService,

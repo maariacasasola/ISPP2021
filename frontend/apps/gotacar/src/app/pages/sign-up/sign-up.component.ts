@@ -40,7 +40,7 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private _router: Router
   ) { }
 

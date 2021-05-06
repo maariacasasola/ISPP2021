@@ -48,7 +48,7 @@ export class EditProfileDriverComponent {
     private fb: FormBuilder,
     public router: Router,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar
   ) {
     this.load_user_data();
   }

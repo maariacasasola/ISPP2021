@@ -103,18 +103,4 @@ describe('RatingUserDialogComponent', () => {
       expect(component.rating).toEqual("2");
     });
   });
-
-  // it('should open snackbar when error ocurred on submit', () => {
-  //   const spy = spyOn(component._snackBar, 'open');
-  //   fixture.detectChanges();
-  //   spyOn(component, 'onSubmit').and.throwError('error');
-  //   fixture.detectChanges();
-  //   component.onSubmit();
-  //   fixture.whenStable().then(() => {
-  //     fixture.detectChanges();
-  //     expect(spy).toHaveBeenCalledWith('Ha ocurrido un error al valorar al usuario', null, {
-  //       duration: 3000,
-  //     });
-  //   });
-  // });
 });

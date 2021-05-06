@@ -31,7 +31,7 @@ class mockTripsService {
 
 class mockComplaintAppealService {
   public can_complaint_appeal() {
-    return of(true);
+    return of([true,false]);
   }
 }
 
@@ -104,6 +104,20 @@ describe('CancelTripDialogComponent', () => {
     expect(spy).toHaveBeenCalledWith('hola', null, {
       duration: 5000,
       panelClass: ['blue-snackbar'],
+    });
+  });
+
+  it('should throw error while cancel trip', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    fixture.detectChanges();
+    spyOn(tripsService, 'cancel_driver_trip').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.continue();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('Ha ocurrido un error');
     });
   });
 });

@@ -15,7 +15,7 @@ export class DriverTripListPageComponent {
 
   constructor(
     private _trips_service: TripsService,
-    private _snackbar: MatSnackBar,
+    public _snackbar: MatSnackBar,
     private dialog: MatDialog,
     private _router: Router
   ) {

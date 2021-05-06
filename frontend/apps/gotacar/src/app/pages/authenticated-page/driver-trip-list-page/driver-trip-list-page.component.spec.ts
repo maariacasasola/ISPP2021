@@ -76,6 +76,19 @@ describe('DriverTripListPageComponent', () => {
        1,]);
   }));
   
-  
+  it('should show error while loading comments', () => {
+    const spy = spyOn(component, '_snackbar');
+    spyOn(tripService, 'get_driver_trips').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.load_trips_by_driver();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al cargar los viajes'
+      );
+    });
+  });
   
 });

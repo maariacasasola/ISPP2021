@@ -81,7 +81,7 @@ describe('AdminDriverRequestsPageComponent', () => {
         fixture = TestBed.createComponent(AdminDriverRequestsPageComponent);
         component = fixture.componentInstance;
         usersService = TestBed.inject(UsersService);
-        fixture.detectChanges();
+        // fixture.detectChanges();
     });
 
     it('should create', () => {
@@ -103,10 +103,38 @@ describe('AdminDriverRequestsPageComponent', () => {
             'assets/img/default-user.jpg'
         );
     });
-    
+
     it('should get profile photo of user', () => {
         expect(component.get_profile_photo(USER_OBJECTS[0])).toBe(
             USER_OBJECTS[0].profilePhoto
         );
+    });
+
+    it('should throw error snackbar trying to get driver requests', () => {
+        const spy = spyOn(component, '_snackBar');
+        // fixture.detectChanges();
+        spyOn(usersService, 'get_all_driver_requests').and.throwError('error');
+        // fixture.detectChanges();
+        component.load_driver_requests();
+        fixture.whenStable().then(() => {
+            // fixture.detectChanges();
+            expect(spy).toHaveBeenCalledWith('Ha ocurrido un error cargando las solicitudes', null, {
+                duration: 3000,
+            });
+        });
+    });
+
+    it('should throw error snackbar trying to get accept a driver request', () => {
+        const spy = spyOn(component, '_snackBar');
+        // fixture.detectChanges();
+        spyOn(usersService, 'convert_to_driver').and.throwError('error');
+        // fixture.detectChanges();
+        component.accept_request(USER_OBJECT);
+        fixture.whenStable().then(() => {
+            // fixture.detectChanges();
+            expect(spy).toHaveBeenCalledWith('Ha ocurrido un error aceptando la solicitud', null, {
+                duration: 3000,
+            });
+        });
     });
 });

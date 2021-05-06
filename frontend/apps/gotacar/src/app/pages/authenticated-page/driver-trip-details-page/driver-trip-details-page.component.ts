@@ -21,7 +21,7 @@ export class DriverTripDetailsPageComponent {
   users_already_rated;
 
   constructor(
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private _user_service: UsersService,
     private _my_dialog: MatDialog,
     private _route: ActivatedRoute,
@@ -32,7 +32,7 @@ export class DriverTripDetailsPageComponent {
     this.load_trip();
   }
 
-  private async load_trip() {
+  async load_trip() {
     try {
       this.trip = await this._trip_service.get_trip(
         this._route.snapshot.params['trip_id']

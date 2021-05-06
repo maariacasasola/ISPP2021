@@ -3,6 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeetingPointService } from '../../services/meeting-point.service';
 import { levenshtein } from 'string-comparison';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'frontend-search-form',
@@ -31,7 +32,8 @@ export class SearchFormComponent {
   constructor(
     private _meeting_points_service: MeetingPointService,
     private fb: FormBuilder,
-    private _router: Router
+    private _router: Router,
+    public _snackbar: MatSnackBar,
   ) {
     this.minDate = new Date();
     this.get_all_meeting_points();
@@ -58,7 +60,9 @@ export class SearchFormComponent {
     try {
       this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
     } catch (error) {
-      console.error(error);
+      this._snackbar.open('Ha ocurrido un error al cargar los puntos de encuentro', null, {
+        duration: 3000,
+      });
     }
   }
 

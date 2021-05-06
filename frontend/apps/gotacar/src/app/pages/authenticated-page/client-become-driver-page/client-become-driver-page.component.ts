@@ -51,7 +51,7 @@ export class ClientBecomeDriverPageComponent {
     private _authService: AuthServiceService,
     private _userService: UsersService,
     private _my_dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar
   ) {
     this.load_user_data();
   }
