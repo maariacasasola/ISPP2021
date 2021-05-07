@@ -1,5 +1,6 @@
 package com.gotacar.backend;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -76,7 +78,7 @@ public class BackendApplication implements CommandLineRunner {
         @Override
         public void run(String... args) throws Exception {
                 if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-                //        loadSampleData();
+                        // loadSampleData();
                 }
         }
 
@@ -400,7 +402,9 @@ public class BackendApplication implements CommandLineRunner {
                 Long complaints = complaintRepository.count();
                 Long complaintAppeals = complaintAppealRepository.count();
                 Long paymentReturns = paymentReturnRepository.count();
-                System.out.println(users + " usuarios creados");
+
+                Logger.getLogger(users.toString());
+                System.out.println(users + " usuarios creados1");
                 System.out.println(meetingPoints + " puntos de encuentro creados");
                 System.out.println(trips + " viajes creados");
                 System.out.println(tripOrders + " reservas creadas");

@@ -553,7 +553,7 @@ class TripControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		assertThat(result.andReturn().getResponse().getErrorMessage()).isNull();
-		assertThat(trip.getCanceled());
+
 	}
 
 	@Test

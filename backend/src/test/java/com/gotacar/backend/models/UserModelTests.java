@@ -146,7 +146,7 @@ class UserModelTests {
 
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user1);
 
-		assertThat(constraintViolations.isEmpty());
+		assertThat(constraintViolations).isEmpty();
 	}
 
 	@Test

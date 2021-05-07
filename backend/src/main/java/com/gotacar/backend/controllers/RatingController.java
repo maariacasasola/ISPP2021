@@ -141,8 +141,7 @@ public class RatingController {
 	public List<Rating> getRatings(@PathVariable(value = "idUser") String userId) {
 		try {
 			var user = userRepository.findById(new ObjectId(userId));
-			List<Rating> ratings = ratingRepository.findByTo(user);
-			return ratings;
+			return ratingRepository.findByTo(user);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}

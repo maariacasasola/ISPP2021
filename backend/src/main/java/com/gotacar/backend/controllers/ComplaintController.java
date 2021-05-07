@@ -156,7 +156,7 @@ public class ComplaintController {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
             var user = userRepository.findByEmail(authentication.getPrincipal().toString());
             var trip = tripRepository.findById(new ObjectId(tripId));
-            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
+            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).isEmpty();
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
