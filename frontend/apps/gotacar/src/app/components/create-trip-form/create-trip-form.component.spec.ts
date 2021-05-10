@@ -11,11 +11,14 @@ import { TripsService } from '../../services/trips.service';
 import { of } from 'rxjs';
 import { MeetingPointService } from '../../services/meeting-point.service';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
+import { Router } from '@angular/router';
 
 const meeting_points = []
 
 class mockTripService {
+  public create_trip() {
 
+  }
 }
 
 class mockMeetingService {
@@ -37,6 +40,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
   let tripService: TripsService;
   let meetingPointService: MeetingPointService;
   let geoService: GeocoderServiceService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,12 +65,10 @@ describe('MeetingPointSearchbarResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateTripFormComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     tripService = TestBed.inject(TripsService);
-    fixture.detectChanges();
     meetingPointService = TestBed.inject(MeetingPointService);
-    fixture.detectChanges();
     geoService = TestBed.inject(GeocoderServiceService);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -401,29 +403,26 @@ describe('MeetingPointSearchbarResultComponent', () => {
   });
 
   it('should return correct origin data', () => {
-
+    const spy_location=spyOn(geoService, 'get_location_from_address');
     const spy = spyOn(component._snackBar, 'open');
-
     component.createTripForm.setValue({
-      origen: 'Calle canal',
-      destino: 'Avenida reina mercedes',
+      origen: 'Calle canal, Sevilla',
+      destino: 'Avenida reina mercedes, Sevilla',
       fechaHoraInicio: new Date(2021, 6, 4, 15, 30, 24),
       fechaHoraFin: new Date(2021, 6, 4, 15, 33, 24),
       numeroPasajero: 2,
       comentarios: 'Hola',
       price: 200,
     });
-
-
     fixture.detectChanges();
     component.get_origin();
     fixture.detectChanges();
+    expect(spy_location).toHaveBeenCalled();
     expect(spy).toBeCalledTimes(0);
     fixture.detectChanges();
   });
 
   it('should return an error triying to get origin location from address', () => {
-
     const spy = spyOn(component._snackBar, 'open');
     spyOn(geoService, 'get_location_from_address').and.throwError(
       'error'
@@ -493,5 +492,28 @@ describe('MeetingPointSearchbarResultComponent', () => {
     });
   });
 
-
+  it('should display a matbar when form is valid', () => {
+    component.createTripForm.setValue({
+      origen: 'Calle canal',
+      destino: 'Avenida reina mercedes',
+      fechaHoraInicio: new Date(2021, 6, 4, 15, 30, 24),
+      fechaHoraFin: new Date(2021, 6, 4, 15, 33, 24),
+      numeroPasajero: 2,
+      comentarios: 'Hola',
+      price: 200,
+    });
+    const spy = spyOn(component, 'openSnackBar');
+    const spy_create = spyOn(tripService, 'create_trip').and.returnValue(true);
+    const chck = spyOn(component, 'checkDates');
+    const navigateSpy = spyOn(router, 'navigate');
+    component.submit();
+    fixture.detectChanges();
+    expect(chck).toHaveBeenCalled();
+    expect(spy_create).toHaveBeenCalled();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('Viaje creado correctamente');
+      expect(navigateSpy).toHaveBeenCalledWith(['home']);
+    });
+  });
 });

@@ -31,7 +31,7 @@ class mockTripsService {
 
 class mockComplaintAppealService {
   public can_complaint_appeal() {
-    return of([true,false]);
+    return of([false]);
   }
 }
 
@@ -47,10 +47,8 @@ describe('CancelTripDialogComponent', () => {
   let component: CancelTripDialogComponent;
   let fixture: ComponentFixture<CancelTripDialogComponent>;
   let tripsService: TripsService;
-  let authService: AuthServiceService;
   let appealsService: ComplaintAppealsService;
   let dialog: any;
-
 
   const mockDialogRef = {
     close: jasmine.createSpy('close'),
@@ -95,6 +93,17 @@ describe('CancelTripDialogComponent', () => {
     component.continue();
     fixture.detectChanges();
     expect(spy_cancel).toHaveBeenCalled();
+  });
+
+  it('#continue() should cancel trip', () => {
+    spyOn(appealsService, 'can_complaint_appeal').and.returnValue(false);
+    const spy = spyOn(component, 'openSnackBar');
+    component.continue();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('La cuenta ha sido baneada');
+    });
   });
 
   it('should open snackbar', () => {

@@ -19,7 +19,7 @@ export class ComplaintAppealDialogComponent {
     private _dialog_ref: MatDialogRef<ComplaintAppealDialogComponent>,
     private _complaint_appeals_service: ComplaintAppealsService,
     public _snackbar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) private data,
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {
   }
 
@@ -59,7 +59,9 @@ export class ComplaintAppealDialogComponent {
       }
       this._dialog_ref.close();
     } catch (error) {
-      console.error(error);
+      this._snackbar.open('Ha ocurrido un error', null, {
+        duration: 3000,
+      });
     }
   }
 
