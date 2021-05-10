@@ -149,10 +149,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
   });
 
   it('should display an error callin a create_trip services', () => {
-
-    const spy = spyOn(component._snackBar, 'open');
-
-
+    const spy = spyOn(component, 'openSnackBar');
     component.createTripForm.setValue({
       origen: 'Calle canal',
       destino: 'Avenida reina mercedes',
@@ -162,20 +159,18 @@ describe('MeetingPointSearchbarResultComponent', () => {
       comentarios: 'Hola',
       price: 200,
     });
-
+    fixture.detectChanges();
+    spyOn(tripService, 'create_trip').and.throwError(
+      'error'
+    );
     fixture.detectChanges();
     component.submit();
-    fixture.detectChanges();
-    expect(component.createTripForm.valid).toBe(true);
-    fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('Se ha producido un error al crear el viaje', null, {
-        duration: 3000,
-      });
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al crear el viaje'
+      );
     });
-
-
   });
 
   it('should select origin meeting point', () => {

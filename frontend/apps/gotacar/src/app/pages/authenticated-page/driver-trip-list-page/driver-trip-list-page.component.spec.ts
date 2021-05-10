@@ -1,10 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
-import { Observable } from 'rxjs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DriverTripListPageComponent } from './driver-trip-list-page.component';
@@ -12,12 +11,8 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'apps/gotacar/src/environments/environment';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-class mockTripServiceError{
-  load_trips_by_driver(){
-    return Observable.throw(new Error('El viaje ya está cancelado'));
-  }
-}
 class mockTripService {
   get_driver_trips() {
     return Promise.resolve([]);
@@ -32,11 +27,12 @@ describe('DriverTripListPageComponent', () => {
   const mockDialogRef = {
     close: jasmine.createSpy('close'),
   };
-  let tripService : TripsService;
+  let tripService: TripsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
@@ -70,14 +66,15 @@ describe('DriverTripListPageComponent', () => {
   });
   it('navigate', fakeAsync(() => {
     component.go_to_trip(1);
-    expect (router.navigate).toHaveBeenCalledWith(["/",
-       "authenticated",
-       "driver-trips",
-       1,]);
+    expect(router.navigate).toHaveBeenCalledWith(["/",
+      "authenticated",
+      "driver-trips",
+      1,]);
   }));
-  
-  it('should show error while loading comments', () => {
-    const spy = spyOn(component, '_snackbar');
+
+  it('should show error while loading trips', fakeAsync(() => {
+    const spy = spyOn(component._snackbar, 'open');
+    fixture.detectChanges();
     spyOn(tripService, 'get_driver_trips').and.throwError(
       'error'
     );
@@ -86,9 +83,13 @@ describe('DriverTripListPageComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(
-        'Se ha producido un error al cargar los viajes'
+        'Se ha producido un error al cargar los viajes',
+        null,
+        {
+          duration: 3000,
+        }
       );
     });
-  });
-  
+  }));
+
 });

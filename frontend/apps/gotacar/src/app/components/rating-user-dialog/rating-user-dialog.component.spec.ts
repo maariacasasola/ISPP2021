@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RatingUserDialogComponent } from './rating-user-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { throwError } from 'rxjs';
 
 describe('RatingUserDialogComponent', () => {
   let component: RatingUserDialogComponent;
@@ -55,21 +56,19 @@ describe('RatingUserDialogComponent', () => {
     });
   });
 
-  it('should close dialog when rating provided', async () => {
+  it('should close dialog when rating provided', fakeAsync(() => {
+    fixture.detectChanges();
     component.rating_form.setValue({
       content: 'Viaje agradable',
     });
     component.rating = "2";
     fixture.detectChanges();
-    const spy = spyOn(component, 'openSnackBar');
     expect(component.rating_form.valid).toBeTruthy();
+    fixture.detectChanges();
     component.onSubmit();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(spy).toHaveBeenCalled();
-    });
+    fixture.detectChanges();
     expect(mockDialogRef.close).toHaveBeenCalled();
-  });
+  }));
 
   it('should open snackbar when rating no provided', async () => {
     component.rating_form.setValue({

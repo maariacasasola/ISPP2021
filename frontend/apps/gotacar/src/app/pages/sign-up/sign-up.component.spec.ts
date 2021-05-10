@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
@@ -84,14 +84,15 @@ describe('SignUpComponent', () => {
     expect(component.checkDate()).toBe(false);
   });
 
-  it('should enable button when accepted is true', () => {
+  it('should enable button when accepted is true', fakeAsync(() => {
+    const spy = spyOn(component, 'accepted');
     const checkbox = fixture.debugElement.query(By.css('.example-margin')).nativeElement;
     checkbox.click();
+    component.checked(checkbox);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      component.checked(checkbox);
       fixture.detectChanges();
-      expect(component.accepted).toBe(true);
+      expect(spy).toBeTruthy();
     });
-  });
+  }));
 });

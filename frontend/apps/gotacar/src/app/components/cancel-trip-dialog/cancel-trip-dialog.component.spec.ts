@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +31,7 @@ class mockTripsService {
 
 class mockComplaintAppealService {
   public can_complaint_appeal() {
-    return of([false]);
+    return of(false);
   }
 }
 
@@ -93,17 +93,6 @@ describe('CancelTripDialogComponent', () => {
     component.continue();
     fixture.detectChanges();
     expect(spy_cancel).toHaveBeenCalled();
-  });
-
-  it('#continue() should cancel trip', () => {
-    spyOn(appealsService, 'can_complaint_appeal').and.returnValue(false);
-    const spy = spyOn(component, 'openSnackBar');
-    component.continue();
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('La cuenta ha sido baneada');
-    });
   });
 
   it('should open snackbar', () => {
