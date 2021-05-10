@@ -19,7 +19,7 @@ export class ClientProfilePageComponent {
     private _user_service: UsersService,
     public router: Router,
     private _my_dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar
   ) {
     this.load_user_data();
   }

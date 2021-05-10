@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 
 import { ShowRatingsComponent } from './show-ratings.component';
@@ -21,6 +20,7 @@ let message=""
 describe('ShowRatingsComponent', () => {
   let component: ShowRatingsComponent;
   let fixture: ComponentFixture<ShowRatingsComponent>;
+  let user_service;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,20 +37,35 @@ describe('ShowRatingsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ShowRatingsComponent);
     component = fixture.componentInstance;
+    user_service = TestBed.inject(UsersService);
     fixture.detectChanges();
-  
-
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should open snackbar',()=>{
-    
-    spyOn(component, 'openSnackBar');
-    component.openSnackBar('');
-    fixture.detectChanges();
-    expect(component.openSnackBar).toHaveBeenCalled();
 
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackBar, 'open');
+    fixture.detectChanges();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 3000,
+    });
+  });
+
+  it('should show error while loading comments', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    spyOn(user_service, 'get_ratings_by_userid').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.load_comments();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(
+        'Ha ocurrido un error al intentar obtener las valoraciones de este usuario'
+      );
+    });
   });
 });

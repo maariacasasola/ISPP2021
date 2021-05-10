@@ -40,7 +40,7 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private _router: Router
   ) { }
 
@@ -94,7 +94,8 @@ export class SignUpComponent {
       .catch((error) => {
         if (error.message === 'The email address is badly formatted.') {
           this.openSnackBar('El email no es válido');
-        }if (error.message === "The email address is already in use by another account.") {
+        }
+        if (error.message === "The email address is already in use by another account.") {
           this.openSnackBar('El email ya esta siendo usado por otro usuario');
         } else {
           this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');

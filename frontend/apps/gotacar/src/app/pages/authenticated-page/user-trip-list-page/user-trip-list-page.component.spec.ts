@@ -114,7 +114,7 @@ describe('UserTripListPageComponent', () => {
 
   it('should open cancel trip dialog', () => {
     spyOn(component, 'cancel_trip_order_dialog');
-    component.cancel_trip_order_dialog('1',false);
+    component.cancel_trip_order_dialog('1', false);
     fixture.detectChanges();
   });
 
@@ -156,5 +156,88 @@ describe('UserTripListPageComponent', () => {
       '1',
       'create-complaint',
     ]);
+  });
+
+  it('should set type of trip to all', () => {
+    component.set_type('all');
+    fixture.detectChanges();
+    expect(component.filter.type).toBe('all');
+  });
+
+  it('should set type of trip to completed', () => {
+    component.set_type('completed');
+    fixture.detectChanges();
+    expect(component.filter.type).toBe('completed');
+  });
+
+  it('should set type of trip to pending', () => {
+    component.set_type('pending');
+    fixture.detectChanges();
+    expect(component.filter.type).toBe('pending');
+  });
+
+  it('should get type of trip status', () => {
+    expect(component.get_trip_status("PROCCESSING")).toContain("Procesando pago");
+    expect(component.get_trip_status("REFUNDED_PENDING")).toContain("Devolución pendiente");
+    expect(component.get_trip_status("REFUNDED")).toContain("Devolución completada");
+    expect(component.get_trip_status("PAID")).toContain("Pago realizado");
+    expect(component.get_trip_status("CANT_REFUND")).toContain("Devolución denegada");
+  });
+
+  it('should go to trip', (() => {
+    component.go_to_trip(1);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/",
+      "trip",
+      1,]);
+  }));
+
+  it('should show complaint button', ()=>{
+    component.show_complaint_button(TRIP_OBJECT);
+    fixture.detectChanges();
+    expect(component.show_complaint_button(TRIP_OBJECT)).toBe(false);
+  });
+
+  it('should show complaint button', ()=>{
+    const new_trip={
+      trip:{
+      startDate: new Date(2021,4,2),},
+      can_complain:true,
+    };
+    component.show_complaint_button(new_trip);
+    fixture.detectChanges();
+    expect(component.show_complaint_button(new_trip)).toBe(true);
+  });
+
+  it('should show cancelation button', ()=>{
+    const new_trip={
+      status: 'PAID',
+      trip:{
+        startDate: new Date(2022,4,2),},
+    };
+    component.show_cancelation_button(new_trip);
+    fixture.detectChanges();
+    expect(component.show_cancelation_button(new_trip)).toBe(true);
+  });
+
+  it('should not show cancelation button due to status', ()=>{
+    const new_trip={
+      status: 'REFUNDED_PENDING',
+      trip:{
+        startDate: new Date(2022,4,2),},
+    };
+    component.show_cancelation_button(new_trip);
+    fixture.detectChanges();
+    expect(component.show_cancelation_button(new_trip)).toBe(false);
+  });
+
+  it('should not show cancelation button due to start date', ()=>{
+    const new_trip={
+      status: 'PAID',
+      trip:{
+        startDate: new Date(2021,4,2),},
+    };
+    component.show_cancelation_button(new_trip);
+    fixture.detectChanges();
+    expect(component.show_cancelation_button(new_trip)).toBe(false);
   });
 });

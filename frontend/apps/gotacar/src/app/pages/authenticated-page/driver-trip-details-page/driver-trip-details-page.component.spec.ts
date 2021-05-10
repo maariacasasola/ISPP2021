@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DriverTripDetailsPageComponent } from './driver-trip-details-page.component';
 import { ConvertCentToEurPipe } from '../../../pipes/convert-cent-to-eur.pipe';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TripsService } from '../../../services/trips.service';
 import { Observable, of } from 'rxjs';
 import { Trip } from '../../../shared/services/trip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { User } from '../../../shared/services/user';
 import { MatDialogModule } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 const location1 = {
   name: 'Sevilla',
@@ -26,18 +26,7 @@ const location2 = {
   lng: -5.976345387146261,
 };
 
-const TRIP_OBJECT: Trip = {
-  cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
-  comments: '',
-  end_date: new Date(2021, 6, 4, 13, 30, 24),
-  start_date: new Date(2021, 6, 4, 13, 30, 24),
-  ending_point: location2,
-  starting_point: location1,
-  places: 3,
-  price: 200,
-};
-
-const USER_OBJECT: User = {
+const USER_OBJECT = {
   id: '2',
   firstName: 'Manuel',
   lastName: 'Fernandez',
@@ -50,6 +39,32 @@ const USER_OBJECT: User = {
   emailVerified: true,
   timesBanned: 2,
   token: '12312ed2',
+};
+
+const USER_OBJECT2 = {
+  id: '3',
+  firstName: 'Manuel',
+  lastName: 'Fernandez',
+  uid: '1',
+  email: 'manan@gmail.com',
+  dni: '312312312',
+  birthdate: new Date(1994, 6, 4, 13, 30, 24),
+  roles: ['ROLE_CLIENT', 'ROLE_DRIVER'],
+  emailVerified: true,
+  timesBanned: 2,
+  token: '12312ed2',
+};
+
+const TRIP_OBJECT = {
+  cancelationDateLimit: new Date(2021, 6, 4, 13, 30, 24),
+  comments: '',
+  end_date: new Date(2021, 6, 4, 13, 30, 24),
+  start_date: new Date(2021, 6, 4, 13, 30, 24),
+  ending_point: location2,
+  starting_point: location1,
+  places: 3,
+  price: 200,
+  driver: USER_OBJECT,
 };
 
 class mockTripService {
@@ -65,7 +80,9 @@ class mockTripService {
 describe('DriverTripDetailsPageComponent', () => {
   let component: DriverTripDetailsPageComponent;
   let fixture: ComponentFixture<DriverTripDetailsPageComponent>;
-  let h1: HTMLElement;
+  let tripService;
+  let router: Router;
+
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -88,6 +105,8 @@ describe('DriverTripDetailsPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DriverTripDetailsPageComponent);
     component = fixture.componentInstance;
+    tripService = TestBed.inject(TripsService);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -95,13 +114,51 @@ describe('DriverTripDetailsPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get profile photo without load on database', () => {
+  it('should get profile photo of generic user', () => {
+    expect(component.get_user_profile_photo(USER_OBJECT2)).toBe(
+      'assets/img/generic-user.jpg'
+    );
+  });
+
+  it('should get profile photo of user', () => {
+    component.trip = TRIP_OBJECT;
     expect(component.get_user_profile_photo(USER_OBJECT)).toBe(
-      'http://dasdasdas.com'
+      component.trip.driver.profilePhoto
     );
   });
 
   it('should check future date', () => {
     expect(component.checkDate(new Date(2020, 12, 3))).toBe(false);
+  });
+
+  it('should show error while loading comments', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    spyOn(tripService, 'get_trip').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.load_trip();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al cargar el viaje'
+      );
+    });
+  });
+
+  it('should redirect to user ratings', () => {
+    const navigateSpy = spyOn(router, 'navigate');
+    component.go_to_user_ratings(USER_OBJECT);
+    fixture.detectChanges();
+    expect(navigateSpy).toHaveBeenCalledWith(['/', 'authenticated', 'user-ratings', USER_OBJECT]);
+  });
+
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackBar, 'open');
+    fixture.detectChanges();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 3000,
+    });
   });
 });

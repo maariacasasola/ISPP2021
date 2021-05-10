@@ -17,8 +17,7 @@ export class AdminDriverRequestsPageComponent {
     try {
       this.requests = await this._users_service.get_all_driver_requests();
     } catch (error) {
-      console.error(error)
-      this._snackBar.open("Ha ocurrido un error", null, {
+      this._snackBar.open("Ha ocurrido un error cargando las solicitudes", null, {
         duration: 3000,
       });
     }
@@ -34,8 +33,7 @@ export class AdminDriverRequestsPageComponent {
         });
       }
     } catch (error) {
-      console.error(error)
-      this._snackBar.open("Ha ocurrido un error", null, {
+      this._snackBar.open("Ha ocurrido un error aceptando la solicitud", null, {
         duration: 3000,
       });
     }

@@ -55,4 +55,26 @@ describe('AdminPaymentReturnsListPageComponent', () => {
     it('should list payment returns', () => {
         spyOn(paymentReturnsService, 'get_all_payment_returns').and.returnValue(of(PAYMENT_RETURN_OBJECTS));
     });
+
+    it('should throw error snackbar trying to list payment returns', () => {
+        const spy = spyOn(component, 'show_message');
+        // fixture.detectChanges();
+
+        spyOn(paymentReturnsService, 'get_all_payment_returns').and.throwError('error');
+        // fixture.detectChanges();
+        component.load_payment_returns();
+        fixture.whenStable().then(() => {
+            // fixture.detectChanges();
+            expect(spy).toHaveBeenCalledWith('Ha ocurrido un error, inténtelo más tarde');
+        });
+    });
+
+    it('should open snackbar', () => {
+        const spy = spyOn(component._snackbar, 'open');
+        // fixture.detectChanges();
+        component.show_message('hola');
+        expect(spy).toHaveBeenCalledWith('hola', null, {
+          duration: 3000,
+        });
+      });
 })

@@ -61,4 +61,51 @@ describe('EditProfileComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackBar, 'open');
+    fixture.detectChanges();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 3000,
+    });
+  });
+
+  it('should check date and return true', () => {
+    component.update_form.value.birthdate = new Date(1998, 6, 4);
+    component.checkDate();
+    fixture.detectChanges();
+    expect(component.checkDate()).toBe(true);
+  });
+
+  it('should check date and return false', () => {
+    component.update_form.value.birthdate = new Date(2098, 6, 4);
+    component.checkDate();
+    fixture.detectChanges();
+    expect(component.checkDate()).toBe(false);
+  });
+
+  it('should enrrollment date and return false due to birthdate', () => {
+    component.update_form.value.birthdate = new Date(2098, 6, 4);
+    component.update_form.value.enrollment_date = new Date(2010, 6, 4);
+    component.checkEnrollmentDateBeforeBirthDate();
+    fixture.detectChanges();
+    expect(component.checkEnrollmentDateBeforeBirthDate()).toBe(false);
+  });
+
+  it('should enrrollment date and return true', () => {
+    component.update_form.value.birthdate = new Date(1998, 6, 4);
+    component.update_form.value.enrollment_date = new Date(2030, 6, 4);
+    component.checkEnrollmentDateBeforeBirthDate();
+    fixture.detectChanges();
+    expect(component.checkEnrollmentDateBeforeBirthDate()).toBe(true);
+  });
+
+  it('should enrrollment date and return false due to enrrollment', () => {
+    component.update_form.value.birthdate = new Date(1998, 6, 4);
+    component.update_form.value.enrollment_date = new Date(1995, 6, 4);
+    component.checkEnrollmentDateBeforeBirthDate();
+    fixture.detectChanges();
+    expect(component.checkEnrollmentDateBeforeBirthDate()).toBe(false);
+  });
 });

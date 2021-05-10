@@ -33,7 +33,7 @@ export class RegisterUserGoogleComponent {
   constructor(
     private fb: FormBuilder,
     private _authService: AuthServiceService,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     private _route: ActivatedRoute,
     private _router: Router
   ) {

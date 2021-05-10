@@ -27,7 +27,7 @@ describe('ClientBecomeDriverPageComponent', () => {
   let userService: UsersService;
   let mockRouter = {
     navigate: jasmine.createSpy('navigate')
-};
+  };
   //const matDialog = ;
 
   const user = {
@@ -46,11 +46,11 @@ describe('ClientBecomeDriverPageComponent', () => {
   };
   class MatDialogMock {
     obtain_driving_license() {
-     return {
-       afterClosed: () => of(true)
-     };
-   }
- }
+      return {
+        afterClosed: () => of(true)
+      };
+    }
+  }
   class mockAuthService {
     public get_user_data(): Observable<User> {
       return of(user);
@@ -86,10 +86,10 @@ describe('ClientBecomeDriverPageComponent', () => {
     component = fixture.componentInstance;
   });
 
-//   it('should open dialog', () => {
-//     component.obtain_driving_license();
-//     expect(component.driving_license).toBeDefined();
-// });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
   it('should create', () => {
     component.request_form.controls['iban'].setValue('ES1234123412341234');
     component.request_form.controls['experience'].setValue(4);
@@ -99,8 +99,13 @@ describe('ClientBecomeDriverPageComponent', () => {
     component.request_form.controls['color'].setValue('rojo');
     expect(component).toBeDefined();
   });
-  
-  // it('should load user data', () => {
-  //   spyOn(authService, 'get_user_data').and.returnValue(of(user));
-  // });
+
+  it('should open snackbar', () => {
+    const spy = spyOn(component._snackBar, 'open');
+    fixture.detectChanges();
+    component.openSnackBar('hola');
+    expect(spy).toHaveBeenCalledWith('hola', null, {
+      duration: 3000,
+    });
+  });
 });

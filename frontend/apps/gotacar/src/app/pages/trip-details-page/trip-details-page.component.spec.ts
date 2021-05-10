@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { UsersService } from '../../services/users.service';
+import { Router } from '@angular/router';
 
 const location1 = {
     name: 'Sevilla',
@@ -125,6 +126,7 @@ describe('TripDetailsPageComponent', () => {
     let dialog: any;
     let userService: UsersService;
     let tripService: TripsService;
+    let router: Router;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -154,6 +156,7 @@ describe('TripDetailsPageComponent', () => {
         userService = TestBed.inject(UsersService);
         tripService = TestBed.inject(TripsService);
         dialog = TestBed.inject(MatDialog);
+        router = TestBed.inject(Router);
         fixture.detectChanges();
     });
 
@@ -241,7 +244,7 @@ describe('TripDetailsPageComponent', () => {
         const spy_is_client = spyOn(authService, 'is_client').and.returnValue(true);
         const spy_open_dialog = spyOn(dialog, 'open').and.returnValue({
             afterClosed: () => of(),
-          });
+        });
         component.order_trip();
         fixture.detectChanges();
         expect(spy_is_client).toBeCalledTimes(1);
@@ -263,5 +266,12 @@ describe('TripDetailsPageComponent', () => {
         expect(component.show_buy_button()).toBe(TRIP_OBJECT.places > 0 && new Date(TRIP_OBJECT.startDate) > new Date()
             && TRIP_OBJECT.canceled !== true && USER_OBJECT2.uid !== TRIP_OBJECT.driver.uid);
         fixture.detectChanges();
+    });
+
+    it('should redirect to home', () => {
+        const navigateSpy = spyOn(router, 'navigate');
+        component.go_to_user_ratings(USER_OBJECT);
+        fixture.detectChanges();
+        expect(navigateSpy).toHaveBeenCalledWith(['/', 'authenticated', 'user-ratings', USER_OBJECT]);
     });
 });

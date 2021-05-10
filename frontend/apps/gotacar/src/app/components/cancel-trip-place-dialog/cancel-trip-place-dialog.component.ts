@@ -13,7 +13,7 @@ export class CancelTripPlaceDialogComponent {
   constructor(
     private _dialog_ref: MatDialogRef<CancelTripPlaceDialogComponent>,
     private _trips_service: TripsService,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data
   ) {
     this.get_message();
@@ -40,7 +40,6 @@ export class CancelTripPlaceDialogComponent {
       ) {
         this.openSnackBar('No puedes cancelar este viaje');
       }
-      console.error(error);
     }
     this._dialog_ref.close();
   }
