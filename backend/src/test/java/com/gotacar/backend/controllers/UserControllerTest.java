@@ -174,8 +174,7 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
 		String res = result.andReturn().getResponse().getContentAsString();
-		assertThat(res.contains("ROLE_ADMIN")).isFalse();
-
+		assertThat(res).doesNotContain("ROLE_ADMIN");
 	}
 
 	// NEGATIVO Test entra dentro del catch
@@ -756,7 +755,7 @@ class UserControllerTest {
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
 	}
-
+	
 	// POSITIVO hay un trip order pagado asociado a ese viaje
 	@Test
 	@WithMockUser(value = "spring")

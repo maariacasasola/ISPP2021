@@ -68,16 +68,4 @@ public class Complaint {
 		return String.format("Complaint[id=%s, title=%s, user=%s, trip:%s]", id, title, user.toString(),
 				trip.toString());
 	}
-
-	// @Override
-	// public int compareTo(Complaint o) {
-	// 	if (altura < o.altura) {
-	// 		return -1;
-	// 	}
-	// 	if (altura > o.altura) {
-	// 		return 1;
-	// 	}
-	// 	return 0;
-	// }
-
 }

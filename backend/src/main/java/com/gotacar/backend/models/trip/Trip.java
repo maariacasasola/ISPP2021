@@ -43,9 +43,9 @@ public class Trip {
     @Future
     public LocalDateTime endingDate;
 
-    public LocalDateTime cancelationDate;
+    private LocalDateTime cancelationDate;
 
-    public LocalDateTime cancelationDateLimit;
+    private LocalDateTime cancelationDateLimit;
 
     @NotBlank
     public String comments;
@@ -54,7 +54,7 @@ public class Trip {
     @Max(4)
     public Integer places;
 
-    public Boolean canceled;
+    private Boolean canceled;
 
     @DBRef
     public User driver;
@@ -69,9 +69,9 @@ public class Trip {
     public Trip(Location startingPoint, Location endingPoint, Integer price, LocalDateTime startDate,
             LocalDateTime endingDate, String comments, Integer places, User driver) {
 
-        LocalDateTime cancelationDateLimit = startDate.minusMinutes(30);
+        LocalDateTime cancelDateLimit = startDate.minusMinutes(30);
 
-        this.setCancelationDateLimit(cancelationDateLimit);
+        this.setCancelationDateLimit(cancelDateLimit);
 
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;

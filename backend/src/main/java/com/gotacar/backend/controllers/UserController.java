@@ -43,6 +43,9 @@ import io.jsonwebtoken.security.Keys;
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
+	
+	private static final String ROLE_CLIENT = "ROLE_CLIENT";
+	private static final String ROLE_DRIVER = "ROLE_DRIVER";
 
 	@Autowired
 	private UserRepository userRepository;
@@ -112,7 +115,7 @@ public class UserController {
 			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 			var birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
 			List<String> roles = new ArrayList<>();
-			roles.add("ROLE_CLIENT");
+			roles.add(ROLE_CLIENT);
 
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
@@ -154,7 +157,7 @@ public class UserController {
 			user.setDni(dni);
 			user.setPhone(phone);
 			// editar los datos del coche si es un conductor
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("carData").toString());
 				var enrollmentDate = LocalDate
@@ -232,7 +235,7 @@ public class UserController {
 			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
 			User u = this.userRepository.findByUid(uid);
 			u.setDriverStatus("ACCEPTED");
-			u.getRoles().add("ROLE_DRIVER");
+			u.getRoles().add(ROLE_DRIVER);
 			this.userRepository.save(u);
 
 			return u;
@@ -245,7 +248,7 @@ public class UserController {
 	@GetMapping("/enrolled-user/list")
 	public List<User> listEnrrolledUsers() {
 		try {
-			return userRepository.findByRolesContaining("ROLE_CLIENT");
+			return userRepository.findByRolesContaining(ROLE_CLIENT);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
@@ -292,7 +295,7 @@ public class UserController {
 			if (!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()) {
 				throw new Exception("El usuario tiene reservas pendientes");
 			}
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				if (!trips.isEmpty()) {
 					throw new Exception("El usuario tiene viajes pendientes");
@@ -310,12 +313,12 @@ public class UserController {
 		try {
 			var user = userRepository.findById(new ObjectId(userId));
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if (user.getRoles().contains("ROLE_CLIENT")) {
+			if (user.getRoles().contains(ROLE_CLIENT)) {
 				if (!tripOrders.isEmpty()) {
 					throw new Exception("El usuario tiene reservas pendientes");
 				}
 			}
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				if (!trips.isEmpty()) {
 					throw new Exception("El usuario tiene viajes pendientes");
