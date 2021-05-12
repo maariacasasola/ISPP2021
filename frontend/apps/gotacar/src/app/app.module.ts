@@ -1,6 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire';
+import { AngularIbanModule } from 'angular-iban';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -231,6 +232,7 @@ registerLocaleData(localeEs, 'es');
     FlexLayoutModule,
     NgxSliderModule,
     BrowserAnimationsModule,
+    AngularIbanModule,
   ],
   providers: [
     AuthenticatedGuard,

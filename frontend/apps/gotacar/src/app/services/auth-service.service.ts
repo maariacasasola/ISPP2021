@@ -211,6 +211,34 @@ export class AuthServiceService {
     );
   }
 
+  update_password(password: string) {
+    this.afAuth.currentUser.then((u) => {
+      try {
+        u.updatePassword(password).then(() => {
+          console.log("hola")
+        });
+      } catch (error) {
+        this._snackbar.open('Ha ocurrido un error al actualizar la contraseña', null, {
+          duration: 3000,
+        });
+      }
+    });
+  }
+
+  update_email(email: string) {
+    this.afAuth.currentUser.then((u) => {
+      try {
+        u.updateEmail(email).then(() => {
+          console.log("hola")
+        });
+      } catch (error) {
+        this._snackbar.open('Ha ocurrido un error al actualizar el email', null, {
+          duration: 3000,
+        });
+      }
+    });
+  }
+
   handle_firebase_auth_error(error) {
     switch (error.code) {
       case 'auth/wrong-password':
