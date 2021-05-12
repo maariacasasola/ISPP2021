@@ -59,7 +59,7 @@ public class ComplaintAppealController {
     public ComplaintAppeal acceptComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
             var complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
-            if (!(complaintAppeal.getChecked() == false)) {
+            if (Boolean.FALSE.equals(complaintAppeal.getChecked())) {
                 var u = userRepository.findByUid(complaintAppeal.getDriver().getUid());
                 complaintAppeal.getComplaint().getTrip().setDriver(u);
                 u.setBannedUntil(null);
@@ -81,7 +81,7 @@ public class ComplaintAppealController {
     public ComplaintAppeal rejectComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
             var complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
-            if (!(complaintAppeal.getChecked() == false)) {
+            if (Boolean.FALSE.equals(complaintAppeal.getChecked())) {
                 complaintAppeal.setChecked(true);
                 complaintAppealRepository.save(complaintAppeal);
                 return complaintAppeal;
