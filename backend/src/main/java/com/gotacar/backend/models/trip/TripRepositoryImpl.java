@@ -22,10 +22,10 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
 
     @Override
     public List<Trip> searchTrips(Point startingPoint, Point endindPoint, Integer places, LocalDateTime date) {
-        Circle circleStart = new Circle(startingPoint, 0.012);
-        Circle circleEnd = new Circle(endindPoint, 0.012);
+        var circleStart = new Circle(startingPoint, 0.012);
+        var circleEnd = new Circle(endindPoint, 0.012);
 
-        Query query = new Query();
+        var query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 
         LocalDateTime nextDay = date.plusDays(2);

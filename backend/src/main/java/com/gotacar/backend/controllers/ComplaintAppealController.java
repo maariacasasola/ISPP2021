@@ -5,9 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.JsonNode;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.complaint.Complaint;
 import com.gotacar.backend.models.complaint.ComplaintRepository;
@@ -20,7 +19,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,9 +58,9 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ComplaintAppeal acceptComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
-            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
-            if (complaintAppeal.getChecked() == false) {
-                User u = userRepository.findByUid(complaintAppeal.getDriver().getUid());
+            var complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
+            if (Boolean.FALSE.equals(complaintAppeal.getChecked())) {
+                var u = userRepository.findByUid(complaintAppeal.getDriver().getUid());
                 complaintAppeal.getComplaint().getTrip().setDriver(u);
                 u.setBannedUntil(null);
                 userRepository.save(u);
@@ -82,8 +80,8 @@ public class ComplaintAppealController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ComplaintAppeal rejectComplaintAppeal(@PathVariable(value = "complaintAppealId") String complaintAppealId) {
         try {
-            ComplaintAppeal complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
-            if (complaintAppeal.getChecked() == false) {
+            var complaintAppeal = complaintAppealRepository.findById(new ObjectId(complaintAppealId));
+            if (Boolean.FALSE.equals(complaintAppeal.getChecked())) {
                 complaintAppeal.setChecked(true);
                 complaintAppealRepository.save(complaintAppeal);
                 return complaintAppeal;
@@ -99,15 +97,16 @@ public class ComplaintAppealController {
     @PostMapping(path = "/complaint-appeal/complaint/create", consumes = "application/json")
     public ComplaintAppeal complaintAppealByComplaint(@RequestBody() String body) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
             String email = authentication.getPrincipal().toString();
+            
             List<String> trips = tripRepository.findAll().stream()
                     .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(x -> x.getId())
                     .collect(Collectors.toList());
-            int j = 0;
+            var j = 0;
             List<Complaint> complaints = complaintRepository.findAll();
-            Complaint res = new Complaint();
+            var res = new Complaint();
             if (!complaints.isEmpty()) {
                 complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getEmail().equals(email))
                         .collect(Collectors.toList());
@@ -121,10 +120,10 @@ public class ComplaintAppealController {
                         j++;
                     }
                 } else {
-                    ZonedDateTime dateCreateZone = ZonedDateTime.now();
+                    var dateCreateZone = ZonedDateTime.now();
                     dateCreateZone = dateCreateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
                     List<Trip> tripsList = tripRepository.findByDriverId(user.getId());
-                    Complaint complaint = new Complaint("Baneado por límite de cancelación",
+                    var complaint = new Complaint("Baneado por límite de cancelación",
                             "Usuario baneado por cancelar un viaje una vez se ha superado el límite de cancelación",
                             tripsList.get(tripsList.size() - 1), user, dateCreateZone.toLocalDateTime(),
                             "ALREADY_RESOLVED");
@@ -132,10 +131,10 @@ public class ComplaintAppealController {
                     res = complaint;
                 }
             }
-            JsonNode jsonNode = objectMapper.readTree(body);
+            var jsonNode = objectMapper.readTree(body);
             String content = jsonNode.get("content").asText();
 
-            ComplaintAppeal appeal = new ComplaintAppeal(content, false, res, user);
+            var appeal = new ComplaintAppeal(content, false, res, user);
 
             complaintAppealRepository.save(appeal);
 
@@ -150,23 +149,23 @@ public class ComplaintAppealController {
     @PostMapping(path = "/complaint-appeal/create", consumes = "application/json")
     public ComplaintAppeal complaintAppeal(@RequestBody() String body) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-            JsonNode jsonNode = objectMapper.readTree(body);
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var jsonNode = objectMapper.readTree(body);
             String content = jsonNode.get("content").asText();
             String tripId = jsonNode.get("tripId").asText();
 
-            Trip trip = this.tripRepository.findById(new ObjectId(tripId));
+            var trip = this.tripRepository.findById(new ObjectId(tripId));
 
             if (trip.getDriver().getId().equals(user.getId())) {
-                ZonedDateTime dateCreateZone = ZonedDateTime.now();
+                var dateCreateZone = ZonedDateTime.now();
                 dateCreateZone = dateCreateZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 
-                Complaint complaint = new Complaint("Baneado por límite de cancelación",
+                var complaint = new Complaint("Baneado por límite de cancelación",
                         "Usuario baneado por cancelar un viaje una vez se ha superado el límite de cancelación", trip,
                         user, dateCreateZone.toLocalDateTime(), "ALREADY_RESOLVED");
                 complaintRepository.save(complaint);
-                ComplaintAppeal appeal = new ComplaintAppeal(content, false, complaint, user);
+                var appeal = new ComplaintAppeal(content, false, complaint, user);
 
                 complaintAppealRepository.save(appeal);
 
@@ -183,8 +182,8 @@ public class ComplaintAppealController {
     @GetMapping(path = "/complaint-appeal/driver/check")
     public Boolean complaintAppealCreated() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
             List<ComplaintAppeal> appeals = complaintAppealRepository.findByDriverIdAndChecked(user.getId(), false);
 

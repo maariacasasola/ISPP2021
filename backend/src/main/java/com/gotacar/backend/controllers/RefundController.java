@@ -43,15 +43,15 @@ public class RefundController {
             Stripe.apiKey = stripeApiKey;
             String payment = tripOrder.getPaymentIntent();
             Long amount = 0L;
-            ZonedDateTime dateStartZone = ZonedDateTime.now();
+            var dateStartZone = ZonedDateTime.now();
             dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            LocalDateTime now = dateStartZone.toLocalDateTime();
+            var now = dateStartZone.toLocalDateTime();
             if (now.isBefore(tripOrder.getTrip().getCancelationDateLimit())) {
                 amount = (long) (tripOrder.getPrice() * (90.0f / 100.0f));
-                Refund refund = Refund
+                var refund = Refund
                         .create(RefundCreateParams.builder().setAmount(amount).setPaymentIntent(payment).build());
 
-                User user = tripOrder.getUser();
+                var user = tripOrder.getUser();
 
                 tripOrder.setStatus("REFUNDED");
                 tripOrderRepository.save(tripOrder);
@@ -73,15 +73,15 @@ public class RefundController {
             Stripe.apiKey = stripeApiKey;
 
             String payment = tripOrder.getPaymentIntent();
-            ZonedDateTime dateStartZone = ZonedDateTime.now();
+            var dateStartZone = ZonedDateTime.now();
 
             dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            LocalDateTime now = dateStartZone.toLocalDateTime();
+            var now = dateStartZone.toLocalDateTime();
             if (now.isBefore(tripOrder.getTrip().getCancelationDateLimit())) {
 
-                Refund refund = Refund.create(RefundCreateParams.builder().setPaymentIntent(payment).build());
+                var refund = Refund.create(RefundCreateParams.builder().setPaymentIntent(payment).build());
 
-                User user = tripOrder.getUser();
+                var user = tripOrder.getUser();
 
                 tripOrder.setStatus("REFUNDED");
                 tripOrderRepository.save(tripOrder);
@@ -100,15 +100,15 @@ public class RefundController {
 
         try {
             Stripe.apiKey = stripeApiKey;
-            ZonedDateTime dateStartZone = ZonedDateTime.now();
+            var dateStartZone = ZonedDateTime.now();
             dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            LocalDateTime now = dateStartZone.toLocalDateTime();
+            var now = dateStartZone.toLocalDateTime();
             List<TripOrder> tripOrders = tripOrderRepository.findByTripAndStatus(trip, "PAID");
 
             for (TripOrder tripOrder : tripOrders) {
                 String payment = tripOrder.getPaymentIntent();
-                Refund refund = Refund.create(RefundCreateParams.builder().setPaymentIntent(payment).build());
-                User user = tripOrder.getUser();
+                var refund = Refund.create(RefundCreateParams.builder().setPaymentIntent(payment).build());
+                var user = tripOrder.getUser();
                 tripOrder.setStatus("REFUNDED");
                 tripOrderRepository.save(tripOrder);
                 createPaymentReturn(refund, user);
@@ -116,7 +116,7 @@ public class RefundController {
 
             if (now.isAfter(trip.getCancelationDateLimit())) {
                 LocalDateTime ban = now.plusWeeks(2);
-                User user = trip.getDriver();
+                var user = trip.getDriver();
                 user.setBannedUntil(ban);
                 userRepository.save(user);
             }
@@ -129,7 +129,7 @@ public class RefundController {
 
     public void createPaymentReturn(Refund refund, User user) {
         Integer amount = refund.getAmount().intValue();
-        PaymentReturn paymentReturn = new PaymentReturn(user, amount);
+        var paymentReturn = new PaymentReturn(user, amount);
         paymentReturnRepository.save(paymentReturn);
     }
 

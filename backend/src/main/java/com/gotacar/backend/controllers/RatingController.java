@@ -4,14 +4,12 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.rating.Rating;
 import com.gotacar.backend.models.rating.RatingRepository;
-import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.JsonNode;
 
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
@@ -53,20 +50,20 @@ public class RatingController {
 	@PostMapping(path = "/rate", consumes = "application/json")
 	public Rating rateUser(@RequestBody() String body) {
 		try {
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 			String idUser = objectMapper.readTree(jsonNode.get("to").toString()).asText();
 			String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
 			String tripId = objectMapper.readTree(jsonNode.get("trip_id").toString()).asText();
 			Integer points = objectMapper.readTree(jsonNode.get("points").toString()).asInt();
 
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User from = userRepository.findByEmail(authentication.getPrincipal().toString());
-			User to = userRepository.findById(new ObjectId(idUser));
-			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var from = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var to = userRepository.findById(new ObjectId(idUser));
+			var trip = tripRepository.findById(new ObjectId(tripId));
 			if (points < 1 || points > 5) {
 				throw new IllegalArgumentException("Las valoraciones no están en el rango 1-5");
 			}
-			if (content == "") {
+			if (content.equals("") ) {
 				throw new IllegalArgumentException("El contenido está vacío");
 			}
 			if (userRepository.findById(new ObjectId(idUser)) == null) {
@@ -80,7 +77,7 @@ public class RatingController {
 				throw new IllegalArgumentException("El usuario al que intenta valorar ya lo ha valorado previamente");
 			}
 
-			Rating rate = new Rating(from, to, content, points, trip);
+			var rate = new Rating(from, to, content, points, trip);
 			ratingRepository.save(rate);
 
 			actualizaUsuario(to);
@@ -113,10 +110,10 @@ public class RatingController {
 		try {
 			List<String> res = new ArrayList<>();
 
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User from = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var from = userRepository.findByEmail(authentication.getPrincipal().toString());
 
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 			String idUsers = objectMapper.readTree(jsonNode.get("id_users").toString()).asText();
 			String idTrip = objectMapper.readTree(jsonNode.get("trip_id").toString()).asText();
 
@@ -129,7 +126,7 @@ public class RatingController {
 				return res;
 			} else {
 				String[] users = idUsers.split(",");
-				for (int i = 0; i < users.length; i++) {
+				for (var i = 0; i < users.length; i++) {
 					if (idsUsersRatedByFrom.contains(users[i].trim()))
 						res.add(users[i]);
 				}
@@ -143,9 +140,8 @@ public class RatingController {
 	@GetMapping("/ratings/{idUser}")
 	public List<Rating> getRatings(@PathVariable(value = "idUser") String userId) {
 		try {
-			User user = userRepository.findById(new ObjectId(userId));
-			List<Rating> ratings = ratingRepository.findByTo(user);
-			return ratings;
+			var user = userRepository.findById(new ObjectId(userId));
+			return ratingRepository.findByTo(user);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
