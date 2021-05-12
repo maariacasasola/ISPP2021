@@ -214,7 +214,7 @@ class ComplaintControllerTest {
 
         // Positivo crear un complaint con un usuario que no ha realizado el viaje
         @Test
-        public void CreateComplaintTest() throws Exception {
+        void CreateComplaintTest() throws Exception {
                 trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
                 trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
                 List<TripOrder> listaTripOrders = new ArrayList<>();
@@ -246,7 +246,7 @@ class ComplaintControllerTest {
 
         // Negativo crear un complaint con un usuario que no ha realizado el viaje
         @Test
-        public void CreateComplaintTestWrongUser() throws Exception {
+        void CreateComplaintTestWrongUser() throws Exception {
                 trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
                 trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
                 List<TripOrder> listaTripOrders = new ArrayList<>();
@@ -278,7 +278,7 @@ class ComplaintControllerTest {
 
         // Negativo crear un complaint con la fecha pasada
         @Test
-        public void CreateComplaintTestWrongDate() throws Exception {
+        void CreateComplaintTestWrongDate() throws Exception {
                 List<TripOrder> listaTripOrders = new ArrayList<>();
                 listaTripOrders.add(tripOrder);
                 Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);

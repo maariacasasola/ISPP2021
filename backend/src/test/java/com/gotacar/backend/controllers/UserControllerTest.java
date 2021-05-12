@@ -333,7 +333,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateDataClient() throws Exception {
+	void testUpdateDataClient() throws Exception {
 		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
@@ -363,7 +363,7 @@ class UserControllerTest {
 
 	// NEGATIVO lanza error
 	@Test
-	public void testUpdateDataClientError() throws Exception {
+	void testUpdateDataClientError() throws Exception {
 		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
 		Mockito.when(userRepository.findByEmail(user.getEmail())).thenThrow(new RuntimeException());
@@ -392,7 +392,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateDataDriver() throws Exception {
+	void testUpdateDataDriver() throws Exception {
 		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
@@ -428,7 +428,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateProfilePhoto() throws Exception {
+	void testUpdateProfilePhoto() throws Exception {
 		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
@@ -452,7 +452,7 @@ class UserControllerTest {
 
 	// NEGATIVO Lanza error
 	@Test
-	public void testUpdateProfilePhotoError() throws Exception {
+	void testUpdateProfilePhotoError() throws Exception {
 		// Obtenemos el rol de usuario
 		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
 		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenThrow(new RuntimeException());
@@ -475,7 +475,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateDataNoAuth() throws Exception {
+	void testUpdateDataNoAuth() throws Exception {
 		// creamos el Json
 		JSONObject sampleObject = new JSONObject();
 		sampleObject.appendField("firstName", "Martín");
