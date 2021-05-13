@@ -191,6 +191,23 @@ class TripControllerTest {
 
 		assertThat(contador).isEqualTo(1);
 	}
+	
+	@Test
+	void testFindAllTripsWrong() throws Exception {
+		Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+		Mockito.when(tripRepository.findAll()).thenThrow(new RuntimeException());
+
+		String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc
+				.perform(get("/list_trips").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+	}
 
 	// POSITIVO: Creación de un viaje correctamente
 	@Test
@@ -527,6 +544,24 @@ class TripControllerTest {
 		}
 
 		assertThat(contador).isEqualTo(1);
+	}
+	@Test
+	void testFindTripsByDriverWrong() throws Exception {
+		Mockito.when(userRepository.findByUid(driver.getUid())).thenReturn(driver);
+		Mockito.when(userRepository.findByEmail(driver.getEmail())).thenReturn(driver);
+		Mockito.when(tripRepository.findByDriver(driver)).thenThrow(new RuntimeException());
+
+		String response = mockMvc.perform(post("/user").param("uid", driver.getUid())).andReturn().getResponse()
+				.getContentAsString();
+
+		org.json.JSONObject json = new org.json.JSONObject(response);
+		String token = json.getString("token");
+
+		ResultActions result = mockMvc.perform(
+				get("/list_trips_driver").header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+
 	}
 
 	@Test

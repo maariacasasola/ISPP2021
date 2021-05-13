@@ -51,7 +51,7 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
         query = new Query();
         criteria = new ArrayList<>();
 
-        List<String> ids = viajesPuntoEmpezar.stream().map(x -> x.getId()).collect(Collectors.toList());
+        List<String> ids = viajesPuntoEmpezar.stream().map(Trip::getId).collect(Collectors.toList());
 
         criteria.add(Criteria.where("id").in(ids));
 

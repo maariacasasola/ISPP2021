@@ -99,10 +99,10 @@ public class ComplaintAppealController {
         try {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
             var user = userRepository.findByEmail(authentication.getPrincipal().toString());
-            String email = authentication.getPrincipal().toString();
+            var email = authentication.getPrincipal().toString();
             
             List<String> trips = tripRepository.findAll().stream()
-                    .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(x -> x.getId())
+                    .filter(a -> a.driver.dni.equals(user.dni) && a.driver.bannedUntil != null).map(Trip::getId)
                     .collect(Collectors.toList());
             var j = 0;
             List<Complaint> complaints = complaintRepository.findAll();

@@ -33,6 +33,7 @@ import com.gotacar.backend.controllers.ComplaintControllerTest.TestConfig;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -164,12 +165,116 @@ class ComplaintControllerTest {
                 }
                 assertThat(contador).isEqualTo(1);
         }
+        
+        @Test
+        void ListComplaintsTestWrong() throws Exception {
+                Mockito.when(complaintRepository.findByStatus(complaint.getStatus()))
+                                .thenThrow(new RuntimeException());
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json = new org.json.JSONObject(response);
+
+                // Obtengo el token
+                String token = json.getString("token");
+
+                ResultActions result = mockMvc.perform(get("/complaints/list").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+                
+        }
 
         @Test
         void penalizeTest() throws Exception {
                 Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
                 Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
                 Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("id_complaint", complaint.getId());
+                sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
+
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/penalize").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
+                assertThat(trip.getDriver().getBannedUntil()).isNotNull();
+
+        }
+        
+        @Test
+        void penalizeTestWrong() throws Exception {
+                Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenThrow(new RuntimeException());
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+                Mockito.when(tripRepository.findAll()).thenThrow(new RuntimeException());
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("id_complaint", complaint.getId());
+                sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
+
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/penalize").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
+
+        }
+        
+        @Test
+        void penalizeTestHasComplaints() throws Exception {
+                Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+                Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint));
+                Mockito.when(tripRepository.findByDriverId(driver.getId())).thenReturn(Arrays.asList(trip,trip1));
+
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.appendField("id_complaint", complaint.getId());
+                sampleObject.appendField("date_banned", "2022-06-04T13:30:00.000+00");
+
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/penalize").header("Authorization", token)
+                                .contentType(MediaType.APPLICATION_JSON).content(sampleObject.toJSONString())
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
+                assertThat(complaint.getStatus()).isEqualTo("ACCEPTED");
+                assertThat(trip.getDriver().getBannedUntil()).isNotNull();
+
+        }
+        
+        @Test
+        void penalizeTestDoesNotHaveComplaints() throws Exception {
+                Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenReturn(complaint);
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+                Mockito.when(tripRepository.findAll()).thenReturn(Arrays.asList(trip));
+                Mockito.when(complaintRepository.findAll()).thenReturn(Arrays.asList(complaint1));
+                Mockito.when(tripRepository.findByDriverId(driver.getId())).thenReturn(Arrays.asList(trip));
 
                 JSONObject sampleObject = new JSONObject();
                 sampleObject.appendField("id_complaint", complaint.getId());
@@ -211,10 +316,29 @@ class ComplaintControllerTest {
                 assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
                 assertThat(complaint.getStatus()).isEqualTo("REFUSED");
         }
+        
+        @Test
+        void refuseTestWrong() throws Exception {
+                Mockito.when(complaintRepository.findById(new ObjectId(complaint.getId()))).thenThrow(new RuntimeException());
+                Mockito.when(userRepository.findByUid(admin.getUid())).thenReturn(admin);
+
+                String response = mockMvc.perform(post("/user").param("uid", admin.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+
+                ResultActions result = mockMvc.perform(post("/refuse/{complaintId}", complaint.getId())
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);              
+        }
 
         // Positivo crear un complaint con un usuario que no ha realizado el viaje
         @Test
-        public void CreateComplaintTest() throws Exception {
+        void CreateComplaintTest() throws Exception {
                 trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
                 trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
                 List<TripOrder> listaTripOrders = new ArrayList<>();
@@ -246,7 +370,7 @@ class ComplaintControllerTest {
 
         // Negativo crear un complaint con un usuario que no ha realizado el viaje
         @Test
-        public void CreateComplaintTestWrongUser() throws Exception {
+        void CreateComplaintTestWrongUser() throws Exception {
                 trip.setStartDate(LocalDateTime.of(2020, 05, 24, 16, 15, 00));
                 trip.setEndingDate(LocalDateTime.of(2020, 05, 24, 16, 30, 00));
                 List<TripOrder> listaTripOrders = new ArrayList<>();
@@ -278,7 +402,7 @@ class ComplaintControllerTest {
 
         // Negativo crear un complaint con la fecha pasada
         @Test
-        public void CreateComplaintTestWrongDate() throws Exception {
+        void CreateComplaintTestWrongDate() throws Exception {
                 List<TripOrder> listaTripOrders = new ArrayList<>();
                 listaTripOrders.add(tripOrder);
                 Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
@@ -324,6 +448,25 @@ class ComplaintControllerTest {
                                 .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
 
                 assertThat(result.andReturn().getResponse().getContentAsString()).contains("false");
+        }
+        
+        @Test
+        void checkComplaintTestWrong() throws Exception {
+                Mockito.when(tripRepository.findById(new ObjectId(trip1.getId()))).thenThrow(new RuntimeException());
+                Mockito.when(complaintRepository.findByUserAndTrip(user.getId(), trip1.getId())).thenReturn(list1);
+                Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+                Mockito.when(userRepository.findByUid(user.getUid())).thenReturn(user);
+
+                String response = mockMvc.perform(post("/user").param("uid", user.getUid())).andReturn().getResponse()
+                                .getContentAsString();
+
+                org.json.JSONObject json2 = new org.json.JSONObject(response);
+
+                String token = json2.getString("token");
+                ResultActions result = mockMvc.perform(get("/complaints/check/{tripId}", trip1.getId())
+                                .header("Authorization", token).contentType(MediaType.APPLICATION_JSON));
+
+                assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
         }
 
         // @Test
