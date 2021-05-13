@@ -84,6 +84,14 @@ describe('Testing auth service', () => {
     const result = await service.delete_account();
   });
 
+  it('should update password', async () => {
+    const result = await service.update_password();
+  });
+  
+  it('should update email', async () => {
+    const result = await service.update_email();
+  });
+
   it('does not log users in when the email and password are invalid', async () => {
     const spy = spyOn(service, 'handle_firebase_auth_error');
     const loginResult = await service.sign_in(
@@ -107,6 +115,8 @@ describe('Testing auth service', () => {
     localStorage.setItem('user', JSON.stringify(true));
     expect(service.is_logged_in()).toBeTruthy();
   });
+
+  
 
   it('should check if user is admin', () => {
     localStorage.setItem('user', JSON.stringify(true));
