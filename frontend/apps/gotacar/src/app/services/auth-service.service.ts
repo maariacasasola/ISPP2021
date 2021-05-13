@@ -212,9 +212,9 @@ export class AuthServiceService {
   }
 
   update_password(password: string) {
-    this.afAuth.currentUser.then((u) => {
+    this.afAuth.currentUser.then(async (u) => {
       try {
-        u.updatePassword(password).then(() => {
+        await u.updatePassword(password).then(() => {
         });
       } catch (error) {
         this._snackbar.open('Ha ocurrido un error al actualizar la contraseña', null, {
@@ -225,9 +225,9 @@ export class AuthServiceService {
   }
 
   update_email(email: string) {
-    this.afAuth.currentUser.then((u) => {
+    this.afAuth.currentUser.then(async (u) => {
       try {
-        u.updateEmail(email).then(() => {
+        await u.updateEmail(email).then(() => {
         });
       } catch (error) {
         this._snackbar.open('Ha ocurrido un error al actualizar el email', null, {
