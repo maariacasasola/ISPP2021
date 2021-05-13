@@ -18,7 +18,7 @@ import { AuthServiceService } from '../../../services/auth-service.service';
 import { UsersService } from '../../../services/users.service';
 import { User } from '../../../shared/services/user';
 import { ClientBecomeDriverPageComponent } from './client-become-driver-page.component';
-import { ValidatorService } from 'angular-iban';
+import { AngularIbanModule } from 'angular-iban';
 
 const user = {
   id: '6079a04836360235d5389cc6',
@@ -72,10 +72,10 @@ describe('ClientBecomeDriverPageComponent', () => {
         RouterTestingModule,
         MatDialogModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularIbanModule
       ],
       declarations: [ClientBecomeDriverPageComponent],
-      providers: [ValidatorService,
-        FormBuilder,
+      providers: [FormBuilder,
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
         { provide: MatDialog, useClass: MatDialogMock },
