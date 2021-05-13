@@ -104,19 +104,20 @@
         </div>
         <div class="start-date">
           <mat-form-field appearance="outline">
-            <mat-label>Hora inicio</mat-label>
+            <mat-label>Fecha y hora inicio</mat-label>
             <input
               matInput
               [min]="minDate"
               required
               type="datetime-local"
               formControlName="fechaHoraInicio"
+              placeholder="dd/mm/aaaa hh:mm"
             />
           </mat-form-field>
         </div>
         <div class="end-date">
           <mat-form-field appearance="outline">
-            <mat-label>Hora Fin</mat-label>
+            <mat-label>Fecha y hora fin</mat-label>
             <input
               matInput
               [min]="minDate"

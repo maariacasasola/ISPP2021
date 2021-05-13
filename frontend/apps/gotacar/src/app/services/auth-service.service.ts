@@ -215,7 +215,6 @@ export class AuthServiceService {
     this.afAuth.currentUser.then((u) => {
       try {
         u.updatePassword(password).then(() => {
-          console.log("hola")
         });
       } catch (error) {
         this._snackbar.open('Ha ocurrido un error al actualizar la contraseña', null, {
@@ -229,7 +228,6 @@ export class AuthServiceService {
     this.afAuth.currentUser.then((u) => {
       try {
         u.updateEmail(email).then(() => {
-          console.log("hola")
         });
       } catch (error) {
         this._snackbar.open('Ha ocurrido un error al actualizar el email', null, {

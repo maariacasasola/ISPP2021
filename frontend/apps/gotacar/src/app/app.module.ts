@@ -120,6 +120,7 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -151,6 +152,7 @@ registerLocaleData(localeEs, 'es');
     AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
+    ConfirmDialogComponent,
     AdminTripOrdersListPageComponent,
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
