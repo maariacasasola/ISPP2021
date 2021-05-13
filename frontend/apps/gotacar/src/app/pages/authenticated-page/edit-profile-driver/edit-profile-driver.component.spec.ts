@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { EditProfileDriverComponent } from './edit-profile-driver.component';
+import { AngularIbanModule } from 'angular-iban';
 
 class mockAuthService {
   async get_user_data() {
@@ -36,6 +37,7 @@ class mockAuthService {
 describe('EditProfileComponent', () => {
   let component: EditProfileDriverComponent;
   let fixture: ComponentFixture<EditProfileDriverComponent>;
+  let authService: AuthServiceService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,6 +47,7 @@ describe('EditProfileComponent', () => {
         MatSnackBarModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        AngularIbanModule
       ],
       declarations: [EditProfileDriverComponent],
       providers: [{ provide: AuthServiceService, useClass: mockAuthService }],
@@ -55,11 +58,27 @@ describe('EditProfileComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditProfileDriverComponent);
     component = fixture.componentInstance;
+    authService=TestBed.inject(AuthServiceService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    fixture.detectChanges();
+  });
+
+  it('should throw error while load user data', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    fixture.detectChanges();
+    spyOn(authService, 'get_user_data').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.load_user_data();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('Ha ocurrido un error al recuperar tu perfil de usuario');
+    });
   });
 
   it('should open snackbar', () => {
@@ -94,7 +113,7 @@ describe('EditProfileComponent', () => {
   });
 
   it('should enrrollment date and return true', () => {
-    component.update_form.value.birthdate = new Date(1998, 6, 4);
+    component.user.birthdate = new Date(1998, 6, 4);
     component.update_form.value.enrollment_date = new Date(2030, 6, 4);
     component.checkEnrollmentDateBeforeBirthDate();
     fixture.detectChanges();

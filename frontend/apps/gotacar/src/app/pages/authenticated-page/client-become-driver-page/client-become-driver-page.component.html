@@ -11,7 +11,7 @@
         <mat-error *ngIf="request_form?.get('iban')?.errors?.required"
           >Campo obligatorio</mat-error
         >
-        <mat-error *ngIf="request_form?.get('iban')?.errors?.pattern"
+        <mat-error *ngIf="!request_form?.get('iban')?.errors?.valid"
           >IBAN inválido</mat-error
         >
       </mat-form-field>

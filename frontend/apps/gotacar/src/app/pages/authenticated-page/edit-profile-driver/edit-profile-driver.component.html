@@ -28,7 +28,7 @@
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>attach_email</mat-icon>
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required readonly />
+        <input matInput type="email" formControlName="email" required />
         <mat-error *ngIf="update_form?.get('email')?.errors?.required"
           >Campo obligatorio</mat-error
         >
@@ -36,6 +36,16 @@
           >Email inválido</mat-error
         >
       </mat-form-field>
+      <mat-form-field class="spacing" appearance="outline">
+        <mat-icon matSuffix>vpn_key</mat-icon>
+        <mat-label>Nueva contraseña</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="update_form?.get('password')?.errors?.pattern"
+          >Contraseña 8 caracteres mínimo, mayúsculas, minúsculas, números y
+          caracteres especiales</mat-error
+        >
+      </mat-form-field>
+      
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>account_circle</mat-icon>
         <mat-label>DNI</mat-label>
@@ -51,17 +61,10 @@
         <mat-label>Fecha nacimiento </mat-label>
         <input
           matInput
-          [matDatepicker]="picker"
           formControlName="birthdate"
           required
           readonly
-          (click)="picker.open()"
         />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="update_form?.get('birthdate')?.errors?.required"
-          >Campo obligatorio</mat-error
-        >
       </mat-form-field>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>phone</mat-icon>
@@ -81,7 +84,7 @@
         <mat-error *ngIf="update_form?.get('iban')?.errors?.required"
           >Campo obligatorio</mat-error
         >
-        <mat-error *ngIf="update_form?.get('iban')?.errors?.pattern"
+        <mat-error *ngIf="!update_form?.get('iban')?.errors?.valid"
           >IBAN inválido</mat-error
         >
       </mat-form-field>

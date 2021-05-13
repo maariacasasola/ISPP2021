@@ -50,18 +50,4 @@ describe('EditProfileClientComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should check date and return true', () => {
-    component.update_form.value.birthdate = new Date(1998, 6, 4);
-    component.checkDate();
-    fixture.detectChanges();
-    expect(component.checkDate()).toBe(true);
-  });
-
-  it('should check date and return false', () => {
-    component.update_form.value.birthdate = new Date(2098, 6, 4);
-    component.checkDate();
-    fixture.detectChanges();
-    expect(component.checkDate()).toBe(false);
-  });
 });
