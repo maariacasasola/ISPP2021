@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
 import { EditProfileDriverComponent } from './edit-profile-driver.component';
+import { ValidatorService } from 'angular-iban';
 
 class mockAuthService {
   async get_user_data() {
@@ -48,7 +49,7 @@ describe('EditProfileComponent', () => {
         BrowserAnimationsModule,
       ],
       declarations: [EditProfileDriverComponent],
-      providers: [{ provide: AuthServiceService, useClass: mockAuthService }],
+      providers: [ValidatorService, { provide: AuthServiceService, useClass: mockAuthService }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
