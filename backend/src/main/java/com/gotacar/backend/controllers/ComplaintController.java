@@ -12,6 +12,7 @@ import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
 import com.gotacar.backend.models.complaint.Complaint;
 import com.gotacar.backend.models.complaint.ComplaintRepository;
+import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
@@ -109,7 +110,7 @@ public class ComplaintController {
             var tripComplaint = complaintFinal.getTrip();
             var userBanned = tripComplaint.getDriver();
 
-            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(x -> x.getId())
+            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(Trip::getId)
                     .collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
 
@@ -173,8 +174,7 @@ public class ComplaintController {
                 complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getUid().equals(driverUid))
                         .collect(Collectors.toList());
                 Collections.sort(complaints, (x, y) -> x.creationDate.compareTo(y.creationDate));
-                var c = complaints.get(complaints.size() - 1);
-                return c;
+                return complaints.get(complaints.size() - 1);
             }else{
                 throw new Exception("Este conductor no tiene quejas");
             }

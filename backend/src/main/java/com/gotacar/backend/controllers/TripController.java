@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class TripController {
+	
+	private static final String TIME_ZONE = "Europe/Madrid";
 
 	@Autowired
 	private RefundController refundController;
@@ -87,7 +89,7 @@ public class TripController {
 	public Trip createTrip(@RequestBody() String body) {
 		try {
 			var actualDate = ZonedDateTime.now();
-			actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			actualDate = actualDate.withZoneSameInstant(ZoneId.of(TIME_ZONE));
 
 			var jsonNode = objectMapper.readTree(body);
 
@@ -109,13 +111,13 @@ public class TripController {
 
 			var dateStartZone = ZonedDateTime
 					.parse(objectMapper.readTree(jsonNode.get("start_date").toString()).asText());
-			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of(TIME_ZONE));
 
 			var dateStartJson = dateStartZone.toLocalDateTime();
 
 			var dateEndZone = ZonedDateTime
 					.parse(objectMapper.readTree(jsonNode.get("end_date").toString()).asText());
-			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			dateEndZone = dateEndZone.withZoneSameInstant(ZoneId.of(TIME_ZONE));
 
 			var dateEndJson = dateEndZone.toLocalDateTime();
 
@@ -148,7 +150,7 @@ public class TripController {
 			}
 
 			var dateNowZone = ZonedDateTime.now();
-			dateNowZone = dateNowZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			dateNowZone = dateNowZone.withZoneSameInstant(ZoneId.of(TIME_ZONE));
 
 			// Lanza error si la fecha de salida no dista una hora de la fecha actual
 			if (dateStartJson.isBefore(dateNowZone.toLocalDateTime().plusMinutes(50))) {
@@ -191,7 +193,7 @@ public class TripController {
 			}
 
 			var dateStartZone = ZonedDateTime.now();
-			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+			dateStartZone = dateStartZone.withZoneSameInstant(ZoneId.of(TIME_ZONE));
 			var now = dateStartZone.toLocalDateTime();
 
 			trip1.setCanceled(true);
