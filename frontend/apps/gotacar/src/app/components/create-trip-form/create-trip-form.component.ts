@@ -34,7 +34,10 @@ export class CreateTripFormComponent {
       ],
     ],
     comentarios: ['', Validators.required],
-    price: ['', [Validators.required, Validators.min(0.5), Validators.max(1000)]],
+    price: [
+      '',
+      [Validators.required, Validators.min(0.5), Validators.max(1000)],
+    ],
   });
 
   location_origin: Location;
@@ -90,7 +93,7 @@ export class CreateTripFormComponent {
         this.router.navigate(['home']);
       }
     } catch (error) {
-      this.openSnackBar('Se ha producido un error al crear el viaje')
+      this.openSnackBar('Se ha producido un error al crear el viaje');
     }
   }
 
@@ -103,8 +106,8 @@ export class CreateTripFormComponent {
   checkDates() {
     const startDateHour = moment(this.createTripForm.value.fechaHoraInicio);
     const endingDateHour = moment(this.createTripForm.value.fechaHoraFin);
-    if(!startDateHour.isValid() || !endingDateHour.isValid()){
-      return "Posiblemente haya introducido una fecha muy lejana";
+    if (!startDateHour.isValid() || !endingDateHour.isValid()) {
+      return 'Posiblemente haya introducido una fecha muy lejana';
     }
     if (startDateHour.isAfter(endingDateHour)) {
       return 'La fecha de llegada tiene que ser posterior a la de salida';
@@ -113,7 +116,10 @@ export class CreateTripFormComponent {
     if (moment().isAfter(moment(startDateHour).subtract(1, 'hours'))) {
       return 'Debes crear tu viaje con al menos una hora de antelación';
     }
-    if(moment().add(1,'years').isBefore(startDateHour) || moment().add(1,'years').isBefore(endingDateHour)){
+    if (
+      moment().add(1, 'years').isBefore(startDateHour) ||
+      moment().add(1, 'years').isBefore(endingDateHour)
+    ) {
       return '¿Seguro que quieres reservar a tan largo plazo? No realizamos viajes en el tiempo!';
     }
 
@@ -153,7 +159,9 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      this.openSnackBar("Se ha producido un error al obtener la localización origen");
+      this.openSnackBar(
+        'Se ha producido un error al obtener la localización origen'
+      );
     }
   }
 
@@ -182,7 +190,9 @@ export class CreateTripFormComponent {
         this.openSnackBar('Solo trabajamos con localizaciones de Sevilla');
       }
     } catch (error) {
-      this.openSnackBar("Se ha producido un error al obtener la localización destino");
+      this.openSnackBar(
+        'Se ha producido un error al obtener la localización destino'
+      );
     }
   }
 
@@ -209,7 +219,9 @@ export class CreateTripFormComponent {
     try {
       this.meeting_points = await this._meeting_points_service.get_all_meeting_points();
     } catch (error) {
-      this.openSnackBar("Se ha producido un error al obtener los puntos de encuentro");
+      this.openSnackBar(
+        'Se ha producido un error al obtener los puntos de encuentro'
+      );
     }
   }
 
@@ -259,5 +271,14 @@ export class CreateTripFormComponent {
     this._snackBar.open(message, null, {
       duration: 3000,
     });
+  }
+
+  get_final_price() {
+    const price = this.createTripForm.get('price').value;
+    if (price > 0) {
+      return (price - 0.25 - price * 0.05).toFixed(2);
+    } else {
+      return 0;
+    }
   }
 }

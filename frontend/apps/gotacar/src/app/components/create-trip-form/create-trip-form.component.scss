@@ -26,14 +26,15 @@ mat-form-field {
   gap: 20px 20px;
   grid-template-areas:
     'start-date end-date trip-comments trip-comments'
-    'price places trip-comments trip-comments';
+    'price price-final trip-comments trip-comments'
+    'places places trip-comments trip-comments';
 }
 
 .trip-comments {
-  grid-area: trip-comments; 
+  grid-area: trip-comments;
 }
 
-.comments-input{
+.comments-input {
   max-height: 135px;
 }
 
@@ -46,7 +47,17 @@ mat-form-field {
 }
 
 .price {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   grid-area: price;
+}
+
+.price-final {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-area: price-final;
 }
 
 .places {
