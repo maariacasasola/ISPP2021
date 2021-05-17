@@ -7,6 +7,7 @@ import { AuthServiceService } from '../../../services/auth-service.service';
 import { UsersService } from '../../../services/users.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { ValidatorService } from 'angular-iban';
 @Component({
   selector: 'frontend-client-become-driver-page',
   templateUrl: './client-become-driver-page.component.html',
@@ -22,9 +23,7 @@ export class ClientBecomeDriverPageComponent {
       '',
       [
         Validators.required,
-        Validators.pattern(
-          '([a-zA-Z]{2}\\d{2})(\\d{4})(\\d{4})(\\d{2})(\\d{10})'
-        ),
+        ValidatorService.validateIban,
       ],
     ],
     experience: [
@@ -51,7 +50,7 @@ export class ClientBecomeDriverPageComponent {
     private _authService: AuthServiceService,
     private _userService: UsersService,
     private _my_dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar
   ) {
     this.load_user_data();
   }

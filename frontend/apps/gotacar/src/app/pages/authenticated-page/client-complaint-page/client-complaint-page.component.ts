@@ -42,18 +42,19 @@ export class ClientComplaintPageComponent {
         this._snackbar.open('El viaje aún no se ha realizado', null, {
           duration: 3000,
         });
-      }
-      if (error.error.message === 'Usted no ha realizado este viaje') {
+      }else if (error.error.message === 'Usted no ha realizado este viaje') {
         this._snackbar.open('Usted no ha realizado este viaje', null, {
           duration: 3000,
         });
-      }
-      if (error.error.message === 'Ya te has quejado de este viaje') {
+      }else if (error.error.message === 'Ya te has quejado de este viaje') {
         this._snackbar.open('Usted ya ha realizado una queja', null, {
           duration: 3000,
         });
+      }else{
+        this._snackbar.open('Ha ocurrido un error', null, {
+          duration: 3000,
+        });
       }
-      console.error(error);
     }
   }
 }

@@ -191,7 +191,7 @@ class TripModelTests {
 
                 Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
 
-                assertThat(constraintViolations.isEmpty());
+                assertThat(constraintViolations).isEmpty();
         }
 
         @ParameterizedTest

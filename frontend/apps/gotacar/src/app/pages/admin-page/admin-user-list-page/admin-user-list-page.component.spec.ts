@@ -36,14 +36,14 @@ const USER_OBJECTS = [
     roles: ["ROLE_CLIENT"],
     token: "Ej7NpmWydRWmIg28mIypzsI4BgM2",
     emailVerified: true,
-    timesBanned: 3,}
+    timesBanned: 3,},
 ]
 
 class mockUsersService {
     public delete_penalized_account() {
         return of(USER_OBJECT);
     }
-    public get_all_users(): Observable<User[]> {
+    public get_all_users() {
         return of(USER_OBJECTS);
     }
 }
@@ -73,6 +73,7 @@ describe('AdminUserListPageComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
+        // fixture.detectChanges();
     });
 
     it('should list users', () => {
@@ -94,5 +95,19 @@ describe('AdminUserListPageComponent', () => {
         expect(component.get_profile_photo(USER_OBJECTS[0])).toBe(
             USER_OBJECTS[0].profilePhoto
         );
+    });
+
+    it('should redirect to user ratings', () => {
+        const navigateSpy = spyOn(router, 'navigate');
+        component.go_to_user_ratings(USER_OBJECT.id);
+        // fixture.detectChanges();
+        expect(navigateSpy).toHaveBeenCalledWith(['/', 'admin', 'user-ratings', USER_OBJECT.id]);
+    });
+
+    it('should redirect to alert user ', () => {
+        const navigateSpy = spyOn(router, 'navigate');
+        component.go_to_alert_user(USER_OBJECT.email);
+        // fixture.detectChanges();
+        expect(navigateSpy).toHaveBeenCalledWith(['admin', 'alert', USER_OBJECT.email]);
     });
 })

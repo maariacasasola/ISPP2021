@@ -28,7 +28,7 @@ export class AdminAlertPageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.form = this.formBuilder.group({
       message: this.message,

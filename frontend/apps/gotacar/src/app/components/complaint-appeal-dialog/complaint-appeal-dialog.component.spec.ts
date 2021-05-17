@@ -13,35 +13,36 @@ import { of } from 'rxjs';
 import { ComplaintAppealsService } from '../../services/complaint-appeals.service';
 import { ComplaintAppealDialogComponent } from './complaint-appeal-dialog.component';
 
+class mockComplaintsService {
+  public create_complaint_appeal_complaint() {
+    return of({
+      driver: {},
+      complaint: {},
+      content:
+        'El retraso fue causado por necesidades personales, suelo ser puntual',
+      checked: false,
+    });
+  }
+
+  public create_complaint_appeal_banned() {
+    return of({
+      driver: {},
+      complaint: {},
+      content:
+        'El retraso fue causado por necesidades personales, suelo ser puntual',
+      checked: false,
+    });
+  }
+}
+
+const mockDialogRef = {
+  close: jasmine.createSpy('close'),
+};
+
 describe('ComplaintAppealDialogComponent', () => {
   let component: ComplaintAppealDialogComponent;
   let fixture: ComponentFixture<ComplaintAppealDialogComponent>;
-
-  class mockComplaintsService {
-    public create_complaint_appeal_complaint() {
-      return of({
-        driver: {},
-        complaint: {},
-        content:
-          'El retraso fue causado por necesidades personales, suelo ser puntual',
-        checked: false,
-      });
-    }
-
-    public create_complaint_appeal_banned() {
-      return of({
-        driver: {},
-        complaint: {},
-        content:
-          'El retraso fue causado por necesidades personales, suelo ser puntual',
-        checked: false,
-      });
-    }
-  }
-
-  const mockDialogRef = {
-    close: jasmine.createSpy('close'),
-  };
+  let appealsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -65,17 +66,45 @@ describe('ComplaintAppealDialogComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComplaintAppealDialogComponent);
     component = fixture.componentInstance;
+    appealsService = TestBed.inject(ComplaintAppealsService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    fixture.detectChanges();
   });
 
   it('#close() should close dialog', () => {
     component.close();
+    fixture.detectChanges();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
+
+  // it('should create appeal without ', () => {
+  //   component.data = {tripId: null};
+  //   spyOn(appealsService, 'create_complaint_appeal_complaint');
+  //   const spy = spyOn(component, 'show_correct_appeal_snackbar');
+  //   component.create_complaint_appeal();
+  //   fixture.detectChanges();
+  //   fixture.whenStable().then(() => {
+  //     fixture.detectChanges();
+  //     expect(spy).toHaveBeenCalled();
+  //   });
+  // });
+
+  // it('should create appeal without ', () => {
+  //     spyOn(appealsService, 'create_complaint_appeal_complaint').and.throwError('error');
+  //     const spy = spyOn(component, '_snackbar');
+  //     component.create_complaint_appeal();
+  //     fixture.detectChanges();
+  //     fixture.whenStable().then(() => {
+  //       fixture.detectChanges();
+  //       expect(spy).toHaveBeenCalledWith('Ha ocurrido un error', null, {
+  //         duration: 3000,
+  //       });
+  //     });
+  //   });
 
   it('should open snackbar', () => {
     const spy = spyOn(component._snackbar, 'open');

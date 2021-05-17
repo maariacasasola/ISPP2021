@@ -1,21 +1,19 @@
 import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { MeetingPointService } from '../../../services/meeting-point.service';
 import { MeetingPoint } from '../../../shared/services/meeting-point';
 import { AdminMeetingPointsPageComponent } from './admin-meeting-points-page.component';
 
-const newMeetingPoint:MeetingPoint = {
+const newMeetingPoint: MeetingPoint = {
   name: 'name',
-  address:'address',
+  address: 'address',
   lat: 37.235,
-  lng: -5.4634 ,
+  lng: -5.4634,
 };
 class mockMeetingPointService {
   get_all_meeting_points() {
@@ -25,15 +23,14 @@ class mockMeetingPointService {
     return true;
   }
   post_meeting_point(meetingPoint) {
-    
+
     return of(newMeetingPoint);
   }
 }
 describe('AdminDriverRequestsPageComponent', () => {
   let component: AdminMeetingPointsPageComponent;
   let fixture: ComponentFixture<AdminMeetingPointsPageComponent>;
-  let meetingPointService : MeetingPointService;
-  
+  let meetingPointService: MeetingPointService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -64,8 +61,11 @@ describe('AdminDriverRequestsPageComponent', () => {
   it('Should reset data when click button', () => {
     spyOn(component, 'toggleDisplayCreation');
     let button = fixture.debugElement.nativeElement.querySelector('button');
+    component.toggleDisplayCreation();
+    fixture.detectChanges();
     button.click();
     fixture.whenStable().then(() => {
+      fixture.detectChanges();
       expect(component.toggleDisplayCreation).toHaveBeenCalled();
     });
   });
@@ -88,16 +88,28 @@ describe('AdminDriverRequestsPageComponent', () => {
     fixture.detectChanges();
     expect(component.new_meeting_point.valid).toBeFalsy();
   });
-  it('Should submit data',()=>{
-    const spy = spyOn(meetingPointService,'post_meeting_point');
+  it('Should submit data', () => {
+    const spy = spyOn(meetingPointService, 'post_meeting_point');
     component.onSubmit();
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
   });
-  it('Should delete marker',()=>{
-    const spy = spyOn(mockMeetingPointService.prototype,'get_all_meeting_points');
+  it('Should delete marker', () => {
+    const spy = spyOn(mockMeetingPointService.prototype, 'get_all_meeting_points');
     component.deleteMarker('infoPosition');
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should throw error snackbar trying to get meeting points', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    fixture.detectChanges();
+    spyOn(meetingPointService, 'get_all_meeting_points').and.throwError('error');
+    fixture.detectChanges();
+    component.get_all_meeting_points();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('Se ha producido un error al obtener los puntos de encuentro');
+    });
   });
 });

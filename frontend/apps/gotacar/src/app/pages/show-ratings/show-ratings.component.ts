@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 
 @Component({
@@ -11,10 +11,9 @@ import { UsersService } from '../../services/users.service';
 export class ShowRatingsComponent {
   ratingsComments;
   constructor(
-    private _router: Router,
     private _route: ActivatedRoute,
     private _userService: UsersService,
-    private _snackBar: MatSnackBar,
+    public _snackBar: MatSnackBar,
   ) {
     this.load_comments();
   }

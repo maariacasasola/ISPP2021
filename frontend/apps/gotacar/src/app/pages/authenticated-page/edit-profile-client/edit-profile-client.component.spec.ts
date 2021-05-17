@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AuthServiceService } from '../../../services/auth-service.service';
-import { SignUpComponent } from '../../sign-up/sign-up.component';
 
 import { EditProfileClientComponent } from './edit-profile-client.component';
 

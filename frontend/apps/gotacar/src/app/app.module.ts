@@ -1,6 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire';
+import { AngularIbanModule } from 'angular-iban';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -119,6 +120,7 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { CancelationPolicyComponent } from './components/cancelation-policy/cancelation-policy.component';
 import { AdminStatsPageComponent } from './pages/admin-page/admin-stats-page/admin-stats-page.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -150,6 +152,7 @@ registerLocaleData(localeEs, 'es');
     AdminUserListPageComponent,
     ConvertCentToEurPipe,
     AccessForbiddenDialogComponent,
+    ConfirmDialogComponent,
     AdminTripOrdersListPageComponent,
     CreateTripFormComponent,
     DriverCreateTripPageComponent,
@@ -231,6 +234,7 @@ registerLocaleData(localeEs, 'es');
     FlexLayoutModule,
     NgxSliderModule,
     BrowserAnimationsModule,
+    AngularIbanModule,
   ],
   providers: [
     AuthenticatedGuard,

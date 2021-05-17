@@ -2,15 +2,24 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MeetingPointService } from '../../services/meeting-point.service';
 
 import { SearchFormComponent } from './search-form.component';
+
+class mockMeetingPointService {
+  get_all_meeting_points() {
+    return [];
+  }
+}
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
   let fixture: ComponentFixture<SearchFormComponent>;
-
+  let meeting_points_service;
   let routerSpy = { navigate: jasmine.createSpy('navigate') };
 
   beforeEach(async () => {
@@ -19,16 +28,20 @@ describe('SearchFormComponent', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         RouterTestingModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
       ],
       declarations: [SearchFormComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: Router, useValue: routerSpy }],
+      providers: [{ provide: Router, useValue: routerSpy },
+      { provide: MeetingPointService, useClass: mockMeetingPointService },],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchFormComponent);
     component = fixture.componentInstance;
+    meeting_points_service = TestBed.inject(MeetingPointService);
     fixture.detectChanges();
   });
 
@@ -173,6 +186,23 @@ describe('SearchFormComponent', () => {
       "queryParams": { "date": "fecha", "origin": "Origen", "places": 3, "target": "Target" }
     }
     );
+  });
 
+  it('should throw error while getting meeting points', () => {
+    const spy = spyOn(component._snackbar, 'open');
+    fixture.detectChanges();
+    spyOn(meeting_points_service, 'get_all_meeting_points').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.get_all_meeting_points();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(
+        'Ha ocurrido un error al cargar los puntos de encuentro', null, {
+        duration: 3000,
+      }
+      );
+    });
   });
 });

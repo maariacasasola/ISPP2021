@@ -1,13 +1,12 @@
 package com.gotacar.backend.controllers;
 
-import java.time.LocalDateTime;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -22,7 +21,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,15 +60,15 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Complaint fileComplaint(@RequestBody String body) {
         try {
-            ZonedDateTime actualDate = ZonedDateTime.now();
+            var actualDate = ZonedDateTime.now();
             actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            JsonNode jsonNode = objectMapper.readTree(body);
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var jsonNode = objectMapper.readTree(body);
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
             String tripId = objectMapper.readTree(jsonNode.get("tripId").toString()).asText();
-            ObjectId tripObjectId = new ObjectId(tripId);
-            Trip trip = tripRepository.findById(tripObjectId);
+            var tripObjectId = new ObjectId(tripId);
+            var trip = tripRepository.findById(tripObjectId);
 
             List<TripOrder> lto = tripOrderRepository.userHasMadeTrip(user.getId(), tripId);
 
@@ -79,7 +77,7 @@ public class ComplaintController {
                     String content = objectMapper.readTree(jsonNode.get("content").toString()).asText();
                     String title = objectMapper.readTree(jsonNode.get("title").toString()).asText();
 
-                    Complaint complaint = new Complaint(title, content, trip, user, actualDate.toLocalDateTime());
+                    var complaint = new Complaint(title, content, trip, user, actualDate.toLocalDateTime());
 
                     this.complaintRepository.save(complaint);
 
@@ -100,23 +98,23 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User penalize(@RequestBody String body) {
         try {
-            JsonNode jsonNode = objectMapper.readTree(body);
+            var jsonNode = objectMapper.readTree(body);
 
-            ZonedDateTime dateBannedJson = ZonedDateTime
+            var dateBannedJson = ZonedDateTime
                     .parse(objectMapper.readTree(jsonNode.get("date_banned").toString()).asText());
             dateBannedJson = dateBannedJson.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
-            LocalDateTime dateBanned = dateBannedJson.toLocalDateTime();
+            var dateBanned = dateBannedJson.toLocalDateTime();
 
             String idComplaint = objectMapper.readTree(jsonNode.get("id_complaint").toString()).asText();
-            Complaint complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
-            Trip tripComplaint = complaintFinal.getTrip();
-            User userBanned = tripComplaint.getDriver();
+            var complaintFinal = complaintRepository.findById(new ObjectId(idComplaint));
+            var tripComplaint = complaintFinal.getTrip();
+            var userBanned = tripComplaint.getDriver();
 
-            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(x -> x.getId())
+            List<String> tripsIds = tripRepository.findByDriverId(userBanned.getId()).stream().map(Trip::getId)
                     .collect(Collectors.toList());
             List<Complaint> complaintAll = complaintRepository.findAll();
 
-            int j = 0;
+            var j = 0;
             while (j < complaintAll.size()) {
                 if (tripsIds.contains(complaintAll.get(j).getTrip().getId())) {
                     complaintAll.get(j).setStatus("ALREADY_RESOLVED");
@@ -139,7 +137,7 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Complaint refusedComplaint(@PathVariable(value = "complaintId") String complaintId) {
         try {
-            Complaint complaintFinal = complaintRepository.findById(new ObjectId(complaintId));
+            var complaintFinal = complaintRepository.findById(new ObjectId(complaintId));
 
             complaintFinal.setStatus("REFUSED");
             complaintRepository.save(complaintFinal);
@@ -156,10 +154,10 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Boolean checkComplaint(@PathVariable(value = "tripId") String tripId) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-            Trip trip = tripRepository.findById(new ObjectId(tripId));
-            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).size() == 0;
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getPrincipal().toString());
+            var trip = tripRepository.findById(new ObjectId(tripId));
+            return complaintRepository.findByUserAndTrip(user.getId(), trip.getId()).isEmpty();
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -176,8 +174,7 @@ public class ComplaintController {
                 complaints = complaints.stream().filter(c -> c.getTrip().getDriver().getUid().equals(driverUid))
                         .collect(Collectors.toList());
                 Collections.sort(complaints, (x, y) -> x.creationDate.compareTo(y.creationDate));
-                Complaint c = complaints.get(complaints.size() - 1);
-                return c;
+                return complaints.get(complaints.size() - 1);
             }else{
                 throw new Exception("Este conductor no tiene quejas");
             }

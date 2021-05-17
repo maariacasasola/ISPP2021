@@ -24,7 +24,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,6 +43,9 @@ import io.jsonwebtoken.security.Keys;
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
+	
+	private static final String ROLE_CLIENT = "ROLE_CLIENT";
+	private static final String ROLE_DRIVER = "ROLE_DRIVER";
 
 	@Autowired
 	private UserRepository userRepository;
@@ -59,12 +61,12 @@ public class UserController {
 	@PostMapping("user")
 	public TokenResponse login(@RequestParam("uid") String userId) {
 		try {
-			User user = userRepository.findByUid(userId);
+			var user = userRepository.findByUid(userId);
 			String token = getJWTToken(user);
 			// Si la fecha de baneo es posterior a la actual entonces se establece en el
 			// Token
 			if (user.getBannedUntil() != null) {
-				ZonedDateTime actualDate = ZonedDateTime.now();
+				var actualDate = ZonedDateTime.now();
 				actualDate = actualDate.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
 				if (user.getBannedUntil().isBefore(actualDate.toLocalDateTime())) {
 					user.setBannedUntil(null);
@@ -81,13 +83,13 @@ public class UserController {
 
 	@GetMapping("current_user")
 	public User currentUser() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		var authentication = SecurityContextHolder.getContext().getAuthentication();
 		return userRepository.findByEmail(authentication.getPrincipal().toString());
 	}
 
 	private String getJWTToken(User user) {
-		String secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
-		String roles = String.join(",", user.getRoles());
+		var secretKey = "MiSecreto102993@asdfssGotacar1999ASSSS";
+		var roles = String.join(",", user.getRoles());
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 		String token = Jwts.builder().setId("softtekJWT").setSubject(user.getEmail())
@@ -102,8 +104,8 @@ public class UserController {
 	@PreAuthorize("!hasRole('ROLE_ADMIN') && !hasRole('ROLE_CLIENT')")
 	public User register(@RequestBody String body) {
 		try {
-			JsonNode jsonNode = objectMapper.readTree(body);
-			User user = new User();
+			var jsonNode = objectMapper.readTree(body);
+			var user = new User();
 
 			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
 			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
@@ -111,9 +113,9 @@ public class UserController {
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
 			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
-			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+			var birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
 			List<String> roles = new ArrayList<>();
-			roles.add("ROLE_CLIENT");
+			roles.add(ROLE_CLIENT);
 
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
@@ -136,15 +138,15 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public User editUser(@RequestBody String body) {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var user = userRepository.findByEmail(authentication.getPrincipal().toString());
 
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 
 			String firstName = objectMapper.readTree(jsonNode.get("firstName").toString()).asText();
 			String lastName = objectMapper.readTree(jsonNode.get("lastName").toString()).asText();
 			String email = objectMapper.readTree(jsonNode.get("email").toString()).asText();
-			LocalDate birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
+			var birthdate = LocalDate.parse(objectMapper.readTree(jsonNode.get("birthdate").toString()).asText());
 			String dni = objectMapper.readTree(jsonNode.get("dni").toString()).asText();
 			String phone = objectMapper.readTree(jsonNode.get("phone").toString()).asText();
 
@@ -155,12 +157,12 @@ public class UserController {
 			user.setDni(dni);
 			user.setPhone(phone);
 			// editar los datos del coche si es un conductor
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				String iban = objectMapper.readTree(jsonNode.get("iban").toString()).asText();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("carData").toString());
-				LocalDate enrollmentDate = LocalDate
+				var enrollmentDate = LocalDate
 						.parse(objectMapper.readTree(carDataJson.get("enrollmentDate").toString()).asText());
-				CarData carData = new CarData(carDataJson.get("carPlate").asText(), enrollmentDate,
+				var carData = new CarData(carDataJson.get("carPlate").asText(), enrollmentDate,
 						carDataJson.get("model").asText(), carDataJson.get("color").asText());
 				user.setCarData(carData);
 				user.setIban(iban);
@@ -178,9 +180,9 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public User updateUserProfilePhoto(@RequestBody String body) {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var jsonNode = objectMapper.readTree(body);
 			String profilePhoto = objectMapper.readTree(jsonNode.get("profilePhoto").toString()).asText();
 			user.setProfilePhoto(profilePhoto);
 			userRepository.save(user);
@@ -194,7 +196,7 @@ public class UserController {
 	@PostMapping("/driver/create")
 	public User requestConversionToDriver(@RequestBody() String body) {
 		try {
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 			String id = objectMapper.readTree(jsonNode.get("id").toString()).asText();
 			User u = this.userRepository.findById(new ObjectId(id));
 			if (u.getBannedUntil() == null) {
@@ -203,10 +205,10 @@ public class UserController {
 				Integer experience = objectMapper.readTree(jsonNode.get("experience").toString()).asInt();
 				JsonNode carDataJson = objectMapper.readTree(jsonNode.get("car_data").toString());
 
-				LocalDate enrollmentDate = LocalDate
+				var enrollmentDate = LocalDate
 						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
 
-				CarData carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
+				var carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
 						carDataJson.get("model").asText(), carDataJson.get("color").asText());
 
 				u.setIban(iban);
@@ -229,11 +231,11 @@ public class UserController {
 	@PostMapping("/driver/update")
 	public User convertToDriver(@RequestBody() String body) {
 		try {
-			JsonNode jsonNode = objectMapper.readTree(body);
+			var jsonNode = objectMapper.readTree(body);
 			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
 			User u = this.userRepository.findByUid(uid);
 			u.setDriverStatus("ACCEPTED");
-			u.getRoles().add("ROLE_DRIVER");
+			u.getRoles().add(ROLE_DRIVER);
 			this.userRepository.save(u);
 
 			return u;
@@ -246,7 +248,7 @@ public class UserController {
 	@GetMapping("/enrolled-user/list")
 	public List<User> listEnrrolledUsers() {
 		try {
-			return userRepository.findByRolesContaining("ROLE_CLIENT");
+			return userRepository.findByRolesContaining(ROLE_CLIENT);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
@@ -268,7 +270,7 @@ public class UserController {
 	public List<User> listUsersTrip(@PathVariable(value = "tripId") String tripId) {
 		try {
 			List<User> lista = new ArrayList<>();
-			Trip trip = tripRepository.findById(new ObjectId(tripId));
+			var trip = tripRepository.findById(new ObjectId(tripId));
 			List<TripOrder> tripOrders = tripOrderRepository.findByTrip(trip);
 			tripOrders = tripOrders.stream().filter(tripOrder -> tripOrder.getStatus().equals("PAID"))
 					.collect(Collectors.toList());
@@ -286,14 +288,14 @@ public class UserController {
 	@PostMapping("/delete-account")
 	public void deleteAccount() {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			User user = userRepository.findByEmail(authentication.getPrincipal().toString());
+			var authentication = SecurityContextHolder.getContext().getAuthentication();
+			var user = userRepository.findByEmail(authentication.getPrincipal().toString());
 			List<TripOrder> tripOrdersPr = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
 			List<TripOrder> tripOrdersPa = tripOrderRepository.findByUserAndStatus(user, "PAID");
 			if (!tripOrdersPr.isEmpty() || !tripOrdersPa.isEmpty()) {
 				throw new Exception("El usuario tiene reservas pendientes");
 			}
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				if (!trips.isEmpty()) {
 					throw new Exception("El usuario tiene viajes pendientes");
@@ -309,14 +311,14 @@ public class UserController {
 	@PostMapping("/delete-penalized-account/{userId}")
 	public void deletePenalizedAccount(@PathVariable(value = "userId") String userId) {
 		try {
-			User user = userRepository.findById(new ObjectId(userId));
+			var user = userRepository.findById(new ObjectId(userId));
 			List<TripOrder> tripOrders = tripOrderRepository.findByUserAndStatus(user, "PROCCESSING");
-			if (user.getRoles().contains("ROLE_CLIENT")) {
+			if (user.getRoles().contains(ROLE_CLIENT)) {
 				if (!tripOrders.isEmpty()) {
 					throw new Exception("El usuario tiene reservas pendientes");
 				}
 			}
-			if (user.getRoles().contains("ROLE_DRIVER")) {
+			if (user.getRoles().contains(ROLE_DRIVER)) {
 				List<Trip> trips = tripRepository.findByDriverAndCanceled(user, false);
 				if (!trips.isEmpty()) {
 					throw new Exception("El usuario tiene viajes pendientes");

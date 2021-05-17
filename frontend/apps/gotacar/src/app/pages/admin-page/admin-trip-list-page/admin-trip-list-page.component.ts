@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TripsService } from '../../../services/trips.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { TripsService } from '../../../services/trips.service';
 export class AdminTripListPageComponent {
   trips = [];
 
-  constructor(private _trips_service: TripsService) {
+  constructor(private _trips_service: TripsService, public _snackbar: MatSnackBar) {
     this.load_trips();
   }
 
@@ -17,7 +18,8 @@ export class AdminTripListPageComponent {
     try {
       this.trips = await this._trips_service.get_all_trips();
     } catch (error) {
-      console.error(error);
+    this._snackbar.open("Se ha producido un error al cargar los viajes", null, {
+      duration: 5000});
     }
   }
 

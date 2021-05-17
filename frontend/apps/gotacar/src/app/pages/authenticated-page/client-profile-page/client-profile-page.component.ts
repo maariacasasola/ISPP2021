@@ -5,6 +5,7 @@ import { ImageUploadDialogComponent } from '../../../components/image-upload-dia
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '../../../services/users.service';
+import { ConfirmDialogComponent } from '../../../components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'frontend-client-profile-page',
@@ -19,7 +20,8 @@ export class ClientProfilePageComponent {
     private _user_service: UsersService,
     public router: Router,
     private _my_dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar,
+    private _confirm_dialog: MatDialog
   ) {
     this.load_user_data();
   }
@@ -44,9 +46,13 @@ export class ClientProfilePageComponent {
 
   async deleteAccount() {
     try {
-      await this._user_service.delete_account();
-      this._authService.delete_account();
-      this._authService.sign_out();
+      const confirm_dialog = this._confirm_dialog.open(ConfirmDialogComponent);
+      const response = await confirm_dialog.afterClosed().toPromise();
+      if (response) {
+        await this._user_service.delete_account();
+        await this._authService.delete_account();
+        this._authService.sign_out();
+      }
     } catch (error) {
       if (error.error.message === 'El usuario tiene reservas pendientes') {
         this._snackBar.open('La cuenta no puede ser borrada, tienes reservas pendientes', null, {

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +31,7 @@ class mockTripsService {
 
 class mockComplaintAppealService {
   public can_complaint_appeal() {
-    return of(true);
+    return of(false);
   }
 }
 
@@ -47,10 +47,8 @@ describe('CancelTripDialogComponent', () => {
   let component: CancelTripDialogComponent;
   let fixture: ComponentFixture<CancelTripDialogComponent>;
   let tripsService: TripsService;
-  let authService: AuthServiceService;
   let appealsService: ComplaintAppealsService;
   let dialog: any;
-
 
   const mockDialogRef = {
     close: jasmine.createSpy('close'),
@@ -104,6 +102,20 @@ describe('CancelTripDialogComponent', () => {
     expect(spy).toHaveBeenCalledWith('hola', null, {
       duration: 5000,
       panelClass: ['blue-snackbar'],
+    });
+  });
+
+  it('should throw error while cancel trip', () => {
+    const spy = spyOn(component, 'openSnackBar');
+    fixture.detectChanges();
+    spyOn(tripsService, 'cancel_driver_trip').and.throwError(
+      'error'
+    );
+    fixture.detectChanges();
+    component.continue();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith('Ha ocurrido un error');
     });
   });
 });

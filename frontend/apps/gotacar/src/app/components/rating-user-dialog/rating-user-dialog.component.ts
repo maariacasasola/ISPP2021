@@ -17,7 +17,7 @@ export class RatingUserDialogComponent {
     content: ['', Validators.required],
   });
   constructor(@Inject(MAT_DIALOG_DATA) data,
-    private _dialogRef: MatDialogRef<RatingUserDialogComponent>,
+    public _dialogRef: MatDialogRef<RatingUserDialogComponent>,
     public _snackBar: MatSnackBar, private _form_builder: FormBuilder,) {
     this.to = data.to;
     this.idTrip = data.trip_id;
