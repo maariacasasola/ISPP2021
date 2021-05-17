@@ -50,7 +50,7 @@ public class PaymentController {
     @Value("${STRIPE_API_KEY:sk_test_51I0FjpJ65m70MT01alImpvRuOOYBczw0EVZmF2oMlA5WbWNjOkqbIz0ty1IZXWNnAWe3F4xnozb8I4g3I4JDfJd500W5tuKdUh}")
     private String stripeApiKey;
 
-    @Value("${STRIPE_WEBHOOK_SECRET:whsec_KSifoaJEJjt7CGRh1cjSFKNCVMxmY7eR}")
+    @Value("${STRIPE_WEBHOOK_SECRET:whsec_jkqN1GOQ3oDY9N8bMuVkcaZ1nYWZhE7v}")
     private String stripeWebhookSecret;
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
