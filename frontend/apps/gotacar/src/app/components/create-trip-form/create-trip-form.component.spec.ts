@@ -13,19 +13,16 @@ import { MeetingPointService } from '../../services/meeting-point.service';
 import { GeocoderServiceService } from '../../services/geocoder-service.service';
 import { Router } from '@angular/router';
 
-const meeting_points = []
+const meeting_points = [];
 
 class mockTripService {
-  public create_trip() {
-
-  }
+  public create_trip() {}
 }
 
 class mockMeetingService {
   get_all_meeting_points() {
     return of(meeting_points);
   }
-
 }
 
 class mockGeoService {
@@ -120,11 +117,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     expect(spy).toBeCalledTimes(1);
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('El origen y el destino del viaje no pueden coincidir', null, {
-        duration: 3000,
-      });
+      expect(spy).toHaveBeenCalledWith(
+        'El origen y el destino del viaje no pueden coincidir',
+        null,
+        {
+          duration: 3000,
+        }
+      );
     });
-
   });
 
   it('should be valid start date and end date', () => {
@@ -160,9 +160,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
       price: 200,
     });
     fixture.detectChanges();
-    spyOn(tripService, 'create_trip').and.throwError(
-      'error'
-    );
+    spyOn(tripService, 'create_trip').and.throwError('error');
     fixture.detectChanges();
     component.submit();
     fixture.whenStable().then(() => {
@@ -183,7 +181,6 @@ describe('MeetingPointSearchbarResultComponent', () => {
     component.selected_meeting_point_origin(meeting_point);
     fixture.detectChanges();
     expect(component.location_origin.name).toBe('name');
-
   });
 
   it('should select target meeting point', () => {
@@ -228,7 +225,6 @@ describe('MeetingPointSearchbarResultComponent', () => {
   });
 
   it('should get an error when you try to create a trip without an hour in advance', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -246,14 +242,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('Debes crear tu viaje con al menos una hora de antelación');
+    expect(component.checkDates()).toBe(
+      'Debes crear tu viaje con al menos una hora de antelación'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
 
   it('should get an error when you try to create a trip with a distance date', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -271,14 +267,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('Posiblemente haya introducido una fecha muy lejana');
+    expect(component.checkDates()).toBe(
+      'Posiblemente haya introducido una fecha muy lejana'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
 
   it('should get an error when you try to create a trip more than a year away', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -296,15 +292,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('¿Seguro que quieres reservar a tan largo plazo? No realizamos viajes en el tiempo!');
+    expect(component.checkDates()).toBe(
+      '¿Seguro que quieres reservar a tan largo plazo? No realizamos viajes en el tiempo!'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
 
-
   it('hould get an error when you try to create the end time before the departure time', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -322,14 +317,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('La fecha de llegada tiene que ser posterior a la de salida');
+    expect(component.checkDates()).toBe(
+      'La fecha de llegada tiene que ser posterior a la de salida'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
 
   it('should get an error when you create a very long trip', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -347,14 +342,14 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('¿Seguro que tardas tanto en llegar a tu destino? Comprueba bien la hora de llegada');
+    expect(component.checkDates()).toBe(
+      '¿Seguro que tardas tanto en llegar a tu destino? Comprueba bien la hora de llegada'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
 
   it('should get an error when you dont create a trip with the minimum duration', () => {
-
     const spy = spyOn(component._snackBar, 'open');
 
     component.createTripForm.setValue({
@@ -372,12 +367,12 @@ describe('MeetingPointSearchbarResultComponent', () => {
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeTruthy();
     fixture.detectChanges();
-    expect(component.checkDates()).toBe('¡Correr al volante es peligroso! Deberías tardar más en llegar a tu destino');
+    expect(component.checkDates()).toBe(
+      '¡Correr al volante es peligroso! Deberías tardar más en llegar a tu destino'
+    );
     fixture.detectChanges();
     expect(spy).toBeCalledTimes(1);
-
   });
-
 
   it('should mark invalid form', () => {
     component.createTripForm.setValue({
@@ -394,11 +389,10 @@ describe('MeetingPointSearchbarResultComponent', () => {
     component.submit();
     fixture.detectChanges();
     expect(component.createTripForm.valid).toBeFalsy();
-
   });
 
   it('should return correct origin data', () => {
-    const spy_location=spyOn(geoService, 'get_location_from_address');
+    const spy_location = spyOn(geoService, 'get_location_from_address');
     const spy = spyOn(component._snackBar, 'open');
     component.createTripForm.setValue({
       origen: 'Calle canal, Sevilla',
@@ -419,9 +413,7 @@ describe('MeetingPointSearchbarResultComponent', () => {
 
   it('should return an error triying to get origin location from address', () => {
     const spy = spyOn(component._snackBar, 'open');
-    spyOn(geoService, 'get_location_from_address').and.throwError(
-      'error'
-    );
+    spyOn(geoService, 'get_location_from_address').and.throwError('error');
 
     component.createTripForm.setValue({
       origen: 'Calle canal',
@@ -437,18 +429,19 @@ describe('MeetingPointSearchbarResultComponent', () => {
     component.get_origin();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('Se ha producido un error al obtener la localización origen', null, {
-        duration: 3000,
-      });
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al obtener la localización origen',
+        null,
+        {
+          duration: 3000,
+        }
+      );
     });
   });
 
   it('should return an error triying to get target location from address', () => {
-
     const spy = spyOn(component._snackBar, 'open');
-    spyOn(geoService, 'get_location_from_address').and.throwError(
-      'error'
-    );
+    spyOn(geoService, 'get_location_from_address').and.throwError('error');
 
     component.createTripForm.setValue({
       origen: 'Calle canal',
@@ -464,14 +457,17 @@ describe('MeetingPointSearchbarResultComponent', () => {
     component.get_target();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('Se ha producido un error al obtener la localización destino', null, {
-        duration: 3000,
-      });
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al obtener la localización destino',
+        null,
+        {
+          duration: 3000,
+        }
+      );
     });
   });
 
   it('should return an error when return meeting_points', () => {
-
     const spy = spyOn(component._snackBar, 'open');
     spyOn(meetingPointService, 'get_all_meeting_points').and.throwError(
       'error'
@@ -481,9 +477,13 @@ describe('MeetingPointSearchbarResultComponent', () => {
     component.get_all_meeting_points();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith('Se ha producido un error al obtener los puntos de encuentro', null, {
-        duration: 3000,
-      });
+      expect(spy).toHaveBeenCalledWith(
+        'Se ha producido un error al obtener los puntos de encuentro',
+        null,
+        {
+          duration: 3000,
+        }
+      );
     });
   });
 
@@ -510,5 +510,12 @@ describe('MeetingPointSearchbarResultComponent', () => {
       expect(spy).toHaveBeenCalledWith('Viaje creado correctamente');
       expect(navigateSpy).toHaveBeenCalledWith(['home']);
     });
+  });
+
+  it('should check the final price that the driver will receive', () => {
+    component.createTripForm.get('price').setValue(2);
+    fixture.detectChanges();
+    const final_price = component.get_final_price();
+    expect(final_price).toBe("1.65");
   });
 });
