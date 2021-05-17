@@ -17,7 +17,14 @@ jobs:
       before_deploy:
         - bash ./scripts/deploy-prepro.sh
         - bash ./scripts/deploy-pro.sh 
+        - bash ./scripts/deploy-v4.sh
       deploy:
+        - provider: firebase
+          skip_cleanup: true
+          token: "$FB_DEPLOY"
+          project: gotacar-v4
+          on:
+            branch: master
         - provider: firebase
           skip_cleanup: true
           token: "$FB_DEPLOY"
@@ -60,6 +67,14 @@ jobs:
           no_promote: true
           on:
             branch: develop
+        - provider: gae
+          keyfile: client-secret.json
+          project: gotacar
+          config: v4-app.yaml
+          version: v4
+          no_promote: true
+          on:
+            branch: sprint4
 before_install:
   - openssl aes-256-cbc -K $encrypted_2fd045226a67_key -iv $encrypted_2fd045226a67_iv
     -in client-secret.json.enc -out client-secret.json -d
