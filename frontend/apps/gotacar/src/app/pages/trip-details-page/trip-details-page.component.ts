@@ -35,7 +35,6 @@ export class TripDetailsPageComponent {
   ) {
     this.load_trip();
     this.driver_is_rated();
-
   }
 
   private get_trip_id(): string {
@@ -49,10 +48,7 @@ export class TripDetailsPageComponent {
       trip: this.trip,
     };
 
-    this._dialog.open(
-      DriverProfileDataDialogComponent,
-      dialogConfig
-    );
+    this._dialog.open(DriverProfileDataDialogComponent, dialogConfig);
   }
   get_profile_photo() {
     if (this.trip?.driver?.profilePhoto) {
@@ -116,12 +112,18 @@ export class TripDetailsPageComponent {
       // Vamos al checkout para procesar el pago
       await this.go_to_checkout(session_id);
     } catch (error) {
-      if (error.error.message === '400 BAD_REQUEST "No puedes reservar tu propio viaje"') {
+      if (
+        error.error.message ===
+        '400 BAD_REQUEST "No puedes reservar tu propio viaje"'
+      ) {
         this._snackbar.open('No puedes reservar tu propio viaje', null, {
           duration: 3000,
         });
       }
-      if (error.error.message === '400 BAD_REQUEST "El viaje no tiene tantas plazas"') {
+      if (
+        error.error.message ===
+        '400 BAD_REQUEST "El viaje no tiene tantas plazas"'
+      ) {
         this._snackbar.open('El viaje no tiene tantas plazas', null, {
           duration: 3000,
         });
@@ -145,10 +147,18 @@ export class TripDetailsPageComponent {
   }
 
   show_buy_button() {
-    return this.trip?.places > 0 && new Date(this.trip?.startDate) > new Date()
-      && this.trip?.canceled !== true && this.user.uid !== this.trip.driver.uid;
+    return (
+      this.trip?.places > 0 &&
+      new Date(this.trip?.startDate) > new Date() &&
+      this.trip?.canceled !== true &&
+      this.user?.uid !== this.trip?.driver?.uid
+    );
   }
+
   async driver_is_rated() {
+    if (!this.user && !this.user?.uid) {
+      return;
+    }
     this.trip = await this._trip_service.get_trip(this.get_trip_id());
     try {
       const data = {

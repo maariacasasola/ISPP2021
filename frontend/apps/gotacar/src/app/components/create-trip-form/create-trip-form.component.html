@@ -128,6 +128,7 @@
           </mat-form-field>
         </div>
         <div class="price">
+          <p>Precio final para el cliente:</p>
           <mat-form-field appearance="outline">
             <mat-label>Precio</mat-label>
             <input
@@ -147,6 +148,22 @@
             *ngIf="createTripForm.get('price')?.errors?.max"
             >El precio máximo del viaje debe ser de 1000€</mat-error
           >
+        </div>
+        <div class="price-final">
+          <p>Importe que recibirás tras completar el trayecto:</p>
+          <mat-form-field appearance="outline">
+            <mat-label>Importe a recibir</mat-label>
+            <input
+              matInput
+              type="number"
+              step="0.01"
+              max="1000"
+              [value]="get_final_price()"
+              disabled
+              required
+            />
+            <mat-icon matSuffix>euro</mat-icon>
+          </mat-form-field>
         </div>
         <div class="places">
           <mat-form-field appearance="outline">
