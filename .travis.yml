@@ -24,7 +24,7 @@ jobs:
           token: "$FB_DEPLOY"
           project: gotacar-v4
           on:
-            branch: master
+            branch: sprint4
         - provider: firebase
           skip_cleanup: true
           token: "$FB_DEPLOY"
