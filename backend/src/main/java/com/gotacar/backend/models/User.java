@@ -53,7 +53,7 @@ public class User {
   @Future
   public LocalDateTime bannedUntil;
 
-  @Pattern(regexp = "PENDING|ACCEPTED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)")
+  @Pattern(regexp = "PENDING|ACCEPTED|CANCELLED", message = "El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED|CANCELLED)")
   public String driverStatus;
 
   private String phone;
