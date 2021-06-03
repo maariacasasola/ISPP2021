@@ -111,7 +111,7 @@ class ComplaintControllerTest {
                 Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958,
                                 -5.976345387146261);
                 trip = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
-                                LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
+                                LocalDateTime.of(2031, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
                                 3, driver);
                 trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 03, 24, 16, 00, 00),
                                 LocalDateTime.of(2021, 03, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
