@@ -39,6 +39,22 @@ export class AdminDriverRequestsPageComponent {
     }
   }
 
+  async cancel_request(user) {
+    try {
+      const message = await this._users_service.cancel_driver_request(user?.uid);
+      if (message) {
+        await this.load_driver_requests();
+        this._snackBar.open("Solicitud rechazada correctamente", null, {
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      this._snackBar.open("Ha ocurrido un error rechazando la solicitud", null, {
+        duration: 3000,
+      });
+    }
+  }
+
   get_profile_photo(user) {
     return user.profilePhoto
       ? user.profilePhoto

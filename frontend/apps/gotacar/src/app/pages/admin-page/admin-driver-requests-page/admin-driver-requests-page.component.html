@@ -19,8 +19,11 @@
             <p><strong>Matrícula: </strong>{{ user?.carData?.carPlate }}</p>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-stroked-button class="button" (click)="accept_request(user)">
+            <button mat-stroked-button class="accept-button" (click)="accept_request(user)">
                 <mat-icon> check</mat-icon>
+            </button>
+            <button mat-stroked-button class="cancel-button" (click)="cancel_request(user)">
+                <mat-icon> cancel</mat-icon>
             </button>
         </mat-card-actions>
     </mat-card>

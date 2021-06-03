@@ -49,11 +49,13 @@ export class TripSearchResultPageComponent {
     this.places = params?.places;
     this.date = params?.date;
 
-    this.coordinatesOrigin = await this.get_coordinates(params?.origin);
-    this.coordinatesTarget = await this.get_coordinates(params?.target);
-    if (this.coordinatesOrigin && this.coordinatesTarget) {
-      this.get_search_results();
+    if (params.origin) {
+      this.coordinatesOrigin = await this.get_coordinates(params?.origin);
     }
+    if (params.target) {
+      this.coordinatesTarget = await this.get_coordinates(params?.target);
+    }
+    this.get_search_results();
   }
 
   async get_all_meeting_points() {
