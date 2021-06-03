@@ -51,8 +51,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, null, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 
@@ -70,7 +70,7 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date7, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
                 trip.setStartDate(null);
@@ -127,8 +127,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date6, date7, "", 3, driver);
 
                 Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip);
@@ -145,8 +145,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", null, driver);
 
@@ -164,8 +164,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 5, driver);
 
@@ -184,8 +184,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, price, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 
@@ -203,8 +203,8 @@ class TripModelTests {
                                 -5.96211306033204);
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
-                LocalDateTime date6 = LocalDateTime.of(2021, 05, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date6 = LocalDateTime.of(2031, 05, 24, 16, 00, 00);
+                LocalDateTime date7 = LocalDateTime.of(2031, 05, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, price, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 
