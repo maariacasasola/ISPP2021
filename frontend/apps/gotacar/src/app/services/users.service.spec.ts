@@ -65,7 +65,7 @@ describe('UsersService', () => {
 
     it('should convert user to driver', async () => {
         service.convert_to_driver('difnowou48');
-        const req = httpMock.expectOne(`${environment.api_url}/driver/update`);
+        const req = httpMock.expectOne(`${environment.api_url}/driver/accept`);
         expect(req.request.method).toBe('POST');
         expect(req.request.body.uid).toBe('difnowou48');
     });
