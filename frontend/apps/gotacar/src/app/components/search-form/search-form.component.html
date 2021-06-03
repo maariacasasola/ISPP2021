@@ -13,7 +13,6 @@
             matInput
             type="text"
             formControlName="origin"
-            required
             autocomplete="off"
             (input)="search_meeting_points_origin($event.target.value)"
             (click)="clear_meeting_points()"
@@ -31,7 +30,6 @@
             matInput
             type="text"
             formControlName="target"
-            required
             autocomplete="off"
             (input)="search_meeting_points_target($event.target.value)"
             (click)="clear_meeting_points()"

@@ -30,7 +30,7 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
 
         LocalDateTime nextDay = date.plusDays(2);
 
-        if (startingPoint != null) {
+        if (startingPoint.getX() != 0 && startingPoint.getY() != 0) {
             criteria.add(Criteria.where("startingPoint").within(circleStart));
         }
 
@@ -55,7 +55,7 @@ public class TripRepositoryImpl implements TripRepositoryCustom {
 
         criteria.add(Criteria.where("id").in(ids));
 
-        if (endindPoint != null) {
+        if (endindPoint.getX() != 0 && endindPoint.getY() != 0) {
             criteria.add(Criteria.where("endingPoint").within(circleEnd));
         }
 

@@ -12,9 +12,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SearchFormComponent {
   searchForm = this.fb.group({
-    origin: ['', Validators.required],
-    target: ['', Validators.required],
-    date: ['', Validators.required],
+    origin: [null],
+    target: [null],
+    date: [null, Validators.required],
     places: [1],
   });
 
