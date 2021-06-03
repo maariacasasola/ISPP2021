@@ -37,7 +37,7 @@ export class EditProfileDriverComponent {
       ],
     ],
     car_plate: ['', [Validators.required, Validators.pattern('^[0-9]{4}(?!.*(LL|CH))[BCDFGHJKLMNPRSTVWXYZ]{3}')]],
-    enrollment_date: ['', Validators.required],
+    enrollment_date: [{ value: '', disabled: true },, Validators.required],
     model: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
     color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
   });

@@ -17,7 +17,7 @@ export class SignUpComponent {
   register_form = this.fb.group({
     firstName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
     lastName: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$')]],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     password: [
       '',
       [
@@ -29,7 +29,7 @@ export class SignUpComponent {
     ],
     dni: [
       '',
-      [Validators.required, Validators.pattern('^[0-9]{8,8}[A-Za-z]$')],
+      [Validators.required, Validators.pattern('^([0-9]{8,8}[A-Za-z]|[XYZ][0-9]{7}[A-Z])$')],
     ],
     birthdate: ['', Validators.required],
     phone: [
@@ -94,8 +94,7 @@ export class SignUpComponent {
       .catch((error) => {
         if (error.message === 'The email address is badly formatted.') {
           this.openSnackBar('El email no es válido');
-        }
-        if (error.message === "The email address is already in use by another account.") {
+        } else if (error.message === "The email address is already in use by another account.") {
           this.openSnackBar('El email ya esta siendo usado por otro usuario');
         } else {
           this.openSnackBar('Ha ocurrido un error, inténtelo más tarde');
