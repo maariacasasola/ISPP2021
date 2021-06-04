@@ -83,7 +83,7 @@ export class ClientProfilePageComponent {
     return this.user?.driverStatus === 'PENDING';
   }
   hasCreateRequest() {
-    return this.isClientAndNoDriver() && !this.user?.driverStatus;
+    return this.isClientAndNoDriver() && !this.user?.driverStatus || this.isClientAndNoDriver() && this.user?.driverStatus === 'CANCELLED';
   }
 
   async update_profile_photo() {

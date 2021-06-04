@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.gotacar.backend.models.trip.Trip;
-
-import javax.validation.ConstraintViolation;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-
 class TripModelTests {
         private Validator createValidator() {
                 LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
@@ -90,7 +88,7 @@ class TripModelTests {
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
                 LocalDateTime date6 = LocalDateTime.of(2021, 03, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date7 = LocalDateTime.of(2021, 07, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date6, date7,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 
@@ -109,7 +107,7 @@ class TripModelTests {
                 Location location3 = new Location("Triana", "Calle Reyes Católicos, 5, 41001 Sevilla",
                                 37.38919329738635, -5.999724275498323);
                 LocalDateTime date6 = LocalDateTime.of(2021, 03, 24, 16, 00, 00);
-                LocalDateTime date7 = LocalDateTime.of(2021, 05, 24, 16, 15, 00);
+                LocalDateTime date7 = LocalDateTime.of(2021, 07, 24, 16, 15, 00);
                 Trip trip = new Trip(location1, location3, 220, date7, date6,
                                 "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 

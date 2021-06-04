@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gotacar.backend.models.CarData;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -17,8 +19,6 @@ import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
 import com.gotacar.backend.utils.TokenResponse;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -208,14 +208,25 @@ public class UserController {
 				var enrollmentDate = LocalDate
 						.parse(objectMapper.readTree(carDataJson.get("enrollment_date").toString()).asText());
 
-				var carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
-						carDataJson.get("model").asText(), carDataJson.get("color").asText());
-
 				u.setIban(iban);
 				u.setDrivingLicense(drivingLicense);
 				u.setExperience(experience);
-				u.setCarData(carData);
 				u.setDriverStatus("PENDING");
+
+				if(u.getCarData() != null){
+					var carData = u.getCarData();
+					carData.setCarPlate(carDataJson.get("car_plate").asText());
+					carData.setColor(carDataJson.get("color").asText());
+					carData.setEnrollmentDate(enrollmentDate);
+					carData.setModel(carDataJson.get("model").asText());
+
+					u.setCarData(carData);
+				} else {
+					var carData = new CarData(carDataJson.get("car_plate").asText(), enrollmentDate,
+					carDataJson.get("model").asText(), carDataJson.get("color").asText());
+
+					u.setCarData(carData);
+				}
 
 				userRepository.save(u);
 			} else {
@@ -228,7 +239,7 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/driver/update")
+	@PostMapping("/driver/accept")
 	public User convertToDriver(@RequestBody() String body) {
 		try {
 			var jsonNode = objectMapper.readTree(body);
@@ -236,6 +247,22 @@ public class UserController {
 			User u = this.userRepository.findByUid(uid);
 			u.setDriverStatus("ACCEPTED");
 			u.getRoles().add(ROLE_DRIVER);
+			this.userRepository.save(u);
+
+			return u;
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/driver/cancel")
+	public User notConvertToDriver(@RequestBody() String body) {
+		try {
+			var jsonNode = objectMapper.readTree(body);
+			String uid = objectMapper.readTree(jsonNode.get("uid").toString()).asText();
+			User u = this.userRepository.findByUid(uid);
+			u.setDriverStatus("CANCELLED");
 			this.userRepository.save(u);
 
 			return u;

@@ -1,5 +1,7 @@
 package com.gotacar.backend.models;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +14,6 @@ import javax.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class UserModelTests {
 
@@ -113,7 +113,7 @@ class UserModelTests {
 
 		ConstraintViolation<User> violation = constraintViolations.iterator().next();
 		assertThat(violation.getMessage())
-				.isEqualTo("El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED)");
+				.isEqualTo("El estado de la validación del conductar solo puede ser: (PENDING|ACCEPTED|CANCELLED)");
 
 	}
 
