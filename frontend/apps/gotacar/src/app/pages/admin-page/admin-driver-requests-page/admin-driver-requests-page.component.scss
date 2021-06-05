@@ -33,9 +33,14 @@ h1 {
   padding: 20px;
 }
 
-.button {
+.accept-button {
   color: white;
   background-color: #70c070;
+}
+
+.cancel-button {
+  color: white;
+  background-color: #d82b1e;
 }
 
 @media (max-width: 760px) {

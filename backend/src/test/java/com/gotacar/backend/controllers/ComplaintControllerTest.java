@@ -1,5 +1,17 @@
 package com.gotacar.backend.controllers;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.gotacar.backend.BackendApplication;
+import com.gotacar.backend.controllers.ComplaintControllerTest.TestConfig;
 import com.gotacar.backend.models.Location;
 import com.gotacar.backend.models.User;
 import com.gotacar.backend.models.UserRepository;
@@ -9,8 +21,6 @@ import com.gotacar.backend.models.trip.Trip;
 import com.gotacar.backend.models.trip.TripRepository;
 import com.gotacar.backend.models.tripOrder.TripOrder;
 import com.gotacar.backend.models.tripOrder.TripOrderRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,18 +37,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import com.gotacar.backend.BackendApplication;
-import com.gotacar.backend.controllers.ComplaintControllerTest.TestConfig;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import net.minidev.json.JSONObject;
 
@@ -111,7 +109,7 @@ class ComplaintControllerTest {
                 Location location2 = new Location("Viapol", "Av. Diego Martínez Barrio", 37.37625144174958,
                                 -5.976345387146261);
                 trip = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
-                                LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
+                                LocalDateTime.of(2031, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
                                 3, driver);
                 trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 03, 24, 16, 00, 00),
                                 LocalDateTime.of(2021, 03, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana",
@@ -129,7 +127,7 @@ class ComplaintControllerTest {
                 ObjectId complaintObjectId1 = new ObjectId();
                 complaint1.setId(complaintObjectId1.toString());
 
-                tripOrder = new TripOrder(trip, user, LocalDateTime.of(2021, 05, 24, 10, 00, 00), 3, "paymentIntent",
+                tripOrder = new TripOrder(trip, user, LocalDateTime.of(2021, 07, 24, 10, 00, 00), 3, "paymentIntent",
                                 1);
 
 

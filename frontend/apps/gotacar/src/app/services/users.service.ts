@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _http_client: HttpClient) {}
+  constructor(private _http_client: HttpClient) { }
 
   get_all_users(): Promise<any> {
     return this._http_client
@@ -39,8 +39,15 @@ export class UsersService {
       uid: uid,
     };
     return this._http_client
-      .post(environment.api_url + '/driver/update', uid_json)
+      .post(environment.api_url + '/driver/accept', uid_json)
       .toPromise();
+  }
+
+  cancel_driver_request(uid: string): Promise<any> {
+    const uid_json = {
+      uid: uid
+    }
+    return this._http_client.post(environment.api_url + '/driver/cancel', uid_json).toPromise();
   }
 
   get_all_driver_requests(): Promise<any> {
@@ -64,8 +71,8 @@ export class UsersService {
       .post(environment.api_url + '/rate/check', data)
       .toPromise();
   }
-  async get_ratings_by_userid(idUser:string): Promise<any>{
-    return this._http_client.get(environment.api_url + '/ratings/'+ idUser).toPromise();
+  async get_ratings_by_userid(idUser: string): Promise<any> {
+    return this._http_client.get(environment.api_url + '/ratings/' + idUser).toPromise();
 
   }
 }

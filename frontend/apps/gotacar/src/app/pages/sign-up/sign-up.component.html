@@ -34,7 +34,7 @@
         <mat-error *ngIf="register_form?.get('email')?.errors?.required"
           >Campo obligatorio</mat-error
         >
-        <mat-error *ngIf="register_form?.get('email')?.errors?.email"
+        <mat-error *ngIf="register_form?.get('email')?.errors?.pattern"
           >Email inválido</mat-error
         >
       </mat-form-field>
@@ -53,7 +53,7 @@
       <p class="message">La contraseña debe contener 8 caracteres mínimo, mayúsculas, minúsculas, números y al menos uno de los siguientes caracteres: #?!@$%^&*-</p>
       <mat-form-field class="spacing" appearance="outline">
         <mat-icon matSuffix>account_circle</mat-icon>
-        <mat-label>DNI</mat-label>
+        <mat-label>DNI / NIE</mat-label>
         <input matInput type="text" formControlName="dni" required />
         <mat-error *ngIf="register_form?.get('dni')?.errors?.required"
           >Campo obligatorio</mat-error
@@ -93,8 +93,8 @@
     </div>
     <mat-checkbox (change)="checked($event)" class="example-margin"
       >Para completar el registro debes leer los
-      <a routerLink="/terms-and-conditions">términos de uso</a> y la
-      <a routerLink="/privacy-policy">política de privacidad</a></mat-checkbox
+      <a target="_blank" routerLink="/terms-and-conditions">términos de uso</a> y la
+      <a target="_blank" routerLink="/privacy-policy">política de privacidad</a></mat-checkbox
     >
     <button
       class="login-button"

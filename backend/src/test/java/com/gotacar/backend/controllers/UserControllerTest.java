@@ -127,12 +127,12 @@ class UserControllerTest {
 		ObjectId orderObjectId = new ObjectId();
 		order.setId(orderObjectId.toString());
 
-		trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
+		trip1 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 07, 24, 16, 00, 00),
 				LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver);
 		ObjectId tripObjectId1 = new ObjectId();
 		trip1.setId(tripObjectId1.toString());
 
-		trip2 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 05, 24, 16, 00, 00),
+		trip2 = new Trip(location1, location2, 220, LocalDateTime.of(2021, 07, 24, 16, 00, 00),
 				LocalDateTime.of(2021, 05, 24, 16, 15, 00), "Viaje desde Cerro del Águila hasta Triana", 3, driver2);
 		ObjectId tripObjectId2 = new ObjectId();
 		trip2.setId(tripObjectId2.toString());
@@ -604,7 +604,7 @@ class UserControllerTest {
 		String token = json2.getString("token");
 
 		ResultActions result = mockMvc
-				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/driver/accept").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(200);
@@ -627,7 +627,7 @@ class UserControllerTest {
 		String token = json2.getString("token");
 
 		ResultActions result = mockMvc
-				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/driver/accept").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(404);
@@ -647,7 +647,7 @@ class UserControllerTest {
 		String token = json2.getString("token");
 
 		ResultActions result = mockMvc
-				.perform(post("/driver/update").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
+				.perform(post("/driver/accept").header("Authorization", token).contentType(MediaType.APPLICATION_JSON)
 						.content(sampleObject.toJSONString()).accept(MediaType.APPLICATION_JSON));
 
 		assertThat(result.andReturn().getResponse().getStatus()).isEqualTo(403);

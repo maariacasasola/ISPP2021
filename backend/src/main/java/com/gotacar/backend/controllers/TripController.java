@@ -29,9 +29,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
@@ -53,19 +53,39 @@ public class TripController {
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
-	@PostMapping(path = "/search_trips", consumes = "application/json")
+	@PostMapping(path = "/search_trips")
 	public List<Trip> searchTrip(@RequestBody() String body) {
 		try {
 			var jsonNode = objectMapper.readTree(body);
-			JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
-			JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
-			Integer placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
+
+			Integer placesJson = null;
+			var startingPoint = new Point(0, 0);
+			var endingPoint = new Point(0, 0);
+
+			try {
+				JsonNode startingPointJson = objectMapper.readTree(jsonNode.get("starting_point").toString());
+				startingPoint = new Point(startingPointJson.get("lng").asDouble(),
+					startingPointJson.get("lat").asDouble());
+			} catch (Exception e) {
+			}
+
+			try {
+				JsonNode endingPointJson = objectMapper.readTree(jsonNode.get("ending_point").toString());
+				endingPoint = new Point(endingPointJson.get("lng").asDouble(),
+					endingPointJson.get("lat").asDouble());
+			} catch (Exception e) {
+			}
+
+			try {
+				placesJson = objectMapper.readTree(jsonNode.get("places").toString()).asInt();
+			} catch (Exception e) {
+			}
+
 			var dateJson = OffsetDateTime
 					.parse(objectMapper.readTree(jsonNode.get("date").toString()).asText()).toLocalDateTime();
-			var startingPoint = new Point(startingPointJson.get("lng").asDouble(),
-					startingPointJson.get("lat").asDouble());
-			var endingPoint = new Point(endingPointJson.get("lng").asDouble(), endingPointJson.get("lat").asDouble());
+			
 			List<Trip> trips = tripRepository.searchTrips(startingPoint, endingPoint, placesJson, dateJson);
+
 			return trips.stream().filter(x -> x.getCanceled().equals(false) || x.getCanceled() == null)
 					.collect(Collectors.toList());
 		} catch (Exception e) {
